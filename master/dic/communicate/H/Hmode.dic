@@ -1,0 +1,215 @@
+
+OnGoHmode
+{
+	if hexp == 0{
+
+		hexp = 1
+		//总之我先初始化一下数值什么的
+		快cball = 0
+		快clv = 0
+		快c = 0
+		快vball = 0
+		快vlv = 0
+		快v = 0
+		快bball = 0
+		快blv = 0
+		快b = 0
+		快mball = 0
+		快mlv = 0
+		快m = 0
+		快aball = 0
+		快alv = 0
+		快a = 0
+		恭顺lv = 0
+		欲情lv = 0
+		屈服lv = 0
+		V润lv = 0
+		A润lv = 0
+		耻情lv = 0
+		习得lv = 0
+		苦痛lv = 0
+		恐惧lv = 0
+		反感lv = 0
+		抑郁lv = 0
+		性欲 = 0
+		精液欲 = 0
+		精液量 = 0
+		射精计量 = 0
+	}
+	else{
+
+		//这是每次开始H都会重置的部分
+		快c = 0
+		快v = 0
+		快b = 0
+		快m = 0
+		快a = 0
+		恭顺 = 0
+		欲情 = 0
+		屈服 = 0
+		V润 = 0
+		A润 = 0
+		耻情 = 0
+		习得 = 0
+		苦痛 = 0
+		恐怖 = 0
+		反感 = 0
+		抑郁 = 0
+		性欲 = 0
+		精液欲 = 0
+		精液量 = 0
+		射精计量 = 0
+		体位 = '无'
+		正后 = '正面'
+		骑乘 = '否'
+		H氛围 = 0
+		射精值 = 10000
+	}
+	--
+	OnDoing
+}
+
+OnDoing
+{
+	"好感度：%(好感度) 侍奉快乐：%(Hlover) 体力：%(kikkaHhp) 气力：%(kikkaHmp)\n/
+	快C-LV%(快clv) 快V-LV%(快vlv) 快B-LV(快blv) 快M-LV%(快mlv) 快A-LV%(快alv)\n/
+	恭顺-LV%(恭顺lv) 欲情-LV%(欲情lv) 屈服-LV%(屈服lv) 耻情-LV%(耻情lv)\n/
+	V润-LV%(V润)lv A润-LV%(A润lv)\n/
+	苦痛-LV%(苦痛lv) 恐怖-LV%(恐怖lv) 反感-LV%(反感lv) 抑郁-LV%(抑郁lv)"
+	--
+	OnHmodemenu
+}
+
+
+OnHmodemenu
+{
+	for _i=0;Hnormal.name(_i);_i++{
+		_txt +="\![*]\q[%(Hnormal.name(_i)),Onhowdo,%(_i)]\n"
+	}
+}
+
+
+
+//要进行的动作，快c，快v，快b ，快m ，快a，恭顺，欲情，屈服，耻情，习得 ，苦痛，恐怖，反感，抑郁 ，性欲 ，精液欲，射精计量，体位，正后，H氛围，骑乘体位
+//不影响菜单等级
+Hnormal.info : array
+{
+	'爱抚,TOINT(1000+(快clv*400)),0,TOINT(100+(快blv*400)),0,0,TOINT(1000+(恭顺lv*300)),TOINT(1000+(欲情lv*500)),TOINT(100+(屈服lv*100)),TOINT(100+(耻情lv*100)),0,0,0,0,0,TOINT(300+(好感度lv*200)),TOINT(100+(Hlover*100)),3000,无,正面,500,否'
+	'肛门爱抚,0,0,0,0,TOINT(100+(快alv*400)),TOINT(1000+(恭顺lv*300)),TOINT(1000+(欲情lv*500)),TOINT(100+(屈服lv*300)),TOINT(500+(耻情lv*500)),0,0,0,0,0,TOINT(300+(好感度lv*200)),TOINT(100+(Hlover*100)),3000,无,正面,500,否'
+	'胸部爱抚'
+	'接吻'
+	'手交'
+	'口交'
+	'足交'
+	'接吻'
+}
+//动作
+Hnormal.name
+{
+	Hnormal.info[_argv[0]][1][2][3][4][5][6][7][8][9][10][11][12][13][14][15][16][17][18][19][20][21]
+}
+//上升的数值
+Hinormal.cost
+{
+	TOINT(Hnormal.info[_argv[0]][1][2][3][4][5][6][7][8][9][10][11][12][13][14][15][16][17][18][19][20][21])
+}
+
+//动作的判定
+OnHnormalget
+{
+	_i = reference0
+	快c=TOINT(快c+Hnormal.info[_argv[1]])
+	快v =TOINT(快v+Hnormal.info[_argv[2]])
+	快b =TOINT(快b+Hnormal.info[_argv[3]])
+	快m=TOINT(快m+Hnormal.info[_argv[4]])
+	快a=TOINT(快a+Hnormal.info[_argv[4]])
+	恭顺=TOINT(恭顺+Hnormal.info[_argv[6]])
+	欲情=TOINT(欲情+Hnormal.info[_argv[7]])
+	屈服=TOINT(屈服+Hnormal.info[_argv[8]])
+	耻情=TOINT(耻情+Hnormal.info[_argv[9]])
+	习得 =TOINT(习得 +Hnormal.info[_argv[10]])
+	苦痛=TOINT(苦痛+Hnormal.info[_argv[11]])
+	恐怖=TOINT(恐怖+Hnormal.info[_argv[12]])
+	反感=TOINT(反感+Hnormal.info[_argv[13]])
+	抑郁 =TOINT(抑郁+Hnormal.info[_argv[14]])
+	性欲 =TOINT(性欲+Hnormal.info[_argv[15]])
+	精液欲=TOINT(精液欲+Hnormal.info[_argv[16]])
+	射精计量=TOINT(射精计量+Hnormal.info[_argv[17]])
+	体位="%(Hnormal.info[_argv[18]])"
+	正后="%(Hnormal.info[_argv[19]])"
+	H氛围=TOINT(H氛围+Hnormal.info[_argv[20]])
+	case _i{
+
+		when '爱抚'{
+
+			爱抚口上
+		}
+		when '肛门爱抚'{
+
+			肛门爱抚口上
+		}
+	}
+	--
+	//是否要进行反推骑乘什么的
+	if 抖S == 1 && 骑乘 == '否'{
+
+		if 性欲>= 7000 && 精液欲 >= 8000{
+
+			_a = RAND()
+			if RAND >= 60{
+
+				骑乘 = '是'
+				被强行推到的演出
+			}
+			else{
+
+				"她似乎想要反过来推到你\n/
+				\q[从了]
+				\q[不准]"
+			}
+		}
+		elseif 性欲 >= 10000{
+
+			_a = RAND()
+			if RAND >= 60{
+
+				骑乘 = '颜面'
+				被骑脸的演出
+			}
+			else{
+
+				"她似乎想要反过来推到你\n/
+				\q[从了]
+				\q[不准]"
+			}
+		}
+	}
+	--
+	if 射精计量 >= 射精值{
+
+		if 体位 == '无'{
+
+			未插入的射精演出
+		}
+		elseif 体位 == '口交'{
+
+			在嘴里射精的演出
+		}
+		elseif 体位 =='乳交'{
+
+			在胸上的演出
+		}
+		elseif 体位 == '足交'{
+
+			在脚上的演出
+		}
+		elseif  体位 == '肛交'{
+
+			后庭的演出
+		}
+		else{
+
+			普通腔内的演出
+		}
+	}
+}

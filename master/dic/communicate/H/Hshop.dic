@@ -1,0 +1,135 @@
+OnHitemList
+{
+	_txt = "\1\s[-1]\0\s[0]\b[2]所持金钱$%(money)，技巧等级%(Hlv)，精力%(Hmp)/%(Hmaxmp)。\n\n[half]"
+	for _i=0;Hitem.name(_i);_i++{
+		if !HitemGet[_i] || Hitem.IsConsumable(_i){//未拥有或是消耗品
+			_txt +="\![*]\q[%(Hitem.name(_i)),OnHitemget,%(_i)]    $%(Hitem.cost(_i))\n"
+		}
+	}
+<<<<<<< HEAD
+	_txt +=	"\n\![*]\q[开始对橘花的调教,OnGoHmode]"
+	_txt +=	"\n\![*]\q[显示橘花的状态,OnHinfor]"
+	_txt +=	"\n\![*]\q[返回,ReturnMenu]"
+=======
+	_txt +=	'\n\![*]\q[返回,ReturnMenu]'
+>>>>>>> baa6ad0313d95c6e196abe2fcabccb03d3bba6e8
+	_txt
+}
+
+Hitem.IsConsumable{//是消耗品
+	_argv[0]>=25 && _argv[0]<=36
+}
+//商品列表
+Hitem.info : array
+{
+	'跳蛋,200'
+	'按摩棒,500'
+	'电动按摩器,500'
+	'肛用按摩棒,500'
+	'假阴茎,200'
+	'眼罩,400'
+	'摄像机,3000'
+	'阴蒂夹,200'
+	'乳头夹,300'
+	'口塞套件,500'
+	'鞭,200'
+	'针,500'
+	'飞机杯,400'
+	'地垫,1000'
+	'拘束工具,2000'
+	'灌肠器+肛塞,3000'
+	'穿环套件,2000'
+	'榨乳器,1500'
+	'项圈,500'
+	'围裙,2000'
+	'大鏡,1000'
+	'打气筒,300'
+	'扩张气囊,1000'
+	'导尿管,2000'
+	'夜之阳傘,200'//24
+	'润滑液,50'
+	'媚药,200'
+	'利尿剂,100'
+	'录像带,300'
+	'镇静剂,300'
+	'排卵诱发剂,500'
+	'沐浴剂,100'
+	'茉莉香,100'
+	'薰衣草香,400'
+	'麝香,1000'
+	'檀香,700'
+	'迷迭香,700'//36
+	'★技巧Lv,5000'
+	'★高潮管理,1000'
+	'★无视脏污,1000'
+	'★禁断之知识,20000'
+	'淫魔水滴,1000'
+}
+//物品的名字，從0開始計數
+Hitem.name
+{
+	Hitem.info[_argv[0]][0]
+}
+//物品价格，從0開始計數，對應名字
+Hitem.cost
+{
+	TOINT(Hitem.info[_argv[0]][1])
+}
+
+//物品价格判定
+OnHitemget
+{
+	_i = reference0
+	_c = Hitem.cost(_i)
+	if !HitemGet[_i]{
+		"\0\b[2]\t购买%(Hitem.name(_i))需要支付$%(Hitem.cost(_i))，"
+		--
+		if money < _c{
+			'您手上的钱不够'
+			--
+			'\x'
+			--
+			OnHitemList
+		}
+		elseif Hitem.IsConsumable(_i){
+			_b = TOINT(money/_c)
+			"%(Hitem.name(_i))可以一次性购买多个，您现在最多可购买%(_b)个，要如何购买？\n\n/
+			\q[只购买一个,OnHitemcheckout,%(_i),1]\n/
+			\q[买五个,OnHitemcheckout,%(_i),5]\n/
+			\q[买十个,OnHitemcheckout,%(_i),10]\n/
+			\q[买到可以购买的最大数额,OnHitemcheckout,%(_i),%(_b)]\n/
+			\q[否,OnHitemList]"
+		}
+		else{
+			"确认购买？\n\n/
+			\q[是,OnHitemcheckout,%(_i),1]\n/
+			\q[否,OnHitemList]"
+		}
+	}
+	else{
+		BUGNow
+	}
+}
+
+OnHitemcheckout
+{
+	_b = reference1
+	if _b{
+		_i = reference0
+		money -= _b*Hitem.cost(_i)
+		HitemGet[_i] += _b
+		"\0%(Hitem.name(_i))购入了"
+		--
+		if _b > 1
+			"%(_b)个"
+		--
+		"！\w9余额为$%(money)，还有什么想看看的吗？"
+	}
+	else{
+		'已取消购买'
+	}
+	--
+	'\x'
+	--
+	OnHitemList
+}
