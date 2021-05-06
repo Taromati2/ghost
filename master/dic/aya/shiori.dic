@@ -488,9 +488,23 @@ OnRequest {
 //機能　：パラメータに応じて適切な応答文字列を作成します。by steve02081504
 //引数　：_argv[0]
 //------------------------------------------------------------------------------
+SHIORI_FW.Returns.MakeEmptyResponse{
+	'bm90aGluZyBpcyB0dXJl'
+}
+SHIORI_FW.Returns.MakeBadResponse{
+	'dGhlIHdvcmxkIGlzIGV2YWw='
+}
 SHIORI_FW.MakeResponse{
 	//コマンド別に処理分岐
 	_result = _argv[0]
+	if _result == SHIORI_FW.Returns.MakeEmptyResponse{
+		SHIORI_FW.MakeEmptyResponse
+		return
+	}
+	elseif _result == SHIORI_FW.Returns.MakeBadResponse{
+		SHIORI_FW.MakeBadResponse
+		return
+	}
 	case REQ.COMMAND {
 		when 'NOTIFY' {
 			//NOTIFYリクエスト
