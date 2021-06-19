@@ -6,13 +6,10 @@ OnHitemList
 			_txt +="\![*]\q[%(Hitem.name(_i)),OnHitemget,%(_i)]    $%(Hitem.cost(_i))\n"
 		}
 	}
-<<<<<<< HEAD
-	_txt +=	"\n\![*]\q[开始对橘花的调教,OnGoHmode]"
-	_txt +=	"\n\![*]\q[显示橘花的状态,OnHinfor]"
-	_txt +=	"\n\![*]\q[返回,ReturnMenu]"
-=======
-	_txt +=	'\n\![*]\q[返回,ReturnMenu]'
->>>>>>> baa6ad0313d95c6e196abe2fcabccb03d3bba6e8
+	_txt +=	'\n/
+			\![*]\q[开始对橘花的调教,OnGoHmode]\n/
+			\![*]\q[显示橘花的状态,OnHinfor]\n/
+			\![*]\q[返回,ReturnMenu]'
 	_txt
 }
 

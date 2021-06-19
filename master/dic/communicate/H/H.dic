@@ -1,5 +1,5 @@
 OnH{
-	UnFinished
+	OnGoHmode
 }
 CanH{
 	GetPhase>=4 && 亲密度>=100

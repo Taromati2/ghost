@@ -68,6 +68,8 @@ dic, dic\communicate\talk\talk_t.dic			//使魔对话
 dic, dic\communicate\talk\other_ghost.dic		//人格间交流
 //H
 dic, dic\communicate\H\H.dic					// 由在蹲局子的steve02081503编写
+dic, dic\communicate\H\Hmode.dic
+dic, dic\communicate\H\Hshop.dic
 
 //养成部分
 dic, dic\nurturance\nurturance.dic		//养成系统

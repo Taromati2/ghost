@@ -152,6 +152,10 @@ SubMenu{
 //---------- 打开菜单时的对话 ------------------------------------------
 OpenMenuTalk{
 	_phase = GetPhase
+	if specialmode == 'h'{
+		OnHtalking
+		return
+	}
 	if _phase >= 2 {
 		click=TOINT(click)+1
 		"\0\s[5]\b[2]%(username)%(Timejud)好，什么事呢"
@@ -260,6 +264,10 @@ Select.MenuCancel{
 	--
 	infomode=0
 	_phase = GetPhase
+	if specialmode == 'h'{
+		'呜呜'
+		return
+	}
 	if _phase == 0{
 		'\0\s[0]嗯。'
 	}
@@ -335,6 +343,12 @@ OnChoiceTimeout{
 		OpenMenu(menu,menuex)
 	elseif mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]…啧。"
+	elseif specialmode == 'h'{
+		leaving = 1
+		'\1完全在放置play中了，\n/
+		届时请务必留意小公主的状态啊。'
+		'\0(H中)'
+	}
 	else{
 		talkmemo = 'e_0'
 		'\0\s[7]…无视吗？'
