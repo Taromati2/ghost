@@ -1,0 +1,4 @@
+//by steve02081504
+RUNCMD{
+	CALLSAORI('cmdrunner',_argv)
+}

@@ -1,0 +1,101 @@
+//by steve
+
+//简便变量重命名
+RENAME_VAR:void{
+	if ISVAR(_argv[0])
+		EVAL(_argv[1]+'='+_argv[0])
+	ERASEVAR(_argv[0])
+}
+#define VERSION_NOW 3
+
+VERSION_INIT:void{
+	VERSION = VERSION_NOW
+}
+//向后不兼容内容升级用
+VERSION_UPGRADE{
+	if !ISVAR('VERSION'){
+		VERSION = 0
+		if !ISVAR('FirstBootCount'){
+			'\1\s[10]\0\s[26]啊、\w9\w9那个…\w9\w9\w9暂时、\w9要在此处打扰您了。\n\w[3000]\s[5]开玩笑的啦\x'
+		}
+		VERSION_UPGRADE_0
+	}
+	while VERSION_NOW > VERSION {
+		VERSION++
+		void EVAL('VERSION_UPGRADE_'+VERSION)
+	}
+}
+VERSION_UPGRADE_0:void{
+	FirstBootCount = 1
+
+	DELDIR('PROFILE_PATH')
+
+	ERASEALLVARBEGINAS('SHIORI3FW')
+	ERASEALLVARBEGINAS('ninni')
+	ERASEALLVARBEGINAS('minihouse')
+	ERASEALLVARBEGINAS('nanika')
+	ERASEVAR('ascii')
+	ERASEVAR('is_translate')
+	ERASEVAR('e')
+	ERASEVAR('E')
+	ERASEVAR('smoking')
+	ERASEVAR('Scope')
+	ERASEVAR('kikkatitle')
+	ERASEVAR('firstboot')
+	ERASEVAR('idnum')
+	ERASEVAR('layerfree')
+	ERASEVAR('teachusername')
+	ERASEVAR('battlepclick')
+	RENAME_VAR('kikkamoney','money')
+	RENAME_VAR('autobakeup','autobackup')
+	RENAME_VAR('yuyinshibie','Speech_Recognition')
+	for _i=0;_i<30;_i++{
+		ERASEVAR('t'+_i)
+	}
+	for _i=0;_i!=250;_i++{
+		ERASEVAR('valueex'+_i)
+	}
+	ClearTempVar
+	MAGICSAVE
+}
+VERSION_UPGRADE_1:void{
+	DELDIR('pseudoAI')
+	SHIORI_FW.PushNotifyResult(OnUpdate)
+
+	RENAME_VAR('rmmode','HolidayRemindFlag')
+	RENAME_VAR('Birthdayrmmode','BirthdayMode')
+	RENAME_VAR('autoshell','AutoShellChange')
+	RENAME_VAR('qp','Gobang.chessboard')
+	RENAME_VAR('qz','Gobang.piece')
+	RENAME_VAR('duanwei','Gobang.Rank')
+	RENAME_VAR('player.baseparam.duanwei','Gobang.player.baseparam.rank')
+	RENAME_VAR('speed','Tetris.speed')
+	RENAME_VAR('timespeed','Tetris.timespeed')
+	ERASEVAR('ts')
+}
+VERSION_UPGRADE_2:void{
+	ERASEVAR('playHuanRongDao')
+	ERASEVAR('游戏界面')
+	RENAME_VAR('DrawHuanRongBG','HuaRongDao.BackGroundConfing')
+}
+VERSION_UPGRADE_3:void{
+	ERASEVAR('SHIORI_FW.NotifyResults')
+	ERASEVAR('ontest')
+	ERASEVAR('page')
+	ERASEVAR('IN')
+	ERASEVAR('Gobang.player.baseparam.rank')
+	ERASEVAR('LoveGomode')
+	ERASEVAR('Intimacymode')
+	ERASEVAR('tulingapi')
+	ERASEVAR('tulingfound')
+	if !SHIORI_FW.DebugMode || GHOST.INgit{
+		_l=FENUM('SHIORI_BACKUP_PATH')
+		foreach _l;_i{
+			_i='SHIORI_BACKUP_PATH'+_i
+			DELDIR(_i+'/aya')
+			DELDIR(_i+'/dic')
+			FDEL(_i+'/SHIORI_NAME.txt')
+			FDEL(_i+'/yaya.txt')
+		}
+	}
+}

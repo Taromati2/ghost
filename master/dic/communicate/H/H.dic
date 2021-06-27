@@ -1,0 +1,19 @@
+OnH{
+	UnFinished
+}
+CanH{
+	GetPhase>=4 && 亲密度>=100
+}
+IsHShell{
+	_shell=_argv[0]
+	if '下着' _in_ _shell
+		1
+	else{
+		case _shell {
+			when '全裸','裸Yシャツ','拘束衣','吊带裙-粉红','ワンピース'
+				1
+			others
+				0
+		}
+	}
+}

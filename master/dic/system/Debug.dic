@@ -1,0 +1,640 @@
+//by steve02081504
+SakuraScriptArgConverter{
+	'"'+REPLACE(TOSTR(_argv[0]),'"','""')+'"'
+}
+
+#globaldefine GETTYPE.string(( GETTYPE.to_string(GETTYPE(
+//))))
+GETTYPE.to_string{
+	case _argv[0]{
+		when 1
+			'整数'
+		when 2
+			'实数'
+		when 3
+			'字串'
+		when 4
+			'泛用阵列'
+		others
+			'内部错误'
+	}
+}
+ValueTOstring{
+	if _argc > 1{
+		_t='('
+		foreach _argv;_i{
+			_t+=ValueTOstring(_i)+','
+		}
+		RE_REPLACE(_t,'\,$',')')
+	}
+	elseif ISSTR(_argv[0]){
+		if '"' !_in_ _argv[0]
+			'"'+_argv[0]+'"'
+		elseif "'" !_in_ _argv[0]
+			"'"+_argv[0]+"'"
+		else
+			REPLACE(RE_REPLACE(RE_REPLACE('"'+REPLACE(_argv[0],'"','"+'+"'"+'"'+"'"+'+"')+'"','^\"\"\+',''),'\+\"\"$',''),'"'+"'+'"+'"','')
+	}
+	elseif TOSTR(_argv[0])==''
+		'NULL'
+	else
+		TOSTR(_argv[0])
+}
+ValueTOstring.SakuraScript{
+	REPLACE(ValueTOstring(_argv),'\','\\')
+}
+GetVarValue{
+	EVAL(_argv[0])
+}
+GetVarValue.string{
+	ValueTOstring(GetVarValue(_argv[0]))
+}
+GetVarValue.SakuraScript{
+	REPLACE(GetVarValue.string(_argv[0]),'\','\\')
+}
+
+OnSakuraScript{
+	if _argv[0]
+		reference0 = _argv[0]
+	if _argv[1]
+		reference1 = _argv[1]
+	if reference1 != 'force_run' && reference1 != 'no_convert' && ('\!' _in_ reference0 || '\-' _in_ reference0){
+		'\0\s[100]/
+		警告\w9\w9：此Sakura Script可能含有较危险操作\n/
+		\q[◇确认執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',force_run]\n/
+		\q[◇无用,Cancel]\n/
+		'
+		return
+	}
+	if reference1 != 'no_convert' && '%' _in_ reference0{
+		'\0\s[100]/
+		这段Sakura Script中似乎含有aya转义符\w9\n/
+		需要转义么？\w9\n/
+		\q[◇转义執行,OnSakuraScript.Forment,'+SakuraScriptArgConverter(reference0)+']\n/
+		\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',no_convert]\n/
+		\q[◇无用,Cancel]\n/
+		'
+		return
+	}
+	reference0
+}
+OnSakuraScript.Forment{
+	OnSakuraScript(EVAL('"'+reference0+'"'),'no_convert')
+}
+
+On_ShioriEcho.GetName:void {
+	SHIORI_FW.Make_X_SSTP_PassThru('GhostName',ghostname)
+	SHIORI_FW.Make_X_SSTP_PassThru('UserName',username)
+}
+On_ShioriEcho {
+	ClearShioriEchoVar
+	if CUTSPACE(reference0) == 'reload'
+		'…\n\w9\w9\![reload,shiori]重新讀取SHIORI……'
+	else
+		OnCalculateVar
+	--
+	IgnoreChoiceTimeout
+}
+On_ShioriEcho.GetResult:void {
+	if ShioriEcho.Canceled{
+		SHIORI_FW.Make_X_SSTP_PassThru('Special','已取消求值')
+	}
+	else{
+		if ISVAR('ShioriEcho.Result'){
+			SHIORI_FW.Make_X_SSTP_PassThru('Result',ValueTOstring(ShioriEcho.Result))
+			if ShioriEcho.Type
+				SHIORI_FW.Make_X_SSTP_PassThru('Type',ShioriEcho.Type)
+		}
+	}
+	ClearShioriEchoVar
+}
+ClearShioriEchoVar:void {
+	ERASEVAR('ShioriEcho.Canceled')
+	ERASEVAR('ShioriEcho.Result')
+	ERASEVAR('ShioriEcho.Type')
+}
+OnCalculateVar.Cancel{
+	ShioriEcho.Canceled=1
+	EVAL('Select.'+reference0)
+}
+OnCalculateVar.ToSakuraScript{
+	ShioriEcho.Canceled=1
+	OnSakuraScript(reference0)
+}
+
+OnCalculateVar{
+	if _argv[0]
+		reference0 = _argv[0]
+	if _argv[1]
+		reference1 = _argv[1]
+	reference0 = TOSTR(reference0)
+	if !CUTSPACE(reference0){
+		if INEVENT('On_ShioriEcho')
+			ShioriEcho.Canceled=1
+		else
+			'\![open,inputbox,OnCalculateVar,0,1000-7]'//玩梗
+		return
+	}
+	if !ISFUNC(CUTSPACE(reference0)) && !ISVAR(CUTSPACE(reference0)){
+		if reference1 != 'warning_func_run' && reference1 != 'force_run' && reference1 != 'no_convert' && ('，' _in_ reference0 || '（' _in_ reference0 || '）' _in_ reference0 || '‘' _in_ reference0 || '’' _in_ reference0 || '“' _in_ reference0 || '”' _in_ reference0 || '！' _in_ reference0 || '、' _in_ reference0 || '？' _in_ reference0 || '。' _in_ reference0 || '【' _in_ reference0 || '】' _in_ reference0){
+			if mode == '1'
+				"\1\s[%(specialmode != 'mealtime')11]全角 -> 半角？\n"
+			else
+				'\0\s[20]转换表达式中的全角符号为半角？\n'
+			--
+			'\q[◇好,OnCalculateVar.CharConverter,'+SakuraScriptArgConverter(reference0)+']\n/
+			\q[◇直接执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',no_convert]\n/
+			\q[◇算了,OnCalculateVar.Cancel,Cancel]\n/
+			'
+			return
+		}
+		_var = RE_REPLACE(reference0,'\s*[\[,+=*-/%][\s\S]*$','')
+		_func = RE_REPLACE(reference0,'\s*[\(\[][\s\S]*$','')
+		if ISVAR(_var) == 0 && ISFUNC(_func) == 0 && reference1 != 'warning_func_run' && reference1 != 'force_run' && GETTYPE(TOAUTOEX(_var)) == 3{
+			if mode == '1'
+				"\1\s[%(specialmode != 'mealtime')10]没这个名字\n"
+			else
+				'\0\s[3]没有这个变量或函数……\n'
+			--
+			'/
+			\q[◇仍然执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',force_run]\n/
+			\q[◇改作Sakura Script執行,OnCalculateVar.ToSakuraScript,'+SakuraScriptArgConverter(reference0)+']\n/
+			\q[◇算了,OnCalculateVar.Cancel,Cancel]/
+			'
+			return
+		}
+	}
+	if reference1 != 'warning_func_run' && (RE_GREP(_func,'^Reset') || _func == 'OnFirstBoot' || _func == 'MAGICLOAD' || _func == 'LOADVAR' || _func == 'RESTOREVAR' || _func == 'OnKikkaReset'){
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')11]\w9…\w9…\w9\n确认？\n"
+		else
+			'\0\s[7]这是一个危险函数\n\w9\w9\s[8]确认执行吗？\n'
+		--
+		'/
+		\q[◇仍然执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',warning_func_run]\n/
+		\q[◇算了,OnCalculateVar.Cancel,'
+		--
+		if _func == 'OnFirstBoot' || _func == 'MAGICLOAD' || RE_GREP(_func,'^Reset') || _func == 'OnKikkaReset'
+			'Thanks'
+		else
+			'Cancel'
+		--
+		']/
+		'
+		return
+	}
+	if reference1 == 'warning_func_run'{
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]哦。"
+		else
+			'\0\s[3]好的\w9…\w9…\w9…\n'
+	}
+	--
+	{
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]\b[2]『\_q%(REPLACE(reference0,'\','\\'))\_q』，结果是\n"
+		else
+			'\0\s[0]表达式『\_q'+REPLACE(reference0,'\','\\')+'\_q』的执行结果为：\n'
+		--
+		_Result=EVAL(reference0)
+		'\_q'
+		--
+		if _Result == ''
+			'什么都没有'
+		else
+			REPLACE(TOSTR(_Result),'\','\\')
+		--
+		_Type=GETTYPE.string((_Result))
+		'\n/
+		类型：'+_Type
+		--
+		'\_q\n/
+		\q[◇复制结果,OnCopy,'+SakuraScriptArgConverter(_Result)+']\n/
+		\q[◇复制表达式,OnCopy,'+SakuraScriptArgConverter(reference0)+']\n/
+		\q[◇结果作Sakura Script執行,OnSakuraScript,'+SakuraScriptArgConverter(_Result)+']\n/
+		'
+		--
+		'\n/
+		\q[◇求值下一个,OnCalculateVar]\n/
+		\q[◇无用,Cancel]\n/
+		'
+		--
+		ShioriEcho.Result=_Result
+		ShioriEcho.Type=_Type
+	}
+}
+OnCalculateVar.CharConverter{
+	reference0=REPLACE(reference0,'，',',')
+	reference0=REPLACE(reference0,'（','(')
+	reference0=REPLACE(reference0,'）',')')
+	reference0=REPLACE(reference0,'‘',"'")
+	reference0=REPLACE(reference0,'’',"'")
+	reference0=REPLACE(reference0,'“','"')
+	reference0=REPLACE(reference0,'”','"')
+	reference0=REPLACE(reference0,'！','!')
+	reference0=REPLACE(reference0,'、','\')
+	reference0=REPLACE(reference0,'？','?')
+	reference0=REPLACE(reference0,'。','.')
+	reference0=REPLACE(reference0,'【','[')
+	reference0=REPLACE(reference0,'】',']')
+	OnCalculateVar(reference0)
+}
+//调试反应by steve02081504
+OnDebugModeChange{
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]唔…\w9\w9\n"
+	else
+		'\0\s[6]嗯…\w9\w9\s[0]\n'
+	--
+	'shiori调试模式'
+	--
+	if mode == '0'
+		'已'
+	--
+	if SHIORI_FW.DebugMode
+		'打开'
+	else
+		'关闭'
+	--
+	if mode == '1'
+		'了。'
+	--
+	'\n'
+	--
+	if SHIORI_FW.DebugMode{
+		if !FILEEXIST('VAR_PATH/NoMatchingEvent.txt')
+			OnNoMatchingEvent.DumpedList=IARRAY
+		void MKDIR('VAR_PATH')
+		if AutoUpdate
+			'/
+			\q[◇禁用自动更新,Onset,AutoUpdate,0]\n/
+			\q[◇无用,Cancel]\n/
+			'
+	}
+	if !SHIORI_FW.DebugMode && !AutoUpdate
+		'/
+		\q[◇开启自动更新,Onset,AutoUpdate,1]\n/
+		\q[◇无用,Cancel]\n/
+		'
+}
+OnLogModeChange{
+	if SHIORI_FW.LogMode
+		'\0\s[100]警告：\w9\w9shiori log开启中'
+	else
+		'\0\s[100]shiori log已关闭'
+}
+//调试：无对应事件反应by steve02081504
+OnNoMatchingEvent{
+	if !SHIORI_FW.DebugMode || !setting.OnNoMatchingEventAlarm
+		return
+	_dumped=INARRAY(OnNoMatchingEvent.DumpedList,SHIORI_FW.Eventid)
+	_ignoring=INARRAY(OnNoMatchingEvent.IgnoreList,SHIORI_FW.Eventid)
+	if !(_dumped&&_ignoring){
+		"\![set,choicetimeout,1000]\%(mode)\s[%(mode)0]\b[%(mode+1)]"
+		--
+		if !_dumped{
+			DUMP_references_to('VAR_PATH/NoMatchingEvent.txt')
+			OnNoMatchingEvent.DumpedList,=SHIORI_FW.Eventid
+			--
+			"\_q未注册的事件“%(SHIORI_FW.Eventid)”已被写入“VAR_PATH/NoMatchingEvent.txt”\_q\n"
+		}
+		elseif !_ignoring{
+			"\_q未注册的事件“%(SHIORI_FW.Eventid)”被触发了\_q\n"
+		}
+		--
+		"/
+		\q[◇查看事件文档,OnUrlOpen,%(Get_UKADOC_ofEvent(SHIORI_FW.Eventid))]\n/
+		\q[◇永久忽略此事件,OnNoMatchingEvent.Ignore,%(SHIORI_FW.Eventid)]\n/
+		\q[◇将此事件加入TODO并永久忽略,OnNoMatchingEvent.WrtieToTODOandIgnore,%(SHIORI_FW.Eventid)]\n/
+		\q[◇无用,Cancel]\n/
+		"
+		--
+		IgnoreChoiceTimeout
+	}
+}
+OnNoMatchingEvent.WrtieToTODOandIgnore{
+	OnNoMatchingEvent.Ignore(reference0)
+	DUMP_to('VAR_PATH/UnFinishedEvent.txt',reference0)
+	"\%(mode)\s[%(mode)0]\b[%(mode+1)]/
+	\_q事件“%(reference0)”已被写入“VAR_PATH/UnFinishedEvent.txt”\_q"
+}
+OnNoMatchingEvent.Ignore{
+	OnNoMatchingEvent.IgnoreList,=reference0
+	_index=ARRAYSIZE(SHIORI_FW.DelayNotifyResults)
+	while _index{
+		_index--
+		if reference0 _in_ SHIORI_FW.DelayNotifyResults[_index]
+			SHIORI_FW.DelayNotifyResults[_index]=IARRAY
+	}
+}
+GetResourceEventRealName{
+	if SUBSTR(_argv[0],0,3) == 'On_'
+		SUBSTR(_argv[0],3,STRLEN(_argv[0]))
+	else
+		_argv[0]
+}
+IsResourceEvent{
+	if SUBSTR(_argv[0],0,3) != 'On_'{
+		0
+		return
+	}
+	case SUBSTR(_argv[0],3,STRLEN(_argv[0])){
+		when 'basewareversion','hwnd','uniqueid','capability','ownerghostname','otherghostname','installedghostname','installedshellname','installedballoonname','installedheadlinename','installedplugin','configuredbiffname','ghostpathlist','balloonpathlist','headlinepathlist','pluginpathlist','calendarskinpathlist','calendarpluginpathlist','rateofusegraph','inputbox.autocomplete'
+			0
+		others
+			1
+	}
+}
+Get_UKADOC_ofEvent{
+	'http://ssp.shillest.net/ukadoc/manual/'
+	--
+	if IsResourceEvent(_argv[0])
+		'list_shiori_resource'
+	else
+		'list_shiori_event'
+	--
+	_argv[0]=GetResourceEventRealName(_argv[0])
+	".html#%(_argv[0])"
+}
+//来自Dummy-47
+Get_AYA_Function_Info{
+	if ISFUNC(_argv[0])!=2
+		return
+	case _argv[0]{
+		when 'TOINT'
+			'将以文字和实数形式的值转换成整数形式'
+		when 'TOREAL'
+			'将以文字和整数形式的值转换成实数形式。这里说的实数就是会保留小数点后6位的形式'
+		when 'TOSTR'
+			'将以任何形式的值改成文字列。如果被更改对象是泛用阵列的话，就会以逗号分隔的简易阵列显示'
+		when 'GETTYPE'
+			'用来调查变量以什么形式存在\n1整数2实数3文字4泛用阵列什么的。0是出错或失败\n如果泛用阵列只有一个要素，则会返回这个要素的形式（而不是泛用阵列）。'
+		when 'GETTYPEEX'
+			'用来调查变量以什么形式存在\n返回值和GETTYPE是一样的，但是比它更严密\nAYA版本号Tc537-3以上可用'
+		when 'ISFUNC'
+			'用于查找人格中是否有对应函数\n0是不存在；\n1是可被作者定义的函数；\n2是SHIORI自带的函数'
+		when 'ISVAR'
+			'查找人格中是否有特定变量存在\n0是不存在；\n1是全局变量；\n2是局部变量\n注意：局部变量检查只能用在当前事件处理中'
+		when 'CVINT'
+			'将数字形式的文字字符串转变为整数。有小数点的话，会去掉小数点后面的部分'
+		when 'CVSTR'
+			'将实数值转变为文字形式。输出后的结果……看上去是有小数点后6位的实数，但实际上是文字'
+		when 'CVREAL'
+			'将数字形式的文字字符串转变为实数。输出后的结果是有小数点后6位的实数\n……是用来保留的吧'
+		when 'CVAUTO'
+			'通过自动判断，将字符串变量输出为整数或实数。如果不可以转换就不会转换，包括混输和泛用阵列'
+		when 'TOAUTO'
+			'通过自动判断，将字符串转换为整数或实数。如果不可以转换就不会转换，包括混输和泛用阵列'
+		when 'ARRAYSIZE'
+			'获得一个阵列中的项目数量，不管它是简易阵列还是泛用阵列'
+		when 'SETDELIM'
+			'设定标记简易阵列要素分割的符号。默认符号当然是英文半角逗号\n只能用剪贴板上的这种书写顺序设定'
+		when 'IARRAY'
+			'返回空泛用阵列'
+		when 'ASEARCH'
+			'查找泛用阵列中的值，会返回最先找到的位置。0代表第一个，-1代表没有找到\n关联：RE_ASEARCH'
+		when 'ASEARCHEX'
+			'查找泛用阵列中的值，ASEARCH的升级版，会以泛用阵列的形式返回所有被找到的位置，没找到就返回一个空阵列\n关联：RE_ASEARCHEX'
+		when 'GETDELIM'
+			'告知一个简易阵列中标记要素分割的符号。默认符号当然是英文半角逗号'
+		when 'ASORT'
+			'按规则重新排列要素的顺序，仅限泛用阵列\n按照类别分的话，选项有string（按字符编码顺序）int（按整数大小）double（按自然数大小）length（按字符数）；\n按照内容顺序的话，选项有升序和降序；\n还有返回值形式index，专门用来输出“顺序”\nAYA版本号Tc540-1以上可用，Tc545-1追加了index的参数'
+		when 'STRSTR'
+			'在字符串中查找特定文字，返回找到的位置。第一个参数是字符串对象，第二个是关键词，第三个参数是开始的位置，不可以省略'
+		when 'STRLEN'
+			'返回字符串的字数。不是按字节算，汉字这样的双字节字符也是1个字'
+		when 'REPLACE'
+			'将文字串中的部分内容替换为其他内容\n此函数机制单纯，如果需要进阶的功能，请移步\nRE_REPLACE或者RE_REPLACEEX'
+		when 'SUBSTR'
+			'从一段文本的某个位置开始，取出一定字数的内容并返回\n如果代表位置的数字小于0，就会从最后开始算起'
+		when 'ERASE'
+			'将一段文本从指定位置开始，删去指定长度的字数，返回处理后的结果'
+		when 'INSERT'
+			'对一段文字中指定一个位置，在此插入另一段文字，返回处理后的结果'
+		when 'TOUPPER'
+			'将一段文字中含有的小写英文字母全部转换为大写并输出结果\n或许整理可以方便接下来的其他操作'
+		when 'TOLOWER'
+			'将一段文字中含有的大写英文字母全部转换为小写并输出结果\n或许整理可以方便接下来的其他操作'
+		when 'CUTSPACE'
+			'是切去文字前后的空白，包括半角、全角和Tab那种空白\n……但不会从中间剔除空格'
+		when 'TOBINSTR'
+			'将十进制下的整数处理成二进制形式，返回值是文字串'
+		when 'TOHEXSTR'
+			'将十进制下的整数处理成十六进制形式，返回值是文字串'
+		when 'BINSTRTOI'
+			'将二进制数转换为十进制数，返回值是整数形式'
+		when 'HEXSTRTOI'
+			'将十六进制数转换为十进制数，返回值是整数形式'
+		when 'CHR'
+			'用于显示UCS-2编码下的字符。代入值当然是UCS-2数码。伪春菜支持UCS-2的显示，但我们的编辑工具不支持，在这种时候就很有用'
+		when 'CHRCODE'
+			'会输出一个字符的UCS-2编码\n要是输入一个字符串就要指定一个位置，默认输出第一个字的编码'
+		when 'ISINTSTR'
+			'判断给定的文字串是否可以解释为整数。可以的话返回1。不能会返回0'
+		when 'ISREALSTR'
+			'判断给定的文字串是否可以解释为实数。可以的话返回1。不能会返回0'
+		when 'SPLITPATH'
+			'分解一个文件路径，以泛用阵列的形式返回“盘符,路径,文件名,文件扩展名（后缀）”\n失败会返回0'
+		when 'STRFORM'
+			'相当于C语言中的sprintf，以字符串形式输出。最多可以展开1024个字符长度'
+		when 'ANY'
+			'在所有要素中随机选择一个。给出要素的是阵列、文字或数字都可以。执行时会记录自己执行的位置（参见LSO）。'
+		when 'GETSTRBYTES'
+			'计算某一字符串在指定文字编码下的字节数。指定文字编码请参照AYA内部文字编码ID表'
+		when 'SPLIT'
+			'将文字串分割开，转换为泛用阵列。最大分割数可设置，0或省略为全部分割。这里的话处理相对简单，如果要高级的处理，请参照RE_SPLIT'
+		when 'ZEN2HAN'
+			'将文字串中含有的全角字符变换为半角。此处的字符包括数字（number）、字母（alphabet）、特殊符号（symbol）和日文假名（kana），可以全部变换也可以指定部分种类变换'
+		when 'HAN2ZEN'
+			'将文字串中含有的半角字符变换为全角。此处的字符包括数字（number）、字母（alphabet）、特殊符号（symbol）和日文假名（kana），可以全部变换也可以指定部分种类变换'
+		when 'STRENCODE'
+			'将文字串转换为指定语言编码下的网络地址字符形式，现在也支持base64。不指定时，默认以0、url的方式转换\n在TC532-1之前的版本叫做GETSTRURLENCODE'
+		when 'STRDECODE'
+			'将指定语言编码下的网络地址字符形式转回一般的文字串，现在也支持base64。不指定时，默认以0、url的方式转换\n在TC532-1之前的版本叫做GETSTRURLDECODE'
+		when 'TRANSLATE'
+			'将文字串中的字符一对一地进行替换，相当于Perl中不加任何条件的tr///\n算是一种高速和简便的方法，而且包括了文字编码的识别，能够用“a-z”乃至“①-⑨”的方法去指定，还可以进行复合条件的指定'
+		when 'RE_SEARCH'
+			'寻找文字串中符合正则表达式的部分。存在会返回1，否则返回0'
+		when 'RE_MATCH'
+			'寻找文字串中与给定正则表达式完全一致的部分。存在会返回1，否则返回0'
+		when 'RE_GREP'
+			'寻找文字串中所有与正则表达式相符的部分。详细的结果要通过RE_GETSTR、RE_GETPOS、RE_GETLEN来取得'
+		when 'RE_REPLACE'
+			'将字串中所有符合正则表达式的部分替换。详细的结果要通过RE_GETSTR、RE_GETPOS、RE_GETLEN来取得\n如不能确定输入对象一定是字串，可先用TOSTR处理。如果要替换的内容含有meta标签，必须使用RE_REPLACEEX'
+		when 'RE_SPLIT'
+			'用符合正则表达式的内容来分割字串，返回泛用阵列结果。详细的结果要通过RE_GETSTR、RE_GETPOS、RE_GETLEN来取得。最大分割数可设置，0或省略为全部分割'
+		when 'RE_GETSTR'
+			'以泛用阵列形式返回字串中符合正则表达式的所有结果。如果之前没有实行正则匹配动作或未匹配到，就会返回空阵列'
+		when 'RE_GETPOS'
+			'以泛用阵列形式返回字串中符合正则表达式的每个结果在原字串中的位置。如果之前没有实行正则匹配动作或未匹配到，就会返回空阵列'
+		when 'RE_GETLEN'
+			'以泛用阵列形式返回字串中符合正则表达式的每个结果的长度。如果之前没有实行正则匹配动作或未匹配到，就会返回空阵列'
+		when 'RE_REPLACEEX'
+			'将字串中所有符合正则表达式的部分替换。详细的结果要通过RE_GETSTR、RE_GETPOS、RE_GETLEN来取得\n可以使用像Perl那样的元字符\n如不能确定输入对象一定是字串，可先用TOSTR处理'
+		when 'RE_ASEARCH'
+			'在泛用阵列中检索包含指定字串的第一个结果。如果没有找到，返回值为-1\n不能同时使用RE_GET系\n如果想要检索全部的话，需要使用RE_ASEARCHEX'
+		when 'RE_ASEARCHEX'
+			'在泛用阵列中检索包含指定字串的所有结果。返回值也是阵列，如果没有找到，会返回空阵列\n不能同时使用RE_GET系'
+		when 'RE_OPTION'
+			'针对正则表达式操作中，兼容Perl字符的部分提供的设定\ni指不区分大小写，m是多行处理，s是在换行时匹配，x是无视注释内容。默认条件下是只有多行处理'
+		when 'FUNCTIONEX'
+			'调用通用SAORI的函数\nSAORI会给出调用方法，第一引数为SAORI文件以aya.dll为参照的相对路径，第二引数开始，依次写上调用时SAORI需要的引数'
+		when 'LOADLIB'
+			'载入其他外部库（DLL）以单次实行。这个库必须要有与AYA同样的load/unload/request等c函数。路径一般是相对aya.dll的路径，也可以是绝对路径'
+		when 'UNLOADLIB'
+			'实行之后，从内存中卸载库'
+		when 'REQUESTLIB'
+			'LOADLIB之后，取得该库的实行结果。string的部分请填入需要request的内容'
+		when 'CHARSETLIB'
+			'设置载入外部库用的文字编码。使用时写在LOADLIB之前。会将所有库设置成同一编码，如果要个别指定，用CHARSETLIBEX'
+		when 'CHARSETLIBEX'
+			'设置载入某一外部库用的文字编码'
+		when 'RAND'
+			'随机取得一个整数。指定一个最大值时，取得范围为0～最大值-1。如果不指定，就会按照预设的最大值取随机。\0\s[9]\1\s[-1]\n预设似乎是99……\n\nTc551-1版本追加SRAND设定方法'
+		when 'SRAND'
+			'RAND函数的补充设置函数，设置用於取得随机数的“种子”。如果不设置，则会以系统时间作为种子\n要注意RAND可能被使用在系统辞书中\nTc551-1版本追加'
+		when 'FLOOR'
+			'舍去实数的小数点后面的部分，向下取整'
+		when 'CEIL'
+			'舍去实数的小数点后面的部分，向上取整'
+		when 'ROUND'
+			'舍去实数的小数点后面的部分，四舍五入并且依据方向进行取整'
+		when 'SIN'
+			'三角函数，返回弧度的正弦值\n顺带一提，弧度和角度直接的换算可以用\nrad = degree * 3.14159265358 / 180 '
+		when 'COS'
+			'三角函数，返回弧度的余弦值'
+		when 'TAN'
+			'三角函数，返回弧度的正切值'
+		when 'LOG'
+			'取得（自然）对数'
+		when 'LOG10'
+			'取得常用对数'
+		when 'POW'
+			'幂函数。求x的y次幂'
+		when 'SQRT'
+			'求某数的平方根'
+		when 'ASIN'
+			'反三角函数，通过反正弦求弧度\n顺带一提，角度和弧度之间的换算可以用\ndegree * 180 / 3.14159265358 = rad '
+		when 'ACOS'
+			'反三角函数，通过反余弦求弧度'
+		when 'ATAN'
+			'反三角函数，通过反正切求弧度'
+		when 'SINH'
+			'双曲函数，返回弧度的双曲正弦值'
+		when 'COSH'
+			'双曲函数，返回弧度的双曲余弦值'
+		when 'TANH'
+			'双曲函数，返回弧度的双曲正切值'
+		when 'BITWISE_AND'
+			'将输入的两个整数以二进制形式进行按位『与』运算并输出结果\n对于每一个比特位，只有两个操作数相应的比特位都是1时，结果才为1，否则为0'
+		when 'BITWISE_OR'
+			'将输入的两个整数以二进制形式进行按位『或』运算并输出结果\n对于每一个比特位，当两个操作数相应的比特位至少有一个1时，结果为1，否则为0'
+		when 'BITWISE_XOR'
+			'将输入的两个整数以二进制形式进行按位『异或』运算并输出结果\n对于每一个比特位，当两个操作数相应的比特位有且只有一个1时，结果为1，否则为0'
+		when 'BITWISE_NOT'
+			'将输入的整数以二进制形式进行按位『非』运算并输出结果\n反转操作数的比特位，即0变成1，1变成0'
+		when 'BITWISE_SHIFT'
+			'将输入的整数以二进制形式进行按位移动运算并输出结果\n将var的二进制形式移动shift位，shift是正数时向左，负数时向右'
+		when 'FOPEN'
+			'打开文件。对任何文件操作前必须有这个动作，在此之前可以用FCHARSET来指定文字编码。path是文件名，可用相对路径或绝对路径，option以文字指定打开方式。详细可以参见c语言的fopen'
+		when 'FCLOSE'
+			'关闭之前被打开的文件。和FOPEN成对出现，写在文件操作结束后'
+		when 'FREAD'
+			'读取文件中的1行，不附带换行符。文件即之前用FOPEN操作的对象'
+		when 'FREADENCODE'
+			'用base64或者url编码的方式读取文件。如果用二进制打不开的话，要变换一下换行符。文件即之前用FOPEN操作的对象。读取的字节数可以设置，0为全部。type可选base64和url，默认为base64'
+		when 'FWRITE'
+			'按照之前FCHARSET指定的编码在文件中写入一行文字（不指定的话就用AYA内码）。末尾自带换行符。文件即之前用FOPEN操作的对象'
+		when 'FWRITE2'
+			'按照之前FCHARSET指定的编码在文件中写入一行文字（不指定的话就用AYA内码）。末尾没有换行符。文件即之前用FOPEN操作的对象'
+		when 'FCOPY'
+			'将文件复制到指定的路径下。path为文件的绝对或相对路径，dir为目标路径'
+		when 'FMOVE'
+			'将文件移动到指定的路径下。path为文件的绝对或相对路径，dir为目标路径'
+		when 'MKDIR'
+			'新建路径/文件夹。可以是绝对路径或相对路径，但一次只能创建一层路径，以免出现多层同时处理而报错'
+		when 'RMDIR'
+			'删除路径/文件夹。只能删除空路径/没有文件的文件夹'
+		when 'FDEL'
+			'删除文件。可以使用绝对路径或相对路径'
+		when 'FRENAME'
+			'文件重命名。可以使用绝对路径或相对路径'
+		when 'FSIZE'
+			'取得文件占用字节的大小'
+		when 'FENUM'
+			'列举路径下存在的所有文件及文件夹，返回值以『,』分割，文件夹的开头会有『\』。'
+		when 'FCHARSET'
+			'指定读取文件所用的文字编码。写在FOPEN之前，每次指定一个文件。指定文字编码请参照AYA内部文字编码ID表'
+		when 'FATTRIB'
+			'\b[2]取得文件或文件夹的信息。结果为泛用阵列，依次为：\n\[0]是否档案（仅WINDOWS）[1]是否压缩\n\[2]是否文件夹[3]是否隐藏文件(仅WINDOWS）\n\[4]是否普通文件[5]是否本地文件[6]是否只读（仅WINDOWS）\n\[7]是否系统文件（仅WINDOWS）[8]是否临时文件（仅WINDOWS）\n\[9]文件创建时间（UNIX下为inode更新时间）\n\[10]文件最终更新时间\n时间是以EPOCH为基准计算的，可以再用一次GETTIME来取得'
+		when 'FREADBIN'
+			'将文字编码变换后进行读取。之前必须要有FOPEN。读取的长度可指定，如为0则读取全部。如果文件中有0x00的值存在，默认情况下置换为半角空白，会引起问题，如需要可以自行更换（char）。'
+		when 'FWRITEBIN'
+			'将文字编码变换后进行写入。之前必须要有FOPEN。读取的长度可指定，如为0则读取全部。如果文件中有0x00的值存在，默认情况下置换为半角空白，会引起问题，如需要可以自行更换（char）。'
+		when 'FDIGEST'
+			'取得文件的校验码。可以指定的type：\nCRC32、MD5、SHA-1'
+		when 'FSEEK'
+			'移动文件读写进行的位置。基于origin移动offset个字节数。可以指定的式样为：\nSEEK_CUR(current)：现在的位置\nSEEK_END(end)：文件末尾\nSEEK_SET(start)：文件开头'
+		when 'FTELL'
+			'获取现在读写指示符在文件中的位置。取得结果为距离文件开头的字节数'
+		when 'EVAL'
+			'执行给定的单一操作，返回结果。执行函数的时候，不能直接地合成函数的名称。它自身也不处理条件分歧结构、或直接定义新的函数'
+		when 'ERASEVAR'
+			'删除单个或多个变量。填入变量名称即可'
+		when 'LETTONAME'
+			'将指定的内容(val)代入到某个变量（name）内\n可以用于一次性生成『变量1，变量2，变量3……』的场合，也可以代入泛用阵列'
+		when 'LSO'
+			'告知最近一次在某函数或某事件（机制须与ANY相同）中随机选择的结果\n它会将所有的结果排列为阵列（包括多种排列组合的情况，会按上下顺序穷举），返回值是被选择结果在这个阵列中的位置'
+		when 'SAVEVAR'
+			'将所有变量进行一次保存。可以进行路径指定，如省略指定，默认为原来的人格存档位置（和aya.dll同路径的variable.cfg）。'
+		when 'GETSETTING'
+			'\b[2]取得当前运行的AYA的设定信息。依次为：\n/
+			文字名称\_l[100]数值名称\_l[170]信息类别\n/
+			coreinfo.version\_l[100]0\_l[170]版本号\n/
+			（无）\_l[100]1\_l[170]文字编码\n/
+			coreinfo.path\_l[100]2\_l[170]当前dll的路径\n/
+			coreinfo.name\_l[100]3\_l[170]当前dll名称\n/
+			coreinfo.author\_l[100]4\_l[170]当前dll作者名\n/
+			coreinfo.savefile\_l[100]（无）\_l[170]存档文件名'
+		when 'GETFUNCLIST'
+			'返回读取辞书中的所有函数列表。也可以指定『由（prefix）开头的所有函数』。'
+		when 'GETVARLIST'
+			'返回读取辞书中的所有变量列表。也可以指定『由（prefix）开头的所有变量』。'
+		when 'CHARSETTEXTTOID'
+			'将用文本表示的文字编码变换为AYA中的编号'
+		when 'CHARSETIDTOTEXT'
+			'将用AYA中的编号表示的文字编码变换为文本'
+		when 'RESTOREVAR'
+			'将所有变量读取复原。可以进行路径指定，如省略指定，默认为原来的人格存档位置（和aya.dll同路径的variable.cfg）。'
+		when 'GETCALLSTACK'
+			'返回被呼出过的用户函数，返回值为多个字串组成的泛用阵列'
+		when 'EXECUTE'
+			'让path中的文件对象执行option中的命令。主要用于呼叫其他应用程序。也可以仅打开程序而不指定操作'
+		when 'EXECUTE_WAIT'
+			'让path中的文件对象执行option中的命令，同时等待这一操作结束'
+		when 'SETSETTING'
+			'变更当前运行的AYA的设定信息\nname指想要设定的项目，请参照基础设定文件aya.txt的记述\n不能变更dic、msglang、chaset.dic、checkparser等值'
+		when 'LICENSE'
+			'返回AYA的整篇使用许可。是以文字段落合成的泛用阵列'
+		when 'GETTIME'
+			'取得现在的时间信息。是以下述要素构成的泛用阵列：\n\[0]西历纪年[1]月[2]日[3]星期数（用0～6表示，0为星期天）[4]小时[5]分钟[6]秒[7]当年的第几天[8]是否夏令时（1为是）'
+		when 'GETTICKCOUNT'
+			'\f[color,red]【只能在WINDOWS下使用】\f[default]取得系统启动到现在为止经过的时间。单位为毫秒。flag可以设定为0以外的数字……\n如果经过了24天和20小时的话该函数会返回0'
+		when 'GETMEMINFO'
+			'返回操作系统的内存信息。返回值是以下各种数值构成的泛用阵列：\n物理内存使用率,物理内存总量,可用物理内存,虚拟内存+物理内存,可用虚拟内存+可用物理内存'
+		when 'GETSECCOUNT'
+			'参照EPOCH，来计算某一时间经过的秒数。书写时间的形式可以不唯一\n配合GETTIME使用可以进行时间换算'
+		when 'READFMO'
+			'\f[color,red]【只能在WINDOWS下使用】\f[default]取得File Mapping Object（文件映射对象）的内容。FMO的文字编码为系统默认，读取中变换为AYA的内部编码，开头的4个字节（代表FMO的大小）会被自动摘除\nname默认是『Sakura』\n如果出现0x00……就可能引起问题'
+		when 'LOGGING'
+			'将指定的值写到运行日志文档。同时，也会在debug程序『玉』（tama）上显示'
+		when 'GETLASTERROR'
+			'返回之前发生的系统函数错误编码。没有出错的话会返回0。参见AYA系统错误表'
+		when 'SETLASTERROR'
+			'设定系统函数错误的编码。用整数值代入，参见AYA系统错误表'
+		when 'DUMPVAR'
+			'在log中记录变量的转储'
+		others
+			'文档未记录'
+	}
+}

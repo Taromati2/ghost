@@ -1,0 +1,32 @@
+//by steve02081504
+GetConfingFromGhostDescript{//GetConfingFromGhostDescript('Taromati2','icon')
+	_descript="BASE_PATH\..\\..\\..\\%(_argv[0])\\ghost\\master\\descript.txt"
+	void FOPEN(_descript,'rb')
+	while (_t=FREAD(_descript))!=-1{
+		if CUTSPACE(_t)[0]==_argv[1]{
+			FCLOSE(_descript)
+			_t=CUTSPACE(_t)
+			_t[0]=IARRAY
+			_t
+			return
+		}
+		elseif CUTSPACE(_t)[0]=='charset'{
+			FCHARSET.string(CUTSPACE(_t[1]))
+			void FREOPEN(_descript,'rb')
+		}
+	}
+	FCLOSE(_descript)
+}
+GetIconNameFromGhostDir{//GetIconNameFromGhostDir('Taromati2')
+	_t="BASE_PATH\..\\..\\..\\%(_argv[0])\\ghost\\master\\"
+	_t+=GetConfingFromGhostDescript(_argv[0],'icon')
+	_t=REPLACE(_t,'/','\')
+	_t=REPLACE(_t,'\\','\')
+	_t
+}
+IsGhostExist{//IsGhostExist('SSPER')
+	INARRAY(installedghostlist,_argv[0])
+}
+IsSakuraExist{
+	INARRAY(installedsakuralist,_argv[0])
+}

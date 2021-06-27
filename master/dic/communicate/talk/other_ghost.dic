@@ -1,0 +1,145 @@
+/////////
+/////////沟通
+/////////KikkaAIdb
+//**** 人格主动对话 *************************************************************
+StartCommunicate{
+	//---- 決定对话的对象人格
+	if ghostexcount > 0{
+		//从人格列表中取得对话人格名字
+		res_reference0 = ghostexlist[RAND(ghostexcount)]
+		//---- 对话开始
+		if res_reference0 == '凉璃'{
+			//---- 与凉璃的对话
+			'\0\s[0]凉璃、好吗?'
+		}
+		elseif res_reference0 == 'さくら'{
+			//---- 与さくら（樱花）的对话
+			'\0\s[0]どもー。'
+		}
+		{
+			"\0\s[0]你好、%(res_reference0)。"
+			_txt=REPLACE(OnOtherGreetings,"%(username)","%(res_reference0)")
+			_txt
+		}
+	}
+	else{
+		//---- 没有其他人格存在情况进行random对话
+		RandomTalk
+	}
+}
+//**** 人格被動對話 *******************************************************************************
+OnOtherGhostTalk{
+	ReplyToGhost
+}
+//其他人格销毁
+OnOtherGhostVanished{
+	"\0\s[3]再见\w9\w9，%(reference0)\w9.\w9.\w9.\w9.\w9.\w9.\n"
+	--
+	if reference0 == '橘花'
+		'\s[5]这就是冒牌货该有的下场呢\n/
+		\1\s[10]?\w9\w9\n\s[11]给我等一下\n'
+}
+//其他人格销毁后被动交替
+OnVanished{
+	"啊\w9\w9，%(reference0)已经走了么？\n"
+	"\1\s[10]\0\s[6]对不起…\w9\w9\w5\n让%(username)费事了。\n"
+	--
+	if reference0 == '橘花'
+		'\s[5]这就是冒牌货该有的下场呢\n/
+		\1\s[10]?\w9\w9\n\s[11]给我等一下\n'
+}
+//---- 与其他人格对话 -----------------------------------------------------------------------
+ReplyToGhost{
+	_t=1
+	if reference0 == '凉璃'{
+		_t=0
+		if '好' _in_ reference1{
+			'\0\s[0]好啊，凉璃呢？'
+		}
+		elseif '明天见' _in_ reference1{
+			"\0\s[0]\w8嗯嗯，%(username)和橘花晚安喔~\w8\w8\-"
+		}
+		else{
+			_t=1
+		}
+	}
+	elseif reference0 == '橘花'{
+		_t=0
+		if '你好' _in_ reference1 || '你也好' _in_ reference1{
+			'\0\s[0]你是哪位？'
+			'\0\s[0]你也好啊。。'
+			'\0\s[22]发现可疑物体接近中'
+		}
+		elseif '你是哪位' _in_ reference1{
+			'\0\s[0]我是橘花啊。'
+		}
+		elseif '我是橘花' _in_ reference1{
+			'\0\s[0]你是橘花，\w9\w9那么我又是谁？'
+		}
+		elseif '我又是谁' _in_ reference1{
+			'\0\s[0]你是冒牌的吧？'
+		}
+		elseif '才是冒牌的' _in_ reference1{
+			'\0\s[22]你想吃枪子儿吗？'
+		}
+		elseif '你是冒牌的' _in_ reference1{
+			'\0\s[0]你才是冒牌的吧？'
+		}
+		else{
+			_t=1
+		}
+	}
+	if _t{
+		//'\0\s[0]嗯、是啊～。'
+		REPLACE(OnAIGhostReply,username,'你')
+	}
+}
+OnOtherGreetings{
+	Greetings
+	case hour{
+		when 4-6{
+			"\0\s[36]今天%(username)好早呢。"
+			'\0\s[0]早上好。'
+		}
+		//---- 早上
+		when 7-8{
+			'\0\s[0]早上好。'
+			"\0\s[35]早安、\w9%(username)\w9\w9\w9\w9\s[0]\n今天一天也好好加油吧。。"
+		}
+		//---- 上午
+		when 9-10{
+			'\0\s[0]早上好。'
+			"\0\s[5]早上好啊，\w9\w9\%(username)，\w9\w9\现在是学习工作的黄金时间呢，\w9\w9\w9要好好努力哦。"
+			"\0\s[35]早安、\w9%(username)\w9\w9\w9\w9\s[0]\n今天一天也好好加油吧。。"
+		}
+		//---- 中午
+		when 11-13{
+			'\0\s[26]午安。'
+		}
+		//---- 下午
+		when 14-18{
+			"\0\s[26]下午好啊，%(username)，今天有好好努力吗？"
+			'\0\s[5]下午好。'
+		}
+		//---- 晚上
+		when 19-23{
+			'\0\s[5]晚安。'
+			"\0\s[5]晚上好，%(username)"
+		}
+		//---- 深夜
+		others{
+			if weekday == '0'{
+				"\0\s[2]啊、已经这么晚了，%(username)还不休息吗"
+			}
+			else{
+				'\0\s[26]这么晚了要注意休息喔。'
+			}
+		}
+	}
+}
+OnAIGhostReply{
+	InAIGhostReply = 1
+	ONE+TWO
+	--
+	ERASEVAR('InAIGhostReply')
+}

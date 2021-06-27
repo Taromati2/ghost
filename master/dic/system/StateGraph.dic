@@ -1,0 +1,113 @@
+//by steve
+On_GetAIStateEX{
+	if QuickStartVersion
+		return
+	STRADD=1
+	DEFADD=1
+	IGN=1
+	DEFMINUS=1
+	KikkaVar
+	RpgGameVar
+	//
+	case reference0{
+		when 0{
+			"/
+			%(亲密度),/
+			%(腹黑度),/
+			%(依赖度),/
+			%(萌度),/
+			%(幸福度)/
+			%(CHR(1))/
+			亲密度,/
+			腹黑度,/
+			依赖度,/
+			萌度,/
+			幸福度/
+			"
+		}
+		when 1{
+			"/
+			%(kikkapow),/
+			%(kikkawiz),/
+			%(kikkachm),/
+			%(kikkastm),/
+			%(kikkamood)/
+			%(CHR(1))/
+			身手,/
+			学识,/
+			魅力,/
+			体力,/
+			心情/
+			%(CHR(1))/
+			0,0,0,0,0/
+			%(CHR(1))/
+			%(kikkapowmax),/
+			%(kikkawizmax),/
+			%(kikkachmmax),/
+			%(kikkastmmax),/
+			%(kikkamoodmax)/
+			"
+		}
+		when 2{
+			"/
+			%(智力),/
+			%(力量),/
+			%(意志),/
+			%(敏捷),/
+			%(幸运)/
+			%(CHR(1))/
+			智力,/
+			力量,/
+			意志,/
+			敏捷,/
+			幸运/
+			"
+		}
+		when 3{
+			"/
+			%(hp0),/
+			%(ep0),/
+			%(cp0)/
+			%(CHR(1))/
+			生命值,/
+			魔法值,/
+			战技值/
+			%(CHR(1))/
+			0,0,0/
+			%(CHR(1))/
+			%(hpmax0),/
+			%(epmax0),/
+			%(cpmax0)/
+			"
+		}
+		when 4{
+			"/
+			%(str0),/
+			%(def0),/
+			%(ats0),/
+			%(adf0)/
+			%(CHR(1))/
+			物理攻击,/
+			物理防御,/
+			魔法攻击,/
+			魔法防御/
+			"
+		}
+		when 5{
+			_能量=亲密度+依赖度+萌度+幸福度+腹黑度+0.0
+			"/
+			%(SUBSTR(100*腹黑度/_能量,0,5)),/
+			%(SUBSTR(100*依赖度/_能量,0,5)),/
+			%(SUBSTR(100*亲密度/_能量,0,5)),/
+			%(SUBSTR(100*萌度/_能量,0,5)),/
+			%(SUBSTR(100*幸福度/_能量,0,5))/
+			%(CHR(1))/
+			金,/
+			木,/
+			水,/
+			火,/
+			土/
+			"
+		}
+	}
+}

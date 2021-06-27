@@ -1,0 +1,121 @@
+///////// 文　ゴーストテンプレート
+///////// aya.txt (設定ファイル)
+///////// written by umeici.
+
+charset, UTF-8
+charset.dic, UTF-8
+charset.file, UTF-8
+charset.extension, default
+
+//---- 読み込む辞書 ---------------------------------------------------------------------
+
+//aya基础函数
+dic, dic\aya\path_def.dic		//文 ver.3 形式辞書設定辞書
+dic, dic\aya\config.dic			//文 ver.3 形式辞書設定辞書
+dic, dic\aya\file.dic			//by steve02081504
+dic, dic\aya\array.dic			//by steve02081504
+dic, dic\aya\shiori.dic			//文 ver.3 形式辞書制御辞書
+dic, dic\aya\compatible.dic		//AYAに移行用
+dic, dic\aya\sysex.dic			//shiori.dicから分離した
+dic, dic\aya\string.dic			//文字列リソース辞書
+dic, dic\aya\ghost.dic			//by steve02081504
+dic, dic\aya\baseware.dic		//by steve02081504
+dic, dic\aya\url.dic			//by steve02081504
+dic, dic\aya\cmd.dic			//by steve02081504
+dic, dic\aya\LOADVAR.dic		//by steve02081504
+
+//系统部分
+//基础
+dic, dic\system\MAGIC.dic			//magic_抛瓦by steve02081504
+dic, dic\system\base.dic			//由steve02081504编写
+dic, dic\system\Debug.dic			//由steve02081504编写
+
+dic, dic\system\QuickStart.dic		//快速启动包缩小一半的秘诀
+
+//构架
+dic, dic\system\VersionUpgrade.dic	//向后不兼容内容升级用
+dic, dic\system\mirror.dic			//换源功能
+dic, dic\system\bootend.dic			//起動/終了/切り替えトーク辞書
+dic, dic\system\anti_cheat.dic		//反作弊辞書
+dic, dic\system\FileDrop.dic		//文件拖拽
+dic, dic\system\change_part.dic		//由steve02081504整理、编写
+dic, dic\system\event_response.dic	//種々のイベント辞書
+dic, dic\system\SQL.dic				//由steve02081504整理、编写
+dic, dic\system\password.dic		//密🐎
+dic, dic\system\database_edit.dic	//数据库管理
+dic, dic\system\Calendar.dic		//日历
+dic, dic\system\lunar.dic			//农历
+dic, dic\system\menu.dic			//主目录
+dic, dic\system\changeshell.dic		//shell变更反应
+dic, dic\system\username.dic		//用户名变更反应
+dic, dic\system\hotkey.dic			//热键
+dic, dic\system\clock.dic			//时间相关
+dic, dic\system\internet.dic		//网络，天气预报，邮件，RSS
+dic, dic\system\StateGraph.dic		//ssp的AI属性图绘制支持
+//后门
+//dic, dic\system\backdoor\backdoor.dic
+//dic, dic\system\backdoor\backdoorloader.dic
+
+
+//交流
+//触碰反应
+dic, dic\communicate\touch\touch.dic			//マウス入力関連辞書
+//对话
+dic, dic\communicate\talk\pseudoAI.dic			//伪AI数据库
+dic, dic\communicate\talk\learn.dic				//学习、手动教学
+dic, dic\communicate\talk\talk.dic				//ランダムトーク辞書//使仆对话
+dic, dic\communicate\talk\talk_t.dic			//使魔对话
+dic, dic\communicate\talk\other_ghost.dic		//人格间交流
+//H
+dic, dic\communicate\H\H.dic					// 由在蹲局子的steve02081503编写
+
+//养成部分
+dic, dic\nurturance\nurturance.dic		//养成系统
+
+//剧情部分
+dic, dic\story\amusement_park\amusement_park.dic//游乐园
+dic, dic\story\amusement_park\develop.dic		//游乐园剧情开发
+dic, dic\story\opera.dic						//剧情故事
+
+//游戏部分
+dic, dic\games\puzzle.dic			//拼图
+dic, dic\games\boxgame.dic			//推箱子
+dic, dic\games\tetrisgame.dic		//俄罗斯方块
+dic, dic\games\RetroSnaker.dic		//贪食蛇
+dic, dic\games\Gobang\Gobang.dic	//五子棋
+dic, dic\games\Gobang\GobangData.dic//五子棋数据库
+dic, dic\games\HuaRongDao.dic		//华容道
+dic, dic\games\linkwnd.dic			//连连看
+dic, dic\games\uno.dic				//uno
+dic, dic\games\GoldenFlower.dic		//炸金花
+dic, dic\games\interactive.dic		//伪春菜人格大乱斗
+dic, dic\games\rpggame.dic			//橘花斗和传
+dic, dic\games\other.dic			//游戏(OX，21点，猜拳，猜数字，双色球)
+
+//其他
+dic, dic\other\kikkastock.dic		//橘花行情
+dic, dic\other\playwithlrc.dic		//播放器
+dic, dic\other\dictionary.dic		//字典
+dic, dic\other\flower.dic			//花语
+dic, dic\other\classtable.dic		//课程表
+dic, dic\other\poem.dic				//诗歌
+dic, dic\other\happyquest.dic		//开心问答
+dic, dic\other\Tarro.dic			//塔罗
+dic, dic\other\Other.dic			//记事本，五十音，好感
+dic, dic\other\jumptest.dic			//心理测试
+dic, dic\other\test.dic				//橘花题库测试
+dic, dic\other\otherserv.dic		//其他服务
+dic, dic\other\story.dic			//讲笑话
+dic, dic\other\miniuse.dic			//便利功能
+
+//开发
+dic, dic\dev\dicforma.dic			//辞书优化
+dic, dic\dev\md5_linker.dic			//文件链接
+dic, dic\dev\ayccoder.ayc			//辞书加/解密
+
+
+//---- 実行ログ ------------------------------------
+//log,aya.log			// 実行ログをayame.logに記録します。開発時には記録しておいたほうが良いです。
+//iolog,off
+ignoreiolog,ID: OnSecondChange	//OnSecondChange無視
+ignoreiolog,ID: OnMouse			//OnMouse系無視

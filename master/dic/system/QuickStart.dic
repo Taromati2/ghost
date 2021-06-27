@@ -1,0 +1,10 @@
+//by steve02081504
+#globaldefine	QuickStartVersion	0
+NeedUpdate{
+	'\0\s[8]很遗憾\w9，这个功能需要线上更新后才能使用\w9\w9\n/
+	\q[◇开始更新,OnUpdate]\n/
+	\q[◇并不需要,Cancel]'
+}
+NeedUpdateText{
+	'线上更新后可用'
+}

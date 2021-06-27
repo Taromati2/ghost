@@ -1,0 +1,1128 @@
+/////////文　ゴーストテンプレート
+/////////种々のイベント辞书
+/////////written by umeici.
+//平台更新反应by steve02081504
+OnBasewareUpdating{
+	'\1\s[10]\0\s[6]嗯…\w9\w9\s[0]\n'
+	--
+	"/
+	基础平台“%Baseware”\n/
+	当前版本%Baseware.Version\w9\w9\n/
+	开始更新\n/
+	"
+	--
+	'\s[6]\w9\w9\w9'
+}
+OnBasewareUpdated{
+	BaseGhostStart
+	--
+	'\0\s[5]我回来了\n\w9\w9'
+	--
+	'\s[0]'
+	'\s[26]'
+	--
+	'让您久等了。\n\w9\w9'
+	--
+	"/
+	基础平台“%Baseware”\n/
+	已更新至%Baseware.Version\n/
+	"
+	--
+	if Baseware == 'SSP'
+		'/
+		\q[◇查看更新内容,OnUrlOpen,http://ponapalt.hatenablog.com/]\n/
+		\q[◇无用,Cancel]\n/
+		'
+}
+//Get自我信息
+OnNotifySelfInfo:void{
+	ghostname=reference0
+	selfname=reference1
+	keroname=reference2
+}
+//缺省信息补全&同步信息更新 by steve02081504
+OnNotifyUserInfo.WhenEmpty.username:void{
+	if _argv[0]{
+		case _argv[0]{
+			when 'Administrator','User','Guest','SYSTEM','admin','管理员','root'{
+				do_nothing
+			}
+			others{
+				OnUserName.Set(_argv[0])
+			}
+		}
+	}
+}
+OnNotifyUserInfo.WhenEmpty.birthday:void{
+	if _argv[0]{
+		void OnBirthdayInput(_argv[0])
+	}
+}
+OnNotifyUserInfo{
+	if !username{
+		if GetPhase > 1 || !reference1
+			OnNotifyUserInfo.WhenEmpty.username(reference0)
+		else
+			OnNotifyUserInfo.WhenEmpty.username(reference1)
+	}
+	if !birthday
+		OnNotifyUserInfo.WhenEmpty.birthday(reference2)
+	_name_changed = 0
+	_username = ''
+	if GetPhase > 1{
+		_name_changed=username != reference0 && Baseware.Config.nickname != reference0 && reference0
+		_username=reference0
+	}else{
+		_name_changed=username != reference1 && Baseware.Config.username != reference1 && reference1
+		_username=reference1
+	}
+	_birthday_changed=birthday != reference2 && Baseware.Config.birthday != reference2 && reference2
+	if _name_changed || _birthday_changed{
+		"同步%Baseware设定中的"
+		--
+		if _name_changed{
+			if GetPhase > 1
+				'昵称'
+			else
+				'用户名'
+			--
+			"『%(_username)』"
+		}
+		--
+		if _birthday_changed{
+			if _name_changed
+				'和'
+			--
+			"生日“%(reference2)”"
+		}
+		--
+		'?\n/
+		\q[◇同步,'
+		--
+		if _name_changed&&_birthday_changed
+			'OnNotifyUserInfo.bothUpdate'
+		elseif _name_changed
+			'OnUserNameInput'
+		elseif _birthday_changed
+			'OnBirthdayInput'
+		--
+		if _name_changed
+			",%(SakuraScriptArgConverter(_username))"
+		--
+		if _birthday_changed
+			",%(SakuraScriptArgConverter(reference2))"
+		--
+		']\n/
+		\q[◇无用,Cancel]\n/
+		'
+	}
+	--
+	Baseware.Config.nickname = reference0
+	Baseware.Config.username = reference1
+	Baseware.Config.birthday = reference2
+}
+OnNotifyUserInfo.bothUpdate{
+	void OnBirthdayInput(reference1)
+	'生日已更新\w9\w9\n'
+	--
+	OnUserNameInput
+}
+//硬件接入by steve02081504
+OneDeviceChange.GetDeviceUuid{
+	_argv[0][4,CHR(1)]
+}
+OneDeviceChange.GetDeviceFile{
+	_t=_argv[0][3,CHR(1)]
+	if _t
+		_t
+	else
+		'已卸载'
+}
+OneDeviceChange.GetDeviceMaker{
+	_t=_argv[0][2,CHR(1)]
+	if _t && !'兼容 USB' _in_ _t
+		_t
+	else
+		'未知厂商'
+}
+OneDeviceChange.GetDeviceName{
+	_t=_argv[0][1,CHR(1)]
+	if _t
+		_t
+	else
+		'未知设备名'
+}
+OneDeviceChange.GetDeviceType{
+	_argv[0][0,CHR(1)]
+}
+OneDeviceChange{
+	'设备文件“'+OneDeviceChange.GetDeviceFile(_argv[0])+'”上\n'
+	--
+	'由“'+OneDeviceChange.GetDeviceMaker(_argv[0])+'”生产的“'+OneDeviceChange.GetDeviceName(_argv[0])+'”\n'
+	--
+	'已作为“'+OneDeviceChange.GetDeviceType(_argv[0])+'”'
+	--
+	if OnDeviceChangeNow == 'Arrival'
+		'挂载'
+	elseif OnDeviceChangeNow == 'Remove'
+		'卸载'
+	else
+		'口口口'
+	--
+	'\n'
+	--
+	'\q[◇点此复制硬件uuid,OnCopy,'+SakuraScriptArgConverter(OneDeviceChange.GetDeviceUuid(_argv[0]))+']\n'
+	--
+	if OnDeviceChangeNow=='Arrival'&&OneDeviceChange.GetDeviceType(_argv[0])=='LogicalVolume'
+		'\q[◇打开,OnOpenDirOrFile,'+SakuraScriptArgConverter(OneDeviceChange.GetDeviceFile(_argv[0])+'\')+']\n'
+}
+OnDeviceChange.Head{
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]唔…\w9\w9\n"
+	else
+		'\0\s[6]嗯…\w9\w9\s[0]\n'
+}
+OnDeviceChange.Body{
+	_i=0
+	_txt=''
+	_uuid=''
+	while ISVAR('reference'+_i){
+		_txt+=OneDeviceChange(EVAL('reference'+_i))+'\n'
+		_uuid+=OneDeviceChange.GetDeviceUuid(EVAL('reference'+_i))+C_LF
+		_i++
+	}
+	_txt
+	--
+	if _i>1
+		'\q[◇复制全部uuid,OnCopy,'+SakuraScriptArgConverter(_uuid)+']\n'
+	--
+	'/
+	\q[◇无用,Cancel]\n/
+	'
+}
+OnDeviceArrival{
+	if DeviceChangeAlert{
+		OnDeviceChangeNow='Arrival'
+		OnDeviceChange.Head
+		--
+		OnDeviceChange.Body
+		ERASEVAR('OnDeviceChangeNow')
+	}
+}
+OnDeviceRemove{
+	if DeviceChangeAlert{
+		OnDeviceChangeNow='Remove'
+		OnDeviceChange.Head
+		--
+		OnDeviceChange.Body
+		ERASEVAR('OnDeviceChangeNow')
+	}
+}
+OnOpenDirOrFile{
+	if _argv[0]
+		reference0 = _argv[0]
+	'\![open,file,'+SakuraScriptArgConverter(reference0)+']'
+}
+//文字拖拽处理 by steve02081504
+OnTextDrop{
+	if reference0
+		temp = reference0
+	if RE_GREP(temp,"(?!%(CHR(1)))%(CHR(1))(?!%(CHR(1)))")==0
+		temp = REPLACE(temp,CHR(1)+CHR(1),CHR(1))
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')11]\b[2]唔？\n"
+	else
+		'\0\s[0]'
+	--
+	if SHIORI_FW.DebugMode{
+		_t=CUTSPACE(temp)
+		if __t=Get_AYA_Function_Info(_t)
+			'aya自带底层函数\n'+__t+'\n'
+		elseif ISFUNC(_t)
+			'这是一个函数\n'
+		elseif ISVAR(_t)
+			"变量“%(_t)”\n/
+			值：%(GetVarValue.SakuraScript(_t))\n/
+			类型：%(GETTYPE.string((GetVarValue(_t))))\n/
+			"
+		elseif SUBSTR(_t,0,2) == 'On'
+			'这可能是一个还未定义的事件\n'
+	}
+	--
+	if mode == '0'
+		'请选择处理方式\n'
+	--
+	if CHR(1) _in_ temp{
+		if SHIORI_FW.DebugMode && RE_GREP(temp,"/%(CHR(1))\s*")
+			'\q[◇aya形式换行剔除,OnTextDrop.ayaEndlineDelete]\n'
+		--
+		'\q[◇换行剔除,OnTextDrop.EndlineDelete]\n/
+		\q[◇换行转"\\n",OnTextDrop.EndlineForma]\n/
+		'
+	}
+	--
+	_text=REPLACE(temp,CHR(1),C_LF)
+	_sakura_text=SakuraScriptArgConverter(_text)
+	'/
+	\q[◇普通文字回显,OnTextDrop.CommonText]\n/
+	'
+	--
+	if SHIORI_FW.DebugMode{
+		if SUBSTR(CUTSPACE(temp),0,2) == 'On'
+			"\q[◇查看事件文档,OnUrlOpen,%(Get_UKADOC_ofEvent(CUTSPACE(temp)))]\n"
+		--
+		'/
+		\q[◇Sakura Script執行,OnTextDrop.SakuraScript]\n/
+		\q[◇表达式求值,OnTextDrop.EVAL]\n/
+		'
+	}
+	--
+	'/
+	\q[◇复制至粘贴板,OnCopy,'+_sakura_text+']\n/
+	'
+	--
+	if _text!=TOTRADITIONAL(_text)
+		'\q[◇简->繁转换,OnCopyTS,traditional,'+_sakura_text+']\n'
+	--
+	if _text!=TOSIMPLIFIED(_text)
+		'\q[◇繁->简转换,OnCopyTS,simplified,'+_sakura_text+']\n'
+	--
+	'/
+	\q[◇无用,Cancel]\n/
+	'
+}
+OnTextDrop.ayaEndlineDelete{
+	temp=RE_REPLACE(temp,"/%(CHR(1))\s*",'')
+	"\%(mode)已剔除\n"
+	--
+	OnTextDrop
+}
+OnTextDrop.EndlineDelete{
+	temp=REPLACE(temp,CHR(1),'')
+	"\%(mode)已剔除\n"
+	--
+	OnTextDrop
+}
+OnTextDrop.EndlineForma{
+	temp=REPLACE(temp,CHR(1),'\n')
+	"\%(mode)已转换\n"
+	--
+	OnTextDrop
+}
+OnTextDrop.CommonText{
+	temp=REPLACE(temp,'\','\\')
+	temp=REPLACE(temp,CHR(1),'\n')
+	temp
+}
+OnTextDrop.SakuraScript{
+	OnSakuraScript(temp)
+}
+OnTextDrop.EVAL{
+	OnCalculateVar(temp)
+}
+//**** インストール関连 *****************************************************************
+//---- インストール中のメッセージ -------------------------------------------------------
+OnInstallBegin{
+	if mode == '0'
+		'\0\s[20]'
+	elseif mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]"
+	--
+	'嗯…'
+	'唔…'
+}
+//---- インストール完了メッセージ -------------------------------------------------------
+OnInstallComplete{
+	if mode == '0'
+		'\0\s[0]'
+	elseif mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]"
+	--
+	if reference2
+		'复合物'
+	elseif reference0 == 'shell'
+		'Shell'
+	elseif reference0 == 'ghost'
+		'人格'
+	elseif reference0 == 'balloon'
+		'对话框'
+	elseif reference0 == 'plugin'
+		'套件'
+	elseif reference0 == 'supplement'
+		'追加档案'
+	elseif reference0 == 'headline'
+		'在线新闻'
+	elseif reference0 == 'language'
+		'语言包'
+	elseif 'with' _in_ reference0
+		'复合物'
+	else
+		'未知物件'
+	--
+	"『%(reference1)』"
+	--
+	if reference2{
+		"与『%(reference2)』"
+	}
+	--
+	'\n\n[half]'
+	--
+	if mode == '0'{
+		'支给完成'
+		'配置确认'
+		'投入确认'
+		'追加完成'
+	}elseif mode == '1'{
+		'安好了'
+	}
+	--
+	'\n'
+	--
+	if 'ghost' _in_ reference0 {
+		"/
+		\q[◇切换,OnChangeGhost,%(reference1)]\n/
+		\q[◇呼叫,OnCallGhost,%(reference1)]\n/
+		\q[◇无用,Cancel]\n"
+	}
+	elseif 'shell' _in_ reference0{
+		"/
+		\q[◇切换,OnSilentChangeShell,%(reference1)]\n/
+		\q[◇无用,Cancel]\n"
+	}
+	elseif 'balloon' _in_ reference0{
+		"/
+		\q[◇切换,OnChangeBalloon,%(reference1)]\n/
+		\q[◇无用,Cancel]\n"
+	}
+}
+//---- インストール失败 -----------------------------------------------------------------------------------------------
+OnInstallFailure{
+	if reference0 == 'artificial'{
+		'\0\s[3]好的。\w9\w9\n已取消安装。'
+		return
+	}
+	'\0\s[3]好像失败了…\n\w9\w9'
+	--
+	if reference0 == 'extraction'{
+		'\1\s[10]安装包损坏了哦\n/
+		\w9\s[12]\w9如果重下几次都这样的话，就换个下载器试试吧\n'
+		--
+		'\w9\w9\0\s[30]说起来，aria引擎下载的安装包，经常损坏呢\n/
+		\w9\w9\1\s[10]墙的原因吧\n/
+		\w9\w9\0\s[8]欸？\n/
+		\w9\w9\1\s[13]墙的原因。'
+		''
+	}
+	elseif reference0 == 'unlha32'{
+		'\1\s[10]原因是unlha32加载失败。\n/
+		\w9\w9\0\s[8]那是什么？'
+	}
+	elseif 'invalid' _in_ reference0{
+		"\1\s[10]安装包的格式有误（%(reference0)）\n/
+		\s[13]真是怠惰\n/
+		\w9\w9\0\s[8]不管怎样\w9，试图创作什么已经是很了不起的举动了呢"
+	}
+	else
+		"\1\s[10]原因是：%(reference0)。"
+}
+OnShioriReloadedbyself{
+	if mode == '1'{
+		"\1\s[%(specialmode != 'mealtime')10]唔…\n重载完了。"
+		return
+	}
+	'\0\s[0]重载成功，没有语法错误'
+	'\0\s[0]重载完成'
+	if GetPhase >= 2{
+		'\0\s[5]重载成功，没有卡死哦'
+		"\0\s[0].\w9.\w9.\w9.\w9.\w9.\w9.\w9.\w9.\w9.\w9.\w9.\w9.\n\_s\w9.\w9.\w9.\w9.\w9\n\_s\1\s[11]别假装卡死了啊\w9，%(username)又不是看不出来\w9\w9\0\s[8]欸"
+	}
+}
+OnInstallRefuse{
+	"\0\s[20]这是…\w9\w9\n『%(reference0)收』。\w9\s[0]\n请直接交给本人。"
+	--
+	if IsGhostExist(reference0) || IsSakuraExist(reference0)
+		"/
+		\q[◇切换,OnChangeGhost,%(reference0)]\n/
+		\q[◇呼叫,OnCallGhost,%(reference0)]\n/
+		\q[◇无用,Cancel]\n"
+	else
+		'\1\s[11]不\w9\w9\n目前来说根本查无此人。'
+}
+//**** 消灭 ***********************************************************************************************************
+OnVanishSelecting{
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')11]"
+	else
+		'\0\s[3]'
+	--
+	'…\w9…\w9…'
+}
+OnVanishSelected{
+	if !SilentVanish{
+		uninstall=1
+		MAGICSAVE
+		if FirstBootCount == 0
+			"\1\s[10]\0\s[3]是这样吗…\w9\w9\s[1]\n啊、那个…\w9\w9\s[26]我不会忘记%(username)的。\w9\w9\s[1]\n\n[half]所以…\w9如果%(username)可以的话、也请…\w9\s[2]\n啊、\w9\w9\s[1]对不起、\w9\w9没什么。\w9\w9\1\s[10]…\w9…\w9…\w9\w9\0\s[40]\n\n[half]那么、请保重。\w9\w9\1\s[10]\n\n[half]那。\w9\n有机会的话、再见吧。"
+		elseif FirstBootCount == 1
+			'\1\s[10]\0\s[3]好的。\w9\w9\n\s[8]尽管是第二次分别，却还是有些不舍呢\n\s[40]那么、请保重。\w9\w9\1保重啊'
+		elseif FirstBootCount == 2
+			"\1\s[10]\0\s[7]%(username)是在戏弄我么？\n/
+			\w9\w9...\n/
+			\s[8]不论怎样。\n/
+			\s[40]那么、请保重。\w9\w9\1保重啊"
+		elseif FirstBootCount == 3{//事不过三
+			'\1\s[10]\0\s[35]\w9.\w9.\w9.\w9\w9\w9\n/
+			\s[8]最后一次了。\w9\w9\w9\w9\n/
+			\s[40]那么、请保重。'
+		}else{
+			'\t\_s\![enter,passivemode]\v\![open,file,SAORI_PATH\gift_for_hacker.bat]\![vanishbymyself]?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????'
+		}
+	}
+}
+OnVanishCancel{
+	talkmemo = 'e_0'
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]…\w9…\w9…"
+	else
+		'\0\s[3]…\w9请不要吓我…'
+}
+OnVanishButtonHold{
+	if FirstBootCount >= 4
+		'\![vanishbymyself]'
+	else{
+		ERASEVAR('uninstall')
+		'\0\s[3]…\w9继续待在这里也可以吗？'
+	}
+}
+//**** メールチェック *************************************************************************************************
+Select.OPENMAILER{
+	'\![open,mailer]'
+}
+Select.ALLMAIL{
+	'\![biff]'
+}
+//---- 信件确认开始 ---------------------------------------------------------------------
+OnBIFFBegin{
+	"\0\s[0]那么、查询邮件。\n\n[half]\_q伺服器：%(reference2)\_q"
+}
+OnBIFFComplete{
+	if reference0 == 0{
+		'\0\s[20]嗯…\w9\w9\s[0]\n什么都没有的样子。\n需要打开默认邮箱吗？\n\q[◇打开,OPENMAILER]\n\q[◇算了,Cancel]'
+	}
+	else{
+		"\0\s[0]来了%(reference0)通邮件喔。\n\n[half]\_q邮件的总容量：%(reference1) Bytes\_q\n需要打开默认邮箱吗？\n\q[◇打开,OPENMAILER]\n\q[◇算了,Cancel]"
+	}
+}
+OnBIFFFailure{
+	'\0\s[0]唔～\w9\w9\w9\n\s[8]无法顺利完成。\n\w9\w9'
+	--
+	if reference0 == 'timeout'
+		'连线速度似乎太慢了。'
+	elseif reference0 == 'kick'
+		'密码正确吗？'
+	elseif reference0 == 'defect'
+		'有正确的设定吗？'
+	else
+		"\1\s[10]原因是：%(reference0)\n"
+}
+//**** ネットワーク更新 *****************************************************************
+OnUpdate{
+	'\![updatebymyself]'
+}
+OnUpdateCheckFailure{
+	if reference0 == 'readonly'
+		return
+	elseif reference0 == '403' || reference0 == '400'{
+		'\![updatebymyself,checkonly]'
+		return
+	}
+	'\0\s[3]'
+	--
+	if reference0 == 'timeout'
+		'连线逾时。'
+	elseif reference0 == 'md5 miss'
+		'MD5不一致。'
+	elseif reference0 == '404'
+		'error404：找不到档案。'
+	elseif reference0 == 'fileio'
+		'硬碟写入失败。'
+	elseif reference0 == 'artificial'
+		'已人为停止检查。\e'
+	elseif reference0 == 'readonly'
+		'缓存目录唯读。'
+	else
+		"因：%(reference0)"
+	--
+	'\w9\w9\s[0]\n/
+	检查'
+	--
+	'停止'
+	'中止'
+	--
+	'了。'
+	'。'
+	--
+	if reference0 == 'timeout'
+		'\n\w9\w9\s[8]有尝试加速器么？'
+	--
+	'\n\n/
+	\q[◇切换更新源,MirrorChange]\n/
+	\q[◇尝试人工更新,OnUrlOpen,https://github.com/Taromati2/Taromati2/blob/master/docs/points_for_attention.md#%E4%B8%80%E5%88%9D%E6%AC%A1%E5%90%AF%E5%8A%A8%E6%9B%B4%E6%96%B0]\n/
+	\q[◇反馈问题,OnUrlOpen,https://github.com/Taromati2/Taromati2#bug%E5%8F%8D%E9%A6%88]\n/
+	\q[◇终了,Cancel]\n/
+	'
+}
+OnUpdateCheckComplete{
+	'\0\s[0]检查终了\w9\w9\n'
+	--
+	if reference0 == 'none'{
+		'\s[100]没有更新的必要\n'
+	}
+	else{
+		'需更新以下文件：\n\_q'
+		--
+		REPLACE(REPLACE(reference1,'\','\\'),',','\_q\w9\w9\n\_q')
+		--
+		"\_q\n共%(ARRAYSIZE(reference1))个\n"
+		--
+		'/
+		\q[◇开始更新,OnUpdate]\n/
+		\q[◇了解了,Cancel]\n/
+		'
+	}
+}
+//---- ネットワーク更新开始 -------------------------------------------------------------
+OnUpdateBegin{
+	if !InAutoUpdate
+		'\0\s[0]更新开始。'
+	else
+		'\![leave,onlinemode]\b[-1]'
+}
+//---- ネットワーク更新准备完了 ---------------------------------------------------------
+OnUpdateReady{
+	HasUpdate = 1
+	if !InAutoUpdate {
+		'\0\s[6]'
+		--
+		if reference0
+			"有%(reference0)个更新。"
+		else
+			'开始更新'
+	}else
+		'\![leave,onlinemode]\b[-1]'
+}
+OnUpdateComplete{
+	if !InAutoUpdate{
+		if reference0 == 'none'{
+			if HasUpdate
+				'\0\s[3]因服务器回传虚假更新档\n\w9重新开始更新'
+			else
+				'\0\s[0]好像没有更新。'
+		}
+		else{
+			'\0\s[0]结束了。\w9\w9\n\s[40]那么，请稍等一下哦\w9\w9\w9'
+			--
+			'\![reload,ghost]'
+		}
+	}else{
+		ERASEVAR('InAutoUpdate')
+		if reference0 != 'none'{
+			AutoUpdateReloading=1
+			'\0\s[26]啊、\w9我稍微离席一下喔。\w9\w9'
+			--
+			OnChangeGhost('Taromati2')
+		}
+	}
+	--
+	if HasUpdate && reference0 == 'none'
+		'\w9\w9\![updatebymyself]'
+	else
+		ERASEVAR('HasUpdate')
+}
+OnUpdateFailure{
+	if reference0 == 'readonly'
+		return
+	elseif reference0 == '403' || reference0 == '400'{
+		"\0\s[3]因服务器回传%reference0\n\w9重新开始更新\w9\w9\![updatebymyself]"
+		return
+	}
+	if !InAutoUpdate{
+		'\0\s[3]'
+		--
+		if reference0 == 'timeout'
+			'连线逾时。'
+		elseif reference0 == 'md5 miss'
+			'MD5不一致。'
+		elseif reference0 == '404'
+			'error404：找不到档案。'
+		elseif reference0 == 'fileio'
+			'硬碟写入失败。'
+		elseif reference0 == 'artificial'
+			'已人为停止更新。\e'
+		elseif reference0 == 'readonly'
+			'缓存目录唯读。'
+		else
+			"因：%(reference0)"
+		--
+		'\w9\w9\s[0]\n/
+		更新'
+		--
+		'停止'
+		'中止'
+		--
+		'了。'
+		'。'
+		--
+		if reference0 == 'timeout'
+			'\n\w9\w9\s[8]有尝试加速器么？'
+		--
+		'\n\n/
+		\q[◇切换更新源,MirrorChange]\n/
+		\q[◇尝试人工更新,OnUrlOpen,https://github.com/Taromati2/Taromati2/blob/master/docs/points_for_attention.md#%E4%B8%80%E5%88%9D%E6%AC%A1%E5%90%AF%E5%8A%A8%E6%9B%B4%E6%96%B0]\n/
+		\q[◇反馈问题,OnUrlOpen,https://github.com/Taromati2/Taromati2#bug%E5%8F%8D%E9%A6%88]\n/
+		\q[◇终了,Cancel]\n/
+		'
+	}else{
+		InAutoUpdate = 0
+		'\![leave,onlinemode]\b[-1]'
+	}
+}
+OnURLDropping{
+	"\0\s[0]下载%(reference0)并作为安装包安装\w9\n/
+	\s[6]进行中\n/
+	"
+}
+OnURLDropFailure{
+	'\0\s[3]'
+	--
+	if reference0 == 'timeout'
+		'连线逾时。'
+	elseif reference0 == 'md5 miss'
+		'MD5不一致。'
+	elseif reference0 == '404'
+		'error404：找不到档案。'
+	elseif reference0 == 'fileio'
+		'硬碟写入失败。'
+	elseif reference0 == 'artificial'
+		'已人为停止下载。\e'
+	elseif reference0 == 'readonly'
+		'缓存目录唯读。'
+	else
+		"因：%(reference0)"
+	--
+	'下载失败。'
+}
+OnURLDropped{
+	"\0\s[6]文件已下载至%(reference0)\n/
+	开始安装\n/
+	"
+}
+//---- ネットワーク更新 ダウンロード开始 ------------------------------------------------
+OnUpdate.OnDownloadBegin{
+	if !InAutoUpdate
+		"\0\s[0]\_q“%(reference0)”下载中\_q"
+	else
+		'\![leave,onlinemode]\b[-1]'
+}
+//---- ネットワーク更新 MD5値照合开始 ---------------------------------------------------
+OnUpdate.OnMD5CompareBegin{
+	if !InAutoUpdate
+		'\0\s[0]MD5确认中。'
+	else
+		'\![leave,onlinemode]\b[-1]'
+}
+//---- ネットワーク更新 MD5値一致 -------------------------------------------------------
+OnUpdate.OnMD5CompareComplete{
+	if !InAutoUpdate
+		"\0\s[0]\_qMD5:%(reference1)\n\_q\n\n[half]一致。"
+	else
+		'\![leave,onlinemode]\b[-1]'
+}
+//---- ネットワーク更新 MD5値不一致 -----------------------------------------------------
+OnUpdate.OnMD5CompareFailure{
+	if !InAutoUpdate
+		"\0\s[0]\_q正确MD5:%(reference1)\n本地MD5:%(reference2)\_q\s[20]\n\n[half]嗯？"
+	else
+		'\![leave,onlinemode]\b[-1]'
+}
+//**** ヘッドラインセンス ***************************************************************
+//---- ヘッドラインセンス开始 -----------------------------------------------------------
+Select.HEADLINE{
+	'\0\s[5]RSS盒子已经开启。要看哪里的新闻呢？\![open,headlinesensorexplorer]'
+}
+Select.HEADLINECANCEL{
+	'\0\s[0]好的。'
+}
+OnHeadlinesenseBegin{
+	"\0\s[0]『%(reference0)』 的Headline确认…"
+}
+//---- ヘッドライン読み上げ -------------------------------------------------------------
+OnHeadlinesense.OnFind{
+	//---- はじめのセリフ
+	if reference2 == 'First' || reference2 == 'First and Last'{
+		//---- 最初のページ
+		"\0\b2\s[0]『%(reference0)』的Headline。"
+	}
+	elseif reference2 == 'Next'{
+		//---- 真ん中あたりのページ
+		"\0\b2\s[0]『%(reference0)』的Headline。"
+	}
+	elseif reference2 == 'Last'{
+		//---- 最后のページ
+		"\0\b2\s[0]『%(reference0)』的Headline。"
+	}
+	--
+	//---- ヘッドライン本体
+	"\n\n%(reference3)\n\n"
+	--
+	//---- 选択肢
+	if reference2 == 'First' || reference2 == 'Next'{
+		//---- 次のページがある场合
+		"\q0[][◇次页]/
+		\q1[%(reference1)][◇读取]/
+		\q2[HEADLINECANCEL][◇取消]"
+	}
+	else{
+		//---- 次のページがない场合
+		"\q0[%(reference1)][◇读取]/
+		\q1[HEADLINECANCEL][◇取消]"
+	}
+}
+//---- ヘッドライン更新が无かった -------------------------------------------------------
+OnHeadlinesenseComplete{
+	'\0\s[0]没有更新。'
+}
+//---- ヘッドラインセンス失败 -----------------------------------------------------------
+OnHeadlinesenseFailure{
+	'\0\s[6]唔～\w9\w9\w9\s[3]\n无法顺利完成。\w9\n'
+	--
+	if reference0 == "can't download"{
+		'下载失败。'
+	}
+	elseif reference0 == "can't analyze"{
+		'解析失败。'
+	}
+	else{
+		"对不起。\1\s[12]原因是“%(reference0)”"
+	}
+}
+//**** ファイル作成関连 *****************************************************************
+//---- updates2.dau作成开始 -------------------------------------------------------------
+OnUpdatedataCreating{
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]唔…\n"
+	else
+		'\0\s[0]要是能顺利做出更新档案就好了呢。'
+}
+//---- updates2.dau作成完了 -------------------------------------------------------------
+OnUpdatedataCreated{
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]完成了。\n"
+	else
+		'\0\s[0]嗯。\w9\w9\n完成了。'
+}
+//---- NAR作成开始 ----------------------------------------------------------------------
+OnNarCreating{
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]唔…\n"
+	else
+		'\0\s[0]要是能顺利做出nar档案就好了呢。'
+}
+//---- NAR作成完了 ----------------------------------------------------------------------
+OnNarCreated{
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]"
+	else
+		'\0\s[0]嗯。\n\w9'
+	--
+	"「%(reference0)」的nar档\n/
+	\_q「%(reference1)」\_q"
+	--
+	'\w9\n完成了。'
+}
+//**** 时间同步处理 *******************************************************************************
+//**** みか (http://homepage2.nifty.com/ko-ki/) の辞书を参考にしました。感谢＞こーき氏
+Select.SNTPTIME{
+	"\1\b[2]\s[15]\n现在的校准伺服器是\n\_q%(SNTPserver)\_q\n要更换伺服器吗？\n\n/
+	\![*]\q[更改伺服器,SNTPChange]\n/
+	\![*]\q[校准开始,SNTPStart]\n"
+}
+Select.SNTPChange{
+	'\1\s[11]请输入新的伺服器地址。\![open,inputbox,sntpserver,-1,stdtime.gov.hk]'
+}
+Select.SNTPStart{
+	'\![executesntp]'
+}
+//---- 时间同步处理开始 -----------------------------------------------------------------
+OnSNTPBegin{
+	reference0 = SNTPserver
+	"\0\s[5]连线到\_q%(reference0)\_q伺服器了哦，时间同步开始。"
+}
+//---- 时刻取得成功、比较开始 -----------------------------------------------------------
+OnSNTPCompare{
+	'\0\s[6]'
+	if reference3 == 0{
+		_nowtime = SPLIT(reference1,',')
+		"没有误差。\n现在时刻：%(_nowtime[0])年%(_nowtime[1])月%(_nowtime[2])日 %(_nowtime[3]):%(_nowtime[4])"
+	}
+	else{
+		"误差%(reference3)秒。\n\n\n校准中......"
+	}
+}
+OnSNTPCorrect{
+	_nowtime = SPLIT(reference1,',')
+	"\0\s[5]同步完成了，很顺利呢。\n现在时刻：%(_nowtime[0])年%(_nowtime[1])月%(_nowtime[2])日%(_nowtime[3])：%(_nowtime[4])"
+}
+//---- 时间同步处理失败 -----------------------------------------------------------------
+OnSNTPFailure{
+	'\0\s[3]……失败了？？呜……'
+}
+//**** そのほか *************************************************************************
+//---- ディスプレイ解像度変更 -----------------------------------------------------------
+OnDisplayChange{
+	//---- 変数にディスプレイ解像度と色深度に関する情报を取得
+	//---- 使うかどうかは分からないがとりあえず保持しておく
+	displaybpp = reference0
+	displaywidth = reference1
+	displayheight = reference2
+}
+//---- URLドロップ ----------------------------------------------------------------------
+//---- CROW でゴーストインストーラからゴーストをインストールを始めた时にも呼ばれます ----
+OnNetworkStatusChange{
+	if !ISVAR('NetworkStatus')
+		NetworkStatus = reference0
+	if !ISVAR('NetworkStatus.IP')
+		OnUpdateNetworkStatus
+	if NetworkStatus == reference0 && NetworkStatus.IP _in_ reference1
+		return
+	if NetworkStatus != reference0{
+		if reference0 == 'online'{
+			if mode == '1'
+				"\1\s[%(specialmode != 'mealtime')10]连上网了\n"
+			else
+				'\0\s[0]网络已连接\n'
+		}elseif reference0 == 'offline'{
+			if mode == '1'
+				"\1\s[%(specialmode != 'mealtime')10]网断了\n"
+			else
+				'\0\s[6]网络已断开\n'
+		}else{
+			if mode == '1'
+				"\1\s[%(specialmode != 'mealtime')10]\w9\w9...\s[%(specialmode != 'mealtime')11]?\n"
+			else
+				'\0\s[8]未知网络状态\n'
+		}
+	}else{
+		if reference0 == 'offline'
+			return
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]IP改变了\n"
+		else
+			'\0\s[6]IP已变动\n'
+	}
+	--
+	if reference1 && NetworkStatus.IP != reference1
+		"当前ip：%(REPLACE(reference1,CHR(1),'以及\n'))"
+	--
+	OnUpdateNetworkStatus
+	NetworkStatus = reference0
+}
+OnAllowInternetIPShowing{
+	if _argv[0]
+		reference0 = _argv[0]
+	AllowInternetIPShowing = reference0
+	OnUpdateNetworkStatus
+	'\0\s[0]已'
+	--
+	if reference0
+		'允许'
+	else
+		'禁止'
+	--
+	'外网IP显示'
+}
+InternetIPShowing{
+	if AllowInternetIPShowing{
+		'外网IP：'
+		--
+		if NetworkStatus.InternetIP
+			NetworkStatus.InternetIP
+		else
+			'unknow'
+		--
+		'\_l[150,-]\q[◇禁止外网IP显示,OnAllowInternetIPShowing,0]'
+	}else{
+		'\q[◇允许外网IP显示,OnAllowInternetIPShowing,1]'
+	}
+}
+OnUpdateNetworkStatus:void{
+	NetworkStatus.IP = CALLSAORI('ip','GetLocalIP')
+	NetworkStatus.Hostname = CALLSAORI('ip','GetLocalHostname')
+	if AllowInternetIPShowing
+		NetworkStatus.InternetIP = CALLSAORI('ip','GetInternetIP')
+}
+ClearNetworkStatusVar{
+	ERASEVAR('NetworkStatus')
+	ERASEVAR('NetworkStatus.IP')
+	ERASEVAR('NetworkStatus.Hostname')
+	ERASEVAR('NetworkStatus.InternetIP')
+}
+OnURLQuery{
+	if shortcut==1{
+		temp=reference0
+		"\![excute,http-get,%(reference0),--param-charset=UTF-8,--file=url.html,--timeout=50,--async=OnLoadUrlTitle]"
+	}elseif RE_GREP(reference0,'.nar$'){
+		"\![execute,install,url,%(reference0),nar]"
+	}else{
+		"\0\s[6]未知URL，请使用下载器下载\n\n[half]\_qURL:%(reference0)\_q\n"
+		--
+		"\q[◇打开URL,OnUrlOpen,%(reference0)]\n/
+		\q[◇复制URL,OnCopy,%(reference0)]\n/
+		\q[◇无用,Cancel]\n/
+		"
+	}
+}
+OnLoadUrlTitle{
+	_file='VAR_PATH\\url.html'
+	_title=''
+	_charset=''
+	_url=temp
+	temp=NULL
+	if FOPEN(_file,'r'){
+		_buff=''
+		for _tmp = FREAD(_file); _tmp != -1; _tmp = FREAD(_file){
+			_buff += _tmp
+		}
+		_charset=TextBetween(_buff,'charset=','>')
+		_charset=REPLACE(_charset,'"','')
+	}
+	FCLOSE(_file)
+	FCHARSET.string(_charset)
+	if FOPEN(_file,'r'){
+		_buff=''
+		for _tmp = FREAD(_file);  _tmp != -1; _tmp = FREAD(_file){
+			_buff += _tmp
+		}
+		_title=TextBetween(_buff,'<title>','</title>')
+	}
+	FCLOSE(_file)
+	FCHARSET.default
+	OnShortcutFileDrop(_url,'url',_title)
+}
+//电池部分
+ClearBatteryVar{
+	ERASEVAR('BatteryState')
+	ERASEVAR('BatteryLevel')
+}
+OnBatteryLow{
+	if reference0 < 80{
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]%(username)，\w9电池快要没有电了。\w9不想丢东西就快点保存吧。"
+		else
+			'\0\s[6]\w9被系统提示了低电量\w9\n/
+			\1\s[11]不要紧么？\w9\n/
+			\0\s[3]如果需要的话，让我们先退场也没问题的'
+	}
+}
+OnBatteryCritical{
+	if lowpowerautoshutoff{
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')11]...\n我就先撤退了。\w9\w9\-"
+		else
+			'\0\s[3]很抱歉\w9，为了更长时间的续航\s[8]\w9，我们就先撤退了\n/
+			\1\s[10]再见啦\w9\w9\-'
+	}
+}
+OnBatteryNotify{
+	if !ISVAR('lowpowerautoshutoff')
+		lowpowerautoshutoff=1
+	if reference0 != -1 && reference0 < 10 && lowpowerautoshutoff{
+		OnBatteryCritical
+		return
+	}
+	if !ISVAR('BatteryState')
+		BatteryState = reference2
+	if BatteryState != reference2{
+		BatteryState = reference2
+		if BatteryState == 'offline'{
+			'\0\s[0]电源已断开\w9\n'
+			--
+			case reference0{
+				when 0-20{
+					'\s[8]没问题么？\n'
+				}
+				when 21-50{
+					'\s[22]储备告急\n'
+				}
+				when 51-70{
+					'\s[7]不需要把电充满么？\n'
+				}
+			}
+		}elseif BatteryState == 'online'{
+			'电源已接入\n'
+			--
+			case reference0{
+				when 0-20{
+					'\s[3]好险\n'
+				}
+				when 21-50{
+					'\s[5]能赶上真是太好了\n'
+				}
+			}
+		}elseif BatteryState == 'backup'{
+			'已切换至备用电源\n'
+		}
+		--
+		if reference0 != -1
+			"\w9\w9\s[6]当前剩余电量：%(reference0)%"
+	}
+	if BatteryState == 'online' && BatteryLevel && BatteryLevel != reference0{
+		case reference0{
+			when 95
+				'电量达到95%了呢。'
+			when 100
+				'\0\s[0]嗯。\w9\w9\n电池已充满。'
+		}
+	}
+	if reference0 != -1
+		BatteryLevel=reference0
+}
+//---- 起动时に MATERIA を検出 ----------------------------------------------------------
+OnEmbryoExist{
+	'\0\s[0]以前的「伪春菜」起动了呢。'
+}
+//---- 起动时に猫どりふを検出 -----------------------------------------------------------
+OnNekodorifExist{
+	'\0\s[0]うわ、猫どりふが‥‥\w9\1\s[10]‥\w5‥\5！！'
+}
+//---- スクリーンセーバー実行开始 -------------------------------------------------------
+OnScreenSaverStart{
+	'\0\s[0]萤幕保护程式开始工作了'
+}
+//---- スクリーンセーバー実行终了 -------------------------------------------------------
+OnScreenSaverEnd{
+	'\![set,balloontimeout,180000]'
+	--
+	"\0\s[0]%(username)\w9\w9、欢迎回来。\n\x"
+}
+//待机中恢复
+OnSysResume{
+	'\![set,balloontimeout,180000]'
+	--
+	'\0\s[6]已从待机中恢复\w9\w9\w9\s[0]\n\x'
+	--
+	"\0\s[0]%(username)\w9\w9、欢迎回来。\n\x"
+}
+//资源不足
+OnSysResourceLow
+{
+	'\0\s[0]系统资源不足。'
+	'\0\s[8]那个……系统资源不足。'
+}
+//网卡
+OnNetworkHeavy
+{
+	'\0\s[3]似乎……\w9信号不太好呢……'
+	'\0\s[8]\w9…\w9…\n\w9\w9请耐心等候呢？'
+}
+

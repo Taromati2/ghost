@@ -1,0 +1,4 @@
+//by steve02081504
+OnUrlOpen{
+	'\![open,browser,'+_argv[0]+reference0+']'
+}

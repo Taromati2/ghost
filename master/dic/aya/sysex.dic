@@ -1,0 +1,50 @@
+OnChoiceSelectEx{
+	_arglist=reference
+	_arglist[0]=IARRAY
+	_arglist[0]=IARRAY
+	_size=ARRAYSIZE(_arglist)
+	for _i=0;_i!=_size;_i++{
+		if ISSTR(_arglist[_i])
+			_arglist[_i]="'"+_arglist[_i]+"'"
+	}
+	if ISFUNC("Select.%(reference1)")
+		EVAL("Select.%(reference1)(%_arglist)")
+	elseif ISFUNC("%(reference1)")
+		do_nothing
+	else
+		BUGNow
+}
+OnAITalk{
+	if specialmode == 'rest'//休息事件中随机谈话禁止
+		return
+	if specialmode == 'mealtime'
+		REPLACE(RandomTalk1,'\s[1','\s[')
+	elseif mode == '1'{
+		AITalk1
+	}
+	else{
+		_talk = AITalk
+		while specialmode == 'smoking' && '\1' _in_ _talk{//斗和不在家.avi
+			_talk = AITalk
+		}
+		SETDELIM(_talk, ':talkmemo=')
+		_lastindex = ARRAYSIZE(_talk) - 1
+		if _lastindex > 0{
+			talkmemo = _talk[_lastindex]
+			_lastlen = STRLEN(_talk[_lastindex])
+			_eraseindex = STRLEN(_talk) - _lastlen - STRLEN(':talkmemo=')
+			_erasesize = _lastlen + STRLEN(':talkmemo=')
+			_talk = ERASE(_talk, _eraseindex, _erasesize)
+		}
+		_talk
+	}
+}
+Select.ForcedTalk{
+	if ISVAR('talkmemo') == 1{
+		ForcedTalk0
+		ERASEVAR('talkmemo')
+	}
+	else{
+		ForcedTalk1
+	}
+}

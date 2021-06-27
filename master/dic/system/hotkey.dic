@@ -1,0 +1,356 @@
+OnKeyCodeTest{
+	InKeyCodeTest=1
+	'\0\s[0]已进入键位码测试模式\n'
+}
+OnExitKeyCodeTest{
+	ERASEVAR('InKeyCodeTest')
+	'\0\s[0]已退出键位码测试模式\n'
+}
+OnKeyPress{
+	/*
+	copy form Prototype/ReShade/PersonalFiles/KeyCodes.h by steve02081504
+	.---.---.---.---.---.---.---.---.---.---.---.---.---.------.  .---.---.---.  .---.---.---.---.
+	|192| 49| 50| 51| 52| 53| 54| 55| 56| 57| 48|189|187|   8  |  | 45| 36| 33|  |144|111|106|109|
+	:---'---'---'---'---'---'---'---'---'---'---'---'---'------:  :---:---:---:  :---:---:---:---:
+	|  9 | 81| 87| 69| 82| 84| 89| 85| 73| 79| 80|219|221| 220 |  | 46| 35| 34|  |103|104|105|   |
+	:----'---'---'---'---'---'---'---'---'---'---'---'---'-----|  `---'---'---'  :---:---:---|107|
+	|  20 | 65| 83| 68| 70| 71| 72| 74| 75| 76|186|222|   13   |                 |100|101|102|   |
+	:-----'---'---'---'---'---'---'---'---'---'---'---'--------'      .---.      :---:---:---:---:
+	|   16  | 90| 88| 67| 86| 66| 78| 77|188|190|191|    16    |      | 38|      | 97| 98| 99|   |
+	:-------'---'---'---'---'---'---'---'---'---'---'----------'  .---:---|---.  :---'---:---| 13|
+	| 17 | 91 | 18 |           32          | 18 | 92 | 93 | 17 |  | 37| 40| 39|  |   96  |110|   |
+	`----'----'----'-----------------------'----'----'----'----'  `---'---'---'  `-------'---'---'
+	*/
+	if InKeyCodeTest{
+		'\_q'
+		--
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]%(reference0)，編碼%(reference1)。"
+		else
+			"\0\s[0]你按了%(reference0)。編碼是%(reference1)。"
+		--
+		'\n\q[◇退出键位码测试,OnExitKeyCodeTest]\_q\n'
+		return
+	}
+	if reference1 == 229 {//steve02081504：我也不知道为什么是这个值，试出来的
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]使用熱鍵的話，好歹把输入法关了啊。"
+		else
+			'\0\s[8]使用熱鍵的話，要關掉輸入法哦？'
+		return
+	}
+	elseif playingbox {
+		PlayBox
+	}
+	elseif playingtetris {
+		if ck!=2
+			FormKeyDown
+	}
+	elseif playingGobang {
+		OnGobangShow
+	}
+	elseif playRetroSnaker {
+		RetroSnakerKey
+	}
+	elseif playHuaRongDao{
+		OnKeyMovement
+	}
+	elseif "%(reference1)" _in_ '173,174,175,176,177,179'{//没有178，请勿乱改判定
+		OnMusicPlayer
+		--
+		if reference1 == 173 {
+			'\0\s[0]音量开关'
+		}
+		elseif reference1 == 174 {
+			'\0\s[0]音量减小'
+		}
+		elseif reference1 == 175 {
+			'\0\s[0]音量加大'
+		}
+		elseif reference1 == 177 {
+			'\0\s[0]上一首\w9\w9\![raise,OnLastMusic]'
+		}
+		elseif reference1 == 179 || reference0 == 'space'{
+			"\0\s[0]%(('播放','暂停','继续')[playingmusic])\w9\w9\![raise,OnMusicPlayerCmd,%(('play','pause','resume')[playingmusic])]"
+		}
+		elseif reference1 == 176 {
+			'\0\s[0]下一首\w9\w9\![raise,OnNextMusic]'
+		}
+		--
+		'\0\w9\w9\w9\w9\b[-1]'
+	}
+	elseif reference0 == 'f1' {
+		//---- 開啟readme.txt
+		'\![open,readme]'
+	}
+	elseif reference0 == 'f2' {
+		//---- 開始溝通
+		'\![open,communicatebox]'
+	}
+	elseif reference0 == 'f3' {
+		//---- 聊天室
+		OnChatRoom(j)
+	}
+	elseif reference0 == 'f4' {
+		//---- shell重新載入
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]唔"
+		else
+			'\0\s[0]嗯'
+		--
+		'…\n\w9\w9\![reload,shell]重新讀取SHELL……'
+	}
+	elseif reference0 == 'f5' {
+		//---- shiori重新載入
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]唔"
+		else
+			'\0\s[0]嗯'
+		--
+		'…\n\w9\w9\![reload,shiori]重新讀取SHIORI……'
+	}
+	elseif reference0 == 'f6' {
+		if SHIORI_FW.DebugMode
+			OnTest
+	}
+	elseif reference0 == 'f7' {
+		//---- 表达式执行
+		if SHIORI_FW.DebugMode{
+			if QuickStartVersion
+				'\![open,inputbox,OnCalculateVar]'
+			else
+				'\![open,file,SAORI_PATH/ghost_terminal.exe]'
+		}
+	}
+	elseif reference0 == 'f8' {
+		OnOpenMasterMenu
+	}
+	elseif reference0 == 'f12' {
+		//截屏
+		void RUNCMD('explorer ms-screenclip:')
+	}
+	elseif reference0 == 'm' {
+		showkikka=1
+		'\![raise,OnOpenMenu]'
+	}
+	elseif reference0 == 'w' {
+		OnWeatherFoundAuto
+	}
+	elseif reference0 == 'a' {
+		OnAstroFoundAuto
+	}
+	elseif reference0 == 'u' {
+		UnoUserInit
+	}
+	elseif musicplayer&&(reference0 == 'p' || reference0 == 's'||reference0 == 'n' || reference0 == 'l')||musicplayerlist&&(reference0 == 'home' || reference0 == 'end'){
+		MusicHotKey(reference0)
+	}
+	elseif '没有任务' !_in_(_t=Multitask(reference0)) {
+		_t
+	}
+	elseif secondwatch{
+		OnSecondWatch(2)
+	}
+	elseif playLinkWnd{
+		case playLinkWnd{
+			when 1{
+				OnDrawLinkWnd
+			}
+			when 2{
+				OnLinkWndOption('LinkBall',reference0)
+			}
+			when 3{
+				LinkMapEditorShow
+			}
+		}
+	}
+	elseif rpggame{
+		if battlemode==0{
+			OpenRpgGameMenu
+		}
+		elseif battlemode==1{
+			if kikka==1 && towa==0
+				Onbattleselect0
+			elseif kikka==0 && towa==1
+				Onbattleselect1
+		}
+		elseif battlemode==2
+			Onbattle
+	}
+	elseif playGoldenFlower{
+		GoldenFlowerInit
+	}
+	elseif playhanoi{
+		OnHanoikey
+	}
+	elseif calculate{
+		CalculatorShow
+	}
+	elseif kikkastock{
+		if kikkastock==1
+			OnKikkaStockMenu
+		elseif kikkastock==2
+			OnKikkaStockSelect
+		elseif kikkastock==3
+			OnKikkaStockFound
+	}
+	elseif japwordquestion
+		OnJapWordQuestion(japwordtemp)
+	elseif examtest{
+		if examtest==1
+			OnExamTestMenu
+		elseif examtest==2
+			OnExamTestSelect(examtesttemp[0],examtesttemp[1],examtesttemp[2])
+	}
+	else {
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]%(reference0)，編碼%(reference1)。\n不是熱鍵。"
+		else
+			"\0\s[0]你按了%(reference0)。編碼是%(reference1)。目前尚未被設定為熱鍵。"
+	}
+}
+Select.Multitask{
+	Multitask
+}
+OnOpenTaskmgr{
+	'\0\s[6]如果想关掉我的话，请直接和我说。\![open,file,Taskmgr.exe]'
+}
+Multitask{
+	if running!=''{
+		OnMultitask(running)
+		return
+	}
+	_task='playLinkWnd|连连看|ClearLinkWndVar,secondwatch|秒表|ClearSecondVar,playingbox|推箱子|ClearBoxVar,playingtetris|俄罗斯方块|CleartetrisVar,playingGobang|五子棋|ClearFiveVar,playRetroSnaker|贪食蛇|ClearRetroSnakerVar,playHuaRongDao|华容道|ClearHuaRongDaoVar,rpggame|外出冒险|ClearRpgGameVar,playGoldenFlower|扎金花|ClearGoldenFlowerVar,playhanoi|数字汉诺塔|ClearHanoiVar,calculate|计算器|calculate=0,chatroom|聊天室|ClearAIVar,rename|批量文件重命名|ClearFilesRenameVar,readbook|小说阅读|ClearReadBookVar,kikkaknowl|橘花知识库|ClearKnowlVar,agenda|日历日程|ClearAgendaVar,kikkastock|橘花行情|ClearKikkaStockVar,japwordquestion|单词测试|ClearJapwordQuestionVar,examtest|橘花题库测试|ClearTestVar'
+	_tasknum=0
+	_txt='\0\![quicksession,true]\![set,choicetimeout,0]\b[2]'
+	_txt+='当前含以下任务，要打开下面哪个？\t\q[◇打开任务管理器,OnOpenTaskmgr]\n[150]'
+	foreach _task;_i{
+		_taskvar=_i[0,'|']
+		_taskname=_i[1,'|']
+		_taskclose=_i[2,'|']
+		if EVAL(_taskvar){
+			_tasknum++
+			_txt+="\q[◇%(_taskname),OnMultitask,%(_argv[0]),%(_taskvar)]\_l[240]\q[◇关闭,OnMultitask,close,%(_taskvar),%(_taskclose)]\n"
+		}
+	}
+	if _argv[0]=='getnum'
+		_tasknum
+	elseif _tasknum>0
+		_txt
+	else
+		'\0\s[0]没有任务哦……\n\q[◇打开任务管理器,OnOpenTaskmgr]'
+}
+OnRuntime{
+	_running=reference0
+	if _argc>0
+		_running=_argv[0]
+	case _running{
+		when 'playingtetris'
+			OnTimer1Timer
+		when 'playRetroSnaker'
+			OnRetroSnakerTimer
+	}
+}
+OnMultitask{
+	_running=reference1
+	if _argc>0
+		_running=_argv[0]
+	if reference0=='close'{
+		EVAL("%(reference2)")
+		EVAL(Multitask)
+		return
+	}
+	running=_running
+	case _running{
+		when 'secondwatch'{
+			OnSecondWatch('timerecord',reference0)
+		}
+		when 'playLinkWnd'{
+			case playLinkWnd{
+				when 1{
+					OnDrawLinkWnd
+				}
+				when 2{
+					OnLinkWndOption('LinkBall',reference0)
+				}
+				when 3{
+					LinkMapEditorShow
+				}
+			}
+		}
+		when 'playingbox'{
+			DrawMap(mapstatenum)+BoxMenu+ '\_l[0,0] \n\_l[0,0] \n\_l[0,0] \n'+BoxStatus
+			--
+			PlayBox('back')
+		}
+		when 'playingtetris'{
+			if ck!=2
+				FormKeyDown
+			else
+				OnTimer1Timer
+		}
+		when 'playingGobang'{
+			OnGobangShow
+		}
+		when 'playRetroSnaker' {
+			RetroSnakerKey
+		}
+		when 'playHuaRongDao'{
+			OnKeyMovement
+		}
+		when 'rpggame'{
+			if battlemode==0{
+				OpenRpgGameMenu
+			}
+			elseif battlemode==1{
+				if kikka==1 && towa==0
+					Onbattleselect0
+				elseif kikka==0 && towa==1
+					Onbattleselect1
+			}
+			elseif battlemode==2
+				Onbattle
+		}
+		when 'playGoldenFlower'{
+			GoldenFlowerInit
+		}
+		when 'playhanoi'{
+			OnHanoikey
+		}
+		when 'calculate'{
+			CalculatorShow
+		}
+		when 'chatroom' {
+			OnChatRoom
+		}
+		when 'rename' {
+			OnFilesRename
+		}
+		when 'readbook' {
+			OnReadBookHotkey
+		}
+		when 'kikkaknowl' {
+			EVAL(knowltemp)
+		}
+		when 'agenda'{
+			EVAL(agenda[1])
+		}
+		when 'kikkastock'{
+			if kikkastock==1
+				OnKikkaStockMenu
+			elseif kikkastock==2
+				OnKikkaStockSelect
+			elseif kikkastock==3
+				OnKikkaStockFound
+		}
+		when 'japwordquestion'{
+			OnJapWordQuestion(japwordtemp)
+		}
+		when 'examtest'{
+			if examtest==1
+				OnExamTestMenu
+			elseif examtest==2
+				OnExamTestSelect(examtesttemp[0],examtesttemp[1],examtesttemp[2])
+		}
+	}
+}

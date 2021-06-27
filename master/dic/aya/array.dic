@@ -1,0 +1,40 @@
+//by steve02081504
+
+ARRAY.GETMIN{
+	if !(_argc>1)
+		_argv=_argv[0]
+	_min=_argv[0]
+	foreach _argv;_i{
+		if _i<_min
+			_min=_i
+	}
+	_min
+}
+ARRAY.GETMAX{
+	if !(_argc>1)
+		_argv=_argv[0]
+	_max=_argv[0]
+	foreach _argv;_i{
+		if _i>_max
+			_max=_i
+	}
+	_max
+}
+
+INARRAY{
+	_aret=0
+	_t=''
+	if _argc>2{
+		_t=_argv[_argc-1]
+		_argv[_argc-1]=IARRAY
+	}
+	else{
+		_t=_argv[1]
+		_argv=_argv[0]
+	}
+	foreach _argv;_i{
+		if _t==_i
+			_aret=1
+	}
+	_aret
+}

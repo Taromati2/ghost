@@ -1,0 +1,41 @@
+On_basewareversion{
+	On_BasewareVersion
+}
+On_BasewareVersion{
+	Baseware=reference1
+	Baseware.Version=reference0
+	if reference2
+		Baseware.Version=reference2
+}
+Baseware.Version.LessThan{
+	_i=0
+	while _argv[0][_i,'.'] && Baseware.Version[_i,'.']{
+		if TOINT(_argv[0][_i,'.']) > TOINT(Baseware.Version[_i,'.']){
+			1
+			return
+		}
+		if TOINT(_argv[0][_i,'.']) < TOINT(Baseware.Version[_i,'.']){
+			0
+			return
+		}
+		_i++
+	}
+	0
+	return
+}
+Baseware.Version.BigThan{
+	_i=0
+	while _argv[0][_i,'.'] && Baseware.Version[_i,'.']{
+		if TOINT(_argv[0][_i,'.']) < TOINT(Baseware.Version[_i,'.']){
+			1
+			return
+		}
+		if TOINT(_argv[0][_i,'.']) > TOINT(Baseware.Version[_i,'.']){
+			0
+			return
+		}
+		_i++
+	}
+	0
+	return
+}

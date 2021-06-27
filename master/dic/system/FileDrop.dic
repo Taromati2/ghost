@@ -1,0 +1,154 @@
+OnFileDrop{
+	_file = reference0[0]
+	_fileext = TOLOWER(SPLITPATH(_file)[3])
+	_filename = SPLITPATH(_file)[2] + _fileext
+	if eatfile==1{
+		OnFileEatDrop(reference0)
+	}elseif rename==1
+		OnFileRenameDrop(reference0)
+	elseif shortcut==1
+		OnShortcutFileDrop
+	else{
+		case _fileext {
+			when '.m3u', '.m3u8', '.mid', '.wav', '.mp3', '.au', '.m4a', '.ogg', '.wma','.ape','.flac','.avi','.wmv','.rm','.rmvb','.mp4','.mkv','.flv','.mpg'{
+				MusicFileDrop(reference0)
+			}
+			when '.exe','.lnk',''{
+				OnShortcutFileDrop
+			}
+			when '.png', '.jpg', '.jpeg', '.bmp'{
+				Wallpaperfile = reference0
+				"\1\s[11]\0\b[2]\s[2]图像文件\n\_q「%(_filename)」\n\n[half]\_q要把这个设定为壁纸吗？\n\n[half]/
+				\![*]\q[居中,OnSetWallpaper,0]\n/
+				\![*]\q[并列,OnSetWallpaper,1]\n/
+				\![*]\q[放大,OnSetWallpaper,2]\n\n[half]/
+				\q[◇取消,Cancel]"
+			}
+			when '.txt'{
+				if SHIORI_FW.DebugMode{
+					temp = reference0
+					if mode=='0'
+						'\0\s[0]要怎么做？'
+					else{
+						'\1怎么做？'
+					}
+					--
+					'\q[作为辞书打开,OnDicDrop]\n/
+					\q[作为小说阅读,OnOpenBook]'
+				}
+				else
+					OnOpenBook(reference0)
+			}
+			when '.rncfg'{
+				DialogFilesRenameOpenCon(reference0)
+			}
+			when '.sccfg'{
+				LoadShortCutCfg(reference0)
+				OnShortcutMenu
+			}
+			when '.scdat'{
+				OnShortCutMenuAdd(reference0)
+			}
+			when '.dic','.ayc','.sat','.__1','.kis','.kiw'{
+				OnDicDrop
+			}
+			others{
+				"「%(_filename)」\n未知的文件类型……"
+				"\1\s[11]未知文件\n\_q「%(_filename)」\_q\0\s[3]…这是什么？"
+				--
+				"\n\![*]\q[直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]"
+			}
+		}
+	}
+}
+GetSHIORInameFromDicExt{
+	case _argv[0]{
+		when '.dic','.ayc'
+			'文'//aya
+		when '.sat'
+			'里々'//satoriya
+		when '.__1'
+			'美坂'//misaka
+		when '.kis','.kiw'
+			'華和梨'//kawari
+		when '.txt'
+			'里々/美坂'
+	}
+}
+GetDicEncodedFromDicExt{
+	case _argv[0]{
+		when '.ayc','.sat','.__1','.kiw'
+			1
+		when '.dic','.kis','.txt'
+			0
+	}
+}
+OnDicDrop{
+	if !reference0
+		reference0 = temp
+	_file = reference0[0]
+	_fileext = TOLOWER(SPLITPATH(_file)[3])
+	if SHIORI_FW.DebugMode{
+		temp = reference0
+		"辞书所对应shiori：%(GetSHIORInameFromDicExt(_fileext))\n"
+		--
+		if mode=='0'
+			'\0\s[0]要怎么做？'
+		else{
+			'\1怎么做？\b[2]'
+		}
+		--
+		'\n'
+		--
+		if GetDicEncodedFromDicExt(_fileext) && kikkawiz>=500{
+			case GetSHIORInameFromDicExt(_fileext){
+				when '文'
+					'\q[◇解密为dic,ayccoder.file_drop,Decode,aya]\n'
+				when '里々'
+					'\q[◇解密为txt,ayccoder.file_drop,Decode,satoriya]\n'
+				when '美坂'
+					'\q[◇解密为txt,ayccoder.file_drop,Decode,misaka]\n'
+				when '華和梨'
+					'\q[◇解密为kis,ayccoder.file_drop,Decode,kawari]\n'
+			}
+		}
+		else{
+			case GetSHIORInameFromDicExt(_fileext){
+				when '文'
+					'\q[◇dicforma格式化,dicforma.file_drop.run]\n/
+					\q[◇dicforma格式化（激进）,dicforma.file_drop.run,radical]\n/
+					\q[◇加密为ayc,ayccoder.file_drop,Encode,aya]\n'
+				when '里々/美坂'
+					'\q[◇加密为sat（里々）,ayccoder.file_drop,Encode,satoriya]\n/
+					\q[◇加密为__1（美坂）,ayccoder.file_drop,Encode,misaka]\n'
+				when '華和梨'
+					'\q[◇加密为kiw,ayccoder.file_drop,Encode,kawari]\n/
+					\q[◇当作kiw解密,ayccoder.file_drop,Decode,kawari]\n'
+			}
+		}
+		--
+		'\q[◇打开master目录,OnOpenMasterMenu]\n/
+		\q[◇无用,Cancel]\n/
+		'
+	}
+	else{
+		if mode=='0'
+			'\0\s[0]'
+		else
+			'\1'
+		--
+		'这是'
+		--
+		_name=GetSHIORInameFromDicExt(_fileext)
+		if _name != '文'
+			_name+'shiori的'
+		--
+		'辞书文件，用于提供ghost机能\n'
+		--
+		'要怎么做？\n/
+		\q[◇联系人格维护者，请求追加机能,OnUrlOpen,https://github.com/Taromati2/Taromati2/issues/new?assignees=steve02081504&labels=enhancement&template=feature-request.md&title=a+feature+request]\n/
+		\q[◇教练，我想学伪春菜,OnUrlOpen,https://github.com/Taromati2/Taromati2/blob/master/docs/entry_guidance.md]\n/
+		\q[◇我是老手，打开master目录，我自己动,OnOpenMasterMenu]\n/
+		'
+	}
+}
