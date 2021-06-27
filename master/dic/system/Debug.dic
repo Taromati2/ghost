@@ -1,4 +1,12 @@
 //by steve02081504
+OnReloadShiori{
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]唔"
+	else
+		'\0\s[0]嗯'
+	--
+	'…\n\w9\w9\![reload,shiori]重新讀取SHIORI……'
+}
 SakuraScriptArgConverter{
 	'"'+REPLACE(TOSTR(_argv[0]),'"','""')+'"'
 }
@@ -89,7 +97,7 @@ On_ShioriEcho.GetName:void {
 On_ShioriEcho {
 	ClearShioriEchoVar
 	if CUTSPACE(reference0) == 'reload'
-		'…\n\w9\w9\![reload,shiori]重新讀取SHIORI……'
+		OnReloadShiori
 	else
 		OnCalculateVar
 	--
@@ -278,10 +286,32 @@ OnDebugModeChange{
 		'
 }
 OnLogModeChange{
+	if SHIORI_FW.LogMode{
+		if mode == '1'
+			"\1\s[%(12+99*(specialmode != 'mealtime'))]注意下，\w9\w9"
+		else
+			'\0\s[100]警告：\w9\w9'
+	}else{
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]唔…\w9\w9\n"
+		else
+			'\0\s[6]嗯…\w9\w9\s[0]\n'
+	}
+	--
+	'shiori log'
+	--
+	if mode == '0' && !SHIORI_FW.LogMode
+		'已'
+	--
 	if SHIORI_FW.LogMode
-		'\0\s[100]警告：\w9\w9shiori log开启中'
+		'开启'
 	else
-		'\0\s[100]shiori log已关闭'
+		'关闭'
+	--
+	if mode == '1'
+		'了。'
+	elseif SHIORI_FW.LogMode
+		'中'
 }
 //调试：无对应事件反应by steve02081504
 OnNoMatchingEvent{

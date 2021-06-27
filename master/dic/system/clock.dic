@@ -214,9 +214,14 @@ OnTrayBalloonClick{
 	}
 	elseif reference0 == '整点报时'{
 		if minute>=5 {
-			"%(username)刚才去哪里了呢？"
-			"%(username)刚才在做什么呢？\1呐,不知道..."
-			"%(username)终于注意到了啊？\1呐,不知道..."
+			username
+			--
+			"刚才去哪里了呢？"
+			"刚才在做什么呢？"
+			"终于注意到了啊？"
+			--
+			'\1呐,不知道...'
+			''
 		}
 		else {
 			'嗯嗯～'
