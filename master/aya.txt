@@ -1,16 +1,2 @@
-///////// 文　ゴーストテンプレート
-///////// aya.txt (設定ファイル)
-///////// written by umeici.
-
-charset, UTF-8
-charset.dic, UTF-8
-charset.file, UTF-8
-charset.extension, default
-
-
-//---- 実行ログ ------------------------------------
-//log,aya.log			// 実行ログをayame.logに記録します。開発時には記録しておいたほうが良いです。
-//iolog,off
-ignoreiolog,ID: OnSecondChange	//OnSecondChange無視
-ignoreiolog,ID: OnMouse			//OnMouse系無視
+include, aya_base.txt
 dicdir, dic

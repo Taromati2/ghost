@@ -1,0 +1,9 @@
+charset, UTF-8
+charset.dic, UTF-8
+charset.file, UTF-8
+charset.extension, default
+
+ignoreiolog,ID: OnSecondChange	//OnSecondChange無視
+ignoreiolog,ID: OnMouse			//OnMouse系無視
+
+fncdepth,0
