@@ -9,7 +9,7 @@ OnTouch.FunctionCase{
 }
 OnTouch.FunctionCase.base{
 	if _argv[1] < 0
-		EVAL("%(_argv[0])")
+		EVAL(_argv[0])
 	elseif ISFUNC(_function = "%(_argv[0]).%(_argv[1]).%(_argv[2])")
 		EVAL(_function)
 	elseif ISFUNC(_function = "%(_argv[0]).%(_argv[1])")
@@ -22,7 +22,7 @@ OnTouch.FunctionCase.OnlyPhase{
 }
 OnTouch.FunctionCase.OnlyPhase.base{
 	if _argv[1] < 0
-		EVAL("%(_argv[0])")
+		EVAL(_argv[0])
 	elseif ISFUNC(_function = "%(_argv[0]).%(_argv[1])")
 		EVAL(_function)
 	else
@@ -385,7 +385,8 @@ TalkKeroHeadClick{
 			'\w9\w9\0\s[8]咦？\w9\w9\1\s[13]\n\n[half]抱歉、\w9当我什么都没说。'
 	}
 	'\1\s[12]…\w9干麻啦？'
-	'\1\s[12]…\w9…\w9…\w9\s[10]'{
+	'\1\s[12]…\w9…\w9…\w9\s[10]'
+	{
 		'\1\s[10]…\w9很有胆量嘛。\w9\w9\n等一下\w5作好被围殴的觉悟吧。\w9\w9\w9\s[12]\n\n[half]给我准备好'
 		--
 		'かるかん'

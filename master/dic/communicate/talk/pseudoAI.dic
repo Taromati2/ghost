@@ -24,7 +24,7 @@ AIGet{
 		if _found!=''&&'\w' !_in_ _found
 			_found=AITextReplace(_found)
 		if 'EVAL' _in_ _found
-			_found=EVAL("%(EVAL('_found'))")
+			_found=EVAL(TOSTR(_found))
 		if _found!=''
 			_txt+=_found+'|'
 	}

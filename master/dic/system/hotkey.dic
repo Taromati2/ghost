@@ -251,8 +251,8 @@ OnMultitask{
 	if _argc>0
 		_running=_argv[0]
 	if reference0=='close'{
-		EVAL("%(reference2)")
-		EVAL(Multitask)
+		EVAL(reference2)
+		Multitask
 		return
 	}
 	running=_running

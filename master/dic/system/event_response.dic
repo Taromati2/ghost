@@ -707,8 +707,8 @@ OnURLDropFailure{
 		'已人为停止下载。\e'
 	elseif reference0 == 'readonly'
 		'缓存目录唯读。'
-	else
-		"因：%(reference0)"
+	elseif reference0
+		"因：%(reference0)\n"
 	--
 	'下载失败。'
 }
