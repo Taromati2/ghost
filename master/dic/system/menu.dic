@@ -218,7 +218,7 @@ Select.help{
 	\q[◇关于好感度,lovech]\n/
 	\q[◇关于橘花的生日,birthdaykikka]		\_l[120,-]\q[◇修改更新源,MirrorChange]\n/
 	\n/
-	\n/
+	\q[◇错误记录,OnErrorLog]\n/
 	\q[◇关于快捷键,shortcutkey]				\_l[120,-]\q[◇自优化,self_tuning]\n/
 	\q[◇伪春菜贴吧,OpenUkagakaTieBa]		\_l[120,-]\q[◇master目录,OnOpenMasterMenu]\n/
 	\q[◇伪春菜后援会,OpenUkagakaFanClub]	\_l[120,-]\q[◇伪春菜wiki,OpenUkagakaWiki]\n/

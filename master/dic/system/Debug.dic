@@ -668,3 +668,26 @@ Get_AYA_Function_Info{
 			'文档未记录'
 	}
 }
+OnErrorLog{
+	ErrorList.Gene
+	_i=0
+	_txt='\![set,autoscroll,disable]以下文件有误：\n\_q'
+	while ErrorList.filename[_i]{
+		_txt+='\q[◇'
+		if _t=SPLITPATH(ErrorList.filename[_i])
+			_txt+=_t[2]+_t[3]
+		else
+			_txt+=ErrorList.filename[_i]
+		_txt+=',OnOpenDirOrFile,'+SakuraScriptArgConverter(ErrorList.filename[_i])+']'
+		_txt+='行'+ErrorList.linenum[_i]+'：'+ErrorList.Info[_i]+'\n'
+		_i++
+	}
+	_txt+='\_q\n/
+	\q[◇重新载入SHIORI,OnReloadShiori]\n/
+	\q[◇结束,Cancel]\n/
+	'
+	if !ErrorList.filename
+		_txt='没有错误记录'
+	ClearErrorListVar
+	_txt
+}

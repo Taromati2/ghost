@@ -1,0 +1,20 @@
+//E:\ssp\ghost\Taromati2\ghost\master\dic\system\ERRORLOG.dic(14) : error E0041 : 'for'のループ式が異常です.
+ErrorList.SPLIT{
+	SPLIT(RE_REPLACEEX(_argv[0],'\((\d+|-)\) : ',',$1,'),',',3)
+}
+ErrorList.Gene{
+	ErrorList.filename=IARRAY
+	ErrorList.linenum=IARRAY
+	ErrorList.Info=IARRAY
+
+	_l=GETERRORLOG
+	foreach _l;_i{
+		_t=ErrorList.SPLIT(_i)
+		ErrorList.filename,=_t[0]
+		ErrorList.linenum,=TOINT(_t[1])
+		ErrorList.Info,=_t[2]
+	}
+}
+ClearErrorListVar{
+	ERASEALLVARBEGINAS('ErrorList.')
+}
