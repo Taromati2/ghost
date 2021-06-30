@@ -565,7 +565,7 @@ OnBackup{
 			SAVEVAR('SAVE_FILE')
 			_temp=MKDIR("SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)")
 			_temp=MKDIR("SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)\_PROFILE_path")
-			_temp=DIRCOPY('PROFILE_PATH',"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)\_PROFILE_path")
+			_temp=DIRSync('PROFILE_PATH',"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)\_PROFILE_path")
 			_temp=FCOPY('SAVE_FILE',"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)")
 			--
 			if _temp
@@ -585,7 +585,7 @@ OnBackup{
 			_temp = 1
 			foreach _DIC_DIRS_; _dir{
 				_temp = _temp&& MKDIR("SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)\"+_dir)
-				_temp = _temp&& DIRCOPY('dic',"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)\"+_dir)
+				_temp = _temp&& DIRSync('dic',"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)\"+_dir)
 			}
 			FCOPY('SHIORI_NAME.txt',"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)")
 			--
@@ -749,11 +749,11 @@ OnAutoBackup:void{
 	_h="SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)"
 	MKDIR(_h)
 	FCOPY('SAVE_FILE',_h)
-	DIRCOPY('PROFILE_PATH',_h+'\_PROFILE_path')
+	DIRSync('PROFILE_PATH',_h+'\_PROFILE_path')
 	if SHIORI_FW.DebugMode && !GHOST.INgit{
 		FCOPY('SHIORI_NAME.txt',_h)
 		foreach _DIC_DIRS_; _dir{
-			DIRCOPY(_dir,_h+'\'+_dir)
+			DIRSync(_dir,_h+'\'+_dir)
 		}
 	}
 }
@@ -2652,8 +2652,7 @@ OAD/
 :void{
 	_save_dir=GETENV('USERPROFILE')
 	if FILEEXIST(_save_dir+'\K_I_K_K_A'){
-		DELDIR('PROFILE_PATH')
-		DIRCOPY(_save_dir+'\K_I_K_K_A','PROFILE_PATH')
+		DIRSync(_save_dir+'\K_I_K_K_A','PROFILE_PATH')
 		FUNHIDDEN('PROFILE_PATH')
 	}
 	if FILEEXIST(_save_dir+'\K_confing.cfg'){
@@ -2675,8 +2674,7 @@ AVE/
 	FDEL(_save_dir+'\K_confing.cfg')
 	FULLNAMEFCOPY('SAVE_FILE',_save_dir+'\K_confing.cfg')
 	FHIDDEN(_save_dir+'\K_confing.cfg')
-	DELDIR(_save_dir+'\K_I_K_K_A')
-	DIRCOPY('PROFILE_PATH',_save_dir+'\K_I_K_K_A')
+	DIRSync('PROFILE_PATH',_save_dir+'\K_I_K_K_A')
 	FHIDDEN(_save_dir+'\K_I_K_K_A')
 }
 OnReadBookHotkey{
