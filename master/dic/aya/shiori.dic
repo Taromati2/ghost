@@ -279,7 +279,7 @@ load {
 
 	if SHIORI_FW.EmergencyMode
 		SHIORI_FW.PushNotifyResult(OnEmergencyMode)
-	else{
+	elseif FILEEXIST('SHIORI_NAME_emerg.txt'){
 		foreach _DIC_DIRS_; _dir{
 			DIRSync(_dir,'EMERGENCYMODEDICDIR'+'\'+_dir)
 		}
