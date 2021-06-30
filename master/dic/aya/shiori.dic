@@ -49,7 +49,7 @@ SHIORI_FW.BalloonPath
 
 使用可能な疑似イベント
 
-OnSHIORI_FW.ChangeSelfInfo
+SHIORI_FW.OnChangeSelfInfo
 　上記★マークがついた変数が更新されたときに呼び出される
 
 */
@@ -173,6 +173,7 @@ ClearAyaTempVar {
 	ERASEVAR('SHIORI_FW.GhostName')
 	ERASEVAR('SHIORI_FW.ShellNameOld')
 	ERASEVAR('SHIORI_FW.BalloonNameOld')
+	ERASEVAR('SHIORI_FW.EmergencyMode')
 
 
 	_n = ARRAYSIZE(tempvarname)
@@ -202,6 +203,8 @@ load {
 	C_CRLF = CHR(0xd,0xa)	/*win换行*/
 	C_CRLF2 = C_CRLF+C_CRLF
 	C_BYTE1 = CHR(0x1)
+
+	SHIORI_FW.EmergencyMode = GETSETTING('coreinfo.mode') == 'emergency'
 
 	REQ.COMMAND		= 'LOAD'
 	REQ.PROTOCOL	= 'AYA/5.0'
@@ -273,6 +276,14 @@ load {
 	SHIORI_FW.SetDelayEvent('',0)
 
 	CALLALLFUNCTIONBEGINAS('Init.')
+
+	if SHIORI_FW.EmergencyMode
+		SHIORI_FW.PushNotifyResult(OnEmergencyMode)
+	else{
+		foreach _DIC_DIRS_; _dir{
+			DIRSync(_dir,'EMERGENCYMODEDICDIR'+'\'+_dir)
+		}
+	}
 }
 
 //******************************************************************************
@@ -440,8 +451,7 @@ request {
 	OnRequest
 }
 SHIORI_FW.NoMatchingEvent{
-	if ISFUNC('OnNoMatchingEvent')
-		SHIORI_FW.PushNotifyResult(EVAL('OnNoMatchingEvent'))
+	SHIORI_FW.PushNotifyResult(OnNoMatchingEvent)
 	SHIORI_FW.MakeBadResponse
 }
 TOAUTOEX {
@@ -1497,10 +1507,10 @@ SHIORI_EV.On_hwnd : void {
 			reference0 = _i
 
 			if SHIORI_FW.HWndOld[_i] == 0 {
-				void EVAL('OnSHIORI_FW.WindowCreate')
+				SHIORI_FW.OnWindowCreate
 			}
 			elseif SHIORI_FW.HWnd[_i] == 0 {
-				void EVAL('OnSHIORI_FW.WindowDestroy')
+				SHIORI_FW.OnWindowDestroy
 			}
 
 			SHIORI_FW.HWndOld[_i] = SHIORI_FW.HWnd[_i]
@@ -1529,7 +1539,7 @@ SHIORI_EV.OnNotifySelfInfo : void {
 	sakuraname = reference[1]
 	keroname = reference[2]
 
-	EVAL('OnSHIORI_FW.ChangeSelfInfo')
+	SHIORI_FW.OnChangeSelfInfo
 }
 
 SHIORI_EV.OnNotifyUserInfo : void {
@@ -1546,14 +1556,14 @@ SHIORI_EV.OnShellChanged : void {
 	SHIORI_FW.ShellName = reference[0]
 	SHIORI_FW.ShellPath = reference[2]
 
-	EVAL('OnSHIORI_FW.ChangeSelfInfo')
+	SHIORI_FW.OnChangeSelfInfo
 }
 
 SHIORI_EV.OnBalloonChange : void {
 	SHIORI_FW.BalloonName = reference[0]
 	SHIORI_FW.BalloonPath = reference[1]
 
-	EVAL('OnSHIORI_FW.ChangeSelfInfo')
+	SHIORI_FW.OnChangeSelfInfo
 }
 
 SHIORI_EV.On_Has_Event : void {
@@ -1590,8 +1600,7 @@ SHIORI_EV.On_enable_log : void {
 		SHIORI_FW.LogMode = TOINT(reference[0])
 	if SHIORI_FW.LogMode != TOINT(reference[0]){
 		SHIORI_FW.LogMode = TOINT(reference[0])
-		if ISFUNC('OnLogModeChange')
-			SHIORI_FW.PushNotifyResult(EVAL('OnLogModeChange'))
+		SHIORI_FW.PushNotifyResult(OnLogModeChange)
 	}
 }
 
@@ -1604,8 +1613,7 @@ SHIORI_EV.On_enable_debug : void {
 		SHIORI_FW.DebugMode = TOINT(reference[0])
 	if SHIORI_FW.DebugMode != TOINT(reference[0]){
 		SHIORI_FW.DebugMode = TOINT(reference[0])
-		if ISFUNC('OnDebugModeChange')
-			SHIORI_FW.PushNotifyResult(EVAL('OnDebugModeChange'))
+		SHIORI_FW.PushNotifyResult(OnDebugModeChange)
 	}
 }
 

@@ -1,4 +1,12 @@
 //by steve02081504
+OnReloadShiori{
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]唔"
+	else
+		'\0\s[0]嗯'
+	--
+	'…\n\w9\w9\![reload,shiori]重新讀取SHIORI……'
+}
 SakuraScriptArgConverter{
 	'"'+REPLACE(TOSTR(_argv[0]),'"','""')+'"'
 }
@@ -89,7 +97,7 @@ On_ShioriEcho.GetName:void {
 On_ShioriEcho {
 	ClearShioriEchoVar
 	if CUTSPACE(reference0) == 'reload'
-		'…\n\w9\w9\![reload,shiori]重新讀取SHIORI……'
+		OnReloadShiori
 	else
 		OnCalculateVar
 	--
@@ -278,10 +286,32 @@ OnDebugModeChange{
 		'
 }
 OnLogModeChange{
+	if SHIORI_FW.LogMode{
+		if mode == '1'
+			"\1\s[%(12+99*(specialmode != 'mealtime'))]注意下，\w9\w9"
+		else
+			'\0\s[100]警告：\w9\w9'
+	}else{
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]唔…\w9\w9\n"
+		else
+			'\0\s[6]嗯…\w9\w9\s[0]\n'
+	}
+	--
+	'shiori log'
+	--
+	if mode == '0' && !SHIORI_FW.LogMode
+		'已'
+	--
 	if SHIORI_FW.LogMode
-		'\0\s[100]警告：\w9\w9shiori log开启中'
+		'开启'
 	else
-		'\0\s[100]shiori log已关闭'
+		'关闭'
+	--
+	if mode == '1'
+		'了。'
+	elseif SHIORI_FW.LogMode
+		'中'
 }
 //调试：无对应事件反应by steve02081504
 OnNoMatchingEvent{
@@ -637,4 +667,27 @@ Get_AYA_Function_Info{
 		others
 			'文档未记录'
 	}
+}
+OnErrorLog{
+	ErrorList.Gene
+	_i=0
+	_txt='\![set,autoscroll,disable]以下文件有误：\n\_q'
+	while ErrorList.filename[_i]{
+		_txt+='\q[◇'
+		if _t=SPLITPATH(ErrorList.filename[_i])
+			_txt+=_t[2]+_t[3]
+		else
+			_txt+=ErrorList.filename[_i]
+		_txt+=',OnOpenDirOrFile,'+SakuraScriptArgConverter(ErrorList.filename[_i])+']'
+		_txt+='行'+ErrorList.linenum[_i]+'：'+ErrorList.Info[_i]+'\n'
+		_i++
+	}
+	_txt+='\_q\n/
+	\q[◇重新载入SHIORI,OnReloadShiori]\n/
+	\q[◇结束,Cancel]\n/
+	'
+	if !ErrorList.filename
+		_txt='没有错误记录'
+	ClearErrorListVar
+	_txt
 }

@@ -25,6 +25,12 @@ OnChangeBalloon{
 		_t=_argv[0]
 	'\![change,balloon,'+_t+']'
 }
+OnBalloonChange{
+	if mode == '0'
+		'\0\s[5]这样如何呢？'
+	else
+		'\1\s[10]嗯。'
+}
 OnCallGhost{
 	_t=reference0
 	if _argv[0]

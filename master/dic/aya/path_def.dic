@@ -3,6 +3,8 @@
 #globaldefine SHIORI_NAME			aya
 #globaldefine _DIC_DIRS_			'dic'
 //
+#globaldefine EMERGENCYMODEDICDIR	VAR_PATH/last_work_able_dic
+//
 #globaldefine DATA_PATH				BASE_PATH/_DATA_path
 #globaldefine IMG_PATH				BASE_PATH/_IMG_path
 #globaldefine SOUND_PATH			BASE_PATH/_SOUND_path

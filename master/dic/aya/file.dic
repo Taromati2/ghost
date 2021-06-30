@@ -108,6 +108,9 @@ DIRCOPY{
 	else
 		1
 }
+DIRSync{
+	RUNCMD('Robocopy "'+_argv[0]+'" "'+_argv[1]+'" /MIR /NJS /NP /SL')
+}
 FHIDDEN{
 	RUNCMD('attrib +H "'+_argv[0]+'"')
 }

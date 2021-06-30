@@ -102,12 +102,7 @@ OnKeyPress{
 	}
 	elseif reference0 == 'f5' {
 		//---- shiori重新載入
-		if mode == '1'
-			"\1\s[%(specialmode != 'mealtime')10]唔"
-		else
-			'\0\s[0]嗯'
-		--
-		'…\n\w9\w9\![reload,shiori]重新讀取SHIORI……'
+		OnReloadShiori
 	}
 	elseif reference0 == 'f6' {
 		if SHIORI_FW.DebugMode
@@ -256,8 +251,8 @@ OnMultitask{
 	if _argc>0
 		_running=_argv[0]
 	if reference0=='close'{
-		EVAL("%(reference2)")
-		EVAL(Multitask)
+		EVAL(reference2)
+		Multitask
 		return
 	}
 	running=_running

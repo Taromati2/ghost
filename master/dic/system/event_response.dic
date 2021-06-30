@@ -430,11 +430,26 @@ OnShioriReloadedbyself{
 		"\1\s[%(specialmode != 'mealtime')10]唔…\n重载完了。"
 		return
 	}
-	'\0\s[0]重载成功，没有语法错误'
-	'\0\s[0]重载完成'
-	if GetPhase >= 2{
-		'\0\s[5]重载成功，没有卡死哦'
-		"\0\s[0].\w9.\w9.\w9.\w9.\w9.\w9.\w9.\w9.\w9.\w9.\w9.\w9.\n\_s\w9.\w9.\w9.\w9.\w9\n\_s\1\s[11]别假装卡死了啊\w9，%(username)又不是看不出来\w9\w9\0\s[8]欸"
+	if !SHIORI_FW.EmergencyMode{
+		'\0\s[0]重载成功，没有语法错误'
+		'\0\s[0]重载完成'
+		if GetPhase >= 2
+			'\0\s[5]重载成功，没有出错哦'
+	}
+}
+OnEmergencyMode{
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]唔…\n辞书出错了啊。"
+	else
+		'\0\s[3]辞书出错了哦？'
+	--
+	if SHIORI_FW.DebugMode{
+		'\n/
+		\q[◇错误日志,OnErrorLog]\n/
+		\q[◇无用,Cancel]'
+	}
+	else{
+		OpenDocForRuntime('Emergency_mode_but_Debug_mode_not_open')
 	}
 }
 OnInstallRefuse{
@@ -707,8 +722,8 @@ OnURLDropFailure{
 		'已人为停止下载。\e'
 	elseif reference0 == 'readonly'
 		'缓存目录唯读。'
-	else
-		"因：%(reference0)"
+	elseif reference0
+		"因：%(reference0)\n"
 	--
 	'下载失败。'
 }
