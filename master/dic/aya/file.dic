@@ -44,7 +44,10 @@ ISDIR{
 	FATTRIB(_argv[0])[2]
 }
 FILEEXIST{
-	FATTRIB(_argv[0])!=-1
+	if ISSTR(_argv[0])
+		FATTRIB(_argv[0])!=-1
+	else
+		0
 }
 FWRITE_WITH_{
 	FWRITE2(_argv[1],_argv[2]+_argv[0])

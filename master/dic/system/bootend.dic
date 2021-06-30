@@ -17,7 +17,7 @@ BaseGhostStart{//改动于2020 by steve02081504
 	OnSQLLoad
 	OnAILoad
 	--
-	'\v'
+	'\0\v'
 	--
 	if topmode != 2
 		TopModeChanged
@@ -694,6 +694,8 @@ ClearTempVar:void{
 	S_CHARSET = GETSETTING('charset.output')
 }
 OnClose{
+	if reference0 == 'system'
+		inshutdown=1
 	SlowTime = GETSECCOUNT
 	--
 	ClearTempVar
@@ -708,8 +710,6 @@ OnClose{
 	--
 	MAGICLOCK
 	--
-	if reference0 == 'shutdown'
-		inshutdown=1
 	if mode == '1'{
 		OnClose1
 	}

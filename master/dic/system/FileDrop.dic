@@ -33,8 +33,9 @@ OnFileDrop{
 						'\1怎么做？'
 					}
 					--
-					'\q[作为辞书打开,OnDicDrop]\n/
-					\q[作为小说阅读,OnOpenBook]'
+					'\n/
+					\q[◇作为辞书打开,OnDicDrop]\n/
+					\q[◇作为小说阅读,OnOpenBook]'
 				}
 				else
 					OnOpenBook(reference0)
@@ -56,7 +57,7 @@ OnFileDrop{
 				"「%(_filename)」\n未知的文件类型……"
 				"\1\s[11]未知文件\n\_q「%(_filename)」\_q\0\s[3]…这是什么？"
 				--
-				"\n\![*]\q[直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]"
+				"\n\![*]\q[◇直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]"
 			}
 		}
 	}
