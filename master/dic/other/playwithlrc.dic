@@ -866,8 +866,8 @@ DialogMusicOpenList{
 					_total ++
 				}
 			}
+			FCLOSE(_m3u)
 		}
-		FCLOSE(_m3u)
 		FCHARSET.default
 		if ISVAR('musicfile') == 0 {
 			musicfile = IARRAY

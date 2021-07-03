@@ -188,6 +188,8 @@ dicforma.readline:void{
 	if RE_GREP(dicforma.now.morpheme_extraction,'^}*(if|for|while|else|elseif|case|when|others)[\s\(]') && (!RE_GREP(dicforma.now.morpheme_extraction,'\{$')) && RE_GREP(dicforma.next.morpheme_extraction,'^\{'){
 		dicforma.line.now+='{'
 		dicforma.line.next=RE_REPLACE(dicforma.line.next,'^\{\s*','')
+		if !dicforma.line.next
+			dicforma.line.next=dicforma.readline.base
 	}
 	dicforma.reverse_bracenum=0
 	while RE_GREP(dicforma.morpheme_extraction(dicforma.line.now),dicforma.RE.everychar+'+(?<!;)\}$'){

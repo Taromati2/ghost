@@ -817,13 +817,17 @@ OnShortcutFileDrop{
 	case _fileext{
 		when '.exe'{
 			if RE_GREP(_path2,']')==0
-				"\_q需要橘花设置该软件到橘花的快捷菜单吗？\n[150]　\![*]\q[好的,OnShortcut,%(_filename)%(_fileext),%(_path2),2]　\![*]\q[不了,OnShortcutOver]\n[150]\_l[5,-]\_b[%(CHR(34))%(_path2),0%(CHR(34)),inline%(ICOMode)] \n软件名称：%(_filename)%(_fileext)\n[150] 软件路径：%(_path2)"
+				"\_q需要橘花设置该软件到橘花的快捷菜单吗？\n[150]/
+				　\![*]\q[好的,OnShortcut,%(_filename)%(_fileext),%(_path2),2]　\![*]\q[不了,OnShortcutOver]　\![*]\q[直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]\n[150]/
+				\_l[5,-]\_b[%(CHR(34))%(_path2),0%(CHR(34)),inline%(ICOMode)] \n软件名称：%(_filename)%(_fileext)\n[150] 软件路径：%(_path2)"
 			else
 				"\_q\0\s[0]如果%(username)要设置该软件的快捷，\n路径和名称中请不要带有符号“]”哦！\n[150]\_l[5,-]\_b[%(CHR(34))%(_path2),0%(CHR(34)),inline%(ICOMode)] \n软件名称：%(_filename)%(_fileext)\n[150] 软件路径：%(_path2)"
 		}
 		when '.lnk'{
 			if RE_GREP(_path2,']')==0
-				"\_q需要橘花设置该快捷方式到橘花的快捷菜单吗？\n[150]　\![*]\q[好的,OnShortcut,%(_filename)%(_fileext),%(_path2),2]　\![*]\q[不了,OnShortcutOver]\n[150]\_l[5,-]\_b[%(CHR(34))%(_path2),0%(CHR(34)),inline%(ICOMode)] \n软件名称：%(_filename)%(_fileext)\n[150] 软件路径：%(_path2)"
+				"\_q需要橘花设置该快捷方式到橘花的快捷菜单吗？\n[150]/
+				　\![*]\q[好的,OnShortcut,%(_filename)%(_fileext),%(_path2),2]　\![*]\q[直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]\n[150]/
+				\_l[5,-]\_b[%(CHR(34))%(_path2),0%(CHR(34)),inline%(ICOMode)] \n软件名称：%(_filename)%(_fileext)\n[150] 软件路径：%(_path2)"
 			else
 				"\_q\0\s[0]如果%(username)要设置该软件的快捷，\n路径和名称中请不要带有符号“]”哦！\n[150]\_l[5,-]\_b[%(CHR(34))%(_path2),0%(CHR(34)),inline%(ICOMode)] \n软件名称：%(_filename)%(_fileext)\n[150] 软件路径：%(_path2)"
 		}
@@ -840,13 +844,17 @@ OnShortcutFileDrop{
 		when '.txt','.doc','.dic','.url'{
 			if RE_GREP(_path2,']')==0 {
 				_Ico='3'
-				"\_q需要橘花设置该文件橘花的快捷菜单吗？\n[150]　\![*]\q[好的,OnShortcut,%(_filename)%(_fileext),%(_path2),2]　\![*]\q[不了,OnShortcutOver]\n[120]\_l[5,-]\_b[%(CHR(34))SAORI_PATH\Process.dll,%(_Ico)%(CHR(34)),inline%(ICOMode)] \n名称：等下%(username)自己可以设置名称！%(_filename)%(_fileext)\n[150]\_l[40,-]路径：%(_path2)"
+				"\_q需要橘花设置该文件橘花的快捷菜单吗？\n[150]/
+				　\![*]\q[好的,OnShortcut,%(_filename)%(_fileext),%(_path2),2]　\![*]\q[直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]\n[150]/
+				\_l[5,-]\_b[%(CHR(34))SAORI_PATH\Process.dll,%(_Ico)%(CHR(34)),inline%(ICOMode)] \n名称：等下%(username)自己可以设置名称！%(_filename)%(_fileext)\n[150]\_l[40,-]路径：%(_path2)"
 			}
 			else
 				"\_q\0\s[0]如果%(username)要设置该文件的快捷，\n路径和名称中请不要带有符号“]”哦！\n[150]\_l[5,-]\_b[%(CHR(34))%(_path2),0%(CHR(34)),inline%(ICOMode)]  \n文件名称：%(_filename)%(_fileext)\n[150] 文档路径：%(_path2)"
 		}
 		when '.html'{
-			"\_q需要橘花设置该网址到橘花的快捷菜单吗？\n[150]　\![*]\q[好的,OnShortcut,%(_filename)%(_fileext),%(_path2),2,url]　\![*]\q[不了,OnShortcutOver]\n[120]\_l[5,-]\_b[%(CHR(34))SAORI_PATH\Process.dll,%(_Ico)%(CHR(34)),inline%(ICOMode)] \n名称：等下%(username)自己可以设置名称！%(_filename)%(_fileext)\n[150]\_l[40,-]路径：%(_path2)"
+			"\_q需要橘花设置该网址到橘花的快捷菜单吗？\n[150]/
+			　\![*]\q[好的,OnShortcut,%(_filename)%(_fileext),%(_path2),2,url]　\![*]\q[直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]\n[150]/
+			\_l[5,-]\_b[%(CHR(34))SAORI_PATH\Process.dll,%(_Ico)%(CHR(34)),inline%(ICOMode)] \n名称：等下%(username)自己可以设置名称！%(_filename)%(_fileext)\n[150]\_l[40,-]路径：%(_path2)"
 		}
 		when '.sccfg'{
 			LoadShortCutCfg(_file)
@@ -1134,7 +1142,7 @@ OnOtherVoc{
 	_txt='\b[2]\![quicksession,1]\![set,choicetimeout,0]'
 	_txt+='其他记忆库\n[150]'
 	foreach _dir;_i{
-		_t='DATA_PATH/vocabulary/Japanese'+_i
+		_t='DATA_PATH/vocabulary/Japanese/'+_i
 		_txt+=" \q[%(_i),OnJapaneseWord,7,%(_t)]\n"
 	}
 	_txt+='\q[◇返回,japanesestudy]       \q[◇终了,OnOpenMenu,1]     '
@@ -1578,6 +1586,8 @@ OnJapWordDay{
 JapWordShuffle{
 	_word=IARRAY
 	_n=ARRAYSIZE(japword)
+	if !_n
+		return
 	_temp=japword
 	_num=RAND(_n)
 	_j=0
@@ -1914,7 +1924,7 @@ JapWordDay{
 		_file = 'DATA_PATH\vocabulary\Japanese\大家的日语.txt'
 	elseif japworddaymode[2]==5
 		_file = 'DATA_PATH\vocabulary\Japanese\日语一级至四级词汇表.txt'
-	elseif japworddaymode[2]==6 || japworddaymode[2]==7
+	elseif (japworddaymode[2]==6 || japworddaymode[2]==7) && FILEEXIST(japworddaymode[3])
 		_file = japworddaymode[3]
 	_word=IARRAY
 	_misword=''

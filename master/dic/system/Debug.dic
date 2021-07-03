@@ -96,37 +96,50 @@ On_ShioriEcho.GetName:void {
 }
 On_ShioriEcho {
 	ClearShioriEchoVar
-	if CUTSPACE(reference0) == 'reload'
-		OnReloadShiori
-	else
-		OnCalculateVar
+	case CUTSPACE(reference0){
+		when 'reload'{
+			OnReloadShiori
+			ShioriEcho.Special='重载中'
+		}
+		when 'errorlog'{
+			OnErrorLog
+			ShioriEcho.Result=GETERRORLOG
+		}
+		others
+			OnCalculateVar
+	}
 	--
 	IgnoreChoiceTimeout
 }
+On_ShioriEcho.TabPress{
+	_lastname=RE_REPLACE(reference0,'^[\s\S]*[\[\]\(\)\+\-\*\/\=\'+"'"+'\"]','')
+	_possible_names=(GETVARLIST(_lastname),GETFUNCLIST(_lastname))
+	if ARRAYSIZE(_possible_names){
+		_name_after_tab=_possible_names[reference1%ARRAYSIZE(_possible_names)]
+		SHIORI_FW.Make_X_SSTP_PassThru('Command',RE_REPLACE(reference0,_lastname+'$',_name_after_tab))
+	}
+}
 On_ShioriEcho.GetResult:void {
-	if ShioriEcho.Canceled{
-		SHIORI_FW.Make_X_SSTP_PassThru('Special','已取消求值')
+	if ShioriEcho.Special{
+		SHIORI_FW.Make_X_SSTP_PassThru('Special',ShioriEcho.Special)
 	}
 	else{
 		if ISVAR('ShioriEcho.Result'){
 			SHIORI_FW.Make_X_SSTP_PassThru('Result',ValueTOstring(ShioriEcho.Result))
-			if ShioriEcho.Type
-				SHIORI_FW.Make_X_SSTP_PassThru('Type',ShioriEcho.Type)
+			SHIORI_FW.Make_X_SSTP_PassThru('Type',GETTYPE.string((ShioriEcho.Result)))
 		}
 	}
 	ClearShioriEchoVar
 }
 ClearShioriEchoVar:void {
-	ERASEVAR('ShioriEcho.Canceled')
-	ERASEVAR('ShioriEcho.Result')
-	ERASEVAR('ShioriEcho.Type')
+	ERASEALLVARBEGINAS('ShioriEcho.')
 }
 OnCalculateVar.Cancel{
-	ShioriEcho.Canceled=1
+	ShioriEcho.Special='已取消求值'
 	EVAL('Select.'+reference0)
 }
 OnCalculateVar.ToSakuraScript{
-	ShioriEcho.Canceled=1
+	ShioriEcho.Special='转为SakuraScript执行'
 	OnSakuraScript(reference0)
 }
 
@@ -138,7 +151,7 @@ OnCalculateVar{
 	reference0 = TOSTR(reference0)
 	if !CUTSPACE(reference0){
 		if INEVENT('On_ShioriEcho')
-			ShioriEcho.Canceled=1
+			ShioriEcho.Special='请键入表达式'
 		else
 			'\![open,inputbox,OnCalculateVar,0,1000-7]'//玩梗
 		return
@@ -228,7 +241,6 @@ OnCalculateVar{
 		'
 		--
 		ShioriEcho.Result=_Result
-		ShioriEcho.Type=_Type
 	}
 }
 OnCalculateVar.CharConverter{
