@@ -113,7 +113,7 @@ On_ShioriEcho {
 }
 On_ShioriEcho.TabPress{
 	_lastname=RE_REPLACE(reference0,'^[\s\S]*[\[\]\(\)\+\-\*\/\=\'+"'"+'\"]','')
-	_possible_names=(GETVARLIST(_lastname),GETFUNCLIST(_lastname))
+	_possible_names=(GETVARLIST(_lastname),GETFUNCLIST(_lastname),ARRAY.BeginAs(_lastname,'reload','errorlog'))
 	if ARRAYSIZE(_possible_names){
 		_name_after_tab=_possible_names[reference1%ARRAYSIZE(_possible_names)]
 		SHIORI_FW.Make_X_SSTP_PassThru('Command',RE_REPLACE(reference0,_lastname+'$',_name_after_tab))
@@ -637,19 +637,22 @@ Get_AYA_Function_Info{
 			coreinfo.path\_l[100]2\_l[170]当前dll的路径\n/
 			coreinfo.name\_l[100]3\_l[170]当前dll名称\n/
 			coreinfo.author\_l[100]4\_l[170]当前dll作者名\n/
-			coreinfo.savefile\_l[100]（无）\_l[170]存档文件名'
+			coreinfo.savefile\_l[100]无\_l[170]存档文件名\n/
+			coreinfo.mode\_l[100]无\_l[170]aya当前模式（emergency或normal）'
 		when 'GETFUNCLIST'
 			'返回读取辞书中的所有函数列表。也可以指定『由（prefix）开头的所有函数』。'
 		when 'GETVARLIST'
 			'返回读取辞书中的所有变量列表。也可以指定『由（prefix）开头的所有变量』。'
+		when 'GETCALLSTACK'
+			'返回函数栈，返回值为多个字串组成的泛用阵列'
+		when 'GETERRORLOG'
+			'获取aya的错误记录，返回泛用阵列'
 		when 'CHARSETTEXTTOID'
 			'将用文本表示的文字编码变换为AYA中的编号'
 		when 'CHARSETIDTOTEXT'
 			'将用AYA中的编号表示的文字编码变换为文本'
 		when 'RESTOREVAR'
 			'将所有变量读取复原。可以进行路径指定，如省略指定，默认为原来的人格存档位置（和aya.dll同路径的variable.cfg）。'
-		when 'GETCALLSTACK'
-			'返回被呼出过的用户函数，返回值为多个字串组成的泛用阵列'
 		when 'EXECUTE'
 			'让path中的文件对象执行option中的命令。主要用于呼叫其他应用程序。也可以仅打开程序而不指定操作'
 		when 'EXECUTE_WAIT'
