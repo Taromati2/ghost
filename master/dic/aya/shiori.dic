@@ -264,10 +264,13 @@ load {
 
 	if !FILEEXIST('SAVE_FILE') || FSIZE('SAVE_FILE')==0 {
 		MAGICLOAD
-		if FILEEXIST('yaya_variable.cfg'){
-			LOADVAR('yaya_variable.cfg')
-			FDEL('yaya_variable.cfg')
+		foreach _OLD_SAVE_FILES_;_i{
+			if FILEEXIST(_i){
+				LOADVAR(_i)
+				FDEL(_i)
+			}
 		}
+		SAVEVAR
 	}
 
 	SHIORI_FW.InitChain
@@ -279,7 +282,7 @@ load {
 
 	if SHIORI_FW.EmergencyMode
 		SHIORI_FW.PushNotifyResult(OnEmergencyMode)
-	elseif FILEEXIST('SHIORI_NAME_emerg.txt'){
+	elseif FILEEXIST('SHIORI_PATH\SHIORI_NAME_emerg.txt'){
 		foreach _DIC_DIRS_; _dir{
 			DIRSync(_dir,'EMERGENCYMODEDICDIR'+'\'+_dir)
 		}
@@ -1565,7 +1568,15 @@ SHIORI_EV.OnBalloonChange : void {
 
 	SHIORI_FW.OnChangeSelfInfo
 }
-
+Get_Full_Defened_Event_Name{
+	if ISFUNC(_argv[0])
+		_argv[0]
+	else
+		'On_'+_argv[0]
+}
+Is_Defened_Event{
+	ISFUNC(_argv[0])||ISFUNC('On_'+_argv[0])
+}
 SHIORI_EV.On_Has_Event : void {
 	SHIORI_FW.Make_X_SSTP_PassThru('Result',ISFUNC(reference0)||ISFUNC('On_'+reference0)||ISFUNC('SHIORI_EV.'+reference0)||ISFUNC('SHIORI_EV.On_'+reference0))
 }
@@ -1592,8 +1603,8 @@ SHIORI_EV.On_name {
 //******************************************************************************
 SHIORI_EV.On_enable_log : void {
 	if TOINT(reference[0]) {
-		SETSETTING('log','SHIORI_NAME.log')
-	} else {
+		SETSETTING('log','SHIORI_PATH/SHIORI_NAME.log')
+	}else{
 		SETSETTING('log','')
 	}
 	if !ISVAR('SHIORI_FW.LogMode')
@@ -1605,7 +1616,7 @@ SHIORI_EV.On_enable_log : void {
 }
 
 SHIORI_EV.On_log_path {
-	SHIORI_FW.Path + 'SHIORI_NAME.log'
+	SHIORI_FW.Path + 'SHIORI_PATH/SHIORI_NAME.log'
 }
 
 SHIORI_EV.On_enable_debug : void {

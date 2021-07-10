@@ -238,8 +238,18 @@ OnTextDrop{
 		_t=CUTSPACE(temp)
 		if __t=Get_AYA_Function_Info(_t)
 			'aya自带底层函数\n'+__t+'\n'
-		elseif ISFUNC(_t)
-			'这是一个函数\n'
+		elseif ISFUNC(_t)||Is_Defened_Event(_t){
+			_t=Get_Full_Defened_Event_Name(_t)
+			_info=GETFUNCINFO(_t)
+			_path=SPLITPATH(_info[0])
+			if _path
+				_path=_path[2]+_path[3]
+			else
+				_path=_info[0]
+			"函数“%(_t)”\n/
+			起始于\q[◇%(_path),OnOpenDirOrFile,%(_info[0])] 第%(_info[1])行\n/
+			"
+		}
 		elseif ISVAR(_t)
 			"变量“%(_t)”\n/
 			值：%(GetVarValue.SakuraScript(_t))\n/

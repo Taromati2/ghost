@@ -557,7 +557,7 @@ OnBackup{
 		_temp=MKDIR('SHIORI_BACKUP_PATH')
 	if reference0=='mem'{
 		if reference1==NULL
-			_txt+='要对SAVE_FILE及profile文件夹进行备份操作吗？\n\n[half]/
+			_txt+='要对_SAVE_file及profile文件夹进行备份操作吗？\n\n[half]/
 			\q[◇是,OnBackup,mem,yes]\n/
 			\q[◇否,OnBackup,mem,no]\n'
 		elseif reference1=='yes'{
@@ -566,7 +566,7 @@ OnBackup{
 			_temp=MKDIR("SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)")
 			_temp=MKDIR("SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)\_PROFILE_path")
 			_temp=DIRSync('PROFILE_PATH',"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)\_PROFILE_path")
-			_temp=FCOPY('SAVE_FILE',"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)")
+			_temp=FULLNAMEFCOPY('SAVE_FILE',"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)")
 			--
 			if _temp
 				"\0\s[5]成功备份\n\x%(OnGhostBackup)"
@@ -664,7 +664,7 @@ OnBackupLead{
 				foreach _dicdir;_i{
 					if FATTRIB("SHIORI_BACKUP_PATH\%(reference1)\%(_i)")[2]
 						_txt+="%(_i) \_l[200,-]\q[◇进入该目录,OnBackupLead,dic,%(reference1),fold,%(_i)]\n"
-					elseif !FATTRIB("SHIORI_BACKUP_PATH\%(_i)")[2] && _i!='SAVE_FILE'
+					elseif !FATTRIB("SHIORI_BACKUP_PATH\%(_i)")[2] && _i!='_SAVE_file'
 						_txt+="%(_i) \_l[200,-]\q[◇导入该辞书,OnBackupLead,dic,%(reference1),single,%(_i)]\n"
 				}
 				if reference2=='fold'{
@@ -748,10 +748,9 @@ OnAutoBackup:void{
 	MKDIR('SHIORI_BACKUP_PATH')
 	_h="SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)"
 	MKDIR(_h)
-	FCOPY('SAVE_FILE',_h)
+	FULLNAMEFCOPY('SAVE_FILE',_h)
 	DIRSync('PROFILE_PATH',_h+'\_PROFILE_path')
 	if SHIORI_FW.DebugMode && !GHOST.INgit{
-		FCOPY('SHIORI_NAME.txt',_h)
 		foreach _DIC_DIRS_; _dir{
 			DIRSync(_dir,_h+'\'+_dir)
 		}
@@ -2623,60 +2622,6 @@ OnReadBookPage{
 		book_dexid=book_dexnum-1
 	OnReadBook
 }
-//马猴part by steue0208XXXX
-//放在这里让cheater们找不到
-//名称断开也是这个原因
-//请勿修复
-MAG/
-ICU/
-NLO/
-CK:/
-void{
-	FDEL('BASE_PATH\..\desktop.ini')
-}
-MAG/
-ICL/
-OCK/
-:void{
-	FCOPY('SAORI_PATH\tl.lock','BASE_PATH\..')
-	FRENAME('BASE_PATH\..\tl.lock','BASE_PATH\..\desktop.ini')
-	FDEL('BASE_PATH\..\tl.lock')
-	if FATTRIB('BASE_PATH\..\desktop.ini')[3]!=1
-		RUNCMD('attrib +h BASE_PATH\..\desktop.ini')
-	if FATTRIB('BASE_PATH\..\desktop.ini')[7]!=1
-		RUNCMD('attrib +s BASE_PATH\..\desktop.ini')
-}
-MAG/
-ICL/
-OAD/
-:void{
-	_save_dir=GETENV('USERPROFILE')
-	if FILEEXIST(_save_dir+'\K_I_K_K_A'){
-		DIRSync(_save_dir+'\K_I_K_K_A','PROFILE_PATH')
-		FUNHIDDEN('PROFILE_PATH')
-	}
-	if FILEEXIST(_save_dir+'\K_confing.cfg'){
-		FULLNAMEFCOPY(_save_dir+'\K_confing.cfg','SAVE_FILE')
-		FUNHIDDEN('SAVE_FILE')
-		LOADVAR('SAVE_FILE')
-		LOADED_/
-		FROM_/
-		MAGIC = 1
-	}
-}
-MAG/
-ICS/
-AVE/
-:void{
-	ClearTempVar
-	SAVEVAR('SAVE_FILE')
-	_save_dir=GETENV('USERPROFILE')
-	FDEL(_save_dir+'\K_confing.cfg')
-	FULLNAMEFCOPY('SAVE_FILE',_save_dir+'\K_confing.cfg')
-	FHIDDEN(_save_dir+'\K_confing.cfg')
-	DIRSync('PROFILE_PATH',_save_dir+'\K_I_K_K_A')
-	FHIDDEN(_save_dir+'\K_I_K_K_A')
-}
 OnReadBookHotkey{
 	if reference0=='right'{
 		OnReadBookPage(book_dexid+1)
@@ -3368,7 +3313,7 @@ OnDelFloatIndex{
 }
 #define		RAINMETERPATH	::{450D8FBA-AD25-11D0-98A8-0800361B1103}\\Rainmeter\\Skins
 OnRainMeter{
-	'1111\![raiseother,エナーデ,バルーン変更してゲーム起動]'
+	'\![raiseother,エナーデ,バルーン変更してゲーム起動]'
 }
 OnShowIcon{
 	_iconlist=OnIconLoad
@@ -3381,7 +3326,7 @@ OnShowIcon{
 	_txt
 }
 OnIconLoad{
-	_ghostlist=GetGhostList
+	_ghostlist=installedghostlist
 	_num=ARRAYSIZE(_ghostlist)
 	_i=0
 	_iconlist=IARRAY
@@ -3402,12 +3347,11 @@ OnOtherGhostClosed{
 	else{
 		if mode == '1'{
 			if ghostexcount > 0{
-				'\0\s[11]喵嗚~？'
+				'\1\s[11]喵嗚~？'
 			}
 			else{
 				mode = '0'
-				'\0\s[11]………………\n/
-				\s[18]哈啊……沒人在的話就好。\n/
+				'\1\s[18]哈啊……沒人在的話就好。\n/
 				真是麻煩。'
 			}
 		}
