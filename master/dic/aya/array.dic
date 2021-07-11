@@ -20,7 +20,17 @@ ARRAY.GETMAX{
 	}
 	_max
 }
-
+ARRAY.BeginAs{
+	_begin=_argv[0]
+	_argv[0]=IARRAY
+	_size=STRLEN(_begin)
+	_aret=IARRAY
+	foreach _argv;_i{
+		if _begin==SUBSTR(TOSTR(_i),0,_size)
+			_aret,=_i
+	}
+	_aret
+}
 INARRAY{
 	_aret=0
 	_t=''

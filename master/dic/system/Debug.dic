@@ -113,7 +113,7 @@ On_ShioriEcho {
 }
 On_ShioriEcho.TabPress{
 	_lastname=RE_REPLACE(reference0,'^[\s\S]*[\[\]\(\)\+\-\*\/\=\'+"'"+'\"]','')
-	_possible_names=(GETVARLIST(_lastname),GETFUNCLIST(_lastname))
+	_possible_names=(GETVARLIST(_lastname),GETFUNCLIST(_lastname),ARRAY.BeginAs(_lastname,'reload','errorlog'))
 	if ARRAYSIZE(_possible_names){
 		_name_after_tab=_possible_names[reference1%ARRAYSIZE(_possible_names)]
 		SHIORI_FW.Make_X_SSTP_PassThru('Command',RE_REPLACE(reference0,_lastname+'$',_name_after_tab))
@@ -584,7 +584,9 @@ Get_AYA_Function_Info{
 		when 'FREAD'
 			'读取文件中的1行，不附带换行符。文件即之前用FOPEN操作的对象'
 		when 'FREADENCODE'
-			'用base64或者url编码的方式读取文件。如果用二进制打不开的话，要变换一下换行符。文件即之前用FOPEN操作的对象。读取的字节数可以设置，0为全部。type可选base64和url，默认为base64'
+			'用base64或者url编码的方式读取文件。如果用二进制打不开的话，要变换一下换行符。文件即之前用FOPEN操作的对象。读取的字节数可以设置，0为全部。type可选base64和url，默认为base64，对应FWRITEDECODE'
+		when 'FWRITEDECODE'
+			'用base64或者url编码的方式写入文件。文件即之前用FOPEN操作的对象。写入的字节数可以设置，0为全部。type可选base64和url，默认为base64，对应FREADENCODE'
 		when 'FWRITE'
 			'按照之前FCHARSET指定的编码在文件中写入一行文字（不指定的话就用AYA内码）。末尾自带换行符。文件即之前用FOPEN操作的对象'
 		when 'FWRITE2'
@@ -637,19 +639,22 @@ Get_AYA_Function_Info{
 			coreinfo.path\_l[100]2\_l[170]当前dll的路径\n/
 			coreinfo.name\_l[100]3\_l[170]当前dll名称\n/
 			coreinfo.author\_l[100]4\_l[170]当前dll作者名\n/
-			coreinfo.savefile\_l[100]（无）\_l[170]存档文件名'
+			coreinfo.savefile\_l[100]无\_l[170]存档文件名\n/
+			coreinfo.mode\_l[100]无\_l[170]aya当前模式（emergency或normal）'
 		when 'GETFUNCLIST'
 			'返回读取辞书中的所有函数列表。也可以指定『由（prefix）开头的所有函数』。'
 		when 'GETVARLIST'
 			'返回读取辞书中的所有变量列表。也可以指定『由（prefix）开头的所有变量』。'
+		when 'GETCALLSTACK'
+			'返回函数栈，返回值为多个字串组成的泛用阵列'
+		when 'GETERRORLOG'
+			'获取aya的错误记录，返回泛用阵列'
 		when 'CHARSETTEXTTOID'
 			'将用文本表示的文字编码变换为AYA中的编号'
 		when 'CHARSETIDTOTEXT'
 			'将用AYA中的编号表示的文字编码变换为文本'
 		when 'RESTOREVAR'
 			'将所有变量读取复原。可以进行路径指定，如省略指定，默认为原来的人格存档位置（和aya.dll同路径的variable.cfg）。'
-		when 'GETCALLSTACK'
-			'返回被呼出过的用户函数，返回值为多个字串组成的泛用阵列'
 		when 'EXECUTE'
 			'让path中的文件对象执行option中的命令。主要用于呼叫其他应用程序。也可以仅打开程序而不指定操作'
 		when 'EXECUTE_WAIT'
@@ -676,10 +681,35 @@ Get_AYA_Function_Info{
 			'设定系统函数错误的编码。用整数值代入，参见AYA系统错误表'
 		when 'DUMPVAR'
 			'在log中记录变量的转储'
+		when 'EmBeD_HiStOrY'
+			'aya内部实现%[n]功能的所必须的函数\n是内部使用函数，忽略就可以了'
+		when 'GETSTRURLENCODE'
+			'旧式样，现改叫STRENCODE'
+		when 'GETSTRURLDECODE'
+			'旧式样，现改叫STRDECODE'
+		when 'GETENV'
+			'获取系统中的环境变量\n详情可以谷歌“环境变量”'
+		when 'DICLOAD'
+			'运行时加载辞书，成功时返回0，失败时什么也不影响并返回1'
+		when 'GETSYSTEMFUNCLIST'
+			'获取以第一参数（字串）开始的名称做名称的aya底层函数列表'
+		when 'GETFUNCINFO'
+			'获取对应函数的定义位置与起始/终止行数，失败时返回空阵列'
 		others
 			'文档未记录'
 	}
 }
+/*
+On_Get_AYA_Function_Info_Test{
+	_l=GETSYSTEMFUNCLIST()
+	_txt='文档未记录的aya底层函数有：\n'
+	foreach _l;_i{
+		if Get_AYA_Function_Info(_i)=='文档未记录'
+			_txt+=_i+'\n'
+	}
+	_txt
+}
+*/
 OnErrorLog{
 	ErrorList.Gene
 	_i=0
@@ -691,7 +721,9 @@ OnErrorLog{
 		else
 			_txt+=ErrorList.filename[_i]
 		_txt+=',OnOpenDirOrFile,'+SakuraScriptArgConverter(ErrorList.filename[_i])+']'
-		_txt+='行'+ErrorList.linenum[_i]+'：'+ErrorList.Info[_i]+'\n'
+		if ErrorList.linenum[_i]
+			_txt+='行'+ErrorList.linenum[_i]
+		_txt+='：'+ErrorList.Info[_i]+'\n'
 		_i++
 	}
 	_txt+='\_q\n/

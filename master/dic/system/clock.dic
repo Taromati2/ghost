@@ -64,6 +64,11 @@ OnMinuteChange{
 	--
 	ShutdownMonitor
 	--
+	if specialmode == 'mealtime' && mealendtime < ghostuptime{
+		Onmealfin
+		return
+	}
+	--
 	if REQ.COMMAND!='GET'
 		return
 	if mode == '0'{
@@ -148,9 +153,6 @@ OnMinuteChange{
 				}
 			}
 		}
-	}
-	elseif specialmode == 'mealtime' && mealendtime < ghostuptime{
-		Onmealfin
 	}
 }
 ClassMonitor{

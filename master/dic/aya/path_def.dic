@@ -3,6 +3,11 @@
 #globaldefine SHIORI_NAME			aya
 #globaldefine _DIC_DIRS_			'dic'
 //
+#globaldefine _OLD_SAVE_FILES_		'aya_variable.cfg,yaya_variable.cfg,SHIORI_PATH/yaya_variable.cfg'
+#globaldefine SAVE_FILE				SHIORI_PATH/_SAVE_file
+#globaldefine SAVE_FILE				SHIORI_PATH/_SAVE_file
+#globaldefine _SAVE_file			aya_variable.cfg
+//
 #globaldefine EMERGENCYMODEDICDIR	VAR_PATH/last_work_able_dic
 //
 #globaldefine DATA_PATH				BASE_PATH/_DATA_path
@@ -28,4 +33,4 @@
 #globaldefine _SHIORI_BACKUP_path	shiori_backup
 //
 #globaldefine BASE_PATH				.
-#globaldefine SAVE_FILE				aya_variable.cfg
+//

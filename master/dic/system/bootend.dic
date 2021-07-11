@@ -128,15 +128,13 @@ OnBoot{
 		OnFirstBoot
 		return
 	}
+	if elapsetime > 300 && specialmode == 'mealtime'{
+		void Onmealfin
+	}
 	if mode == '1'{
-		if elapsetime > 300 && specialmode == 'mealtime'{
-			void Onmealfin
-		}
-		else{
-			mealendtime=60
-			"\0\s[-1]\1\s[%(specialmode != 'mealtime')10]呦。"
-			return
-		}
+		mealendtime=60
+		"\0\s[-1]\1\s[%(specialmode != 'mealtime')10]呦。"
+		return
 	}
 	if uninstall || (_argv[0]=='FromFirstBoot' && elapsetime > 172800){
 		SilentShellChange=1

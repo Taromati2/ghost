@@ -91,13 +91,16 @@ OnDicDrop{
 	_fileext = TOLOWER(SPLITPATH(_file)[3])
 	if SHIORI_FW.DebugMode{
 		temp = reference0
+		if mode=='0'
+			'\0\s[0]'
+		else
+			'\1'
 		"辞书所对应shiori：%(GetSHIORInameFromDicExt(_fileext))\n"
 		--
 		if mode=='0'
-			'\0\s[0]要怎么做？'
-		else{
-			'\1怎么做？\b[2]'
-		}
+			'要怎么做？'
+		else
+			'怎么做？\b[2]'
 		--
 		'\n'
 		--

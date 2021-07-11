@@ -1,3 +1,2 @@
 include, aya_base.txt
-//iolog, on
 dicdir, var/last_work_able_dic
