@@ -721,7 +721,9 @@ OnErrorLog{
 		else
 			_txt+=ErrorList.filename[_i]
 		_txt+=',OnOpenDirOrFile,'+SakuraScriptArgConverter(ErrorList.filename[_i])+']'
-		_txt+='行'+ErrorList.linenum[_i]+'：'+ErrorList.Info[_i]+'\n'
+		if ErrorList.linenum[_i]
+			_txt+='行'+ErrorList.linenum[_i]
+		_txt+='：'+ErrorList.Info[_i]+'\n'
 		_i++
 	}
 	_txt+='\_q\n/
