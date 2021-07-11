@@ -584,7 +584,9 @@ Get_AYA_Function_Info{
 		when 'FREAD'
 			'读取文件中的1行，不附带换行符。文件即之前用FOPEN操作的对象'
 		when 'FREADENCODE'
-			'用base64或者url编码的方式读取文件。如果用二进制打不开的话，要变换一下换行符。文件即之前用FOPEN操作的对象。读取的字节数可以设置，0为全部。type可选base64和url，默认为base64'
+			'用base64或者url编码的方式读取文件。如果用二进制打不开的话，要变换一下换行符。文件即之前用FOPEN操作的对象。读取的字节数可以设置，0为全部。type可选base64和url，默认为base64，对应FWRITEDECODE'
+		when 'FWRITEDECODE'
+			'用base64或者url编码的方式写入文件。文件即之前用FOPEN操作的对象。写入的字节数可以设置，0为全部。type可选base64和url，默认为base64，对应FREADENCODE'
 		when 'FWRITE'
 			'按照之前FCHARSET指定的编码在文件中写入一行文字（不指定的话就用AYA内码）。末尾自带换行符。文件即之前用FOPEN操作的对象'
 		when 'FWRITE2'
@@ -679,10 +681,35 @@ Get_AYA_Function_Info{
 			'设定系统函数错误的编码。用整数值代入，参见AYA系统错误表'
 		when 'DUMPVAR'
 			'在log中记录变量的转储'
+		when 'EmBeD_HiStOrY'
+			'aya内部实现%[n]功能的所必须的函数\n是内部使用函数，忽略就可以了'
+		when 'GETSTRURLENCODE'
+			'旧式样，现改叫STRENCODE'
+		when 'GETSTRURLDECODE'
+			'旧式样，现改叫STRDECODE'
+		when 'GETENV'
+			'获取系统中的环境变量\n详情可以谷歌“环境变量”'
+		when 'DICLOAD'
+			'运行时加载辞书，成功时返回0，失败时什么也不影响并返回1'
+		when 'GETSYSTEMFUNCLIST'
+			'获取以第一参数（字串）开始的名称做名称的aya底层函数列表'
+		when 'GETFUNCINFO'
+			'获取对应函数的定义位置与起始/终止行数，失败时返回空阵列'
 		others
 			'文档未记录'
 	}
 }
+/*
+On_Get_AYA_Function_Info_Test{
+	_l=GETSYSTEMFUNCLIST()
+	_txt='文档未记录的aya底层函数有：\n'
+	foreach _l;_i{
+		if Get_AYA_Function_Info(_i)=='文档未记录'
+			_txt+=_i+'\n'
+	}
+	_txt
+}
+*/
 OnErrorLog{
 	ErrorList.Gene
 	_i=0
