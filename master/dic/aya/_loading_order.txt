@@ -1,0 +1,2 @@
+dicdir, base
+dicdir, master
