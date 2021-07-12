@@ -1,2 +1,1 @@
-include, aya_base.txt
-dicdir, dic
+include, aya_common.txt
