@@ -66,23 +66,39 @@ OnSakuraScript{
 		reference0 = _argv[0]
 	if _argv[1]
 		reference1 = _argv[1]
-	if reference1 != 'force_run' && reference1 != 'no_convert' && ('\!' _in_ reference0 || '\-' _in_ reference0){
-		'\0\s[100]/
-		警告\w9\w9：此Sakura Script可能含有较危险操作\n/
-		\q[◇确认執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',force_run]\n/
-		\q[◇无用,Cancel]\n/
-		'
-		return
-	}
-	if reference1 != 'no_convert' && '%' _in_ reference0{
-		'\0\s[100]/
-		这段Sakura Script中似乎含有aya转义符\w9\n/
-		需要转义么？\w9\n/
-		\q[◇转义執行,OnSakuraScript.Forment,'+SakuraScriptArgConverter(reference0)+']\n/
-		\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',no_convert]\n/
-		\q[◇无用,Cancel]\n/
-		'
-		return
+	if reference1 != 'no_defineprocess'{
+		if reference1 != 'no_convert'{
+			if reference1 != 'force_run'{
+				if ('\!' _in_ reference0 || '\-' _in_ reference0){
+					'\0\s[100]/
+					警告\w9\w9：此Sakura Script可能含有较危险操作\n/
+					\q[◇确认執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',force_run]\n/
+					\q[◇无用,Cancel]\n/
+					'
+					return
+				}
+			}
+			elseif '%' _in_ reference0{
+				'\0\s[100]/
+				这段Sakura Script中似乎含有aya转义符\w9\n/
+				需要转义么？\w9\n/
+				\q[◇转义執行,OnSakuraScript.Forment,'+SakuraScriptArgConverter(reference0)+']\n/
+				\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',no_convert]\n/
+				\q[◇无用,Cancel]\n/
+				'
+				return
+			}
+		}
+		elseif reference0!=PREPROCESSGLOBALDEFINE(reference0){
+			'\0\s[100]/
+			这段Sakura Script中似乎含有全局define\w9\n/
+			需要处理么？\w9\n/
+			\q[◇处理執行,OnSakuraScript,'+SakuraScriptArgConverter(PREPROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
+			\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',no_defineprocess]\n/
+			\q[◇无用,Cancel]\n/
+			'
+			return
+		}
 	}
 	reference0
 }
@@ -156,55 +172,74 @@ OnCalculateVar{
 			'\![open,inputbox,OnCalculateVar,0,1000-7]'//玩梗
 		return
 	}
-	if !ISFUNC(CUTSPACE(reference0)) && !ISVAR(CUTSPACE(reference0)){
-		if reference1 != 'warning_func_run' && reference1 != 'force_run' && reference1 != 'no_convert' && ('，' _in_ reference0 || '（' _in_ reference0 || '）' _in_ reference0 || '‘' _in_ reference0 || '’' _in_ reference0 || '“' _in_ reference0 || '”' _in_ reference0 || '！' _in_ reference0 || '、' _in_ reference0 || '？' _in_ reference0 || '。' _in_ reference0 || '【' _in_ reference0 || '】' _in_ reference0){
-			if mode == '1'
-				"\1\s[%(specialmode != 'mealtime')11]全角 -> 半角？\n"
-			else
-				'\0\s[20]转换表达式中的全角符号为半角？\n'
-			--
-			'\q[◇好,OnCalculateVar.CharConverter,'+SakuraScriptArgConverter(reference0)+']\n/
-			\q[◇直接执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',no_convert]\n/
-			\q[◇算了,OnCalculateVar.Cancel,Cancel]\n/
-			'
-			return
+	_var = RE_REPLACE(reference0,'\s*[\[,+=*-/%][\s\S]*$','')
+	_func = RE_REPLACE(reference0,'\s*[\(\[][\s\S]*$','')
+	if reference1 != 'warning_func_run'{
+		if reference1 != 'no_defineprocess'{
+			if reference1 != 'force_run'{
+				if reference1 != 'no_convert'{
+					if ('，' _in_ reference0 || '（' _in_ reference0 || '）' _in_ reference0 || '‘' _in_ reference0 || '’' _in_ reference0 || '“' _in_ reference0 || '”' _in_ reference0 || '！' _in_ reference0 || '、' _in_ reference0 || '？' _in_ reference0 || '。' _in_ reference0 || '【' _in_ reference0 || '】' _in_ reference0){
+						if mode == '1'
+							"\1\s[%(specialmode != 'mealtime')11]全角 -> 半角？\n"
+						else
+							'\0\s[20]转换表达式中的全角符号为半角？\n'
+						--
+						'\q[◇好,OnCalculateVar.CharConverter,'+SakuraScriptArgConverter(reference0)+']\n/
+						\q[◇直接执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',no_convert]\n/
+						\q[◇算了,OnCalculateVar.Cancel,Cancel]\n/
+						'
+						return
+					}
+				}
+				elseif ISVAR(_var) == 0 && ISFUNC(_func) == 0 && GETTYPE(TOAUTOEX(_var)) == 3{
+					if mode == '1'
+						"\1\s[%(specialmode != 'mealtime')10]没这个名字\n"
+					else
+						'\0\s[3]没有这个变量或函数……\n'
+					--
+					'/
+					\q[◇仍然执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',force_run]\n/
+					\q[◇改作Sakura Script執行,OnCalculateVar.ToSakuraScript,'+SakuraScriptArgConverter(reference0)+']\n/
+					\q[◇算了,OnCalculateVar.Cancel,Cancel]\n/
+					'
+					return
+				}
+			}
+			elseif reference0 != PREPROCESSGLOBALDEFINE(reference0){
+				if mode == '1'
+					"\1\s[%(specialmode != 'mealtime')10]有全局define\n"
+				else
+					'\0\s[20]处理表达式中的全局define么？\n'
+				--
+				'/
+				\q[◇处理執行,OnCalculateVar,'+SakuraScriptArgConverter(PREPROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
+				\q[◇直接執行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',no_defineprocess]\n/
+				\q[◇算了,OnCalculateVar.Cancel,Cancel]\n/
+				'
+				return
+			}
 		}
-		_var = RE_REPLACE(reference0,'\s*[\[,+=*-/%][\s\S]*$','')
-		_func = RE_REPLACE(reference0,'\s*[\(\[][\s\S]*$','')
-		if ISVAR(_var) == 0 && ISFUNC(_func) == 0 && reference1 != 'warning_func_run' && reference1 != 'force_run' && GETTYPE(TOAUTOEX(_var)) == 3{
+		elseif (RE_GREP(_func,'^Reset') || _func == 'OnFirstBoot' || _func == 'MAGICLOAD' || _func == 'LOADVAR' || _func == 'RESTOREVAR' || _func == 'OnKikkaReset'){
 			if mode == '1'
-				"\1\s[%(specialmode != 'mealtime')10]没这个名字\n"
+				"\1\s[%(specialmode != 'mealtime')11]\w9…\w9…\w9\n确认？\n"
 			else
-				'\0\s[3]没有这个变量或函数……\n'
+				'\0\s[7]这是一个危险函数\n\w9\w9\s[8]确认执行吗？\n'
 			--
 			'/
-			\q[◇仍然执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',force_run]\n/
-			\q[◇改作Sakura Script執行,OnCalculateVar.ToSakuraScript,'+SakuraScriptArgConverter(reference0)+']\n/
-			\q[◇算了,OnCalculateVar.Cancel,Cancel]/
+			\q[◇仍然执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',warning_func_run]\n/
+			\q[◇算了,OnCalculateVar.Cancel,'
+			--
+			if _func == 'OnFirstBoot' || _func == 'MAGICLOAD' || RE_GREP(_func,'^Reset') || _func == 'OnKikkaReset'
+				'Thanks'
+			else
+				'Cancel'
+			--
+			']/
 			'
 			return
 		}
 	}
-	if reference1 != 'warning_func_run' && (RE_GREP(_func,'^Reset') || _func == 'OnFirstBoot' || _func == 'MAGICLOAD' || _func == 'LOADVAR' || _func == 'RESTOREVAR' || _func == 'OnKikkaReset'){
-		if mode == '1'
-			"\1\s[%(specialmode != 'mealtime')11]\w9…\w9…\w9\n确认？\n"
-		else
-			'\0\s[7]这是一个危险函数\n\w9\w9\s[8]确认执行吗？\n'
-		--
-		'/
-		\q[◇仍然执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',warning_func_run]\n/
-		\q[◇算了,OnCalculateVar.Cancel,'
-		--
-		if _func == 'OnFirstBoot' || _func == 'MAGICLOAD' || RE_GREP(_func,'^Reset') || _func == 'OnKikkaReset'
-			'Thanks'
-		else
-			'Cancel'
-		--
-		']/
-		'
-		return
-	}
-	if reference1 == 'warning_func_run'{
+	else{
 		if mode == '1'
 			"\1\s[%(specialmode != 'mealtime')10]哦。"
 		else
@@ -694,7 +729,9 @@ Get_AYA_Function_Info{
 		when 'GETSYSTEMFUNCLIST'
 			'获取以第一参数（字串）开始的名称做名称的aya底层函数列表'
 		when 'GETFUNCINFO'
-			'获取对应函数的定义位置与起始/终止行数，失败时返回空阵列'
+			'获取对应函数的定义位置与起始/终止行数，失败时返回-1'
+		when 'PREPROCESSGLOBALDEFINE'
+			'以辞书中的#globaldefine对参数字串进行处理'
 		others
 			'文档未记录'
 	}
@@ -709,7 +746,15 @@ On_Get_AYA_Function_Info_Test{
 	}
 	_txt
 }
-*/
+//*/
+OnUpdateSHIORICore{
+	if FILEEXIST('SHIORI_PATH\update_aya.bat'){
+		'\![open,file,SHIORI_PATH\update_aya.bat,'+SakuraScriptArgConverter(reference0)+']'
+	}
+	else{
+		'\0\s[0]未找到update_aya.bat，请前往github仓库补全开发文件'
+	}
+}
 OnErrorLog{
 	ErrorList.Gene
 	_i=0

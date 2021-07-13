@@ -8,6 +8,11 @@ OnFileDrop{
 		OnFileRenameDrop(reference0)
 	elseif shortcut==1
 		OnShortcutFileDrop
+	elseif SHIORI_FW.DebugMode &&(_filename == 'aya.dll' || _filename == 'yaya.dll'){
+		'\0\s[0]更新aya？\n/
+		\q[◇确定,OnUpdateSHIORICore,'+SakuraScriptArgConverter(reference0)+']\n/
+		\q[◇无用,Cancel]'
+	}
 	else{
 		case _fileext {
 			when '.m3u', '.m3u8', '.mid', '.wav', '.mp3', '.au', '.m4a', '.ogg', '.wma','.ape','.flac','.avi','.wmv','.rm','.rmvb','.mp4','.mkv','.flv','.mpg'{
@@ -57,7 +62,7 @@ OnFileDrop{
 				"「%(_filename)」\n未知的文件类型……"
 				"\1\s[11]未知文件\n\_q「%(_filename)」\_q\0\s[3]…这是什么？"
 				--
-				"\n\![*]\q[◇直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]"
+				"\n\q[◇直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]"
 			}
 		}
 	}

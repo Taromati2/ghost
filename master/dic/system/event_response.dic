@@ -297,6 +297,12 @@ OnTextDrop{
 	if _text!=TOSIMPLIFIED(_text)
 		'\q[◇繁->简转换,OnCopyTS,simplified,'+_sakura_text+']\n'
 	--
+	if _text!=TOUPPER(_text)
+		'\q[◇全转大写,OnCopy,'+SakuraScriptArgConverter(TOUPPER(_text))+']\n'
+	--
+	if _text!=TOLOWER(_text)
+		'\q[◇全转小写,OnCopy,'+SakuraScriptArgConverter(TOLOWER(_text))+']\n'
+	--
 	'/
 	\q[◇无用,Cancel]\n/
 	'
