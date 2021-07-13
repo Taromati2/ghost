@@ -178,7 +178,7 @@ OnCalculateVar{
 		if reference1 != 'no_defineprocess'{
 			if reference1 != 'force_run'{
 				if reference1 != 'no_convert'{
-					if ('，' _in_ reference0 || '（' _in_ reference0 || '）' _in_ reference0 || '‘' _in_ reference0 || '’' _in_ reference0 || '“' _in_ reference0 || '”' _in_ reference0 || '！' _in_ reference0 || '、' _in_ reference0 || '？' _in_ reference0 || '。' _in_ reference0 || '【' _in_ reference0 || '】' _in_ reference0){
+					if RE_GREP('[，（）‘’“”！、？。【】]',reference0){
 						if mode == '1'
 							"\1\s[%(specialmode != 'mealtime')11]全角 -> 半角？\n"
 						else
