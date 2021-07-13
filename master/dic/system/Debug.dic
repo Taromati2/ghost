@@ -709,7 +709,15 @@ On_Get_AYA_Function_Info_Test{
 	}
 	_txt
 }
-*/
+//*/
+OnUpdateSHIORICore{
+	if FILEEXIST('SHIORI_PATH\update_aya.bat'){
+		'\![open,file,SHIORI_PATH\update_aya.bat,'+SakuraScriptArgConverter(reference0)+']'
+	}
+	else{
+		'\0\s[0]未找到update_aya.bat，请前往github仓库补全开发文件'
+	}
+}
 OnErrorLog{
 	ErrorList.Gene
 	_i=0

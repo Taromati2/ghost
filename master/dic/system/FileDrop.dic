@@ -8,6 +8,11 @@ OnFileDrop{
 		OnFileRenameDrop(reference0)
 	elseif shortcut==1
 		OnShortcutFileDrop
+	elseif SHIORI_FW.DebugMode &&(_filename == 'aya.dll' || _filename == 'yaya.dll'){
+		'\0\s[0]更新aya？\n/
+		\q[◇确定,OnUpdateSHIORICore,'+SakuraScriptArgConverter(reference0)+']\n/
+		\q[◇无用,Cancel]'
+	}
 	else{
 		case _fileext {
 			when '.m3u', '.m3u8', '.mid', '.wav', '.mp3', '.au', '.m4a', '.ogg', '.wma','.ape','.flac','.avi','.wmv','.rm','.rmvb','.mp4','.mkv','.flv','.mpg'{
