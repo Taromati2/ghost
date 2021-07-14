@@ -66,6 +66,7 @@ OnSakuraScript{
 		reference0 = _argv[0]
 	if _argv[1]
 		reference1 = _argv[1]
+	//for test:'%username，\\!VAR_PATH'
 	if reference1 != 'no_defineprocess'{
 		if reference1 != 'no_convert'{
 			if reference1 != 'force_run'{
@@ -89,11 +90,11 @@ OnSakuraScript{
 				return
 			}
 		}
-		elseif reference0!=PREPROCESSGLOBALDEFINE(reference0){
+		elseif reference0!=PROCESSGLOBALDEFINE(reference0){
 			'\0\s[100]/
 			这段Sakura Script中似乎含有全局define\w9\n/
 			需要处理么？\w9\n/
-			\q[◇处理執行,OnSakuraScript,'+SakuraScriptArgConverter(PREPROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
+			\q[◇处理執行,OnSakuraScript,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
 			\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',no_defineprocess]\n/
 			\q[◇无用,Cancel]\n/
 			'
@@ -121,14 +122,19 @@ On_ShioriEcho {
 			OnErrorLog
 			ShioriEcho.Result=GETERRORLOG
 		}
-		others
-			OnCalculateVar
+		others{
+			if RE_GREP(reference0,'^\s*help\s+')
+				ShioriEcho.Special=Get_AYA_Function_Info(RE_REPLACE(reference0,'^\s*help\s+',''))
+			else{
+				OnCalculateVar
+				--
+				IgnoreChoiceTimeout
+			}
+		}
 	}
-	--
-	IgnoreChoiceTimeout
 }
 On_ShioriEcho.TabPress{
-	_lastname=RE_REPLACE(reference0,'^[\s\S]*[\[\]\(\)\+\-\*\/\=\'+"'"+'\"]','')
+	_lastname=RE_REPLACE(reference0,'^[\s\S]*[\[\]\(\)\+\-\*\/\=\'+"'"+'\" ]','')
 	_possible_names=(GETVARLIST(_lastname),GETFUNCLIST(_lastname),GETSYSTEMFUNCLIST(_lastname),ARRAY.BeginAs(_lastname,'reload','errorlog'))
 	if ARRAYSIZE(_possible_names){
 		_name_after_tab=_possible_names[reference1%ARRAYSIZE(_possible_names)]
@@ -172,13 +178,14 @@ OnCalculateVar{
 			'\![open,inputbox,OnCalculateVar,0,1000-7]'//玩梗
 		return
 	}
+	//for test:'Reset，VAR_PATH'
 	_var = RE_REPLACE(reference0,'\s*[\[,+=*-/%][\s\S]*$','')
 	_func = RE_REPLACE(reference0,'\s*[\(\[][\s\S]*$','')
 	if reference1 != 'warning_func_run'{
 		if reference1 != 'no_defineprocess'{
 			if reference1 != 'force_run'{
 				if reference1 != 'no_convert'{
-					if RE_GREP('[，（）‘’“”！、？。【】]',reference0){
+					if RE_GREP(reference0,'[，（）‘’“”！、？。【】]'){
 						if mode == '1'
 							"\1\s[%(specialmode != 'mealtime')11]全角 -> 半角？\n"
 						else
@@ -205,14 +212,14 @@ OnCalculateVar{
 					return
 				}
 			}
-			elseif reference0 != PREPROCESSGLOBALDEFINE(reference0){
+			elseif reference0 != PROCESSGLOBALDEFINE(reference0){
 				if mode == '1'
 					"\1\s[%(specialmode != 'mealtime')10]有全局define\n"
 				else
 					'\0\s[20]处理表达式中的全局define么？\n'
 				--
 				'/
-				\q[◇处理執行,OnCalculateVar,'+SakuraScriptArgConverter(PREPROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
+				\q[◇处理執行,OnCalculateVar,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
 				\q[◇直接執行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',no_defineprocess]\n/
 				\q[◇算了,OnCalculateVar.Cancel,Cancel]\n/
 				'
@@ -535,7 +542,7 @@ Get_AYA_Function_Info{
 		when 'RE_MATCH'
 			'寻找文字串中与给定正则表达式完全一致的部分。存在会返回1，否则返回0'
 		when 'RE_GREP'
-			'寻找文字串中所有与正则表达式相符的部分。详细的结果要通过RE_GETSTR、RE_GETPOS、RE_GETLEN来取得'
+			'寻找文字串中所有与正则表达式相符的部分。详细的结果要通过RE_GETSTR、RE_GETPOS、RE_GETLEN来取得\n注意：正则表达式在第二参数位'
 		when 'RE_REPLACE'
 			'将字串中所有符合正则表达式的部分替换。详细的结果要通过RE_GETSTR、RE_GETPOS、RE_GETLEN来取得\n如不能确定输入对象一定是字串，可先用TOSTR处理。如果要替换的内容含有meta标签，必须使用RE_REPLACEEX'
 		when 'RE_SPLIT'
@@ -730,7 +737,7 @@ Get_AYA_Function_Info{
 			'获取以第一参数（字串）开始的名称做名称的aya底层函数列表'
 		when 'GETFUNCINFO'
 			'获取对应函数的定义位置与起始/终止行数，失败时返回-1'
-		when 'PREPROCESSGLOBALDEFINE'
+		when 'PROCESSGLOBALDEFINE'
 			'以辞书中的#globaldefine对参数字串进行处理'
 		others
 			'文档未记录'
@@ -746,7 +753,8 @@ On_Get_AYA_Function_Info_Test{
 	}
 	_txt
 }
-//*/
+/*
+*/
 OnUpdateSHIORICore{
 	if FILEEXIST('SHIORI_PATH\update_aya.bat'){
 		'\![open,file,SHIORI_PATH\update_aya.bat,'+SakuraScriptArgConverter(reference0)+']'
