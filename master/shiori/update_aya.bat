@@ -6,4 +6,5 @@ copy %1 aya.dll
 ..\saori\ghost_terminal.exe -c reload
 timeout /t 7
 del tmp
+exit
 @echo on
