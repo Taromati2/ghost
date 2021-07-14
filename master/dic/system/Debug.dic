@@ -89,11 +89,11 @@ OnSakuraScript{
 				return
 			}
 		}
-		elseif reference0!=PREPROCESSGLOBALDEFINE(reference0){
+		elseif reference0!=PROCESSGLOBALDEFINE(reference0){
 			'\0\s[100]/
 			这段Sakura Script中似乎含有全局define\w9\n/
 			需要处理么？\w9\n/
-			\q[◇处理執行,OnSakuraScript,'+SakuraScriptArgConverter(PREPROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
+			\q[◇处理執行,OnSakuraScript,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
 			\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',no_defineprocess]\n/
 			\q[◇无用,Cancel]\n/
 			'
@@ -205,14 +205,14 @@ OnCalculateVar{
 					return
 				}
 			}
-			elseif reference0 != PREPROCESSGLOBALDEFINE(reference0){
+			elseif reference0 != PROCESSGLOBALDEFINE(reference0){
 				if mode == '1'
 					"\1\s[%(specialmode != 'mealtime')10]有全局define\n"
 				else
 					'\0\s[20]处理表达式中的全局define么？\n'
 				--
 				'/
-				\q[◇处理執行,OnCalculateVar,'+SakuraScriptArgConverter(PREPROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
+				\q[◇处理執行,OnCalculateVar,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
 				\q[◇直接執行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',no_defineprocess]\n/
 				\q[◇算了,OnCalculateVar.Cancel,Cancel]\n/
 				'
@@ -730,7 +730,7 @@ Get_AYA_Function_Info{
 			'获取以第一参数（字串）开始的名称做名称的aya底层函数列表'
 		when 'GETFUNCINFO'
 			'获取对应函数的定义位置与起始/终止行数，失败时返回-1'
-		when 'PREPROCESSGLOBALDEFINE'
+		when 'PROCESSGLOBALDEFINE'
 			'以辞书中的#globaldefine对参数字串进行处理'
 		others
 			'文档未记录'
@@ -746,7 +746,8 @@ On_Get_AYA_Function_Info_Test{
 	}
 	_txt
 }
-//*/
+/*
+*/
 OnUpdateSHIORICore{
 	if FILEEXIST('SHIORI_PATH\update_aya.bat'){
 		'\![open,file,SHIORI_PATH\update_aya.bat,'+SakuraScriptArgConverter(reference0)+']'
