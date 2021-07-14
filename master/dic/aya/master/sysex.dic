@@ -12,7 +12,7 @@ OnChoiceSelectEx{
 	elseif ISFUNC("%(reference1)")
 		do_nothing
 	else
-		BUGNow
+		BUGNow("事件“%(reference1)”未定义")
 }
 OnAITalk{
 	if specialmode == 'rest'//休息事件中随机谈话禁止

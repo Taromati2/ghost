@@ -566,7 +566,7 @@ OnBackup{
 			_temp=MKDIR("SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)")
 			_temp=MKDIR("SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)\_PROFILE_path")
 			_temp=DIRSync('PROFILE_PATH',"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)\_PROFILE_path")
-			_temp=FULLNAMEFCOPY('SAVE_FILE',"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)")
+			_temp=FCOPY('SAVE_FILE',"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)")
 			--
 			if _temp
 				"\0\s[5]成功备份\n\x%(OnGhostBackup)"
@@ -748,7 +748,7 @@ OnAutoBackup:void{
 	MKDIR('SHIORI_BACKUP_PATH')
 	_h="SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)"
 	MKDIR(_h)
-	FULLNAMEFCOPY('SAVE_FILE',_h)
+	FCOPY('SAVE_FILE',_h)
 	DIRSync('PROFILE_PATH',_h+'\_PROFILE_path')
 	if SHIORI_FW.DebugMode && !GHOST.INgit{
 		foreach _DIC_DIRS_; _dir{

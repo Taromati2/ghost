@@ -79,7 +79,7 @@ OnSakuraScript{
 					return
 				}
 			}
-			elseif '%' _in_ reference0{
+			if '%' _in_ reference0{
 				'\0\s[100]/
 				这段Sakura Script中似乎含有aya转义符\w9\n/
 				需要转义么？\w9\n/
@@ -90,7 +90,7 @@ OnSakuraScript{
 				return
 			}
 		}
-		elseif reference0!=PROCESSGLOBALDEFINE(reference0){
+		if reference0!=PROCESSGLOBALDEFINE(reference0){
 			'\0\s[100]/
 			这段Sakura Script中似乎含有全局define\w9\n/
 			需要处理么？\w9\n/
@@ -198,7 +198,7 @@ OnCalculateVar{
 						return
 					}
 				}
-				elseif ISVAR(_var) == 0 && ISFUNC(_func) == 0 && GETTYPE(TOAUTOEX(_var)) == 3{
+				if ISVAR(_var) == 0 && ISFUNC(_func) == 0 && GETTYPE(TOAUTOEX(_var)) == 3{
 					if mode == '1'
 						"\1\s[%(specialmode != 'mealtime')10]没这个名字\n"
 					else
@@ -212,7 +212,7 @@ OnCalculateVar{
 					return
 				}
 			}
-			elseif reference0 != PROCESSGLOBALDEFINE(reference0){
+			if reference0 != PROCESSGLOBALDEFINE(reference0){
 				if mode == '1'
 					"\1\s[%(specialmode != 'mealtime')10]有全局define\n"
 				else
@@ -226,7 +226,7 @@ OnCalculateVar{
 				return
 			}
 		}
-		elseif (RE_GREP(_func,'^Reset') || _func == 'OnFirstBoot' || _func == 'MAGICLOAD' || _func == 'LOADVAR' || _func == 'RESTOREVAR' || _func == 'OnKikkaReset'){
+		if (RE_GREP(_func,'^Reset') || _func == 'OnFirstBoot' || _func == 'MAGICLOAD' || _func == 'LOADVAR' || _func == 'RESTOREVAR' || _func == 'OnKikkaReset'){
 			if mode == '1'
 				"\1\s[%(specialmode != 'mealtime')11]\w9…\w9…\w9\n确认？\n"
 			else
