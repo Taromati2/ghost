@@ -691,7 +691,7 @@ ClearTempVar:void{
 	REQ.COMMAND = _t
 	S_CHARSET = GETSETTING('charset.output')
 }
-OnClose{
+OnClose.base:void{
 	if reference0 == 'system'
 		inshutdown=1
 	SlowTime = GETSECCOUNT
@@ -707,6 +707,9 @@ OnClose{
 		OnAutoBackup
 	--
 	MAGICLOCK
+}
+OnClose{
+	OnClose.base
 	--
 	if mode == '1'{
 		OnClose1

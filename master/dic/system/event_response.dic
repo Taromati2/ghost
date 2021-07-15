@@ -1128,13 +1128,28 @@ OnScreenSaverEnd{
 	--
 	"\0\s[0]%(username)\w9\w9、欢迎回来。\n\x"
 }
+//待机
+OnSysSuspend{
+	OnClose.base
+}
 //待机中恢复
-OnSysResume{
+OnSysResume.base{
 	'\![set,balloontimeout,180000]'
 	--
-	'\0\s[6]已从待机中恢复\w9\w9\w9\s[0]\n\x'
+	case reference0{
+		when 'critical'
+			'\0\s[8]接上电了吗？'
+		others
+			'\0\s[6]已从待机中恢复'
+	}
+	--
+	'\w9\w9\w9\s[0]\n\x'
 	--
 	"\0\s[0]%(username)\w9\w9、欢迎回来。\n\x"
+}
+OnSysResume{
+	SHIORI_FW.PushNotifyResult(OnSysResume.base)
+	SHIORI_FW.PushNotifyResult(OnBoot)
 }
 //资源不足
 OnSysResourceLow

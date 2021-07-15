@@ -2482,10 +2482,10 @@ LoveKikka{
 	}
 }
 Select.ForcedClose_0{
+	OnClose.base
+	--
 	"\0\s[6]好的。\w9\s[26]\n那么%(username)、\w9祝你有个好梦…\w9\w5\1\s[10]掰啦。\w9\w9\-"
 	"\0\s[40]晚安、\w9%(username)。\w9\w9\-"
-	--
-	OnClose
 }
 Select.ForcedCloseCancel_0{
 	'\1\s[10]不是要睡了吗？\w9\w9\n算了、\w9也好。'
