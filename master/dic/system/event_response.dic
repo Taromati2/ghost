@@ -651,18 +651,10 @@ OnUpdateComplete{
 				'\0\s[0]好像没有更新。'
 		}
 		else{
-			'\0\s[0]结束了。\w9\w9\n\s[40]那么，请稍等一下哦\w9\w9\w9'
-			--
-			'\![reload,ghost]'
+			'\0\s[0]更新结束。'
 		}
 	}else{
 		ERASEVAR('InAutoUpdate')
-		if reference0 != 'none'{
-			AutoUpdateReloading=1
-			'\0\s[26]啊、\w9我稍微离席一下喔。\w9\w9'
-			--
-			OnChangeGhost('Taromati2')
-		}
 	}
 	--
 	if HasUpdate && reference0 == 'none'
