@@ -691,7 +691,7 @@ ClearTempVar:void{
 	REQ.COMMAND = _t
 	S_CHARSET = GETSETTING('charset.output')
 }
-OnClose{
+OnClose.base:void{
 	if reference0 == 'system'
 		inshutdown=1
 	SlowTime = GETSECCOUNT
@@ -707,6 +707,9 @@ OnClose{
 		OnAutoBackup
 	--
 	MAGICLOCK
+}
+OnClose{
+	OnClose.base
 	--
 	if mode == '1'{
 		OnClose1
@@ -897,26 +900,12 @@ OnGhostChanged{
 	--
 	//---- Taromati -------------------------------------------------------------------------------------------------------
 	if reference0 == '橘花'{
-		if AutoUpdateReloading{
-			ERASEVAR('AutoUpdateReloading')
-			'\0\s[5]我回来了\n/
-			\w9\w9一下子就感觉'
-			--
-			'焕然一新'
-			'充实了很多'
-			'精神满满'
-			//'sb开发者'//？
-			--
-			'了呢\n/
-			\1\s[10]\w9\w9…\w9…\w9\s[11]？'
-		}else{
-			'\1\s[10]\0'
-			--
-			'\s[0]'
-			'\s[26]'
-			--
-			'让您久等了。'
-		}
+		'\1\s[10]\0'
+		--
+		'\s[0]'
+		'\s[26]'
+		--
+		'让您久等了。'
 	}
 	//---- #　由加＋ダオにゅう　# -----------------------------------------------------------------------------------------
 	elseif reference0 == '由加'{
