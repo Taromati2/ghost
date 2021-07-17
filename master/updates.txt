@@ -462,7 +462,7 @@ file,ghost/master/saori/Speech_Recognition/Speech_Recognition.vbs72cb564fac4a93
 file,ghost/master/saori/textcopy.dllb985beb7de58ae316ce03da9e260416asize=25600
 file,ghost/master/saori/tl.lock6cc375438fb76385e58c69193046dd19size=63
 file,ghost/master/saori/txtpaste.dlld26df18e46cf845ed073e26be17b3125size=25088
-file,ghost/master/shiori/aya.dll4dfebefa40803635222cbc6fcb4f1d72size=937984
+file,ghost/master/shiori/aya.dll18ab618d2c6397f4fd76d53e1cc70babsize=938496
 file,ghost/master/shiori/aya.txt60e8c47a3dd03166c03a79039acad441size=24
 file,ghost/master/shiori/aya_base.txtc446edec5929285f09e06f2169ebcf60size=245
 file,ghost/master/shiori/aya_common.txt79d2b07e7b7c1de1ed6635973ada515csize=59
