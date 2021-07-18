@@ -273,7 +273,7 @@ AlarmMenu{
 		'提醒模式：\q[○播放声音,OnAlarmSet,2,声音]   \q[◎任务栏气泡,OnAlarmSet,2,气泡]\n'
 	}
 	--
-	"闹钟铃声：\__q[OnSetAlarmFile]%(SPLITPATH(alarmfile)[2])%(SPLITPATH(alarmfile)[3])\__q"
+	"闹钟铃声：\__q[OnSetAlarmFile]%(SPLITPATH.roughly(alarmfile)[1])\__q"
 	--
 	'\n[150]\q[◇返回上一层,OnOpenMenu]    \q[◇终了,OnAlarmEnd]'
 }

@@ -1061,7 +1061,7 @@ ReloadShortCutDat{
 		_Path=_s[1,'|']
 		_Icon=_s[2,'|']
 		_Mode=_s[3,'|']
-		_Name=SPLITPATH(_Path)[2]+SPLITPATH(_Path)[3]
+		_Name=SPLITPATH.roughly(_Path)[1]
 		if RE_GREP(_path2,']')==0
 			shortcutdata+="%(_a)|%(_Name)|%(_Path)|%(_Icon)|%(_Mode)*"
 	}
