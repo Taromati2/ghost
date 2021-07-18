@@ -370,7 +370,7 @@ OnMusicPlayer{
 }
 OnMusicPathOpen{
 	_file=REPLACE(musicfile[2],'\','\\')
-	_path=SPLITPATH(_file)[0]+SPLITPATH(_file)[1]
+	_path=SPLITPATH.roughly(_file)[0]
 	_path=PlayReplace(_path)
 	"\C\![open,file,%(_path)]"
 }

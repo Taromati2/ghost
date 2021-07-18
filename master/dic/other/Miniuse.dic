@@ -1759,7 +1759,7 @@ OnFilesRename{
 	_txt+="\q[◇End,OnFilesRename,end,%(reference1)]\n"
 	_total=ARRAYSIZE(filerenamelist)
 	for _i=0;_i<_total;_i++{
-		_txt+=SPLITPATH(filerenamelist[_i])[2]+SPLITPATH(filerenamelist[_i])[3]
+		_txt+=SPLITPATH.roughly(filerenamelist[_i])[1]
 		if _argv[1]=='editlist'{
 			_txt+="\_l[220,-]\q[◇顶,OnFilesRenameSet,%(_submenu),top,%(_i)]\q[◇底,OnFilesRenameSet,%(_submenu),bottom,%(_i)]\q[◇↑,OnFilesRenameSet,%(_submenu),fileup,%(_i)] \q[◇↓,OnFilesRenameSet,%(_submenu),filedown,%(_i)] \q[◇删,OnFilesRenameSet,%(_submenu),filedel,%(_i)]"
 		}
@@ -1772,7 +1772,7 @@ OnFilesRename{
 			_replace=OnReNameGet(_i)
 			_txt+='\_l[140,-]'+_replace
 			_name=filerenamelist[_i]
-			_replace=SPLITPATH(filerenamelist[_i])[0]+SPLITPATH(filerenamelist[_i])[1]+_replace
+			_replace=SPLITPATH.roughly(filerenamelist[_i])[0]+_replace
 			_temp=FRENAME(_name,_replace)
 			_txt+='\_l[260]'+'失败,成功'[_temp]
 			if _temp{
@@ -1784,7 +1784,7 @@ OnFilesRename{
 			if ISVAR('filerenamenewlist')==1{
 				_name=filerenamelist[_i]
 				_replace=filerenamenewlist[_i]
-				_txt+='\_l[140]'+SPLITPATH(filerenamenewlist[_i])[2]+SPLITPATH(filerenamenewlist[_i])[3]
+				_txt+='\_l[140]'+SPLITPATH.roughly(filerenamenewlist[_i])[1]
 				_temp=FRENAME(_name,_replace)
 				if _temp
 					filerenamelist[_i]=filerenamenewlist[_i]
@@ -2766,7 +2766,7 @@ OnBookPathOpen{
 	_buff=bookmark[_i]
 	_book_file=_buff[0,'|']
 	_file=REPLACE(_book_file,'\','\\')
-	_path=SPLITPATH(_file)[0]+SPLITPATH(_file)[1]
+	_path=SPLITPATH.roughly(_file)[0]
 	_path=PlayReplace(_path)
 	"\C\![open,file,%(_path)]"+OnBookmarkLoad
 }

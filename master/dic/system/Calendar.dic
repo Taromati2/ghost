@@ -538,8 +538,8 @@ OnEventEdit{
 		_txt+="\_l[%(_x),%(_y+15*(8+_n))]二次提醒：\__q[OnEventEditSet,%(_year),%(_m),%(_d),%(_id),remindmode,%(_j),1]"+_remindmode[_eventseremind]+'\__q'
 		_n++
 	}
-	_txt+="\_l[%(_x),%(_y+15*(8+_n))]\__q[OnEventEditSet,%(_year),%(_m),%(_d),%(_id),soundmode,%(_j),%(_eventsound),18]声音："+SPLITPATH(_eventsound)[2]+SPLITPATH(_eventsound)[3]+"\__q  \q[◇删,OnEventEditSet,%(_year),%(_m),%(_d),%(_id),sounddel,%(_j),%(_eventsound),18]"
-	_txt+="\_l[%(_x),%(_y+15*(9+_n))]\__q[OnEventEditSet,%(_year),%(_m),%(_d),%(_id),appmode,%(_j),%(_eventcpp),25]打开文件："+SPLITPATH(_eventcpp)[2]+SPLITPATH(_eventcpp)[3]+"\__q  \q[◇删,OnEventEditSet,%(_year),%(_m),%(_d),%(_id),appdel,%(_j),%(_eventsound),25]"
+	_txt+="\_l[%(_x),%(_y+15*(8+_n))]\__q[OnEventEditSet,%(_year),%(_m),%(_d),%(_id),soundmode,%(_j),%(_eventsound),18]声音："+SPLITPATH.roughly(_eventsound)[1]+"\__q  \q[◇删,OnEventEditSet,%(_year),%(_m),%(_d),%(_id),sounddel,%(_j),%(_eventsound),18]"
+	_txt+="\_l[%(_x),%(_y+15*(9+_n))]\__q[OnEventEditSet,%(_year),%(_m),%(_d),%(_id),appmode,%(_j),%(_eventcpp),25]打开文件："+SPLITPATH.roughly(_eventcpp)[1]+"\__q  \q[◇删,OnEventEditSet,%(_year),%(_m),%(_d),%(_id),appdel,%(_j),%(_eventsound),25]"
 	_countmode='无,秒显示,分秒显示,时分秒显示,天时分秒显示'
 	_txt+="\_l[%(_x),%(_y+15*(10+_n))]\__q[OnEventEditSet,%(_year),%(_m),%(_d),%(_id),countmode,%(_j),%(_eventcount),24]系统资讯倒计时："+_countmode[_eventcount]+'\__q  '
 	_txt+="\_l[%(_x),%(_y+15*(11+_n))]\__q[OnEventInput,%(_year),%(_m),%(_d),%(_id),eventagenda,%(_j),%(_eventagenda),14]备忘："+AreaTxt(_eventagenda,26,13+_n,47,16+_n)+'\__q'
