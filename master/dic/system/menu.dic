@@ -634,13 +634,13 @@ Select.Option{
 	_t = '○,●'
 	--
 	if SHIORI_FW.DebugMode{
-		'■开发机能设定■\n'
+		'\n■开发机能设定■\n'
 		--
 		TheDefaultValue('setting.OnNoMatchingEventAlarm','0')
 		"未定义事件警告		\_l[120]\q[%(_t[TOINT(setting.OnNoMatchingEventAlarm)]) ON,Onusage,setting.OnNoMatchingEventAlarm,1]  ・  \_l[180]\q[%(_t[1 - TOINT(setting.OnNoMatchingEventAlarm)]) OFF,Onusage,setting.OnNoMatchingEventAlarm,0]\n"
 	}
 	--
-	'■随机对话设定■\n'
+	'\n■随机对话设定■\n'
 	--
 	TheDefaultValue('talkSwitch.story','1')
 	"允许讲笑话		\_l[120]\q[%(_t[TOINT(talkSwitch.story)]) ON,Onusage,talkSwitch.story,1]  ・  \_l[180]\q[%(_t[1 - TOINT(talkSwitch.story)]) OFF,Onusage,talkSwitch.story,0]\n"
@@ -648,7 +648,7 @@ Select.Option{
 	TheDefaultValue('talkSwitch.poesy','1')
 	"允许对诗句		\_l[120]\q[%(_t[TOINT(talkSwitch.poesy)]) ON,Onusage,talkSwitch.poesy,1]  ・  \_l[180]\q[%(_t[1 - TOINT(talkSwitch.poesy)]) OFF,Onusage,talkSwitch.poesy,0]\n"
 	--
-	'■提醒设定■\n'
+	'\n■提醒设定■\n'
 	--
 	TheDefaultValue('autoweather','1')
 	"天气提醒		\_l[120]\q[%(_t[1 - TOINT(autoweather)]) ON,Onusage,autoweather,0]  ・  \_l[180]\q[%(_t[TOINT(autoweather)]) OFF,Onusage,autoweather,1]\n"
@@ -667,7 +667,7 @@ Select.Option{
 	TheDefaultValue('autobackupclosealert','1')
 	"自动备份关闭时提醒	\_l[120]\q[%(_t[TOINT(autobackupclosealert)]) ON,Onusage,autobackupclosealert,1]  ・  \_l[180]\q[%(_t[1 - TOINT(autobackupclosealert)]) OFF,Onusage,autobackupclosealert,0]\n"
 	--
-	'■其他设定■\n'
+	'\n■其他设定■\n'
 	--
 	TheDefaultValue('AllowInternetIPShowing','0')
 	"显示外网IP		\_l[120]\q[%(_t[TOINT(AllowInternetIPShowing)]) ON,Onusage,AllowInternetIPShowing,1]  ・  \_l[180]\q[%(_t[1 - TOINT(AllowInternetIPShowing)]) OFF,Onusage,AllowInternetIPShowing,0]\n"
