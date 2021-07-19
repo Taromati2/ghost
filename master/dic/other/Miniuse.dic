@@ -112,7 +112,7 @@ Select.birthday{
 	\q[◇下次生日日期,Onnextbirthday]\n/
 	\q[◇生日提醒模式,BirthdayMode]\n/
 	\q[◇好友生日,Onfriendbirthday]\n/
-	\n\n\q[◇返回上一层,OnOpenMenu,4]     \q[◇结束,cancel]"
+	\n\n\q[◇返回上一层,OnOpenMenu,4]     \q[◇结束,Cancel]"
 }
 Select.BirthdayMode{
 	'\0\s[26]要怎么设置呢?\n[150]\_q'
@@ -291,7 +291,7 @@ Onfriendbirthday{
 	"橘花能记住%(username)20位好友的生日哦\n\n[half]/
 	\q[◇新建好友,OnFriendBirthDay.Creat]\n/
 	\q[◇查看好友,OnFriendBirthDay.Inform]\n/
-	\n\n\n\n\n\q[◇返回上一层,birthday]     \q[◇结束,cancel]"
+	\n\n\n\n\n\q[◇返回上一层,birthday]     \q[◇结束,Cancel]"
 	if friendID==NULL
 		friendID=0
 }
@@ -350,19 +350,19 @@ OnFriendBirthDay.Inform{
 		_txt+="\__q[OnFriendName.UpdataFirst,%(_i)]%(friendbirthday[_i*9+1])\__q   \_l[35,-]\__q[OnFriendBirthDay.UpdataFirst,%(_i)]%(friendbirthday[_i*9+2])年%(friendbirthday[_i*9+3])月%(friendbirthday[_i*9+4])日\__q \_l[120,-]%(_mm)月%(_dd)  \_l[185,-]%(friendbirthday[_i*9+5])年%(friendbirthday[_i*9+6])月%(friendbirthday[_i*9+7])日 \_l[270,-]\q[%(friendbirthday[_i*9+8]),OnFriendBirthDay.Inform,age,%(_friendbirthdayinfo[_i])]\n"
 	}
 	birthdayflag=1
-	_txt+='\_l[0,340]\q[◇返回,Onfriendbirthday]     \q[◇结束,cancel]'
+	_txt+='\_l[0,340]\q[◇返回,Onfriendbirthday]     \q[◇结束,Cancel]'
 	_txt
 }
 OnFriendName.UpdataFirst{
 	friendID=reference0
-	"将好友名字%(friendbirthday[friendID*9+1])更改为？\![open,inputbox,OnFriendName.Updata,-1]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,cancel]"
+	"将好友名字%(friendbirthday[friendID*9+1])更改为？\![open,inputbox,OnFriendName.Updata,-1]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]"
 }
 OnFriendName.Updata{
 	if reference0==''
-		'好友名字不为为空，请输入请输入好友名字\![open,inputbox,OnFriendName.Updata,-1]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,cancel]'
+		'好友名字不为为空，请输入请输入好友名字\![open,inputbox,OnFriendName.Updata,-1]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]'
 	else{
 		friendbirthday[friendID*9+1]=reference0
-		"您输入的好友名字为%(reference0)\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,cancel]"
+		"您输入的好友名字为%(reference0)\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]"
 	}
 }
 OnFriendBirthDay.UpdataFirst{
@@ -370,7 +370,7 @@ OnFriendBirthDay.UpdataFirst{
 	_year=friendbirthday[friendID*9+2]
 	_month=friendbirthday[friendID*9+3]
 	_day=friendbirthday[friendID*9+4]
-	"要把%(friendbirthday[friendID*9+1])的生日改成？\![open,dateinput,OnFriendBirthDay.Updata,60000,%(_year),%(_month),%(_day)]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,cancel]"
+	"要把%(friendbirthday[friendID*9+1])的生日改成？\![open,dateinput,OnFriendBirthDay.Updata,60000,%(_year),%(_month),%(_day)]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]"
 }
 OnFriendBirthDay.Updata{
 	friendbirthday[friendID*9+2]=reference0[0]

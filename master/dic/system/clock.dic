@@ -672,7 +672,7 @@ OnSetShutdownMenu{
 		_txt += '自动关机频率：\q[○当天自动关机,OnShutdownSet,1,当天]\_l[180]\q[◎每天自动关机,OnShutdownSet,1,每天]\n'
 	}
 	--
-	'\n[half]\q[◇返回上一层,OnOpenMenu,3]    \q[◇终了,cancel]'
+	'\n[half]\q[◇返回上一层,OnOpenMenu,3]    \q[◇终了,Cancel]'
 }
 OnShutdownSet{
 	shutdownset[reference0] = reference1

@@ -113,13 +113,13 @@ OnTarroCardReSet{
 		Tarro=(0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210)
 		OnTarroTest(_id,_num)
 	}
-	elseif reference2=='cancel'{
+	elseif reference2=='Cancel'{
 		OnTarroTest(_id,_num)
 	}
 	else{
 		_txt='\s[20]牌型太乱，占卜不好使了？那么换副新牌吧。\n[150]'
 		_txt+="\q[◇换牌,OnTarroCardReSet,%(_id),%(_num),reset]\n"
-		_txt+="\q[◇不换了,OnTarroCardReSet,%(_id),%(_num),cancel]\n"
+		_txt+="\q[◇不换了,OnTarroCardReSet,%(_id),%(_num),Cancel]\n"
 		_txt
 	}
 }
