@@ -123,8 +123,11 @@ On_ShioriEcho {
 			ShioriEcho.Result=GETERRORLOG
 		}
 		others{
-			if RE_GREP(reference0,'^\s*help\s+')
+			if RE_GREP(reference0,'^\s*help\s+'){
 				ShioriEcho.Special=Get_AYA_Function_Info(RE_REPLACE(reference0,'^\s*help\s+',''))
+				if !ShioriEcho.Special
+					ShioriEcho.Special='不是系统函数'
+			}
 			else{
 				OnCalculateVar
 				--
@@ -142,8 +145,10 @@ On_ShioriEcho.TabPress{
 	}
 }
 On_ShioriEcho.GetResult:void {
-	if ShioriEcho.Special{
+	if ISVAR('ShioriEcho.Special'){
 		SHIORI_FW.Make_X_SSTP_PassThru('Special',ShioriEcho.Special)
+		if !ShioriEcho.Special
+			BUGNow('ShioriEcho.Special内容为空')
 	}
 	else{
 		if ISVAR('ShioriEcho.Result'){
