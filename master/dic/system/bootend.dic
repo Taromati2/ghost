@@ -477,7 +477,7 @@ OnBoot{
 	}
 	--
 	if TOINT(autobackup)==0 && autobackupclosealert{
-		_t = '○,◎'
+		_t = '○,●'
 		"\C\_q\1\s[10]\0\s[40]■橘花提醒■\n为避免人格失忆，请设自动备份开关为On，当前自动备份功能关闭，请定期手动备份。\n/
 		自动备份　　　\q[%(_t[TOINT(autobackup)]) ON,Onusage,autobackup,1]  ・  \q[%(_t[1 - TOINT(autobackup)]) OFF,Onusage,autobackup,0]\n/
 		\q[◇不再提醒,Onusage,autobackupclosealert,0]\n/

@@ -2855,10 +2855,10 @@ OnReadBookOption{
 		if (_i+1)%10==0
 			_txt+='\n'
 	}
-	_t= '○,◎'
+	_t= '○,●'
 	_txt+='\n[half]自动翻页:(注意设为ON朗读时请不要操作对话框，否则翻页可能中断）\n'
 	_txt+="\q[%(_t[TOINT(autoread)]) ON,OnReadBookUsage,autoread,1]  ・  \_l[60]\q[%(_t[1 - TOINT(autoread)]) OFF,OnReadBookUsage,autoread,0]\n"
-	_t= '○,◎'
+	_t= '○,●'
 	_txt+='\n[half]卷动\n'
 	_txt+="\q[%(_t[1-TOINT(scrollmode)]) 首端,OnReadBookUsage,scrollmode,0]  ・  \_l[60]\q[%(_t[TOINT(scrollmode)]) 尾端,OnReadBookUsage,scrollmode,1]\n"
 	_txt+='\n[half]阅读器打开软件快捷TXT:\n'
