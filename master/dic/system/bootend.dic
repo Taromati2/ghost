@@ -601,7 +601,6 @@ ClearVar{
 	ERASEVAR('tab')
 	ERASEVAR('faceshow')
 	ERASEVAR('num')
-	ERASEVAR('mon')
 	ERASEVAR('m')
 	ERASEVAR('friendID')
 	ERASEVAR('secondwatch')

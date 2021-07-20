@@ -134,34 +134,31 @@ Onlunarbirth{
 	_m=_argv[1]
 	_d=_argv[2]
 	//_m=REPLACE(_m,'腊','十二')
+	_mon=(31,28,31,30,31,30,31,31,30,31,30,31)
 	_mm=1
 	_dd=1
-	_zflg=0
 	for _i = 1;_i <= 12;_i++{
 		//Onlunarbirth(2015,'十一','廿一')
-		for _j = 1;_j <= mon[_i-1];_j++{
+		for _j = 1;_j <= _mon[_i-1];_j++{
 			Lunartime(_y,_i,_j)
-			if lunartime[5] == '正'&& lunartime[6] =='初一'&&_zflg==0{
+			if lunartime[5] == '正' && lunartime[6] =='初一'{
 				Lunardata(lunartime[0],lunartime[1],lunartime[2])
-				_zflg=1
-				break
-			}
-		}
-		if _zflg
-			break
-	}
-	for _i = 1;_i <= 12;_i++{
-		if _y % 4 == 0 && _y % 100 != 0 || _y % 400 == 0
-			mon[1]=29
-		//Onlunarbirth(2015,'十一','廿一')
-		for _j = 1;_j <= mon[_i-1];_j++{
-			Lunartime(_y,_i,_j)
-			if lunartime[4]==lunardata[7]&&lunartime[5] == _m&& lunartime[6] == _d{
-				return
-			}
-			elseif lunartime[4]==lunardata[7]&&lunartime[1]==12&&lunartime[2]==31{
-				_y++
-				_i=1;_j=1
+				for _i = 1;_i <= 12;_i++{
+					if _y % 4 == 0 && _y % 100 != 0 || _y % 400 == 0
+						_mon[1]=29
+					//Onlunarbirth(2015,'十一','廿一')
+					for _j = 1;_j <= _mon[_i-1];_j++{
+						Lunartime(_y,_i,_j)
+						if lunartime[4]==lunardata[7]&&lunartime[5] == _m&& lunartime[6] == _d{
+							return
+						}
+						elseif lunartime[4]==lunardata[7]&&lunartime[1]==12&&lunartime[2]==31{
+							_y++
+							_i=1
+							_j=1
+						}
+					}
+				}
 			}
 		}
 	}
@@ -186,58 +183,39 @@ NextBirthDay{
 		_month=TOINT(_argv[1])
 		_day=TOINT(_argv[2])
 	}
-	Lunardata(year,month,day)
-	_lunar_y = lunardata[11]
-	//_lunar_m = lunardata[5]
-	//_lunar_d = lunardata[6]
-	Lunardata(_year,_month,_day)
-	//_birthday_yy = lunardata[11]
-	_birthday_mm = lunardata[5]
-	_birthday_dd = lunardata[6]
 	_next_birthday=IARRAY
-	//mon=(31,28,31,30,31,30,31,31,30,31,30,31)
-	_birthday_mm=REPLACE(_birthday_mm,'闰','')
-	_birthday_mm=REPLACE(_birthday_mm,'腊','十二')
-	Onlunarbirth(_lunar_y,_birthday_mm,_birthday_dd)
-	_y = TOINT(lunartime[0])
-	_m = TOINT(lunartime[1])
-	_d = TOINT(lunartime[2])
 	if BirthdayMode==1{//使用阳历计算生日
-		if TOINT(year) >= TOINT(_year){
-			if TOINT(month) == TOINT(_month){
-				if TOINT(day) > TOINT(_day)
-					_next_birthday[0] = year+1
-				elseif TOINT(day) <= TOINT(_day)
-					_next_birthday[0] = year
-			}
-			elseif TOINT(month) > TOINT(_month)
-				_next_birthday[0] = year+1
-			elseif TOINT(month) < TOINT(_month)
-				_next_birthday[0] = year
-		}
+		if year >= _year && (month > _month || (month == _month && day > _day))
+			_year = year+1
 		else
-			_next_birthday[0] = _year
+			_year = year
+		_next_birthday[0] = _year
 		_next_birthday[1] = _month
 		_next_birthday[2] = _day
 	}
 	else{//使用农历计算生日
-		if TOINT(year) >= TOINT(_y){
-			if TOINT(month) == TOINT(_m){
-				if TOINT(day) > TOINT(_d)
-					Onlunarbirth(year + 1,_birthday_mm,_birthday_dd)
-				elseif TOINT(day) <= TOINT(_d)
-					Onlunarbirth(year,_birthday_mm,_birthday_dd)
-			}
-			elseif TOINT(month) > TOINT(_m)
-				Onlunarbirth(year + 1,_birthday_mm,_birthday_dd)
-			elseif TOINT(month) < TOINT(_m)
-				Onlunarbirth(year,_birthday_mm,_birthday_dd)
-		}
-		elseif TOINT(year)<TOINT(_y)
-			Onlunarbirth(_y,_birthday_mm,_birthday_dd)
-		_next_birthday[0] = lunartime[0]
-		_next_birthday[1] = lunartime[1]
-		_next_birthday[2] = lunartime[2]
+		Lunardata(year,month,day)
+		_lunar_y = lunardata[11]
+		//_lunar_m = lunardata[5]
+		//_lunar_d = lunardata[6]
+		Lunardata(_year,_month,_day)
+		//_birthday_yy = lunardata[11]
+		_birthday_mm = lunardata[5]
+		_birthday_dd = lunardata[6]
+		_birthday_mm=REPLACE(_birthday_mm,'闰','')
+		_birthday_mm=REPLACE(_birthday_mm,'腊','十二')
+		Onlunarbirth(_lunar_y,_birthday_mm,_birthday_dd)
+		_year = TOINT(lunartime[0])
+		_month = TOINT(lunartime[1])
+		_day = TOINT(lunartime[2])
+		if year >= _year && (month > _month || (month == _month && day > _day))
+			_year = year+1
+		else
+			_year = year
+		Onlunarbirth(_year,_birthday_mm,_birthday_dd)
+		_next_birthday[0] = TOINT(lunartime[0])
+		_next_birthday[1] = TOINT(lunartime[1])
+		_next_birthday[2] = TOINT(lunartime[2])
 	}
 	_next_birthday
 }
@@ -247,6 +225,10 @@ Onnextbirthday{
 	birthday_yy = lunardata[11]
 	birthday_mm = lunardata[5]
 	birthday_dd = lunardata[6]
+	if !(birthday_yy && birthday_mm && birthday_dd){
+		OnGetBirthday
+		return
+	}
 	_days=0
 	_mon=(31,28,31,30,31,30,31,31,30,31,30,31)
 	_fy=TOINT(nextbirthday[0])
@@ -274,10 +256,7 @@ Onnextbirthday{
 		}
 		_days=_days-day+_fd
 	}
-	if birthday_yy == NULL && birthday_mm == NULL && birthday_dd == NULL{
-		OnGetBirthday
-	}
-	elseif _days == 0
+	if _days == 0
 		"今天是%(username)%(TOINT(nextbirthday[0] - birthday[0]))岁生日哦，生日快乐，%(username)\x"
 	else{
 		"%(username)出生日期是%(birthday[0])年%(birthday[1])月%(birthday[2])日\n/
