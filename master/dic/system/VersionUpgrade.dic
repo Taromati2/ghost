@@ -6,7 +6,7 @@ RENAME_VAR:void{
 		EVAL(_argv[1]+'='+_argv[0])
 	ERASEVAR(_argv[0])
 }
-#define VERSION_NOW 3
+#define VERSION_NOW 4
 
 VERSION_INIT:void{
 	VERSION = VERSION_NOW
@@ -98,4 +98,8 @@ VERSION_UPGRADE_3:void{
 			FDEL(_i+'/yaya.txt')
 		}
 	}
+}
+VERSION_UPGRADE_4:void{//building
+	ERASEVAR('lastboottime')
+	RENAME_VAR('SlowTime','CloseTime')
 }

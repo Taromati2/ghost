@@ -9,10 +9,9 @@ BaseGhostStart{//改动于2020 by steve02081504
 	Lunartime
 	FCHARSET(1)
 	lastTalk = '\0\s[20]咦？分明才刚启动的說…\1\s[10]喵，刚才什么都没说'
-	lastboottime = "%(systemuptime)"
-	_laststart = SlowTime
-	SlowTime = GETSECCOUNT
-	elapsetime = SlowTime - _laststart
+	_laststart = CloseTime
+	CloseTime = GETSECCOUNT
+	elapsetime = CloseTime - _laststart
 	playingmusic = 0
 	OnSQLLoad
 	OnAILoad
@@ -43,7 +42,6 @@ OnFirstBoot{//改动于2020 by steve02081504
 			username = 'お兄さん'
 		firstboottime = "%(year),%(month),%(day),%(hour),%(minute)"
 		elapsedtime = 0
-		lastboottime = "%(systemuptime)"
 		Goodevening = ''
 		intimacy = 0
 		stroke = 0
@@ -693,7 +691,7 @@ ClearTempVar:void{
 OnClose.base:void{
 	if reference0 == 'system'
 		inshutdown=1
-	SlowTime = GETSECCOUNT
+	CloseTime = GETSECCOUNT
 	--
 	ClearTempVar
 	--
