@@ -544,24 +544,52 @@ SHIORI_FW.MakeResponse{
 	--
 	C_CRLF
 }
+
+//------------------------------------------------------------------------------
+//関数名：SHIORI_FW.Make_X_SSTP_PassThru
+//機能　：X-SSTP-PassThruヘッダを追加します (設定はリクエストごとにリセットされます)
+//引数　：_argv[0] ヘッダ名  _argv[1~inf] 値
+//------------------------------------------------------------------------------
 SHIORI_FW.Make_X_SSTP_PassThru:void{
 	_argv[0]='X-SSTP-PassThru-'+_argv[0]
 	SHIORI_FW.MakeAdditionalReturn(_argv)
 }
+//------------------------------------------------------------------------------
+//関数名：SHIORI_FW.Make_X_SSTP_PassThru
+//機能　：ヘッダを追加されているか確認します。
+//------------------------------------------------------------------------------
 SHIORI_FW.HasAdditionalReturn{
 	SHIORI_FW.AdditionalReturn.String
 }
+//------------------------------------------------------------------------------
+//関数名：SHIORI_FW.InitAdditionalReturnFunction
+//機能　：追加ヘッダ用変数を初期化します
+//------------------------------------------------------------------------------
 SHIORI_FW.InitAdditionalReturnFunction:void{
 	SHIORI_FW.AdditionalReturn.String = ''
 }
+//------------------------------------------------------------------------------
+//関数名：SHIORI_FW.MakeAdditionalReturn
+//機能　：ヘッダを追加します (設定はリクエストごとにリセットされます)
+//引数　：_argv[0] ヘッダ名  _argv[1~inf] 値
+//------------------------------------------------------------------------------
 SHIORI_FW.MakeAdditionalReturn:void{
 	_key=_argv[0]+': '
 	_argv[0]=IARRAY
 	SHIORI_FW.AdditionalReturn.String += _key+TOSTR(_argv)+C_CRLF
 }
+//------------------------------------------------------------------------------
+//関数名：SHIORI_FW.ClearAdditionalReturnVariable
+//機能　：追加ヘッダ用変数を削除します
+//------------------------------------------------------------------------------
 SHIORI_FW.ClearAdditionalReturnVariable:void{
 	ERASEVAR('SHIORI_FW.AdditionalReturn.String')
 }
+//------------------------------------------------------------------------------
+//関数名：SHIORI_FW.GetAdditionalReturns
+//機能　：追加ヘッダを展開します
+//返値　：追加すべきヘッダ文字列 最後は必ず改行で終わる
+//------------------------------------------------------------------------------
 SHIORI_FW.GetAdditionalReturns{
 	_t=SHIORI_FW.AdditionalReturn.String
 	SHIORI_FW.AdditionalReturn.String = ''
