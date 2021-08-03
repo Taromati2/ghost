@@ -601,16 +601,16 @@ SHIORI_FW.GetAlternateOutput{
 	SHIORI_FW.AlternateOutput.String=''
 	_t
 }
-SHIORI_FW.ClearAlternateOutputVariable{
+SHIORI_FW.ClearAlternateOutputVariable:void{
 	ERASEVAR('SHIORI_FW.AlternateOutput.String')
 }
-SHIORI_FW.ClearAlternateOutput{
+SHIORI_FW.ClearAlternateOutput:void{
 	SHIORI_FW.ClearAlternateOutputVariable
 }
-SHIORI_FW.Print{
+SHIORI_FW.Print:void{
 	SHIORI_FW.AlternateOutput.String+=TOSTR(_argv)
 }
-SHIORI_FW.PrintLine{
+SHIORI_FW.PrintLine:void{
 	SHIORI_FW.AlternateOutput.String+=TOSTR(_argv)+'\n'
 }
 //------------------------------------------------------------------------------
@@ -1738,4 +1738,14 @@ ISSTR{
 }
 INEVENT{
 	_argv[0]==SHIORI_FW.Eventid
+}
+RENAME_VAR:void{
+	if ISVAR(_argv[0])
+		EVAL(_argv[1]+'='+_argv[0])
+	ERASEVAR(_argv[0])
+}
+SWAP_VAR:void{
+	_t=EVAL(_argv[1])
+	EVAL(_argv[1]+'='+_argv[0])
+	EVAL(_argv[0]+'=_t')
 }
