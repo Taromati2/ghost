@@ -187,6 +187,7 @@ ClearAyaTempVar {
 	SHIORI_FW.ClearReferenceVariable
 	SHIORI_FW.ClearValueexVariable
 	SHIORI_FW.ClearAdditionalReturnVariable
+	SHIORI_FW.ClearAlternateOutputVariable
 }
 //******************************************************************************
 //load
@@ -524,7 +525,12 @@ SHIORI_FW.MakeResponse{
 				Value: %(_result)%(C_CRLF)"
 				--
 				SHIORI_FW.AssembleReferenceHeader
-			} else {
+			}
+			elseif SHIORI_FW.HasAlternateOutput{
+				SHIORI_FW.MakeResponse(SHIORI_FW.GetAlternateOutput)
+				return
+			}
+			else{
 				if SHIORI_FW.DelayNotifyResults[0] && SHIORI_FW.Eventid == 'OnSecondChange'{//在空OnSecondChange环境下返回积压的Notify
 					_result = SHIORI_FW.DelayNotifyResults[0]
 					SHIORI_FW.DelayNotifyResults[0] = IARRAY
@@ -586,7 +592,27 @@ SHIORI_FW.GetAdditionalReturns{
 	SHIORI_FW.AdditionalReturn.String = ''
 	_t
 }
-
+//erb相关
+SHIORI_FW.HasAlternateOutput{
+	SHIORI_FW.AlternateOutput.String
+}
+SHIORI_FW.GetAlternateOutput{
+	_t=SHIORI_FW.AlternateOutput.String
+	SHIORI_FW.AlternateOutput.String=''
+	_t
+}
+SHIORI_FW.ClearAlternateOutputVariable{
+	ERASEVAR('SHIORI_FW.AlternateOutput.String')
+}
+SHIORI_FW.ClearAlternateOutput{
+	SHIORI_FW.ClearAlternateOutputVariable
+}
+SHIORI_FW.Print{
+	SHIORI_FW.AlternateOutput.String+=TOSTR(_argv)
+}
+SHIORI_FW.PrintLine{
+	SHIORI_FW.AlternateOutput.String+=TOSTR(_argv)+'\n'
+}
 //------------------------------------------------------------------------------
 //関数名：SHIORI_FW.AssembleReferenceHeader
 //機能　：res_reference*変数を順次検査して返送用のReference文字列を作成します
