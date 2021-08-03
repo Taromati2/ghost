@@ -274,7 +274,6 @@ load {
 	}
 
 	SHIORI_FW.InitChain
-	SHIORI_FW.InitAdditionalReturnFunction
 
 	SHIORI_FW.SetDelayEvent('',0)
 
@@ -544,7 +543,6 @@ SHIORI_FW.MakeResponse{
 	--
 	C_CRLF
 }
-
 //------------------------------------------------------------------------------
 //関数名：SHIORI_FW.Make_X_SSTP_PassThru
 //機能　：X-SSTP-PassThruヘッダを追加します (設定はリクエストごとにリセットされます)
@@ -560,13 +558,6 @@ SHIORI_FW.Make_X_SSTP_PassThru:void{
 //------------------------------------------------------------------------------
 SHIORI_FW.HasAdditionalReturn{
 	SHIORI_FW.AdditionalReturn.String
-}
-//------------------------------------------------------------------------------
-//関数名：SHIORI_FW.InitAdditionalReturnFunction
-//機能　：追加ヘッダ用変数を初期化します
-//------------------------------------------------------------------------------
-SHIORI_FW.InitAdditionalReturnFunction:void{
-	SHIORI_FW.AdditionalReturn.String = ''
 }
 //------------------------------------------------------------------------------
 //関数名：SHIORI_FW.MakeAdditionalReturn
