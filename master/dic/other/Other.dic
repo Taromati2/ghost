@@ -2183,11 +2183,11 @@ autojeachday{
 	_txt
 }
 Onacjeachday{
-	if dmry==NULL{
-		dmry=1
-	}
 	if reference0!=NULL{
 		dmry=reference0
+	}
+	if dmry==NULL || !ISINTEGER(dmry){
+		dmry=1
 	}
 	_str = dmry + '.'
 	_next = dmry + 1 + '.'
