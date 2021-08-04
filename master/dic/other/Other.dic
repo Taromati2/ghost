@@ -119,13 +119,11 @@ Onnotebook{
 	}
 	--
 	_Page=''
-	if _k==0 && _j>20
-		_Page="\_l[60,350]\q[下一页>>,Onnotebook,,%(_k+20)]\n[140]"
-	elseif _k>0 && _k+20>_j
-		_Page="\_l[0,350]\q[<<上一页,Onnotebook,,%(_k-20)]\n[140]"
-	else
-		_Page="\_l[0,350]\q[<<上一页,Onnotebook,,%(_k-20)]  \_l[60,350]\q[下一页>>,Onnotebook,,%(_k+20)]\n[140]"
-	_w+_Page
+	if _k-20>0
+		_Page+="\_l[0,350]\q[<<上一页,Onnotebook,,%(_k-20)]"
+	if _k+20<_j
+		_Page+="\_l[60,350]\q[下一页>>,Onnotebook,,%(_k+20)]"
+	_w+_Page+'\n[140]'
 }
 Onupdatenotebook{
 	_txt='\0\s[26]\b[2]\_q\n\n'
@@ -2291,13 +2289,11 @@ On100SentencesInJapanese{
 		}
 	}
 	_Page=''
-	if _j==1
-		_Page="\_l[60,320]\q[下一页>>,On100SentencesInJapanese,,%(_j+5)]\n"
-	elseif _j>1 && _j+7>64
-		_Page="\_l[0,320]\q[<<上一页,On100SentencesInJapanese,,%(_j-5)]\n"
-	else
-		_Page="\_l[0,320]\q[<<上一页,On100SentencesInJapanese,,%(_j-5)]  \_l[60,320]\q[下一页>>,On100SentencesInJapanese,,%(_j+5)]\n"
-	_w += _Page + "\q[◇返回上一层,japanesestudy]\n\q[◇终了,OnOpenMenu,1]\![quicksession,false]%(_v)"
+	if _j!=1
+		_Page+="\_l[0,320]\q[<<上一页,On100SentencesInJapanese,,%(_j-5)]\n"
+	if _j+7<64
+		_Page+="\_l[60,320]\q[下一页>>,On100SentencesInJapanese,,%(_j+5)]\n"
+	_w += _Page + "\n\q[◇返回上一层,japanesestudy]\n\q[◇终了,OnOpenMenu,1]\![quicksession,false]%(_v)"
 	FCLOSE(_file)
 	_w
 }

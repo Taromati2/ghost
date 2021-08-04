@@ -16,15 +16,11 @@ OnUserDatabase.List{
 	_front=TOINT(_argv[3])-10
 	_m=SQLite('-f',"SELECT ID FROM %(EXT_Table)")
 	_tola=(TOINT(_m)+9)/10
-	if _i==1 {
-		_pag="\_l[20,-]<<上一页\_l[93,-]\q[◇第1页,OnUserDatabase.PageIndex,%(_tola),List,%(select)]    共%(_tola)页\_l[200,-]\q[下一页>>,OnUserDatabase.Page,%(_next),List,%(select)]"
-	}
-	elseif _next>_m {
-		_pag="\_l[20,-]\q[<<上一页,OnUserDatabase.Page,%(_front),List,%(select)]\_l[93,-]\q[◇第%(_tola)页,OnUserDatabase.PageIndex,%(_tola),List,%(select)]    共%(_tola)页\_l[200,-]下一页>>"
-	}
-	else {
-		_pag="\_l[20,-]\q[<<上一页,OnUserDatabase.Page,%(_front),List,%(select)]\_l[93,-]\q[◇第%(_p)页,OnUserDatabase.PageIndex,%(_tola),List,%(select)]    共%(_tola)页\_l[200,-]\q[下一页>>,OnUserDatabase.Page,%(_next),%(EXT_mode),%(select)]"
-	}
+	if _i
+		_pag+="\_l[20,-]\q[<<上一页,OnUserDatabase.Page,%(_front),List,%(select)]"
+	_pag+="\_l[93,-]\q[◇第%(_p)页,OnUserDatabase.PageIndex,%(_tola),List,%(select)]    共%(_tola)页"
+	if _next<=_m
+		_pag+="\_l[200,-]\q[下一页>>,OnUserDatabase.Page,%(_next),List,%(select)]"
 	_next = TOINT(_argv[3])+9
 	//列出全部资料
 	if select == '*' && !_where {
@@ -298,7 +294,7 @@ OnUserDatabase.PageST{
 		_tola=(TOINT(_m)+9)/10
 		if _a>_tola
 			"\0\s[0]输入的页数大于总页数,请重新输入~\w8\w8\c%(Onselepag)"
-		elseif _a<=0 {
+		elseif _a<=0 && _tola {
 			OnUserDatabase.PageIndex
 		}
 		else {

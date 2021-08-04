@@ -382,15 +382,11 @@ UPDateshow{
 		_next=TOINT(_argv[1])+10
 		_front=TOINT(_argv[1])-10
 		_tola=(TOINT(SQLite.total('KikkaAIdb'))+9)/10
-		if _i==1 {
-			_pag="\_l[20,-]<<上一页\_l[93,-]\q[◇第1页,Onselepag]    共%(_tola)页\_l[200,-]\q[下一页>>,OnAIdbPage,%(_next)]"
-		}
-		elseif _next>SQLite.total('KikkaAIdb') {
-			_pag="\_l[20,-]\q[<<上一页,OnAIdbPage,%(_front)]\_l[93,-]\q[◇第%(_tola)页,Onselepag]    共%(_tola)页\_l[200,-]下一页>>"
-		}
-		else {
-			_pag="\_l[20,-]\q[<<上一页,OnAIdbPage,%(_front)]\_l[93,-]\q[◇第%(_p)页,Onselepag]    共%(_tola)页\_l[200,-]\q[下一页>>,OnAIdbPage,%(_next)]"
-		}
+		if _p!=0
+			_pag+="\_l[20,-]\q[<<上一页,OnAIdbPage,%(_front)]"
+		_pag+="\_l[93,-]\q[◇第%(_p)页,Onselepag]    共%(_tola)页"
+		if _next<=SQLite.total('KikkaAIdb')
+			_pag+="\_l[200,-]\q[下一页>>,OnAIdbPage,%(_next)]"
 		_t=SQLite.total('KikkaAIdb')
 		while _i<_next && _i<=_t {
 			_b=SQLite('-j',"SELECT * FROM KikkaAIdb WHERE ID='%(_i)' AND scope!=-1")

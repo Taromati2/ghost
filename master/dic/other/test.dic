@@ -408,15 +408,11 @@ OnExamTestMenu{
 		_txt += '\q[◇'+ _test[_i,_str]+_str+",OnExamTestSelect,%(_i),1]\n"
 	}
 	_Page=''
-	if _j<=20
-		_Page=''
-	elseif _k==1 && _j>20
-		_Page="\_l[60,320]\q[下一页>>,OnExamTestMenu,%(_k+20),%(testpaper)]\n"
-	elseif _k>1 && _k+20>_j
-		_Page="\_l[0,320]\q[<<上一页,OnExamTestMenu,%(_k-20),%(testpaper)]\n"
-	else
-		_Page="\_l[0,320]\q[<<上一页,OnExamTestMenu,%(_k-20),%(testpaper)]  \_l[60,320]\q[下一页>>,OnExamTestMenu,%(_k+20),%(testpaper)]\n"
-	_txt+=_Page
+	if _k
+		_Page+="\_l[0,320]\q[<<上一页,OnExamTestMenu,%(_k-20),%(testpaper)]"
+	if _k+20<=_j
+		_Page+="\_l[60,320]\q[下一页>>,OnExamTestMenu,%(_k+20),%(testpaper)]"
+	_txt+=_Page+'\n'
 	_txt+='\q[◇返回上一层,OnExamTest]'
 	if testnum==0
 		_txt+=OnExamTestSelect(1,1)

@@ -2680,12 +2680,10 @@ OnBookChapter{
 		_txt+="\q[%(_book_txt),OnBookChapter,load,%(_i)]     \_l[220]%(_book_percent)%  \_l[100]   \n"
 	}
 	_txt+="\_l[135,330]\q[%(_j+1)/%(_n/20+1),OnInputChapterPage,%(_j+1)]"
-	if _j==0
-		_txt+="\_l[170]\q[◇下一页,OnBookChapter,%(_j+1)]"
-	elseif _j==_n/20
+	if _j!=0
 		_txt+=" \_l[90]\q[◇上一页,OnBookChapter,%(_j-1)]"
-	else
-		_txt+="\_l[90]\q[◇上一页,OnBookChapter,%(_j-1)]   \_l[170]\q[◇下一页,OnBookChapter,%(_j+1)]"
+	if _j!=_n/20
+		_txt+="\_l[170]\q[◇下一页,OnBookChapter,%(_j+1)]"
 	_txt+='\n[150]\q[◇返回,OnReadBook]'
 	_txt
 }
@@ -3115,16 +3113,12 @@ OnKikkaKnowl{
 		_n++
 	}
 	_txt+='\_l[-,320]'
-	_page=''
-	if _totle<=20
-		_page=''
-	elseif _totle>23&&_j<20
-		_page="\n[30] \_l[100]\q[下一页>>,OnKikkaKnowl,%(_j+20)]\n[140]"
-	elseif _j+20>_totle
-		_page="\n[30] \q[<<上一页,OnKikkaKnowl,%(_j-20)]\n[140]"
-	else
-		_page="\n[30] \q[<<上一页,OnKikkaKnowl,%(_j-20)]   \_l[100]\q[下一页>>,OnKikkaKnowl,%(_j+20)]\n[140]"
-	_txt+=_page
+	_page='\n[30]'
+	if _j>20
+		_page+="\q[<<上一页,OnKikkaKnowl,%(_j-20)]"
+	if _j+20<=_totle
+		_page+="\_l[100]\q[下一页>>,OnKikkaKnowl,%(_j+20)]"
+	_txt+=_page+'\n[140]'
 	_txt+='\q[◇返回,OnOpenMenu,1]'
 	knowltemp="OnKikkaKnowl(%(_j))"
 	_txt

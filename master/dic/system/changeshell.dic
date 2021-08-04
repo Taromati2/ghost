@@ -402,16 +402,14 @@ OnFittingRoom{
 		}
 		_n ++
 	}
-	_Page=''
-	if shelllistcount<=15
-		_Page=''
-	elseif _j==1 && shelllistcount>15
-		_Page="\n[30] \q[下一页>>,OnFittingRoom,%(_j+15)]\n[140]"
-	elseif _j>1 && _j+15>shelllistcount
-		_Page="\n[30] \q[<<上一页,OnFittingRoom,%(_j-15)]\n[140]"
-	else
-		_Page="\n[30] \q[<<上一页,OnFittingRoom,%(_j-15)]   \q[下一页>>,OnFittingRoom,%(_j+15)]\n[140]"
-	_w+_Page+_q+'\_l[0,-]\n[150]\![*]\q[返回上一层,OnOpenMenu,1]\n\![*]\q[取消,overchangeshell]'
+	_Page='\n[30]'
+	if shelllistcount>15{
+		if _j!=1
+			_Page+="\q[<<上一页,OnFittingRoom,%(_j-15)]   "
+		if _j+15<shelllistcount
+			_Page+="\q[下一页>>,OnFittingRoom,%(_j+15)]"
+	}
+	_w+_Page+'\n[140]'+_q+'\_l[0,-]\n[150]\![*]\q[返回上一层,OnOpenMenu,1]\n\![*]\q[取消,overchangeshell]'
 }
 judgehaveshell{
 	_a='-1'

@@ -67,14 +67,11 @@ OnResP{
 			_w+="◇ \f[color,110,110,110]\__q[OnResP,%(_B),eras〓][%(_A)]\__q\f[default] \q[%(_t),OnPoesyShow,%(_t),%(_B),%(_A)]\n"
 		}
 		_tola=(_d+19)/20
-		if _p==1 && _d>20
-			_page="\_l[20,-]<<上一页\_l[93,-]第%(FontCPage(1))页    共%(_tola)页\_l[200,-]\q[下一页>>,OnPoesyPage,%(_str),%(_p+1)]"
-		elseif _p==1
-			_page=''
-		elseif (_p-1)*20+20>_d
-			_page="\_l[20,-]\q[<<上一页,OnPoesyPage,%(_str),%(_p-1)]\_l[93,-]第%(FontCPage(_p))页    共%(_tola)页\_l[200,-]下一页>>"
-		else
-			_page="\_l[20,-]\q[<<上一页,OnPoesyPage,%(_str),%(_p-1)]\_l[93,-]第%(FontCPage(_p))页    共%(_tola)页\_l[200,-]\q[下一页>>,OnPoesyPage,%(_str),%(_p+1)]"
+		if _p!=1
+			_page+="\_l[20,-]\q[<<上一页,OnPoesyPage,%(_str),%(_p-1)]"
+		_page+="\_l[93,-]第%(FontCPage(_p))页    共%(_tola)页"
+		if _p*20<=_d
+			_page+="\_l[200,-]\q[下一页>>,OnPoesyPage,%(_str),%(_p+1)]"
 	}
 	if _str==NULL
 		OnResP_1(Poesyscope)

@@ -57,14 +57,13 @@ Ondict{
 		--
 		"\0\s[26]\b[2]\_q符合记录条目为%(_j),以下为第%(_p*8-7)-%(MIN(_p*8,_j))条结果:\n[150]%(_w)\n[50]"
 		--
-		if _p==1 && _j>8
-			"\_l[20,-]<<上一页\_l[93,-]\q[◇第1页,Ondicselepag]    共%(_tola)页\_l[200,-]\q[下一页>>,OndicPage,%(_p+1)]"
-		elseif _p==1
-			''
-		elseif (_p-1)*8+8>_j
-			"\_l[20,-]\q[<<上一页,OndicPage,%(_p-1)]\_l[93,-]\q[◇第%(_p)页,Ondicselepag]    共%(_tola)页\_l[200,-]下一页>>"
-		else
-			"\_l[20,-]\q[<<上一页,OndicPage,%(_p-1)]\_l[93,-]\q[◇第%(_p)页,Ondicselepag]    共%(_tola)页\_l[200,-]\q[下一页>>,OndicPage,%(_p+1)]"
+		if _p!=1
+			"\_l[20,-]\q[<<上一页,OndicPage,%(_p-1)]"
+		--
+		"\_l[93,-]\q[◇第%(_p)页,Ondicselepag]    共%(_tola)页"
+		--
+		if _p<_j
+			"\_l[200,-]\q[下一页>>,OndicPage,%(_p+1)]"
 		--
 		'\n[150]\![*]\q[继续搜索,dictionary]\![set,choicetimeout,36000]\n\![*]\q[返回上一层,OnOpenMenu,0]  \![*]\q[取消,Onoverdic]'
 	}
