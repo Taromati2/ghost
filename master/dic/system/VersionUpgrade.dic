@@ -96,5 +96,6 @@ VERSION_UPGRADE_3:void{
 }
 VERSION_UPGRADE_4:void{//building
 	ERASEVAR('lastboottime')
+	ERASEVAR('dmry')
 	RENAME_VAR('SlowTime','CloseTime')
 }

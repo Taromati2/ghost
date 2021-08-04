@@ -2155,13 +2155,13 @@ Onoldjapanese{
 }
 Onautojeachday{
 	days=daysfromdate(year-1,12,31)
-	_dmry=days%210
-	autojeachday(_dmry)
+	_i=days%210
+	autojeachday(_i)
 }
 autojeachday{
-	_dmry=_argv[0]
-	_str = _dmry + '.'
-	_next = _dmry + 1 + '.'
+	_i=_argv[0]
+	_str = _i + '.'
+	_next = _i + 1 + '.'
 	_file = 'DATA_PATH\vocabulary\Japanese\动漫日语每天一句.txt'
 	_buff = ''
 	_txt = '\1\s[10]\0\s[40]'
@@ -2173,7 +2173,7 @@ autojeachday{
 		}
 		if _str _in_ _buff {
 			_txt +="动漫日语每天一句\n/
-			%(year)年第%(days)天、第%(_dmry)句\n\n"
+			%(year)年第%(days)天、第%(_i)句\n\n"
 			_buff = FREAD(_file);  while _buff != -1 && _next !_in_ _buff {_txt += _buff + '\n';_buff = FREAD(_file);}
 			//REPLACE(_buff,_del,'')
 		}
@@ -2184,13 +2184,13 @@ autojeachday{
 }
 Onacjeachday{
 	if reference0!=NULL{
-		dmry=reference0
+		_i=reference0
 	}
-	if dmry==NULL || !ISINTEGER(dmry){
-		dmry=1
+	if _i==NULL || !ISINTEGER(_i){
+		_i=1
 	}
-	_str = dmry + '.'
-	_next = dmry + 1 + '.'
+	_str = _i + '.'
+	_next = _i + 1 + '.'
 	_file = 'DATA_PATH\vocabulary\Japanese\动漫日语每天一句.txt'
 	_buff = ''
 	_txt = '\C\_q\c\b[2]\![quicksession,true]\![set,choicetimeout,0]\![set,autoscroll,disable] '
@@ -2204,41 +2204,39 @@ Onacjeachday{
 			_buff = FREAD(_file)
 		}
 		if _str _in_ _buff {
-			_txt +="第%(dmry)句的内容\n\n"
+			_txt +="第%(_i)句的内容\n\n"
 			_buff = FREAD(_file);  while _buff != -1 && _next !_in_ _buff {_txt += _buff + '\n';_buff = FREAD(_file);}
 			//REPLACE(_buff,_del,'')
 		}
 	}
 	FCLOSE(_file)
 	FCHARSET.default
-	if dmry==1{
-		_txt += "\_l[-,250]\n\n\_l[120,-]\![*]\q[第%(dmry)句,Oninputsentence]\_l[240,-]\![*]\q[下一句,Onnextsentence]"
+	if _i==1{
+		_txt += "\_l[-,250]\n\n\_l[120,-]\![*]\q[第%(_i)句,Oninputsentence,%(_i)]\_l[240,-]\![*]\q[下一句,Onnextsentence,%(_i)]"
 	}
-	elseif dmry>=250{
-		_txt += "\_l[-,250]\n\n\![*]\q[上一句,Onlastsentence]\_l[120,-]\![*]\q[第%(dmry)句,Oninputsentence]"
+	elseif _i>=250{
+		_txt += "\_l[-,250]\n\n\![*]\q[上一句,Onlastsentence,%(_i)]\_l[120,-]\![*]\q[第%(_i)句,Oninputsentence,%(_i)]"
 	}
-	elseif dmry>1{
-		_txt +=  "\_l[-,250]\n\n\![*]\q[上一句,Onlastsentence]\_l[120,-]\![*]\q[第%(dmry)句,Oninputsentence]\_l[240,-]\![*]\q[下一句,Onnextsentence]"
+	elseif _i>1{
+		_txt +=  "\_l[-,250]\n\n\![*]\q[上一句,Onlastsentence,%(_i)]\_l[120,-]\![*]\q[第%(_i)句,Oninputsentence,%(_i)]\_l[240,-]\![*]\q[下一句,Onnextsentence,%(_i)]"
 	}
 	_txt += '\n\n\n\q[◇返回上一层,japanesestudy]\n\q[◇终了,OnOpenMenu,1]'
 	_txt
 }
 Oninputsentence{
-	'\![set,choicetimeout,0]共有210句，要看第几句？\![open,inputbox,Onacjeachday]\n/
-	\n[150]\q[◇返回,Onacjeachday]'
+	"\![set,choicetimeout,0]共有210句，要看第几句？\![open,inputbox,Onacjeachday,%(reference0)]\n/
+	\n[150]/
+	\q[◇返回,Onacjeachday,%(reference0)]"
 }
 Onnextsentence{
-	dmry+=1
-	Onacjeachday
+	Onacjeachday(reference0+1)
 }
 Onlastsentence{
-	dmry-=1
-	Onacjeachday
+	Onacjeachday(reference0-1)
 }
 Ondaysentence{
 	days=daysfromdate(year-1,12,31)
-	dmry=days%210
-	Onacjeachday
+	Onacjeachday(days%210)
 }
 On100SentencesInJapanese{
 	if QuickStartVersion{
@@ -2300,8 +2298,8 @@ On100SentencesInJapanese{
 	else
 		_Page="\_l[0,320]\q[<<上一页,On100SentencesInJapanese,,%(_j-5)]  \_l[60,320]\q[下一页>>,On100SentencesInJapanese,,%(_j+5)]\n"
 	_w += _Page + "\q[◇返回上一层,japanesestudy]\n\q[◇终了,OnOpenMenu,1]\![quicksession,false]%(_v)"
-	_w
 	FCLOSE(_file)
+	_w
 }
 On100SentencesInJapanese_s{
 	'\![sound,stop]'+On100SentencesInJapanese
