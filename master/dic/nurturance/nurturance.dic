@@ -305,7 +305,7 @@ OnGetTalkCount{
 OnRPGintro{
 	_txt='\0\![quicksession,true]\![set,choicetimeout,0]\b[2]'
 	_txt+='■说明■\n[150]'
-	_txt+="/
+	_txt+='/
 	1.能力对人物属性的影响：\n/
 	力量-物理攻击(STR)加成\n/
 	智力-魔法攻击(ATS)加成\n/
@@ -330,7 +330,7 @@ OnRPGintro{
 	2.每对话一句，心情值加5\n/
 	3.使用“\\teach”指令增加一条对话教学，心情值+20\n/
 	心情上限值由力量、智力、意志、敏捷、幸运共同决定\n/
-	"
+	'
 	_txt+='\n[half]\q[◇返回,OnKikkaMenu,2]'
 	_txt
 }

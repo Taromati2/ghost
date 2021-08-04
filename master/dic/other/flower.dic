@@ -239,7 +239,7 @@ OnMenuCP{
 	FlowersMenu
 }
 OnMenuOthers{
-	"\0\s[23]\b[2]其实,\w9橘花也知道一些其他花的花语哦\w9\n[150]/
+	'\0\s[23]\b[2]其实,\w9橘花也知道一些其他花的花语哦\w9\n[150]/
 	\q[◇百日草,OnFlowerOthers,0]\n/
 	\q[◇薄荷,OnFlowerOthers,1]\n/
 	\q[◇薄雪草,OnFlowerOthers,2]\n/
@@ -265,7 +265,7 @@ OnMenuOthers{
 	\q[◇火鹤,OnFlowerOthers,22]\n/
 	\q[◇菖蒲,OnFlowerOthers,23]\n/
 	\q[◇栀子,OnFlowerOthers,24]\n/
-	\q[◇仙客来,OnFlowerOthers,25]\n"
+	\q[◇仙客来,OnFlowerOthers,25]\n'
 	--
 	FlowersMenu
 }
