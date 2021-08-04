@@ -11,12 +11,11 @@ OnGobangInIt{
 	if wzq.Model==NULL
 		wzq.Model=0//0人->机 1机->人 2对翌
 	player.gamenum=0
-	_txt=''
-	_txt+="\s[2]%(username)要和橘花下五子棋啊，\w9\w9\s[40]来吧，橘花可不是那么好赢的哦。\n"
-	_txt+='\n[half]\q[◇新游戏,OnGobangNewGame]'
-	_txt+='\n\q[◇返回上一层,OnOpenMenu,2]     \q[◇结束,OnGobangGameOver]'
 	mess=''
-	_txt
+	"\s[2]%(username)要和橘花下五子棋啊，\w9\w9\s[40]来吧，橘花可不是那么好赢的哦。\n/
+	\n[half]/
+	\q[◇新游戏,OnGobangNewGame]\n/
+	\q[◇返回上一层,OnOpenMenu,2]     \q[◇结束,OnGobangGameOver]"
 }
 OnGobangNewGame{
 	Black=1
@@ -224,15 +223,15 @@ OnGobangOption{
 		wzq.Model=reference1
 		先走=reference2
 	}
-	_txt='\C\![quicksession,true]\c\![set,choicetimeout,0]\b[2]'
-	_txt+="棋盘设定：当前为%(棋盘)\n\q[◇棋盘1,OnGobangOption,Gobang.chessboard,1,棋盘1]  \q[◇棋盘2,OnGobangOption,Gobang.chessboard,2,棋盘2]\n/
+	'\C\![quicksession,true]\c\![set,choicetimeout,0]\b[2]'
+	--
+	"棋盘设定：当前为%(棋盘)\n\q[◇棋盘1,OnGobangOption,Gobang.chessboard,1,棋盘1]  \q[◇棋盘2,OnGobangOption,Gobang.chessboard,2,棋盘2]\n/
 	棋子设定：当前为%(棋子) \n\q[◇棋子1,OnGobangOption,Gobang.piece,1,棋子1]  \q[◇棋子2,OnGobangOption,Gobang.piece,2,棋子2]\n/
 	棋力设定：当前为%(棋力)\n \q[◇入门,OnGobangOption,ql,1,入门]   \q[◇业余,OnGobangOption,ql,2,业余]  \q[◇专业,OnGobangOption,ql,3,专业]  \q[◇大师,OnGobangOption,ql,4,大师]\n/
 	段位设定：当前为%(段位) \n \q[◇3段,OnGobangOption,Gobang.Rank,3,3段]  \q[◇4段,OnGobangOption,Gobang.Rank,4,4段]  \q[◇5段,OnGobangOption,Gobang.Rank,5,5段]  \q[◇6段,OnGobangOption,Gobang.Rank,6,6段] \q[◇7段,OnGobangOption,Gobang.Rank,7,7段]  \q[◇8段,OnGobangOption,Gobang.Rank,8,8段]  \q[◇9段,OnGobangOption,Gobang.Rank,9,9段]\n/
 	先走模式：当前为%(先走) \n\q[◇%(username)先走,OnGobangOption,xz,0,%(username)先走]   \q[◇橘花先走,OnGobangOption,xz,1,橘花先走]\n/
-	"
-	_txt+='\n\q[◇返回上一层,OnGobangNewGame]     \q[◇结束,OnGobangGameOver]'
-	_txt
+	\n/
+	\q[◇返回上一层,OnGobangNewGame]     \q[◇结束,OnGobangGameOver]"
 }
 ClearGobangVar:void{//消除变量
 	ERASEVAR('playingGobang')
