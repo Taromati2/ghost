@@ -227,7 +227,7 @@ OnOpenDirOrFile{
 OnTextDrop{
 	if reference0
 		temp = reference0
-	if RE_GREP(temp,"(?!%(CHR(1)))%(CHR(1))(?!%(CHR(1)))")==0
+	if !RE_GREP(temp,"(?!%(CHR(1)))%(CHR(1))(?!%(CHR(1)))")
 		temp = REPLACE(temp,CHR(1)+CHR(1),CHR(1))
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')11]\b[2]唔？\n"
@@ -537,7 +537,7 @@ OnBIFFBegin{
 	"\0\s[0]那么、查询邮件。\n\n[half]\_q伺服器：%(reference2)\_q"
 }
 OnBIFFComplete{
-	if reference0 == 0{
+	if !reference0 {
 		'\0\s[20]嗯…\w9\w9\s[0]\n什么都没有的样子。\n需要打开默认邮箱吗？\n\q[◇打开,OPENMAILER]\n\q[◇算了,Cancel]'
 	}
 	else{

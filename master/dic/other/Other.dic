@@ -21,11 +21,11 @@ Onjap_v{
 	_kana=('あ,い,う,え,お,か,き,く,け,こ,さ,し,す,せ,そ,た,ち,つ,て,と,な,に,ぬ,ね,の,は,ひ,ふ,へ,ほ,ま,み,む,め,も,や,　,ゆ,　,よ,ら,り,る,れ,ろ,わ')
 	_w="\b[2]\![quicksession,true]\![set,choicetimeout,0]\c\0\s[26]%(username)要学习日语五十音吗，点击下面的假名就可以了哦~\n[150]"
 	_b='';_v='';_j=1
-	if reference1!=NULL
+	if reference1
 		_j=reference1+1
 	_mt="\f[color,110,110,110] ◢ 只播放点击(当前状态)\_l[155,-]\f[color,100,10,220]\q[◥ 顺序播放,Onjap_X,%(_j)]\_l[240,-]\f[color,250,0,0]\q[■ 停止,Onjap_s]\f[default] \n[150] "
 	_b=reference0
-	if _argv[0]!=NULL {
+	if _argv[0] {
 		_b=_kana[_argv[0]-1]
 		_v='\![sound,wait]'
 		_mt=' \f[color,100,10,220]\q[◢ 只播放点击,Onjap_s]\_l[100,-]\f[color,110,110,110]◥ 顺序播放(当前状态)\_l[240,-]\f[color,250,0,0]\q[■ 停止,Onjap_s]\f[default] \n[150] '
@@ -57,7 +57,7 @@ Onjap_v{
 Onjap_X{
 	_w='\![sound,stop]'
 	_i=reference0
-	if _argv[0]!=NULL
+	if _argv[0]
 		_i=_argv[0]
 	while _i<47 {
 		_w+=Onjap_v(_i)
@@ -84,14 +84,14 @@ Onnotebook{
 	_k=0
 	_j=0
 	_l=0
-	if reference1!=NULL
+	if reference1
 		_k=TOINT(reference1)
 	if reference0==0 || reference0!=1
 		_w='\0\s[26]\_q\b[2]嗯嗯,这是橘花的记事本哦~\n[150]\![*]\q[添加记事,Onaddnotebook]\_l[130,-]\![*]\q[返回,OnOpenMenu,0]\_l[187,-]\![*]\q[修改,Onnotebook,1]\_l[240,-]\![*]\q[退出,Onovernotebook]\n[200]'
 	elseif reference0==1 || reference0!=0
 		_w='\0\s[26]\_q\b[2]嗯嗯,这是橘花的记事本哦~\n[150]\![*]\q[添加记事,Onaddnotebook]\_l[130,-]\![*]\q[返回,OnOpenMenu,0]\_l[187,-]\![*]\q[删除,Onnotebook,0]\_l[240,-]\![*]\q[退出,Onovernotebook]\n[200]'
 	_j=SQLite('-f','SELECT title FROM notes')
-	if _j==0
+	if !_j
 		_w+='\s[3]没有数据呢...\n[110]'
 	else {
 		if _k+20<=_j
@@ -127,7 +127,7 @@ Onnotebook{
 }
 Onupdatenotebook{
 	_txt='\0\s[26]\b[2]\_q\n\n'
-	//if reference0 && reference1==NULL
+	//if reference0 && !reference1
 		_t=0
 	_c=0
 	if state=='input'{
@@ -190,13 +190,13 @@ Onclicknotebook{
 }
 Onaddnotebook{
 	if _argv[0]=='Title' {
-		if addnotebook_T!=NULL
+		if addnotebook_T
 			'\0\s[26]请输入内容!\![open,inputbox,Onaddnotebook_C,-1]\n[300]\![set,choicetimeout,0]\q[◇退出,Onovernotebook,Onaddnotebook_C]'
 		else
 			Onaddnotebook
 	}
 	elseif _argv[0]=='Content' {
-		if addnotebook_C!=NULL {
+		if addnotebook_C {
 			_T=addnotebook_T
 			_C=addnotebook_C
 			_D="%(year)-%(month)-%(day)"
@@ -583,7 +583,7 @@ OnShortcutAdd{
 	foreach _ProcessData; _s {
 		_Name=_s[0,'|']
 		_Path=_s[2,'|']
-		if _Path!='' && "|%(_Name)|" !_in_ shortcutdata && reference0!='ShortcutNew' && RE_GREP(_Path,']')==0 && _Name !_in_ _NoP && _Name !_in_ _NA {
+		if _Path!='' && "|%(_Name)|" !_in_ shortcutdata && reference0!='ShortcutNew' && !RE_GREP(_Path,']') && _Name !_in_ _NoP && _Name !_in_ _NA {
 			_i++
 			_NA+=_Name
 			_w+="\_l[%(_x),%(_y)]\__q[OnShortcut,%(_Name),%(_Path),2]\_b[%(CHR(34))%(_Path),0%(CHR(34)),inline%(ICOMode)]\_l[%(_x+35),%(_y)]\![*]软件%(_i): 【%(_Name)】\__q\_l[%(_x+35),%(_y+20)]%(_Path)"
@@ -633,7 +633,7 @@ OnShortcutMenuDel{
 	}
 }
 OnShortcut{
-	if reference2==0 {
+	if !reference2 {
 		_file = REPLACE(reference0,'/','\\')
 		"\_q\0\s[5]橘花正为%(username)打开%(reference1)\n……\![open,file,%(_file),%(reference3)]"
 	}
@@ -787,7 +787,7 @@ OnAllShortcutAdd{
 	foreach reference0; _s {
 		_p=_s[2,'|']
 		_N=_s[0,'|']
-		if _N!=NULL
+		if _N
 			_w+="\_l[%(_x),%(_y)]\_b[%(CHR(34))%(_p),0%(CHR(34)),inline%(ICOMode)]\_l[%(_x+35),%(_y)]软件：【%(_N)】\_l[%(_x+35),%(_y+20)]路径为：%(_p)"
 		_y+=45
 	}
@@ -814,7 +814,7 @@ OnShortcutFileDrop{
 	}
 	case _fileext{
 		when '.exe'{
-			if RE_GREP(_path2,']')==0
+			if !RE_GREP(_path2,']')
 				"\_q需要橘花设置该软件到橘花的快捷菜单吗？\n[150]/
 				　\![*]\q[好的,OnShortcut,%(_filename)%(_fileext),%(_path2),2]　\![*]\q[不了,OnShortcutOver]　\![*]\q[直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]\n[150]/
 				\_l[5,-]\_b[%(CHR(34))%(_path2),0%(CHR(34)),inline%(ICOMode)] \n软件名称：%(_filename)%(_fileext)\n[150] 软件路径：%(_path2)"
@@ -822,7 +822,7 @@ OnShortcutFileDrop{
 				"\_q\0\s[0]如果%(username)要设置该软件的快捷，\n路径和名称中请不要带有符号“]”哦！\n[150]\_l[5,-]\_b[%(CHR(34))%(_path2),0%(CHR(34)),inline%(ICOMode)] \n软件名称：%(_filename)%(_fileext)\n[150] 软件路径：%(_path2)"
 		}
 		when '.lnk'{
-			if RE_GREP(_path2,']')==0
+			if !RE_GREP(_path2,']')
 				"\_q需要橘花设置该快捷方式到橘花的快捷菜单吗？\n[150]/
 				　\![*]\q[好的,OnShortcut,%(_filename)%(_fileext),%(_path2),2]　\![*]\q[直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]\n[150]/
 				\_l[5,-]\_b[%(CHR(34))%(_path2),0%(CHR(34)),inline%(ICOMode)] \n软件名称：%(_filename)%(_fileext)\n[150] 软件路径：%(_path2)"
@@ -830,7 +830,7 @@ OnShortcutFileDrop{
 				"\_q\0\s[0]如果%(username)要设置该软件的快捷，\n路径和名称中请不要带有符号“]”哦！\n[150]\_l[5,-]\_b[%(CHR(34))%(_path2),0%(CHR(34)),inline%(ICOMode)] \n软件名称：%(_filename)%(_fileext)\n[150] 软件路径：%(_path2)"
 		}
 		when ''{
-			if _filename==NULL {
+			if !_filename {
 				_Ico='2'
 				"\_q需要橘花设置该文件夹到橘花的快捷菜单吗？\n[150]/
 				　\![*]\q[好的,OnShortcut,━文件夹━,%(_path2),2]　\![*]\q[不了,OnShortcutOver]　\![*]\q[直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]\n[150]/
@@ -840,7 +840,7 @@ OnShortcutFileDrop{
 				"\_q\0\s[0]%(_filename)%(_fileext)\n\n%(_path2)"
 		}
 		when '.txt','.doc','.dic','.url'{
-			if RE_GREP(_path2,']')==0 {
+			if !RE_GREP(_path2,']') {
 				_Ico='3'
 				"\_q需要橘花设置该文件橘花的快捷菜单吗？\n[150]/
 				　\![*]\q[好的,OnShortcut,%(_filename)%(_fileext),%(_path2),2]　\![*]\q[直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]\n[150]/
@@ -1060,7 +1060,7 @@ ReloadShortCutDat{
 		_Icon=_s[2,'|']
 		_Mode=_s[3,'|']
 		_Name=SPLITPATH.roughly(_Path)[1]
-		if RE_GREP(_path2,']')==0
+		if !RE_GREP(_path2,']')
 			shortcutdata+="%(_a)|%(_Name)|%(_Path)|%(_Icon)|%(_Mode)*"
 	}
 }
@@ -1333,7 +1333,7 @@ OnJapaneseWordLoad{
 	_a = reference0
 	_booknum=reference1
 	_j=reference2
-	if japworddaymode[2]!=0
+	if japworddaymode[2]
 		_booknum=japworddaymode[2]
 	if _argc>0{
 		_a=_argv[0]
@@ -1343,7 +1343,7 @@ OnJapaneseWordLoad{
 	_a=TOINT(_a)
 	_booknum=TOINT(_booknum)
 	_j=TOINT(_j)
-	if ISVAR('japhardword')==0
+	if !ISVAR('japhardword')
 		japhardword=IARRAY
 	_before=''
 	_str ="第%(_a)课"
@@ -1645,19 +1645,19 @@ OnJapWordQuestion{
 		japword=JapWordDay
 		japword=JapWordShuffle
 	}
-	elseif japwordday!=day||ISVAR('japword')==0{
+	elseif japwordday!=day||!ISVAR('japword') {
 		japwordday=day
 		japword=JapWordDay
 		japword=JapWordShuffle
 	}
 	if reference0=='testbegin'
 		japwordright=IARRAY
-	if ISVAR('japhardword')==0
+	if !ISVAR('japhardword')
 		japhardword=IARRAY
 	_n=ARRAYSIZE(japword)
 	_wordquestion=''
 	_wordanswer=''
-	if wrongword==''||ISVAR('wrongword')==0
+	if wrongword==''||!ISVAR('wrongword')
 		wrongword=JapWordDay('misword')
 	_wrongword=wrongword
 	_wordnum=0
@@ -1711,7 +1711,7 @@ OnJapWordQuestion{
 		}
 		_k=0
 		_temp=''
-		if r!=_i||ISVAR('wordanswer')==0{
+		if r!=_i||!ISVAR('wordanswer') {
 			wordanswer=WrongAnswerGet(_wrongword,_i,_exlmode,_r)
 			r=_i
 		}
@@ -1928,7 +1928,7 @@ JapWordDay{
 	_misword=''
 	buffnum=0
 	buffnums=0
-	if ISVAR('japworddaynum')==0
+	if !ISVAR('japworddaynum')
 		japworddaynum=10
 	_exlmode=0
 	FCHARSET(1)
@@ -2181,7 +2181,7 @@ autojeachday{
 	_txt
 }
 Onacjeachday{
-	if reference0!=NULL{
+	if reference0 {
 		_i=reference0
 	}
 	if _i==NULL || !ISINTEGER(_i){
@@ -2250,18 +2250,18 @@ On100SentencesInJapanese{
 	_v=''
 	_file = 'DATA_PATH\vocabulary\Japanese\日本语100句.txt'
 	_w='\C\![quicksession,true]\c\0\s[26]\b[2]\![set,choicetimeout,0]正在学习日语一百句，点击试听可以听到语句哦\n'
-	if reference0!=NULL
+	if reference0
 		_i=reference0
-	if reference1!=NULL
+	if reference1
 		_j=reference1
-	if _argv[1]!=NULL
+	if _argv[1]
 		_j=_argv[1]
 	_mt = "\f[color,110,110,110] ◢ 只播放点击(当前状态)\_l[155,-]\f[color,100,10,220]\q[◥ 顺序播放,On100SentencesInJapanese_X,%(_i),%(_j)]\_l[240,-]\f[color,250,0,0]\q[■ 停止,On100SentencesInJapanese_s,,%(_j)]\f[default] \n[150] "
-	if reference0!=NULL {
+	if reference0 {
 		_v='\![sound,wait]'
 		_b=reference0
 	}
-	if _argv[0]!=NULL {
+	if _argv[0] {
 		_v='\![sound,wait]'
 		_b=_argv[0]
 		_mt= "\f[color,100,10,220]\q[◢ 只播放点击,On100SentencesInJapanese_s]\_l[100,-]\f[color,110,110,110]◥ 顺序播放(当前状态)\_l[240,-]\f[color,250,0,0]\q[■ 停止,On100SentencesInJapanese_s,,%(_j)]\f[default] \n[150] "
@@ -2304,9 +2304,9 @@ On100SentencesInJapanese_X{
 	_w='\![sound,stop]'
 	_i=reference0
 	_j=reference1
-	if _argv[0]!=NULL
+	if _argv[0]
 		_i=_argv[0]
-	if _argv[1]!=NULL
+	if _argv[1]
 		_j=_argv[1]
 	while _i<=65{
 		if _i>=_j+5

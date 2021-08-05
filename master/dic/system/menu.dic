@@ -13,7 +13,7 @@ OnOpenMenu{
 	}
 }
 OpenMenu{
-	if haveshell==0{
+	if !haveshell {
 		SilentShellChange=1
 		'\![change,shell,预设]'
 		return
@@ -175,7 +175,7 @@ OpenMenuTalk{
 				"\0\s[27]讨厌，%(username)想被锯上一锯吗？\e:click=NULL"
 		}
 	}
-	elseif _phase == 0 {
+	elseif !_phase {
 		'\0\s[0]\b[2]？'
 		'\0\s[6]\b[2]干嘛'
 		'\0\s[7]\b[2]什么事。'
@@ -390,7 +390,7 @@ OnMenuExplorer{
 NotePadShow{
 	//ERASEVAR('notepad')
 	_offsety = 4
-	if ISVAR('notepad') == 0 {
+	if !ISVAR('notepad') {
 		notepad = (0,0,0,4,'84,85','128,128,128')
 	}
 	if _argc > 0 {
@@ -576,7 +576,7 @@ Select.System{
 	Lunar
 	_ampm = TimeName
 	_hour=hour12
-	if TOINT(timehour[0])==0{
+	if !TOINT(timehour[0]) {
 		_ampm=''
 		_hour=(hour+timehour[1])%24
 	}
@@ -726,7 +726,7 @@ Select.Option{
 	"\q[◇互动对话,OnAutoComm]		\_l[120]\q[%(_t[TOINT(communicate[0])]) ON,Onusage,communicate[0\],1]    \_l[180]\q[%(_t[1-TOINT(communicate[0])]) OFF,Onusage,communicate[0\],0]\n"
 	--
 	'\n[half]'
-	if ISVAR('voice.rate')==0
+	if !ISVAR('voice.rate')
 		voice.rate=3
 	--
 	'\n\q[◇返回上一层,OnOpenMenu,4]\n/
@@ -776,7 +776,7 @@ OnVoiceName{
 			_txt += "\q[○%(_t[_i]),Onusage,voicename,%(_t[_i])]\n"
 		}
 	}
-	if _n==0
+	if !_n
 		_txt+='没有安装语音库吗？\n[150]\![*]\q[刷新,OnVoiceName]\n'
 	_txt+='\n\n语速调节：'
 	_x=0
@@ -1052,7 +1052,7 @@ OnTrashClean{
 }
 OnTrashClean_s{
 	_gomisute = CALLSAORI('gomi', '-ef')
-	if _gomisute != 0{
+	if _gomisute {
 		kikkamood+=LOG(腹黑度*trashnum,2.718281)*kikkamood
 		kikkamood=MAX(MIN(kikkamoodmax,kikkamood),1)
 		if 萌度>200||腹黑度>200||萌度>腹黑度

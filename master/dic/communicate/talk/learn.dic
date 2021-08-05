@@ -43,8 +43,8 @@ formattemp{//输出显示时如有同义词句则把同义词句括起来
 	/* SETDELIM(_a,'|')
 	_x=''
 	_y=0
-	while _a[_y+1]!=NULL {
 		if _y==0 {
+	while _a[_y+1] {
 			_x=_a[0]+'（'
 		}
 		else {
@@ -86,14 +86,14 @@ OnTeach{
 			else {//输入的句子中是否包含有数据库'提问'字段的词语,有的话取出符合的答案,将ID保存在数组_g
 				_g=Talksearch(_a)
 			}
-			if _g[0]==NULL {
+			if !_g[0] {
 				temp01='橘花这时要回答的'
 				Teach00
 			}
 			else {
 				_i=0
 				_m=''
-				while _g[_i]!=NULL {
+				while _g[_i] {
 					_b=SQLite('-j',"SELECT * FROM KikkaAIdb WHERE ID='%(_g[_i])' AND scope!=-1")
 					_i++
 					_b=REPLACE(_b,'\1','斗和：')
@@ -246,7 +246,7 @@ Talksearch{//在教学、修改、删除查询时用
 		_f=SQLite('-j',"SELECT 提问 FROM KikkaAIdb WHERE ID='%(_d)' AND scope!=-1")
 		SETDELIM(_f,'|')
 		_y=0
-		while _f[_y]!=NULL {
+		while _f[_y] {
 			_m=0
 			if '&' _in_ _f[_y] {//判断'提问'中有&时,各个关键字是否都存在于_a中
 				_j=_f[_y]
@@ -281,7 +281,7 @@ Talksearchleng{
 		_f=SQLite('-j',"SELECT 提问 FROM KikkaAIdb WHERE ID='%(_d)' AND scope!=-1")
 		SETDELIM(_f,'|')
 		_y=0
-		while _f[_y]!=NULL {
+		while _f[_y] {
 			_m=0
 			if '&' _in_ _f[_y] {
 				_j=_f[_y]
@@ -402,7 +402,7 @@ UPDateshow{
 			_x=_b[2]
 			_y=_b[3]
 			_z=_b[0]
-			if _b!=NULL {
+			if _b {
 				_m +='ID:'+_z+"\_l[150,-]\![*]\q[%(temp01),OnAIdbUpdate,%(_z)]"+'\n提问: '+formattemp(_x)+'\n回答: '+formattemp(_y)+'\n[150]'
 			}
 		}
@@ -410,7 +410,7 @@ UPDateshow{
 	else {
 		_g=_argv
 		_i=0
-		while _g[_i]!=NULL {
+		while _g[_i] {
 			_b=SQLite('-j',"SELECT * FROM KikkaAIdb WHERE ID='%(_g[_i])' AND scope!=-1")
 			_i++
 			_b=REPLACE(_b,'\,','，')
@@ -438,7 +438,7 @@ Onselepag{
 Onsp{//选页
 	_a=CUTSPACE(reference0)
 	_b = RE_REPLACE(_a,'[0123456789]',NULL)
-	if _b!=NULL || _a==NULL {
+	if _b || !_a {
 		Onselepag
 	}
 	else {
@@ -458,7 +458,7 @@ OnAIdbUpdate{
 	_a=1
 	if temp01=='删除该词条' {
 		_a=SQLite("UPDATE KikkaAIdb SET scope=-1 WHERE ID=%(reference0)")
-		if _a==0
+		if !_a
 			"\0\s[0]删除成功!现共有%(SQLite.Size('KikkaAIdb'))条教学对话喔~\n[200]\![*]\q[返回,TalkDelete]\n\![*]\q[取消,OnoverTeach]"
 		else
 			BUGNow
@@ -519,7 +519,7 @@ OnAIdbUpdate{
 			_a=SQLite("UPDATE KikkaAIdb SET %(temp02)='%(reference0)' WHERE ID=%(_b)")
 			_m="任务完成!已把%(temp02)内容改为“%(formattemp(reference0))”。"
 		}
-		if _a==0 {
+		if !_a {
 			"\0\s[0]\b[2]\_q%(_m)\n[150]返回该词条继续修改吗?\n[200]/
 			\![set,choicetimeout,0]\![*]\q[返回继续修改,OnAIdbUpdate,%(_b)]   \![*]\q[返回列表,TalkAllAmend]     \![*]\q[不用了,OnoverTeach]"
 		}

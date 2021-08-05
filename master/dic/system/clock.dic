@@ -136,7 +136,7 @@ OnMinuteChange{
 				AutoShellChangeflag[5]=1
 			}
 			if AutoShellChangeflag[5]==1{
-				if tshellid==NULL{
+				if !tshellid {
 					OnAutoChangeShell
 					tshellid=shellid
 				}
@@ -238,7 +238,7 @@ OnAlarmMenu{
 	AlarmMenu
 }
 AlarmMenu{
-	if ISVAR('alarmset') == 0 {
+	if !ISVAR('alarmset') {
 		alarmset = IARRAY
 		alarmset[0] = 'OFF'
 		alarmset[1] = '当天'
@@ -406,7 +406,7 @@ OnPlayRing:void{
 }
 //----- 时间判断 -------------------------------------
 Timejud{
-	if _argc == 0
+	if !_argc
 		_argv[0] = hour
 	case _argv[0] {
 		when 0-4	{ '凌晨'; '半夜'; }
@@ -420,7 +420,7 @@ Timejud{
 	}
 }
 Seasonjud{
-	if _argc == 0
+	if !_argc
 		_argv[0] = month
 	case _argv[0] {
 		when 1-2	{ '冬天';}
@@ -644,7 +644,7 @@ OnClockClose{
 }
 //**** 设定关机时间 ***********************************************************************************
 OnSetShutdownMenu{
-	if ISVAR('shutdownset') == 0{
+	if !ISVAR('shutdownset') {
 		shutdownset = IARRAY
 		shutdownset[0] = 'OFF'
 		shutdownset[1] = '当天'

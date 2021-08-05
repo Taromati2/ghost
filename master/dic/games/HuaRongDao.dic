@@ -15,7 +15,7 @@ OnHuaRongDao{
 	}
 	playHuaRongDao=1
 	running='playHuaRongDao'
-	if HuaRongDao.BackGroundConfing==NULL
+	if !HuaRongDao.BackGroundConfing
 		HuaRongDao.BackGroundConfing=1
 	GameSystem
 	--
@@ -30,7 +30,7 @@ HuaRongDaoInIt{
 	rj=0
 	playLevel=1
 	steps=0
-	if reference0!=NULL
+	if reference0
 		playLevel=reference0
 	if _argc > 0{
 		playLevel = _argv[0]

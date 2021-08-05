@@ -8,7 +8,7 @@ AITalk{
 		if ISVAR('talkmemo') == 1{
 			ERASEVAR('talkmemo')
 		}
-		if mikireflag == 0{
+		if !mikireflag {
 			if CHAIN.IDName == ''{
 				if specialmode == 'smoking'{
 					lastTalk = OnSmokingEnd
@@ -50,7 +50,7 @@ OnTranslate{
 	if _txt{
 		if _temp{
 			_t=SakuraToTxt(_txt)
-			if running!='chatroom'&&'引擎 (' !_in_ _t&&CheckProcess('wscript.exe')==0//&&running!='readbook'&&read!='stop'
+			if running!='chatroom'&&'引擎 (' !_in_ _t&&!CheckProcess('wscript.exe') //&&running!='readbook'&&read!='stop'
 				_txt=TxtToVoice(_t,voicename)+_txt
 		}
 		if musicplayer == 1 && reference2 != 'OnMusicPlayer' && reference2 != 'OnSurfaceRestore.Music' && mode=='0'{
@@ -1320,7 +1320,7 @@ Select.ForcedTalk_b1_no{
 	'\1\s[10]没事做的话、\w9去睡觉如何？\w9\w9\0\s[26]虽然很高兴能见面、\w9\w9\s[0]\n也请注意自己的身体喔。'
 }
 ForcedTalk1{
-	if RAND(4) == 0{
+	if !RAND(4) {
 		'\0\s[26]那么…\w5\1\s[10]禁止血腥话题。\w9\w9\0\s[8]\n\n[half]咦、\w9啊～那个…\w9\w9\w9\1\s[10]\n\n[half]没其他的了吗…'
 	}
 	else{
@@ -1406,7 +1406,7 @@ TalkToUser{
 }
 //**** ONE *************************************************
 ONE{
-	if ISVAR('scope')==0
+	if !ISVAR('scope')
 		scope = '0'
 	//呼叫名字
 	if reference1 == '橘花'{
@@ -1447,14 +1447,14 @@ TWO{
 	_t = ''
 	if _t = TWO.commnd
 		_t
-	elseif KikkaAImode==0{
+	elseif !KikkaAImode {
 		if _t = TWO.aitalk
 			_t
 	}
 	if !_t{
 		if _t = TWO.dicpart
 			_t
-		elseif KikkaAImode!=0{
+		elseif KikkaAImode {
 			if _t = TWO.aitalk
 				_t
 		}
@@ -1541,7 +1541,7 @@ TWO.dicpart{
 		'
 	}
 	elseif '节日' _in_ reference1{
-		if lunartime[9]!=NULL || lunartime[10]!=NULL
+		if lunartime[9] || lunartime[10]
 			"今天是今天是%(lunartime[9]) %(lunartime[10])\n/
 			\q[◇知道了,End]\n"
 		else

@@ -17,7 +17,7 @@ OnverPoesy{
 }
 //---- 查找诗歌 ------------------------------------------------------------------------------------
 OnResP_1{
-	if _argv[0]==NULL
+	if !_argv[0]
 		Poesyscope=reference0
 	"\0\s[9]请输入%(Poesyscope)关键字!(阿拉伯数字和英文字母将被忽略)\![set,choicetimeout,0]\![open,inputbox,OnResP,-1]\n[180]\![*]\q[取消,OnverPoesy,OnResP]"
 }
@@ -29,7 +29,7 @@ OnResP{
 	_p=1
 	_d=0
 	_Acount=0
-	if _argv[0]!=NULL
+	if _argv[0]
 		_p=TOINT(_argv[0])
 	if reference1=='eras〓'
 		ERASEVAR('Poesyscope')
@@ -53,7 +53,7 @@ OnResP{
 	else{
 		if reference0=='全_标题〓'
 			_d=SQLite('-f','SELECT TA FROM Poesy')
-		elseif Poesyscope!=NULL
+		elseif Poesyscope
 			_d=ResSQL(_str,Poesyscope)
 		else
 			_d=ResSQL(_str,'作者')
@@ -73,13 +73,13 @@ OnResP{
 		if _p*20<=_d
 			_page+="\_l[200,-]\q[下一页>>,OnPoesyPage,%(_str),%(_p+1)]"
 	}
-	if _str==NULL
+	if !_str
 		OnResP_1(Poesyscope)
 	else{
 		_a="共找到诗歌%(_d)首:\_q"
 		if reference0=='All_Author'
 			_a="诗歌作者全列表,共%(_Acount)位哦:\_q\n[40]"
-		if _d==0
+		if !_d
 			_a='橘花没有找到相关资料呢...'
 		"\0\s[0]\b[2]%(_a)\n[120]%(_w)\n[50]%(_page)\n[150]\![*]\q[返回,OnResearchPoesy]\![set,choicetimeout,0]\n\![*]\q[退出,OnverPoesy]"
 	}
@@ -106,7 +106,7 @@ ShowPoesySQL{
 //---- 谈话中显示诗歌 ------------------------------------------------------------------------------
 TalkPoesyShow{
 	_w=IARRAY
-	while _w[0]==NULL || _w[1]==NULL {
+	while !_w[0] || !_w[1] {
 		_r=RAND(310)+1
 		_w=SQLite('-j',"SELECT 正文 FROM Poesy WHERE ID='%(_r)'")
 		SETDELIM(_w,'\n')
@@ -124,14 +124,14 @@ TalkPoesy{
 }
 //---- 诗歌默写 ------------------------------------------------------------------------------------
 OnPoesywrite{
-	if Poesywritedegree==NULL
+	if !Poesywritedegree
 		_t=TalkPoesyShow('〓')
 	Poesywritedegree+=1
 	_a=Poesywrite[0]
 	_b=Poesywrite[1]
 	_b=REPLACE(_b,'。',NULL)
 	_w="________________，%(_b)。〓〓%(_a)，________________。"
-	if Poesywritemode==NULL
+	if !Poesywritemode
 		Poesywritemode=ANY(1,2)
 	_w=_w[Poesywritemode-1,'〓〓']
 	"\0\s[26]请%(username)在空白处填上正确诗句哦~\n[150]问题：\_q%(_w)\n[200]第%(Poesywritedegree)次回答本题。\![set,choicetimeout,0]\![open,inputbox,OnPoesywrite_1,-1]\n[180]\![*]\q[以后回答,OnlatPoesywrite]\n\![*]\q[放弃本题,OnverPoesywrite]"

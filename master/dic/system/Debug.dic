@@ -203,7 +203,7 @@ OnCalculateVar{
 						return
 					}
 				}
-				if ISVAR(_var) == 0 && ISFUNC(_func) == 0 && GETTYPE(TOAUTOEX(_var)) == 3{
+				if !ISVAR(_var) && !ISFUNC(_func) && GETTYPE(TOAUTOEX(_var)) == 3{
 					if mode == '1'
 						"\1\s[%(specialmode != 'mealtime')10]没这个名字\n"
 					else

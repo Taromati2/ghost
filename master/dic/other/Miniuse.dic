@@ -5,7 +5,7 @@ Select.count{
 	"\0\![open,inputbox,Oncount,-1]%(username)要橘花帮忙倒数几秒呢？\n\n[half]\q[◇取消倒数,countend]"
 }
 Oncount{
-	if reference0!=NULL
+	if reference0
 		num=reference0
 	if num>0{
 		_txt="\C\![quicksession,1]\c\0\s[5]收到！倒数%(num-i)秒钟…\n\n[half]\q[◇取消倒数,countend]"
@@ -271,7 +271,7 @@ Onfriendbirthday{
 	\q[◇新建好友,OnFriendBirthDay.Creat]\n/
 	\q[◇查看好友,OnFriendBirthDay.Inform]\n/
 	\n\n\n\n\n\q[◇返回上一层,birthday]     \q[◇结束,Cancel]"
-	if friendID==NULL
+	if !friendID
 		friendID=0
 }
 OnFriendBirthDay.Creat{
@@ -948,7 +948,7 @@ abs{
 ChangCarry{
 	endNumber=1
 	newcarry=_argv[0]
-	//if m_carry==NULL
+	//if !m_carry
 		//m_carry=evaluate(m_exp)
 	if m_res==0{
 		m_res=0
@@ -968,7 +968,7 @@ inputkey{
 		m_res=0
 		m_carry=0
 	}
-	elseif m_exp == NULL || m_exp == '0'
+	elseif !m_exp || m_exp == '0'
 		m_exp += _key
 	else
 		m_exp += _key
@@ -1953,7 +1953,7 @@ OnClickOption{
 OnFilesRenameSet{
 	_submenu=reference0
 	_state=reference1
-	if ISVAR('renamecondition')==0
+	if !ISVAR('renamecondition')
 		renamecondition=IARRAY
 	if reference1=='add'
 		renamecondition,=RenameConSub(reference0)
@@ -2484,7 +2484,7 @@ DELSAMEARR{//删除相同元素阵列
 OnReadBook{
 	readbook=1
 	running='readbook'
-	if ISVAR('voice.rate')==0
+	if !ISVAR('voice.rate')
 		voice.rate=3
 	_w=OnReadBookLoad(book_file,book_dexid)
 	_txt='\C\![quicksession,true]\c\0\b[2]'
@@ -2535,9 +2535,9 @@ OnReadBook{
 	elseif autoread&&!_read&&read==book_dexid&&book_dexid+1<book_dexnum{
 		_txt+="\![raise,OnReadBookPage,%(book_dexid+1)]"
 	}
-	//if TOINT(voice)&&CheckProcess('wscript.exe')==0&&read!='stop'
+	//if TOINT(voice)&&!CheckProcess('wscript.exe') &&read!='stop'
 		//_txt+=TxtToVoice(_t,voicename)
-	if read&&CheckProcess('wscript.exe')==0&&read!='stop'
+	if read&&!CheckProcess('wscript.exe') &&read!='stop'
 		_txt+=TxtToVoice(_t,voicename)
 	_txt
 }
@@ -2619,7 +2619,7 @@ OnBookmarkAdd{
 		_txt=OnReadBookLoad(book_file,book_dexid)
 		_txt=REPLACE(_txt,'\n','')
 		_txt=CUTSPACE(_txt)
-		if RE_GREP(_txt,'[A-Za-z]')==0
+		if !RE_GREP(_txt,'[A-Za-z]')
 			_txt=SUBSTR(_txt,0,30)
 		else
 			_txt=SUBSTR(_txt,0,45)
@@ -2672,7 +2672,7 @@ OnBookChapter{
 		_book_dex=_buff[1,'|']
 		_book_percent=_buff[2,'|']
 		_book_txt=CUTSPACE(_buff[3,'|'])
-		if RE_GREP(_book_txt,'[A-Za-z]')==0
+		if !RE_GREP(_book_txt,'[A-Za-z]')
 			_book_txt=SUBSTR(_book_txt,0,20)
 		else
 			_book_txt=SUBSTR(_book_txt,0,30)
@@ -2720,7 +2720,7 @@ OnBookmarkLoad{
 		_book_dex=_buff[2,'|']
 		_book_txt=CUTSPACE(_buff[3,'|'])
 		_book_percent=TOINT(_buff[4,'|'])
-		//if RE_GREP(_book_txt,'[A-Za-z]')==0
+		//if !RE_GREP(_book_txt,'[A-Za-z]')
 			//_book_txt=SUBSTR(_book_txt,0,20)
 		//else
 			//_book_txt=SUBSTR(_book_txt,0,36)
@@ -2863,7 +2863,7 @@ OnOpenBook{
 	if !_file
 		_file=temp
 	book_dexid=0
-	if ISVAR('booklength')==0
+	if !ISVAR('booklength')
 		booklength=200
 	_t=OnReadBookLoad(_file,0,0,'fresh')
 	OnReadBook
@@ -3085,7 +3085,7 @@ OnKikkaKnowl{
 	_path='PSEUDO_AI_PATH'
 	_files = FENUM(_path)
 	_totle=0
-	if reference0!=NULL{
+	if reference0 {
 		_j=TOINT(reference0)
 	}
 	if _argc>0
@@ -3137,7 +3137,7 @@ OnKikkaKnowl.SelectFile{
 	FCHARSET(1)
 	if FOPEN(_inf,'r'){
 		_buff=''
-		if reference1!=NULL
+		if reference1
 			_j=TOINT(reference1)
 		if _argc>1
 			_j=_argv[1]
@@ -3212,7 +3212,7 @@ OnKnowlPage{
 	_n=TOINT(temp[2])
 	_p=TOINT(reference0)
 	_j=_p*20-20
-	if reference1!=NULL{
+	if reference1 {
 		_file=reference0
 		_j=reference1
 		_n=reference2

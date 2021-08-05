@@ -220,10 +220,10 @@ load {
 	var.lib.result = ''
 
 	//初回起動時の初期化
-	if ISVAR('aitalkinterval') == 0 {
+	if !ISVAR('aitalkinterval') {
 		aitalkinterval = TALK_INTERVAL
 	}
-	if ISVAR('ghostupmin_last') == 0 {
+	if !ISVAR('ghostupmin_last') {
 		ghostupmin_last = 0
 	}
 
@@ -623,7 +623,7 @@ SHIORI_FW.AssembleReferenceHeader {
 
 	_r = GETTYPEEX('res_reference')
 
-	if _r != 0 {
+	if _r {
 		if _r == 4 {
 			_n = ARRAYSIZE(res_reference)
 			for _i = 0 ; _i < _n ; _i++ {
@@ -846,7 +846,7 @@ SHIORI_FW.ControlAITalk {
 //引数　：_argv[0] イベント _argv[1] 遅れsec.
 //------------------------------------------------------------------------------
 SHIORI_FW.SetDelayEvent : void {
-	if STRLEN(_argv[0]) != 0 && _argv[1] {
+	if STRLEN(_argv[0]) && _argv[1] {
 		SHIORI_FW.DelayEventTime = TOINT(_argv[1])
 		SHIORI_FW.DelayEvent = _argv[0]
 		SHIORI_FW.DelayEventReference = _argv[2,100]//範囲外は削られるのでこれでOK
@@ -880,7 +880,7 @@ SHIORI_FW.MakeReferenceAndPassThruInsVariable : void {
 			reference[_refnum] = _value
 			reference.raw[_refnum] = var.req.rawvalue[_i]
 
-			if SHIORI_FW.REF_ACCEL==0 {//1にすると高速化
+			if !SHIORI_FW.REF_ACCEL {//1にすると高速化
 				_varname = 'reference'+_refnum
 				EVAL(_varname+' = _value')
 				SHIORI_FW.ReferenceList ,= _varname
@@ -1210,7 +1210,7 @@ FUNCTIONLOAD {
 //　　　　_argv[1]～ Argument0～
 //------------------------------------------------------------------------------
 FUNCTIONEX {
-	if FUNCTIONLOAD(_argv[0]) == 0 {
+	if !FUNCTIONLOAD(_argv[0]) {
 		0
 		return
 	}
@@ -1554,10 +1554,10 @@ SHIORI_EV.On_hwnd : void {
 			reference[0] = _i
 			reference0 = _i
 
-			if SHIORI_FW.HWndOld[_i] == 0 {
+			if !SHIORI_FW.HWndOld[_i] {
 				SHIORI_FW.OnWindowCreate
 			}
-			elseif SHIORI_FW.HWnd[_i] == 0 {
+			elseif !SHIORI_FW.HWnd[_i] {
 				SHIORI_FW.OnWindowDestroy
 			}
 

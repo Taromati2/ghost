@@ -761,7 +761,7 @@ OnDeluxeBall{
 	A=5000000
 	B=1500000
 	b=''
-	if ball==NULL
+	if !ball
 		ball=IARRAY
 	_rednum=0
 	_bluenum=0
@@ -905,7 +905,7 @@ OnDeluxeBall{
 	}
 	_txt+='\n已选蓝球：[点击号码可取消选择]\n'
 	for _i=0;_i<_bs;_i++{
-		if bball[_i]!=NULL{
+		if bball[_i] {
 			_txt += "\f[cursorstyle,none]\_l[%(_i%9*30 + 21 )]\__q[OnDeluxeBall,DB,%(bball[_i])]\_b[DATA_PATH\Game\RGB_Balls\BallBlue16.png,inline]\_l[%(_i%9*30 + 23 )]%(bball[_i])\__q\f[cursorstyle,default]"
 			if (_i+1) % 9 == 0
 				_txt += '\n[130]'
@@ -1800,7 +1800,7 @@ OnKikka反击{
 						'\![raise,OnKikkausespatkvs,1,10]'
 				}
 				{
-					if 赎罪回合[0]==-1&&battleflag==0&&RAND(5)==0{
+					if 赎罪回合[0]==-1&&battleflag==0&&!RAND(5){
 						if ANG[0]!=2{
 							'\![raise,OnKikkausespatkvs,3,10]'
 							if 呐喊回合[0]==-1
@@ -1809,7 +1809,7 @@ OnKikka反击{
 						else
 							'\![raise,OnKikkausespatkvs,1,10]'
 					}
-					if 赎罪回合[0]==-1&&神威祈福回合[0]!=-1&&RAND(10)==0{
+					if 赎罪回合[0]==-1&&神威祈福回合[0]!=-1&&!RAND(10){
 						if ANG[0]!=2{
 							'\![raise,OnKikkausespatkvs,3,10]'
 							if 呐喊回合[0]==-1
@@ -1818,7 +1818,7 @@ OnKikka反击{
 						else
 							'\![raise,OnKikkausespatkvs,1,10]'
 					}
-					if 天使之光回合[1]==-1&&battleflag==0&&RAND(4)==0{
+					if 天使之光回合[1]==-1&&battleflag==0&&!RAND(4){
 						if ANG[0]!=2{
 							'\![raise,OnKikkausespatkvs,4,15]'
 							if 呐喊回合[0]==-1
@@ -2265,7 +2265,7 @@ OnInnerHandGame{
 			'布\n\w9\x'
 		}
 		--
-		if reference1 ==NULL{
+		if !reference1 {
 			"\![raise,OnInnerHandGame,%(_p),%(_i),%(atk)]"
 		}
 		else{

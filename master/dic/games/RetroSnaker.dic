@@ -16,11 +16,11 @@ OnRetroSnaker{
 	Score = 0
 	food.yes=1/*1表示需要出现新食物,0表示已经存在食物*/
 	RetroSnaker.life=0/*活着*/
-	//if RetroSnaker.speed==NULL
+	//if !RetroSnaker.speed
 		RetroSnaker.speed=1
 	//if RetroSnaker.speed>9
 		//RetroSnaker.speed=9
-	if RetroSnaker.timespeed==NULL
+	if !RetroSnaker.timespeed
 		RetroSnaker.timespeed=250
 	NumScores=5
 	SMapX=28
@@ -216,12 +216,12 @@ OnRetroSnakeroption{
 	_txt='\_q\b[2]\![set,choicetimeout,0]'
 	_txt+="游戏速度：当前为%(RetroSnaker.speed)\n\q[◇1,OnRetroSnakeroption,1] \q[◇2,OnRetroSnakeroption,2] \q[◇3,OnRetroSnakeroption,3] \q[◇4,OnRetroSnakeroption,4] \q[◇5,OnRetroSnakeroption,5] \q[◇6,OnRetroSnakeroption,6] \q[◇7,OnRetroSnakeroption,7] \q[◇8,OnRetroSnakeroption,8] \q[◇9,OnRetroSnakeroption,9]"
 	/*
-	if reference0!=NULL
+	if reference0
 		RetroSnaker.speed=reference0
-	if reference1!=NULL
+	if reference1
 		RetroSnaker.timespeed=reference1
 	*/
-	if reference0!=NULL
+	if reference0
 		RetroSnaker.speed=reference0
 	RetroSnaker.timespeed=RetroSnakerspeed(RetroSnaker.speed)
 	_txt+='\n\n\q[◇返回,OnRetroSnakerTimer]\n\q[◇终了,OntetrisgameOver]'

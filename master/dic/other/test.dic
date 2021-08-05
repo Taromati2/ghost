@@ -596,7 +596,7 @@ LoadExamTest{
 		_buff = ''
 		_num=1
 		if 1{//'试题' _in_ _file
-			if _allmode==0{
+			if !_allmode {
 				while _testbegin !_in_ _buff &&_buff!=-1{
 					_buff=FREAD(_file)
 				}

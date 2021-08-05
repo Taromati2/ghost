@@ -11,7 +11,7 @@ Ontestmenu{
 	_k=1
 	_j=1
 	_l=0
-	if reference0!=NULL
+	if reference0
 		_k=TOINT(reference0)
 	while _test[_j, '◇'] != ''{
 		_j++

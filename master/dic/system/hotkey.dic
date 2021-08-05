@@ -160,7 +160,7 @@ OnKeyPress{
 		}
 	}
 	elseif rpggame{
-		if battlemode==0{
+		if !battlemode {
 			OpenRpgGameMenu
 		}
 		elseif battlemode==1{
@@ -294,7 +294,7 @@ OnMultitask{
 			OnKeyMovement
 		}
 		when 'rpggame'{
-			if battlemode==0{
+			if !battlemode {
 				OpenRpgGameMenu
 			}
 			elseif battlemode==1{

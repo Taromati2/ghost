@@ -4,7 +4,7 @@
 AITalk1{
 	if ISVAR('talkmemo') == 1
 		ERASEVAR('talkmemo')
-	if mikireflag == 0{
+	if !mikireflag {
 		if CHAIN.IDName == ''
 			RandomTalk1
 		else

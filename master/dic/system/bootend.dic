@@ -206,7 +206,7 @@ OnBoot{
 		'\n\x'
 	}
 	--
-	if friendbirthdaymode==NULL{
+	if !friendbirthdaymode {
 		for _i=0;_i<friendID;_i++{
 			if year-1==friendbirthday[_i*9+5]||year==friendbirthday[_i*9+5]&&month-1==friendbirthday[_i*9+6]||year==friendbirthday[_i*9+5]&&month==friendbirthday[_i*9+6]&&day-1==friendbirthday[_i*9+7]{
 				_next_birthday=NextBirthDay(friendbirthday[_i*9+2],friendbirthday[_i*9+3],friendbirthday[_i*9+4])
@@ -474,7 +474,7 @@ OnBoot{
 		\q[◇10小时内不再提醒,stoprm]\n\x"
 	}
 	--
-	if TOINT(autobackup)==0 && autobackupclosealert{
+	if !TOINT(autobackup) && autobackupclosealert{
 		_t = '○,●'
 		"\C\_q\1\s[10]\0\s[40]■橘花提醒■\n为避免人格失忆，请设自动备份开关为On，当前自动备份功能关闭，请定期手动备份。\n/
 		自动备份　　　\q[%(_t[TOINT(autobackup)]) ON,Onusage,autobackup,1]  ・  \q[%(_t[1 - TOINT(autobackup)]) OFF,Onusage,autobackup,0]\n/

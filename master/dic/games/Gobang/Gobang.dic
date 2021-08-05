@@ -8,7 +8,7 @@ OnGobangInIt{
 		NeedUpdate
 		return
 	}
-	if wzq.Model==NULL
+	if !wzq.Model
 		wzq.Model=0//0人->机 1机->人 2对翌
 	player.gamenum=0
 	mess=''
@@ -21,20 +21,20 @@ OnGobangNewGame{
 	Black=1
 	White=0
 	Nought=-1
-	if Num==NULL
+	if !Num
 		Num=145
 	playingGobang=1
 	running='playingGobang'
-	if row.x[70]==NULL && row.y[70]==NULL && row.c[70]==NULL
+	if !row.x[70] && !row.y[70] && !row.c[70]
 		initdat
-	if Gobang.chessboard==NULL
+	if !Gobang.chessboard
 		Gobang.chessboard=1
-	if Gobang.piece==NULL
+	if !Gobang.piece
 		Gobang.piece=1
-	if Powerofcomputer==NULL
+	if !Powerofcomputer
 		Powerofcomputer=1
 	m_count=0
-	if player.playnum==0
+	if !player.playnum
 		GobangVarReset
 	Gobang.RankCheck
 	player.baseparam.Gobang.Rank=GetYingRank
@@ -48,7 +48,7 @@ OnGobangNewGame{
 	_w
 }
 Gobang.RankCheck{
-	if Gobang.Rank==NULL
+	if !Gobang.Rank
 		Gobang.Rank=3
 	if Gobang.Rank==3{
 		fight=49
@@ -344,7 +344,7 @@ OnGobangShow{
 	xx=6
 	y=60
 	yy=5
-	if Gobang.chessboard==NULL
+	if !Gobang.chessboard
 		Gobang.chessboard=1
 	_txt+="\_l[%(x),%(y)]\_b[PATH/chessboard_%(Gobang.chessboard).png,inline,--option=opaque]"
 	_whowin=Whowincheck
@@ -354,7 +354,7 @@ OnGobangShow{
 				_txt+="\_l[%(_j*18+x+xx),%(_i*18+y+yy)]\__q[Ondownzi,%(_j),%(_i)]\_b[PATH/blank.png,inline]\__q"
 		}
 	}
-	if Whowincheck==0{
+	if !Whowincheck {
 		mess='\_l[0,0]白棋胜了'
 	}
 	elseif Whowincheck==1{
@@ -425,9 +425,9 @@ OnuserAd{//黑色下子
 OnuserBd{//白色下子
 	nx=reference0
 	ny=reference1
-	if _argv[0]!=NULL
+	if _argv[0]
 		nx=TOINT(_argv[0])
-	if _argv[1]!=NULL
+	if _argv[1]
 		ny=TOINT(_argv[1])
 	_txt='\C\![quicksession,true]\c'
 	if state[nx*15+ny]==6{
@@ -441,7 +441,7 @@ OnuserBd{//白色下子
 		nowy=ny
 		mess="\0\_l[0,0]第%(m_count)步，白子（%(nx),%(ny)）"
 	}
-	if Whowincheck==0{
+	if !Whowincheck {
 		player.losenum++
 		player.playnum++
 	}
@@ -503,9 +503,9 @@ Whowincheck{
 Ondownzi{//外部调用此函数下子
 	nx=reference0
 	ny=reference1
-	if _argv[0]!=NULL
+	if _argv[0]
 		nx=TOINT(_argv[0])
-	if _argv[1]!=NULL
+	if _argv[1]
 		ny=TOINT(_argv[1])
 	_txt = ''
 	if nx<0||nx>14||ny<0||nx>14{
@@ -1001,7 +1001,7 @@ wise{
 	}
 	return
 	/*
-	if fight-defense>10 || _M1>=_M2  && RAND(4)!=0{
+	if fight-defense>10 || _M1>=_M2  && RAND(4) {
 		wisex=_wisex1
 		wisey=_wisey1
 		return
