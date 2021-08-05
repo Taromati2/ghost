@@ -43,8 +43,8 @@ formattemp{//输出显示时如有同义词句则把同义词句括起来
 	/* SETDELIM(_a,'|')
 	_x=''
 	_y=0
-		if _y==0 {
 	while _a[_y+1] {
+		if _y==0 {
 			_x=_a[0]+'（'
 		}
 		else {

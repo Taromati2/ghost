@@ -991,7 +991,7 @@ InOperator{
 Precede{//优先级判断
 	_x=_argv[0]
 	_y=_argv[1]
-	if _x=='('&&_y==')';{'=';return;}
+	if _x=='('&&_y==')'{'=';return;}
 	elseif _x=='('||_y=='('{'<';return;}
 	elseif _x>='a'&&_x<='t'{'>';return;}
 	elseif _y>='a'&&_x<='t'{'<';return;}
@@ -1007,9 +1007,9 @@ Operate1{//函数运算
 	_result=0
 	case _theta{
 		when 'i' {if radio;_a=_a/57.295779513;_result=SIN(_a);}
-		when 's' {if _a>=-1&&_a<=1;{_result=ASIN(_a);if radio;_result*=57.295779513;};else;_result=0;}
+		when 's' {if _a>=-1&&_a<=1{_result=ASIN(_a);if radio;_result*=57.295779513;};else;_result=0;}
 		when 'o' {if radio;_a=_a/57.295779513;_result=COS(_a);}
-		when 'c' {if _a>=-1&&a<=1;{_result=ACOS(_a);if radio;_result*=57.295779513;};else;_result=0;}
+		when 'c' {if _a>=-1&&a<=1{_result=ACOS(_a);if radio;_result*=57.295779513;};else;_result=0;}
 		when 'a' {if radio;_a=_a/57.295779513;_result=TAN(_a);}
 		when 't' {_result=ATAN(_a);if radio;_result*=57.295779513;}
 		when 'p' {if radio;_a=_a/57.295779513;_result=1/TAN(_a);}
@@ -1034,14 +1034,14 @@ Operate2{//二目运算
 		when '-' {_result=_a-_b;}
 		when '*' {_result=_a*_b;}
 		when '/' {
-			if _b==0;{_result=0;}
-			else;{_result=_a/_b;}
+			if _b==0{_result=0;}
+			else{_result=_a/_b;}
 		}
 		when '%' {_result=_a%_b;}
 		when '!' {_result=factorial(_a)}
 		when '^' {
-			if _a==0&&_b<=0;{_result=0;}
-			else;{_result=POW(_a,_b);}
+			if _a==0&&_b<=0{_result=0;}
+			else{_result=POW(_a,_b);}
 		}
 		//when 'e' {_result=2.718281}
 		when '√'{
@@ -1235,7 +1235,7 @@ evaluate{//表达式求值主函数
 			elseif _f=='∑ab('{_temp='g';_j=3;}
 			elseif _f=='Anm('{_temp='r';_j=3;}
 			elseif _f=='Cnm('{_temp='m';_j=3;}
-			else;{_temp=SUBSTR(_expression,_i,1);_j=1;}
+			else{_temp=SUBSTR(_expression,_i,1);_j=1;}
 			case Precede(_optr[_optr_i-1],_temp){
 				when '<'{
 					_optr[_optr_i]=_temp
@@ -2698,7 +2698,7 @@ OnBookmarkLoad{
 		_book_file=_buff[0,'|']
 		book_dexid=TOINT(_buff[1,'|'])
 		book_dex=_buff[2,'|']
-		if book_file!=_book_file;{
+		if book_file!=_book_file{
 			book_file=_book_file
 			_t=OnReadBookLoad(book_file,book_dexid,0,'fresh')
 		}

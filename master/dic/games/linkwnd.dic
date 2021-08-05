@@ -134,7 +134,7 @@ OnInitLinkWnd{//新游戏入口
 			zs ++
 			m = RAND(m_nRow-2)+ 1
 			n = RAND(m_nCol-2)+ 1
-			while  m_map[m*m_nCol+n] !=BLANK_STATE && zs<=(m_nRow-2)*(m_nCol-2);{
+			while  m_map[m*m_nCol+n] !=BLANK_STATE && zs<=(m_nRow-2)*(m_nCol-2){
 				m = RAND(m_nRow-2)+ 1
 				n = RAND(m_nCol-2)+ 1
 			}
@@ -1260,7 +1260,7 @@ FindPath{
 	_ci = _pts.i - _pte.i
 	_cj = _pts.j - _pte.j
 	SetDirect(_ci, _cj)
-	while ( !StackEmpty(s) );{
+	while ( !StackEmpty(s) ){
 		if (Pass(map, curpos, pts, pte)){
 			if (rdr != cdr){
 				rdr = cdr
@@ -2084,10 +2084,10 @@ LinkMapMenu{//地图目录
 	}
 	else{
 	}
-	if select.mapseed==0&&SetLinkMap.mode=='SetLinkMap.Click';{
+	if select.mapseed==0&&SetLinkMap.mode=='SetLinkMap.Click'{
 		_txt+="\_l[0,50]\_b[%(_PIC[3]),inline,--option=opaque,--clipping=0 0 20 20]"
 	}
-	if select.mapseed==1&&SetLinkMap.mode=='SetLinkMap.Click';{
+	if select.mapseed==1&&SetLinkMap.mode=='SetLinkMap.Click'{
 		_txt+="\_l[145,50]\_b[%(_PIC[3]),inline,--option=opaque,--clipping=0 0 20 20]"
 	}
 	_txt

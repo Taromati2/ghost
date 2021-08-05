@@ -249,7 +249,7 @@ Weather{
 		_data=TOINT(_argv[0])
 	if weatherfoundauto==1{
 		for _i=0;_i<5;_i++{
-			if TOINT(month)==TOINT(weather[_i*6])&&TOINT(day+_data)==TOINT(weather[_i*6+1]);{
+			if TOINT(month)==TOINT(weather[_i*6])&&TOINT(day+_data)==TOINT(weather[_i*6+1]){
 				for _j=0;_j<6;_j++{
 					_weather[_j]=weather[_i*6+_j]
 				}
@@ -300,7 +300,7 @@ Weatherremind{
 		"
 	}
 	_txt+='\_q\x'
-	if !TOINT(autoastro) &&temp=='autoastro';{
+	if !TOINT(autoastro) &&temp=='autoastro'{
 		_txt+=OnAstroFoundAuto
 		temp=NULL
 	}

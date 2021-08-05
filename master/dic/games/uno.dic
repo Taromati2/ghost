@@ -534,7 +534,7 @@ ImpeachWild{//检举王牌
 	_impeachwild=reference1
 	_name="%(username),%(selfname)"
 	_unocard=IARRAY
-	if _argc>0;{
+	if _argc>0{
 		unocard.turn=_argv[0]
 		_impeachwild=_argv[1]
 	}
