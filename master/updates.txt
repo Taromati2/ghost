@@ -350,7 +350,7 @@ file,ghost/master/dic/communicate/talk/pseudoAI.dic6fe85afd03552a9a023d3de3692d
 file,ghost/master/dic/communicate/talk/talk.dic337b828fe3fd937fce70ad591a5f66c2size=173843
 file,ghost/master/dic/communicate/talk/talk_t.dic6bb3a528fabf831ac6a2b81d6792d6fesize=8898
 file,ghost/master/dic/communicate/touch/touch.dic81cf5d8d00cefd37c67fa23e19a3ef7esize=13527
-file,ghost/master/dic/dev/ayccoder.ayccded2aac521dbb18c4eded5fed1de13asize=565
+file,ghost/master/dic/dev/ayccoder.ayc1020d798d0a02b3e740b3f534064a788size=556
 file,ghost/master/dic/dev/dicforma.dic529b0d2029cbfff1ac3912e8595bd1edsize=8171
 file,ghost/master/dic/dev/ERBconver.dic1d1ac9e4d65027caf2faa4e38d918dc2size=4012
 file,ghost/master/dic/dev/md5_linker.dic4b374a53dc4fc4050cbe197f52fd2a2fsize=2068
@@ -387,7 +387,7 @@ file,ghost/master/dic/story/amusement_park/develop.dicd39719bd782d53125b83b5d31
 file,ghost/master/dic/story/opera.dice4b7810fc74cd0dd2a2fa074844477c5size=30050
 file,ghost/master/dic/system/anti_cheat.dic16f4f172c4bf08a2601b3b2e596b5404size=253
 file,ghost/master/dic/system/base.dic51734302450ece2b3d40ea6a3942a5f6size=1184
-file,ghost/master/dic/system/bootend.dic1115f1fd8e94b59e7f335f72f4fc52f7size=60244
+file,ghost/master/dic/system/bootend.dic222e7b528cf665326becbd04e8791f55size=60287
 file,ghost/master/dic/system/Calendar.dicd2edc114ffa5835a6449b34f88f9daabsize=39977
 file,ghost/master/dic/system/changeshell.dic6da90889c0a0efceb0fc66f012a97c07size=16435
 file,ghost/master/dic/system/change_part.dicbc60c6305fb994764be3027ec43633fdsize=568

@@ -82,6 +82,8 @@ GetPasswordFirst{
 	"\1\s[10]\0\s[26]那么，保险起见，能和%(username)约定一个密码么？\w9\n（此密码用于‘秘密服务’模块，若不填写默认密码将为'void'）\n\q[◇跳过,Cancel]\![set,balloontimeout,0]\![open,passwordinput,OnPasswordUpdate,-1]"
 }
 UpdateFirst{
+	'\![close,inputbox,OnPasswordUpdate]'
+	--
 	ERASEVAR('HaveNotGetPassword')
 	OpenDocForRuntime.string('welcome')
 	--
