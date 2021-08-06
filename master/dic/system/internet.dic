@@ -54,7 +54,7 @@ BeginToEnd{//BeginToEnd('君不见，黄河之水天上来，奔流到海不复�
 	}
 	_d = _s[_begin,_txt]
 	_idx=_begin+1
-	while _s[_idx,_txt]&&_idx<_end{
+	while _s[_idx,_txt]&&(_idx<_end&&_end!=0||_end==0){
 		_d+=_txt+_s[_idx,_txt]
 		_idx++
 	}
