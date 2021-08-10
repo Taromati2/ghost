@@ -180,7 +180,6 @@ ClearAyaTempVar {
 	for _i = 0 ; _i < _n ; _i++ {
 		ERASEVAR("%(tempvarname[_i])")
 	}
-	ERASEALLVARBEGINAS('Baseware')
 	ERASEVAR('tempvarname')
 
 	SHIORI_FW.ClearChainVariable
