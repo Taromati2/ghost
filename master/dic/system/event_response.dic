@@ -662,6 +662,11 @@ OnUpdateReady{
 		'\![leave,onlinemode]\b[-1]'
 }
 OnUpdateComplete{
+	if HasUpdate
+		HasUpdate++
+	if HasUpdate >= 7
+		ERASEVAR('HasUpdate')
+	--
 	if !InAutoUpdate{
 		if reference0 == 'none'{
 			if HasUpdate
