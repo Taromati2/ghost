@@ -82,7 +82,7 @@ AITeach{
 		_tmp+'\n\n\![set,balloontimeout,0]\![open,communicatebox]'
 		return
 	}
-	if ISVAR('temp01')==0
+	if !ISVAR('temp01')
 		temp01='提问'
 	if temp01=='提问' {
 		temp01='回答'
@@ -1081,14 +1081,14 @@ AILoad.AImlInfFile{
 		_buff2=FREAD(_inf)
 		_newmd5=_buff2[1,'md5=']
 		_buff2=FREAD(_inf)
-		if _buff2==NULL
+		if !_buff2
 			_newmd5=''
 		_strcha=_str
 		while _buff2!=-1{
 			_Q=_buff2[0,'|']
 			if _Q!=''{
 				_open++
-				if TOINT(_buff2[1,'|'])==0
+				if !TOINT(_buff2[1,'|'])
 					_newmd5=''
 			}
 			else
@@ -1176,7 +1176,7 @@ AILoad.AImlFile{
 		return
 	}
 	*/
-	if RE_GREP(_str,'[A-Z/^(\d)*$/ ]')==0{
+	if !RE_GREP(_str,'[A-Z/^(\d)*$/ ]') {
 		-1
 		return
 	}
@@ -1354,7 +1354,7 @@ AILoad.AddLearn{
 	_temp=''
 	_ttemp=''
 	FCHARSET(1)
-	if FOPEN(_file,'r') == 0{
+	if !FOPEN(_file,'r') {
 		void FOPEN(_file,'w')
 	}
 	FCLOSE(_file)
@@ -1962,7 +1962,7 @@ AITalkAdd{//('PSEUDO_AI_PATH\user.ai','你好*你也好','write')
 	}
 	a=_str
 	FCHARSET(1)
-	if FOPEN(_file,'r') == 0{
+	if !FOPEN(_file,'r') {
 		void FOPEN(_file,'w')
 	}
 	FCLOSE(_file)
@@ -2072,7 +2072,7 @@ ExFunction{
 		_str=_argv[0]
 		_ex=_argv[1]
 	}
-	if (_t=TOREAL(_ex))!=0{
+	if (_t=TOREAL(_ex)) {
 		_ex=_t
 		if '我的身高是' _in_ _str
 			_found=WeightRange(_ex)
@@ -2115,8 +2115,8 @@ LogicEvaluate{//逻辑表达式解析器
 	while SUBSTR(_expression,_i,2)!='\0'||_optr_i!=0{
 		_operand=''
 		_weight=carry
-		if IsLogic(SUBSTR(_expression,_i,1))==0&&SUBSTR(_expression,_i,2)!='\0'{
-			while IsLogic(SUBSTR(_expression,_i,1))==0&&SUBSTR(_expression,_i,2)!='\0'{
+		if !IsLogic(SUBSTR(_expression,_i,1)) &&SUBSTR(_expression,_i,2)!='\0'{
+			while !IsLogic(SUBSTR(_expression,_i,1)) &&SUBSTR(_expression,_i,2)!='\0'{
 				_operand+=SUBSTR(_expression,_i,1)
 				_i++
 			}
@@ -2242,7 +2242,7 @@ LogicPrecede{
 LogicError{//以下为逻辑表达式出错处理函数//LogicError('(喜欢|爱)&(美女|野兽)&(看|见)|((美女|野兽)&(看|见))')
 	_exp=_argv[0]
 	_str=''
-	if STRLEN(_exp)==0{
+	if !STRLEN(_exp) {
 		_str='表达式不能为空'
 		_str;return
 	}
@@ -2264,7 +2264,7 @@ LogicError{//以下为逻辑表达式出错处理函数//LogicError('(喜欢|爱
 			_str;return
 		}
 	}
-	if _parenthesis!=0{
+	if _parenthesis {
 		_str='左括号与右括号数目不符'
 		_str;return
 	}
@@ -2293,7 +2293,7 @@ OnChatRoom{
 
 	chatroom=1
 	running='chatroom'
-	if ISVAR('chatroomtxt')==0{
+	if !ISVAR('chatroomtxt') {
 		lastTalk=RandAITalk
 		LastTalkArr(lastTalk)
 		chatroomtxt="|%(selfname) %(hour):%(minute):%(second)\n%(lastTalk)\n#"

@@ -9,10 +9,9 @@ BaseGhostStart{//改动于2020 by steve02081504
 	Lunartime
 	FCHARSET(1)
 	lastTalk = '\0\s[20]咦？分明才刚启动的說…\1\s[10]喵，刚才什么都没说'
-	lastboottime = "%(systemuptime)"
-	_laststart = SlowTime
-	SlowTime = GETSECCOUNT
-	elapsetime = SlowTime - _laststart
+	_laststart = CloseTime
+	CloseTime = GETSECCOUNT
+	elapsetime = CloseTime - _laststart
 	playingmusic = 0
 	OnSQLLoad
 	OnAILoad
@@ -43,7 +42,6 @@ OnFirstBoot{//改动于2020 by steve02081504
 			username = 'お兄さん'
 		firstboottime = "%(year),%(month),%(day),%(hour),%(minute)"
 		elapsedtime = 0
-		lastboottime = "%(systemuptime)"
 		Goodevening = ''
 		intimacy = 0
 		stroke = 0
@@ -84,6 +82,8 @@ GetPasswordFirst{
 	"\1\s[10]\0\s[26]那么，保险起见，能和%(username)约定一个密码么？\w9\n（此密码用于‘秘密服务’模块，若不填写默认密码将为'void'）\n\q[◇跳过,Cancel]\![set,balloontimeout,0]\![open,passwordinput,OnPasswordUpdate,-1]"
 }
 UpdateFirst{
+	'\![close,inputbox,OnPasswordUpdate]'
+	--
 	ERASEVAR('HaveNotGetPassword')
 	OpenDocForRuntime.string('welcome')
 	--
@@ -208,7 +208,7 @@ OnBoot{
 		'\n\x'
 	}
 	--
-	if friendbirthdaymode==NULL{
+	if !friendbirthdaymode {
 		for _i=0;_i<friendID;_i++{
 			if year-1==friendbirthday[_i*9+5]||year==friendbirthday[_i*9+5]&&month-1==friendbirthday[_i*9+6]||year==friendbirthday[_i*9+5]&&month==friendbirthday[_i*9+6]&&day-1==friendbirthday[_i*9+7]{
 				_next_birthday=NextBirthDay(friendbirthday[_i*9+2],friendbirthday[_i*9+3],friendbirthday[_i*9+4])
@@ -476,8 +476,8 @@ OnBoot{
 		\q[◇10小时内不再提醒,stoprm]\n\x"
 	}
 	--
-	if TOINT(autobackup)==0 && autobackupclosealert{
-		_t = '○,◎'
+	if !TOINT(autobackup) && autobackupclosealert{
+		_t = '○,●'
 		"\C\_q\1\s[10]\0\s[40]■橘花提醒■\n为避免人格失忆，请设自动备份开关为On，当前自动备份功能关闭，请定期手动备份。\n/
 		自动备份　　　\q[%(_t[TOINT(autobackup)]) ON,Onusage,autobackup,1]  ・  \q[%(_t[1 - TOINT(autobackup)]) OFF,Onusage,autobackup,0]\n/
 		\q[◇不再提醒,Onusage,autobackupclosealert,0]\n/
@@ -601,7 +601,6 @@ ClearVar{
 	ERASEVAR('tab')
 	ERASEVAR('faceshow')
 	ERASEVAR('num')
-	ERASEVAR('mon')
 	ERASEVAR('m')
 	ERASEVAR('friendID')
 	ERASEVAR('secondwatch')
@@ -694,7 +693,7 @@ ClearTempVar:void{
 OnClose.base:void{
 	if reference0 == 'system'
 		inshutdown=1
-	SlowTime = GETSECCOUNT
+	CloseTime = GETSECCOUNT
 	--
 	ClearTempVar
 	--

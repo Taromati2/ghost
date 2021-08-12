@@ -16,15 +16,11 @@ OnUserDatabase.List{
 	_front=TOINT(_argv[3])-10
 	_m=SQLite('-f',"SELECT ID FROM %(EXT_Table)")
 	_tola=(TOINT(_m)+9)/10
-	if _i==1 {
-		_pag="\_l[20,-]<<上一页\_l[93,-]\q[◇第1页,OnUserDatabase.PageIndex,%(_tola),List,%(select)]    共%(_tola)页\_l[200,-]\q[下一页>>,OnUserDatabase.Page,%(_next),List,%(select)]"
-	}
-	elseif _next>_m {
-		_pag="\_l[20,-]\q[<<上一页,OnUserDatabase.Page,%(_front),List,%(select)]\_l[93,-]\q[◇第%(_tola)页,OnUserDatabase.PageIndex,%(_tola),List,%(select)]    共%(_tola)页\_l[200,-]下一页>>"
-	}
-	else {
-		_pag="\_l[20,-]\q[<<上一页,OnUserDatabase.Page,%(_front),List,%(select)]\_l[93,-]\q[◇第%(_p)页,OnUserDatabase.PageIndex,%(_tola),List,%(select)]    共%(_tola)页\_l[200,-]\q[下一页>>,OnUserDatabase.Page,%(_next),%(EXT_mode),%(select)]"
-	}
+	if _i
+		_pag+="\_l[20,-]\q[<<上一页,OnUserDatabase.Page,%(_front),List,%(select)]"
+	_pag+="\_l[93,-]\q[◇第%(_p)页,OnUserDatabase.PageIndex,%(_tola),List,%(select)]    共%(_tola)页"
+	if _next<=_m
+		_pag+="\_l[200,-]\q[下一页>>,OnUserDatabase.Page,%(_next),List,%(select)]"
 	_next = TOINT(_argv[3])+9
 	//列出全部资料
 	if select == '*' && !_where {
@@ -102,7 +98,7 @@ OnUserDatabase.List{
 		_cln = select
 		_res = SQLite( '-j', "SELECT %(select) FROM %(_table) WHERE %(_where)")
 		_txt += _cln + '：' + _res + '\n'
-		if _res != 0 {
+		if _res {
 			_txt += '\n[50]'
 		}
 	}
@@ -289,7 +285,7 @@ OnUserDatabase.PageIndex{
 OnUserDatabase.PageST{
 	_a=CUTSPACE(reference0)
 	_b = RE_REPLACE(_a,'[0123456789]',NULL)
-	if _b!=NULL || _a==NULL {
+	if _b || !_a {
 		OnUserDatabase.PageIndex
 	}
 	else {
@@ -298,7 +294,7 @@ OnUserDatabase.PageST{
 		_tola=(TOINT(_m)+9)/10
 		if _a>_tola
 			"\0\s[0]输入的页数大于总页数,请重新输入~\w8\w8\c%(Onselepag)"
-		elseif _a<=0 {
+		elseif _a<=0 && _tola {
 			OnUserDatabase.PageIndex
 		}
 		else {
@@ -310,13 +306,13 @@ OnUserDatabase.Table{
 	_pag=''
 	_i=1
 	_c=1
-	if _argv[0]!=NULL
+	if _argv[0]
 		_i=TOINT(_argv[0])
 	_p=(_i+9)/10
 	_next=TOINT(_argv[0])+10
 	_front=TOINT(_argv[0])-10
 	_mode=reference1
-	if _argv[1]!=NULL
+	if _argv[1]
 		_mode=_argv[1]
 	if _mode=='Table' && reference0 == 'KikkaAIdb'{
 		OnAIdbPage(1)
@@ -357,7 +353,7 @@ OnUserDatabase.Table{
 					EXT_SelectColumn = '*'
 				else
 					EXT_SelectColumn = TOSTR(EXT_SelectColumn)
-				if _argv[2]!=NULL
+				if _argv[2]
 					EXT_SelectColumn=TOSTR(_argv[2])
 				EXT_SearchResult = OnUserDatabase.List(EXT_Table,EXT_SelectColumn,,_i)
 				EXT_SelectColumn = IARRAY
@@ -424,7 +420,7 @@ OnUserDatabase.Table.Insert{
 		_value = REPLACE(_value,',',"','")
 		_value = "'" + _value + "'"
 		_tmp = SQLite.Insert(EXT_Table,'*',_value)
-		if _tmp != 0 {
+		if _tmp {
 			EXT_InputState = 'InputInsert'
 			_txt += "错误发生。请确认是否输入了不支援的字元。\n%(_tmp)\n%(_value)%(valueex0)\n/
 			\q[◇修改资料,OnUserDatabase.Table.Insert]\n/

@@ -1,12 +1,6 @@
 //by steve
 
-//简便变量重命名
-RENAME_VAR:void{
-	if ISVAR(_argv[0])
-		EVAL(_argv[1]+'='+_argv[0])
-	ERASEVAR(_argv[0])
-}
-#define VERSION_NOW 3
+#define VERSION_NOW 4
 
 VERSION_INIT:void{
 	VERSION = VERSION_NOW
@@ -15,11 +9,12 @@ VERSION_INIT:void{
 VERSION_UPGRADE{
 	if !ISVAR('VERSION'){
 		VERSION = 0
+		VERSION_UPGRADE_0
 		if !ISVAR('FirstBootCount'){
 			'\1\s[10]\0\s[26]啊、\w9\w9那个…\w9\w9\w9暂时、\w9要在此处打扰您了。\n\w[3000]\s[5]开玩笑的啦\x'
 		}
-		VERSION_UPGRADE_0
 	}
+	--
 	while VERSION_NOW > VERSION {
 		VERSION++
 		void EVAL('VERSION_UPGRADE_'+VERSION)
@@ -98,4 +93,10 @@ VERSION_UPGRADE_3:void{
 			FDEL(_i+'/yaya.txt')
 		}
 	}
+}
+VERSION_UPGRADE_4:void{
+	ERASEVAR('lastboottime')
+	ERASEVAR('dmry')
+	ERASEVAR('mon')
+	RENAME_VAR('SlowTime','CloseTime')
 }

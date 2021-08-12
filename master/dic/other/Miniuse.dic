@@ -5,7 +5,7 @@ Select.count{
 	"\0\![open,inputbox,Oncount,-1]%(username)要橘花帮忙倒数几秒呢？\n\n[half]\q[◇取消倒数,countend]"
 }
 Oncount{
-	if reference0!=NULL
+	if reference0
 		num=reference0
 	if num>0{
 		_txt="\C\![quicksession,1]\c\0\s[5]收到！倒数%(num-i)秒钟…\n\n[half]\q[◇取消倒数,countend]"
@@ -112,7 +112,7 @@ Select.birthday{
 	\q[◇下次生日日期,Onnextbirthday]\n/
 	\q[◇生日提醒模式,BirthdayMode]\n/
 	\q[◇好友生日,Onfriendbirthday]\n/
-	\n\n\q[◇返回上一层,OnOpenMenu,4]     \q[◇结束,cancel]"
+	\n\n\q[◇返回上一层,OnOpenMenu,4]     \q[◇结束,Cancel]"
 }
 Select.BirthdayMode{
 	'\0\s[26]要怎么设置呢?\n[150]\_q'
@@ -134,34 +134,31 @@ Onlunarbirth{
 	_m=_argv[1]
 	_d=_argv[2]
 	//_m=REPLACE(_m,'腊','十二')
+	_mon=(31,28,31,30,31,30,31,31,30,31,30,31)
 	_mm=1
 	_dd=1
-	_zflg=0
 	for _i = 1;_i <= 12;_i++{
 		//Onlunarbirth(2015,'十一','廿一')
-		for _j = 1;_j <= mon[_i-1];_j++{
+		for _j = 1;_j <= _mon[_i-1];_j++{
 			Lunartime(_y,_i,_j)
-			if lunartime[5] == '正'&& lunartime[6] =='初一'&&_zflg==0{
+			if lunartime[5] == '正' && lunartime[6] =='初一'{
 				Lunardata(lunartime[0],lunartime[1],lunartime[2])
-				_zflg=1
-				break
-			}
-		}
-		if _zflg
-			break
-	}
-	for _i = 1;_i <= 12;_i++{
-		if _y % 4 == 0 && _y % 100 != 0 || _y % 400 == 0
-			mon[1]=29
-		//Onlunarbirth(2015,'十一','廿一')
-		for _j = 1;_j <= mon[_i-1];_j++{
-			Lunartime(_y,_i,_j)
-			if lunartime[4]==lunardata[7]&&lunartime[5] == _m&& lunartime[6] == _d{
-				return
-			}
-			elseif lunartime[4]==lunardata[7]&&lunartime[1]==12&&lunartime[2]==31{
-				_y++
-				_i=1;_j=1
+				for _i = 1;_i <= 12;_i++{
+					if _y % 4 == 0 && _y % 100 != 0 || _y % 400 == 0
+						_mon[1]=29
+					//Onlunarbirth(2015,'十一','廿一')
+					for _j = 1;_j <= _mon[_i-1];_j++{
+						Lunartime(_y,_i,_j)
+						if lunartime[4]==lunardata[7]&&lunartime[5] == _m&& lunartime[6] == _d{
+							return
+						}
+						elseif lunartime[4]==lunardata[7]&&lunartime[1]==12&&lunartime[2]==31{
+							_y++
+							_i=1
+							_j=1
+						}
+					}
+				}
 			}
 		}
 	}
@@ -186,58 +183,39 @@ NextBirthDay{
 		_month=TOINT(_argv[1])
 		_day=TOINT(_argv[2])
 	}
-	Lunardata(year,month,day)
-	_lunar_y = lunardata[11]
-	//_lunar_m = lunardata[5]
-	//_lunar_d = lunardata[6]
-	Lunardata(_year,_month,_day)
-	//_birthday_yy = lunardata[11]
-	_birthday_mm = lunardata[5]
-	_birthday_dd = lunardata[6]
 	_next_birthday=IARRAY
-	//mon=(31,28,31,30,31,30,31,31,30,31,30,31)
-	_birthday_mm=REPLACE(_birthday_mm,'闰','')
-	_birthday_mm=REPLACE(_birthday_mm,'腊','十二')
-	Onlunarbirth(_lunar_y,_birthday_mm,_birthday_dd)
-	_y = TOINT(lunartime[0])
-	_m = TOINT(lunartime[1])
-	_d = TOINT(lunartime[2])
 	if BirthdayMode==1{//使用阳历计算生日
-		if TOINT(year) >= TOINT(_year){
-			if TOINT(month) == TOINT(_month){
-				if TOINT(day) > TOINT(_day)
-					_next_birthday[0] = year+1
-				elseif TOINT(day) <= TOINT(_day)
-					_next_birthday[0] = year
-			}
-			elseif TOINT(month) > TOINT(_month)
-				_next_birthday[0] = year+1
-			elseif TOINT(month) < TOINT(_month)
-				_next_birthday[0] = year
-		}
+		if year >= _year && (month > _month || (month == _month && day > _day))
+			_year = year+1
 		else
-			_next_birthday[0] = _year
+			_year = year
+		_next_birthday[0] = _year
 		_next_birthday[1] = _month
 		_next_birthday[2] = _day
 	}
 	else{//使用农历计算生日
-		if TOINT(year) >= TOINT(_y){
-			if TOINT(month) == TOINT(_m){
-				if TOINT(day) > TOINT(_d)
-					Onlunarbirth(year + 1,_birthday_mm,_birthday_dd)
-				elseif TOINT(day) <= TOINT(_d)
-					Onlunarbirth(year,_birthday_mm,_birthday_dd)
-			}
-			elseif TOINT(month) > TOINT(_m)
-				Onlunarbirth(year + 1,_birthday_mm,_birthday_dd)
-			elseif TOINT(month) < TOINT(_m)
-				Onlunarbirth(year,_birthday_mm,_birthday_dd)
-		}
-		elseif TOINT(year)<TOINT(_y)
-			Onlunarbirth(_y,_birthday_mm,_birthday_dd)
-		_next_birthday[0] = lunartime[0]
-		_next_birthday[1] = lunartime[1]
-		_next_birthday[2] = lunartime[2]
+		Lunardata(year,month,day)
+		_lunar_y = lunardata[11]
+		//_lunar_m = lunardata[5]
+		//_lunar_d = lunardata[6]
+		Lunardata(_year,_month,_day)
+		//_birthday_yy = lunardata[11]
+		_birthday_mm = lunardata[5]
+		_birthday_dd = lunardata[6]
+		_birthday_mm=REPLACE(_birthday_mm,'闰','')
+		_birthday_mm=REPLACE(_birthday_mm,'腊','十二')
+		Onlunarbirth(_lunar_y,_birthday_mm,_birthday_dd)
+		_year = TOINT(lunartime[0])
+		_month = TOINT(lunartime[1])
+		_day = TOINT(lunartime[2])
+		if year >= _year && (month > _month || (month == _month && day > _day))
+			_year = year+1
+		else
+			_year = year
+		Onlunarbirth(_year,_birthday_mm,_birthday_dd)
+		_next_birthday[0] = TOINT(lunartime[0])
+		_next_birthday[1] = TOINT(lunartime[1])
+		_next_birthday[2] = TOINT(lunartime[2])
 	}
 	_next_birthday
 }
@@ -247,6 +225,10 @@ Onnextbirthday{
 	birthday_yy = lunardata[11]
 	birthday_mm = lunardata[5]
 	birthday_dd = lunardata[6]
+	if !(birthday_yy && birthday_mm && birthday_dd){
+		OnGetBirthday
+		return
+	}
 	_days=0
 	_mon=(31,28,31,30,31,30,31,31,30,31,30,31)
 	_fy=TOINT(nextbirthday[0])
@@ -274,10 +256,7 @@ Onnextbirthday{
 		}
 		_days=_days-day+_fd
 	}
-	if birthday_yy == NULL && birthday_mm == NULL && birthday_dd == NULL{
-		OnGetBirthday
-	}
-	elseif _days == 0
+	if _days == 0
 		"今天是%(username)%(TOINT(nextbirthday[0] - birthday[0]))岁生日哦，生日快乐，%(username)\x"
 	else{
 		"%(username)出生日期是%(birthday[0])年%(birthday[1])月%(birthday[2])日\n/
@@ -291,8 +270,8 @@ Onfriendbirthday{
 	"橘花能记住%(username)20位好友的生日哦\n\n[half]/
 	\q[◇新建好友,OnFriendBirthDay.Creat]\n/
 	\q[◇查看好友,OnFriendBirthDay.Inform]\n/
-	\n\n\n\n\n\q[◇返回上一层,birthday]     \q[◇结束,cancel]"
-	if friendID==NULL
+	\n\n\n\n\n\q[◇返回上一层,birthday]     \q[◇结束,Cancel]"
+	if !friendID
 		friendID=0
 }
 OnFriendBirthDay.Creat{
@@ -350,19 +329,19 @@ OnFriendBirthDay.Inform{
 		_txt+="\__q[OnFriendName.UpdataFirst,%(_i)]%(friendbirthday[_i*9+1])\__q   \_l[35,-]\__q[OnFriendBirthDay.UpdataFirst,%(_i)]%(friendbirthday[_i*9+2])年%(friendbirthday[_i*9+3])月%(friendbirthday[_i*9+4])日\__q \_l[120,-]%(_mm)月%(_dd)  \_l[185,-]%(friendbirthday[_i*9+5])年%(friendbirthday[_i*9+6])月%(friendbirthday[_i*9+7])日 \_l[270,-]\q[%(friendbirthday[_i*9+8]),OnFriendBirthDay.Inform,age,%(_friendbirthdayinfo[_i])]\n"
 	}
 	birthdayflag=1
-	_txt+='\_l[0,340]\q[◇返回,Onfriendbirthday]     \q[◇结束,cancel]'
+	_txt+='\_l[0,340]\q[◇返回,Onfriendbirthday]     \q[◇结束,Cancel]'
 	_txt
 }
 OnFriendName.UpdataFirst{
 	friendID=reference0
-	"将好友名字%(friendbirthday[friendID*9+1])更改为？\![open,inputbox,OnFriendName.Updata,-1]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,cancel]"
+	"将好友名字%(friendbirthday[friendID*9+1])更改为？\![open,inputbox,OnFriendName.Updata,-1]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]"
 }
 OnFriendName.Updata{
 	if reference0==''
-		'好友名字不为为空，请输入请输入好友名字\![open,inputbox,OnFriendName.Updata,-1]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,cancel]'
+		'好友名字不为为空，请输入请输入好友名字\![open,inputbox,OnFriendName.Updata,-1]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]'
 	else{
 		friendbirthday[friendID*9+1]=reference0
-		"您输入的好友名字为%(reference0)\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,cancel]"
+		"您输入的好友名字为%(reference0)\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]"
 	}
 }
 OnFriendBirthDay.UpdataFirst{
@@ -370,7 +349,7 @@ OnFriendBirthDay.UpdataFirst{
 	_year=friendbirthday[friendID*9+2]
 	_month=friendbirthday[friendID*9+3]
 	_day=friendbirthday[friendID*9+4]
-	"要把%(friendbirthday[friendID*9+1])的生日改成？\![open,dateinput,OnFriendBirthDay.Updata,60000,%(_year),%(_month),%(_day)]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,cancel]"
+	"要把%(friendbirthday[friendID*9+1])的生日改成？\![open,dateinput,OnFriendBirthDay.Updata,60000,%(_year),%(_month),%(_day)]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]"
 }
 OnFriendBirthDay.Updata{
 	friendbirthday[friendID*9+2]=reference0[0]
@@ -969,7 +948,7 @@ abs{
 ChangCarry{
 	endNumber=1
 	newcarry=_argv[0]
-	//if m_carry==NULL
+	//if !m_carry
 		//m_carry=evaluate(m_exp)
 	if m_res==0{
 		m_res=0
@@ -989,7 +968,7 @@ inputkey{
 		m_res=0
 		m_carry=0
 	}
-	elseif m_exp == NULL || m_exp == '0'
+	elseif !m_exp || m_exp == '0'
 		m_exp += _key
 	else
 		m_exp += _key
@@ -1012,7 +991,7 @@ InOperator{
 Precede{//优先级判断
 	_x=_argv[0]
 	_y=_argv[1]
-	if _x=='('&&_y==')';{'=';return;}
+	if _x=='('&&_y==')'{'=';return;}
 	elseif _x=='('||_y=='('{'<';return;}
 	elseif _x>='a'&&_x<='t'{'>';return;}
 	elseif _y>='a'&&_x<='t'{'<';return;}
@@ -1028,9 +1007,9 @@ Operate1{//函数运算
 	_result=0
 	case _theta{
 		when 'i' {if radio;_a=_a/57.295779513;_result=SIN(_a);}
-		when 's' {if _a>=-1&&_a<=1;{_result=ASIN(_a);if radio;_result*=57.295779513;};else;_result=0;}
+		when 's' {if _a>=-1&&_a<=1{_result=ASIN(_a);if radio;_result*=57.295779513;};else;_result=0;}
 		when 'o' {if radio;_a=_a/57.295779513;_result=COS(_a);}
-		when 'c' {if _a>=-1&&a<=1;{_result=ACOS(_a);if radio;_result*=57.295779513;};else;_result=0;}
+		when 'c' {if _a>=-1&&a<=1{_result=ACOS(_a);if radio;_result*=57.295779513;};else;_result=0;}
 		when 'a' {if radio;_a=_a/57.295779513;_result=TAN(_a);}
 		when 't' {_result=ATAN(_a);if radio;_result*=57.295779513;}
 		when 'p' {if radio;_a=_a/57.295779513;_result=1/TAN(_a);}
@@ -1055,14 +1034,14 @@ Operate2{//二目运算
 		when '-' {_result=_a-_b;}
 		when '*' {_result=_a*_b;}
 		when '/' {
-			if _b==0;{_result=0;}
-			else;{_result=_a/_b;}
+			if _b==0{_result=0;}
+			else{_result=_a/_b;}
 		}
 		when '%' {_result=_a%_b;}
 		when '!' {_result=factorial(_a)}
 		when '^' {
-			if _a==0&&_b<=0;{_result=0;}
-			else;{_result=POW(_a,_b);}
+			if _a==0&&_b<=0{_result=0;}
+			else{_result=POW(_a,_b);}
 		}
 		//when 'e' {_result=2.718281}
 		when '√'{
@@ -1256,7 +1235,7 @@ evaluate{//表达式求值主函数
 			elseif _f=='∑ab('{_temp='g';_j=3;}
 			elseif _f=='Anm('{_temp='r';_j=3;}
 			elseif _f=='Cnm('{_temp='m';_j=3;}
-			else;{_temp=SUBSTR(_expression,_i,1);_j=1;}
+			else{_temp=SUBSTR(_expression,_i,1);_j=1;}
 			case Precede(_optr[_optr_i-1],_temp){
 				when '<'{
 					_optr[_optr_i]=_temp
@@ -1974,7 +1953,7 @@ OnClickOption{
 OnFilesRenameSet{
 	_submenu=reference0
 	_state=reference1
-	if ISVAR('renamecondition')==0
+	if !ISVAR('renamecondition')
 		renamecondition=IARRAY
 	if reference1=='add'
 		renamecondition,=RenameConSub(reference0)
@@ -2505,7 +2484,7 @@ DELSAMEARR{//删除相同元素阵列
 OnReadBook{
 	readbook=1
 	running='readbook'
-	if ISVAR('voice.rate')==0
+	if !ISVAR('voice.rate')
 		voice.rate=3
 	_w=OnReadBookLoad(book_file,book_dexid)
 	_txt='\C\![quicksession,true]\c\0\b[2]'
@@ -2556,9 +2535,9 @@ OnReadBook{
 	elseif autoread&&!_read&&read==book_dexid&&book_dexid+1<book_dexnum{
 		_txt+="\![raise,OnReadBookPage,%(book_dexid+1)]"
 	}
-	//if TOINT(voice)&&CheckProcess('wscript.exe')==0&&read!='stop'
+	//if TOINT(voice)&&!CheckProcess('wscript.exe') &&read!='stop'
 		//_txt+=TxtToVoice(_t,voicename)
-	if read&&CheckProcess('wscript.exe')==0&&read!='stop'
+	if read&&!CheckProcess('wscript.exe') &&read!='stop'
 		_txt+=TxtToVoice(_t,voicename)
 	_txt
 }
@@ -2640,7 +2619,7 @@ OnBookmarkAdd{
 		_txt=OnReadBookLoad(book_file,book_dexid)
 		_txt=REPLACE(_txt,'\n','')
 		_txt=CUTSPACE(_txt)
-		if RE_GREP(_txt,'[A-Za-z]')==0
+		if !RE_GREP(_txt,'[A-Za-z]')
 			_txt=SUBSTR(_txt,0,30)
 		else
 			_txt=SUBSTR(_txt,0,45)
@@ -2693,7 +2672,7 @@ OnBookChapter{
 		_book_dex=_buff[1,'|']
 		_book_percent=_buff[2,'|']
 		_book_txt=CUTSPACE(_buff[3,'|'])
-		if RE_GREP(_book_txt,'[A-Za-z]')==0
+		if !RE_GREP(_book_txt,'[A-Za-z]')
 			_book_txt=SUBSTR(_book_txt,0,20)
 		else
 			_book_txt=SUBSTR(_book_txt,0,30)
@@ -2701,12 +2680,10 @@ OnBookChapter{
 		_txt+="\q[%(_book_txt),OnBookChapter,load,%(_i)]     \_l[220]%(_book_percent)%  \_l[100]   \n"
 	}
 	_txt+="\_l[135,330]\q[%(_j+1)/%(_n/20+1),OnInputChapterPage,%(_j+1)]"
-	if _j==0
-		_txt+="\_l[170]\q[◇下一页,OnBookChapter,%(_j+1)]"
-	elseif _j==_n/20
+	if _j!=0
 		_txt+=" \_l[90]\q[◇上一页,OnBookChapter,%(_j-1)]"
-	else
-		_txt+="\_l[90]\q[◇上一页,OnBookChapter,%(_j-1)]   \_l[170]\q[◇下一页,OnBookChapter,%(_j+1)]"
+	if _j!=_n/20
+		_txt+="\_l[170]\q[◇下一页,OnBookChapter,%(_j+1)]"
 	_txt+='\n[150]\q[◇返回,OnReadBook]'
 	_txt
 }
@@ -2721,7 +2698,7 @@ OnBookmarkLoad{
 		_book_file=_buff[0,'|']
 		book_dexid=TOINT(_buff[1,'|'])
 		book_dex=_buff[2,'|']
-		if book_file!=_book_file;{
+		if book_file!=_book_file{
 			book_file=_book_file
 			_t=OnReadBookLoad(book_file,book_dexid,0,'fresh')
 		}
@@ -2743,7 +2720,7 @@ OnBookmarkLoad{
 		_book_dex=_buff[2,'|']
 		_book_txt=CUTSPACE(_buff[3,'|'])
 		_book_percent=TOINT(_buff[4,'|'])
-		//if RE_GREP(_book_txt,'[A-Za-z]')==0
+		//if !RE_GREP(_book_txt,'[A-Za-z]')
 			//_book_txt=SUBSTR(_book_txt,0,20)
 		//else
 			//_book_txt=SUBSTR(_book_txt,0,36)
@@ -2855,10 +2832,10 @@ OnReadBookOption{
 		if (_i+1)%10==0
 			_txt+='\n'
 	}
-	_t= '○,◎'
+	_t= '○,●'
 	_txt+='\n[half]自动翻页:(注意设为ON朗读时请不要操作对话框，否则翻页可能中断）\n'
 	_txt+="\q[%(_t[TOINT(autoread)]) ON,OnReadBookUsage,autoread,1]  ・  \_l[60]\q[%(_t[1 - TOINT(autoread)]) OFF,OnReadBookUsage,autoread,0]\n"
-	_t= '○,◎'
+	_t= '○,●'
 	_txt+='\n[half]卷动\n'
 	_txt+="\q[%(_t[1-TOINT(scrollmode)]) 首端,OnReadBookUsage,scrollmode,0]  ・  \_l[60]\q[%(_t[TOINT(scrollmode)]) 尾端,OnReadBookUsage,scrollmode,1]\n"
 	_txt+='\n[half]阅读器打开软件快捷TXT:\n'
@@ -2886,7 +2863,7 @@ OnOpenBook{
 	if !_file
 		_file=temp
 	book_dexid=0
-	if ISVAR('booklength')==0
+	if !ISVAR('booklength')
 		booklength=200
 	_t=OnReadBookLoad(_file,0,0,'fresh')
 	OnReadBook
@@ -3108,7 +3085,7 @@ OnKikkaKnowl{
 	_path='PSEUDO_AI_PATH'
 	_files = FENUM(_path)
 	_totle=0
-	if reference0!=NULL{
+	if reference0 {
 		_j=TOINT(reference0)
 	}
 	if _argc>0
@@ -3136,16 +3113,12 @@ OnKikkaKnowl{
 		_n++
 	}
 	_txt+='\_l[-,320]'
-	_page=''
-	if _totle<=20
-		_page=''
-	elseif _totle>23&&_j<20
-		_page="\n[30] \_l[100]\q[下一页>>,OnKikkaKnowl,%(_j+20)]\n[140]"
-	elseif _j+20>_totle
-		_page="\n[30] \q[<<上一页,OnKikkaKnowl,%(_j-20)]\n[140]"
-	else
-		_page="\n[30] \q[<<上一页,OnKikkaKnowl,%(_j-20)]   \_l[100]\q[下一页>>,OnKikkaKnowl,%(_j+20)]\n[140]"
-	_txt+=_page
+	_page='\n[30]'
+	if _j>20
+		_page+="\q[<<上一页,OnKikkaKnowl,%(_j-20)]"
+	if _j+20<=_totle
+		_page+="\_l[100]\q[下一页>>,OnKikkaKnowl,%(_j+20)]"
+	_txt+=_page+'\n[140]'
 	_txt+='\q[◇返回,OnOpenMenu,1]'
 	knowltemp="OnKikkaKnowl(%(_j))"
 	_txt
@@ -3164,7 +3137,7 @@ OnKikkaKnowl.SelectFile{
 	FCHARSET(1)
 	if FOPEN(_inf,'r'){
 		_buff=''
-		if reference1!=NULL
+		if reference1
 			_j=TOINT(reference1)
 		if _argc>1
 			_j=_argv[1]
@@ -3239,7 +3212,7 @@ OnKnowlPage{
 	_n=TOINT(temp[2])
 	_p=TOINT(reference0)
 	_j=_p*20-20
-	if reference1!=NULL{
+	if reference1 {
 		_file=reference0
 		_j=reference1
 		_n=reference2

@@ -55,7 +55,7 @@ LMonthDays{
 		_sum[_i] = 29 + _bitmap % 2
 		_bitmap /= 2
 	}
-	if _leap == 0 {
+	if !_leap {
 		_sum[0] = 0
 	}
 	_sum
@@ -161,7 +161,7 @@ GetLunar{
 			_ftv = _i[2]
 		}
 	}
-	if _smonth == 5 && _iweekday == 0 && _sday > 7 && _sday < 15 {
+	if _smonth == 5 && !_iweekday && _sday > 7 && _sday < 15 {
 		_ftv = '母亲节'
 	}
 	if _smonth == 11 && _iweekday == 4 && _sday > 21 && _sday < 29 {

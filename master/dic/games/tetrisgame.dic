@@ -26,11 +26,11 @@ OnNewGame{//游戏入口
 	DispBuffer=IARRAY
 	BlockBuffer=IARRAY
 	stroke=0
-	if Tetris.speed==NULL
+	if !Tetris.speed
 		Tetris.speed=1
 	if Tetris.speed>9
 		Tetris.speed=9
-	if Tetris.timespeed==NULL
+	if !Tetris.timespeed
 		Tetris.timespeed=10
 	--
 	TetrisUnits

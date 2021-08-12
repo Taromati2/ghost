@@ -39,10 +39,10 @@ OnHandGameVSBegin{
 }
 OnHandGameVSChoice{
 	受到伤害=reference0
-	if reference1 !=NULL{
+	if reference1 {
 		HP0=reference1
 	}
-	if reference2 !=NULL{
+	if reference2 {
 		HP1=reference2
 	}
 	if 受到伤害>0{
@@ -79,10 +79,10 @@ OnShowHandVS{
 	"\![raiseother,%(指定人格),OnHandGameVS,%(reference0),%(reference1),%(reference2)]"
 }
 OnHandGameVS{
-	if reference1 !=NULL{
+	if reference1 {
 		HP0=reference1
 	}
-	if reference2 !=NULL{
+	if reference2 {
 		HP1=reference2
 	}
 	if HP0>0 && HP1>0{
@@ -155,10 +155,10 @@ OnHandGameReset{
 OninterHandGame{
 	r0=reference0
 	受到伤害=reference1
-	if reference2 !=NULL{
+	if reference2 {
 		HP0=reference2
 	}
-	if reference3 !=NULL{
+	if reference3 {
 		HP1=reference3
 	}
 	g0=_argv[0]
@@ -178,7 +178,7 @@ OninterHandGame{
 			'石头\n\w9\x'
 			'布\n\w9\x'
 		}
-		if reference0 ==NULL{
+		if !reference0 {
 			"\![raiseother,%(指定人格),OninterHandGame,%(_i),%(atk),%(HP1),%(HP0)]"
 		}
 		else{
@@ -272,13 +272,13 @@ OnOneByOneVar{
 OnOneByOne{
 	On回合判定
 	--
-	if reference0 !=NULL{
+	if reference0 {
 		HP0=reference0
 	}
-	if reference1 !=NULL{
+	if reference1 {
 		HP1=reference1
 	}
-	if reference3 !=NULL{
+	if reference3 {
 		DEF1=reference3
 	}
 	SILENT0=reference4
@@ -545,16 +545,16 @@ On反击{
 	--
 	On回合判定
 	--
-	if reference0 !=NULL{
+	if reference0 {
 		HP0=reference0
 	}
-	if reference1 !=NULL{
+	if reference1 {
 		HP1=reference1
 	}
-	if reference3 !=NULL{
+	if reference3 {
 		DEF1=reference3
 	}
-	if reference4 !=NULL{
+	if reference4 {
 		SILENT0=reference4
 	}
 	DEF0MINUS=reference2
@@ -692,7 +692,7 @@ Onbattlevar{
 On观战{
 	指定人格=ghostexlist[RAND(ghostexcount)]
 	其他人格数量=ghostexcount
-	if reference9 != NULL{
+	if reference9 {
 		战败者=reference9
 		if ghostexcount>=2{
 			while 战败者==指定人格{
@@ -706,39 +706,39 @@ On观战{
 	--
 	攻击者=reference8
 	if 攻击者==指定人格{
-		if reference0 !=NULL{
+		if reference0 {
 			HP0=reference0
 		}
-		if reference1 !=NULL{
+		if reference1 {
 			HP1=reference1
 		}
-		if reference2 !=NULL{
+		if reference2 {
 			HP2=reference2
 		}
-		if reference3 !=NULL{
+		if reference3 {
 			DEF0MINUS=reference3
 		}
-		if reference4 !=NULL{
+		if reference4 {
 			DEF1=reference4
 		}
-		if reference5 !=NULL{
+		if reference5 {
 			DEF2=reference5
 		}
 	}
 	if 攻击者!=指定人格{
-		if reference0 !=NULL{
+		if reference0 {
 			HP0=reference0
 		}
-		if reference1 !=NULL{
+		if reference1 {
 			HP2=reference1
 		}
-		if reference2 !=NULL{
+		if reference2 {
 			HP1=reference2
 		}
-		if reference4 !=NULL{
+		if reference4 {
 			DEF2=reference4
 		}
-		if reference5 !=NULL{
+		if reference5 {
 			DEF1=reference5
 		}
 	}
@@ -749,7 +749,7 @@ On观战{
 	SILENT0=reference6
 	自身名字=reference7
 	if HP0>0 && 其他人格数量>0{
-		if 攻击者!=NULL && 自身名字!=NULL{
+		if 攻击者 && 自身名字 {
 			t=RAND(10)
 			if t>=8{
 				物理攻击
@@ -852,7 +852,7 @@ On挑战{
 	--
 	其他人格数量=ghostexcount
 	/*
-	if reference7 != NULL{
+	if reference7 {
 		战败者=reference7
 		if ghostexcount>=2{
 			while 战败者==指定人格{
@@ -862,7 +862,7 @@ On挑战{
 		其他人格数量-=1
 	}
 	*/
-	if reference9 != NULL{
+	if reference9 {
 		其他人格数量-=1
 	}
 	--
@@ -871,39 +871,39 @@ On挑战{
 	攻击者=reference8
 	自身名字=reference7
 	if 攻击者==指定人格{
-		if reference0 !=NULL{
+		if reference0 {
 			HP0=reference0
 		}
-		if reference1 !=NULL{
+		if reference1 {
 			HP1=reference1
 		}
-		if reference2 !=NULL{
+		if reference2 {
 			HP2=reference2
 		}
-		if reference3 !=NULL{
+		if reference3 {
 			DEF0MINUS=reference3
 		}
-		if reference4 !=NULL{
+		if reference4 {
 			DEF1=reference4
 		}
-		if reference5 !=NULL{
+		if reference5 {
 			DEF2=reference5
 		}
 	}
 	if 攻击者!=指定人格{
-		if reference0 !=NULL{
+		if reference0 {
 			HP0=reference0
 		}
-		if reference1 !=NULL{
+		if reference1 {
 			HP2=reference1
 		}
-		if reference2 !=NULL{
+		if reference2 {
 			HP1=reference2
 		}
-		if reference4 !=NULL{
+		if reference4 {
 			DEF2=reference4
 		}
-		if reference5 !=NULL{
+		if reference5 {
 			DEF1=reference5
 		}
 	}
@@ -913,13 +913,13 @@ On挑战{
 	/*
 	自身名字=reference5
 	攻击者=reference6
-	if reference0 !=NULL{
+	if reference0 {
 		HP0=reference0
 	}
-	if reference1 !=NULL{
+	if reference1 {
 		HP1=reference1
 	}
-	if reference3 !=NULL{
+	if reference3 {
 		DEF1=reference3
 	}
 	DEF0MINUS=reference2
@@ -929,7 +929,7 @@ On挑战{
 	OnOneByOneVar
 	--
 	if HP0>0 && 其他人格数量>0{
-		if 攻击者!=NULL{
+		if 攻击者 {
 			On战斗选项
 		}
 		else{
@@ -956,39 +956,39 @@ On挑战反击{
 	自身名字=reference7
 	攻击者=reference8
 	if 攻击者==指定人格{
-		if reference0 !=NULL{
+		if reference0 {
 			HP0=reference0
 		}
-		if reference1 !=NULL{
+		if reference1 {
 			HP1=reference1
 		}
-		if reference2 !=NULL{
+		if reference2 {
 			HP2=reference2
 		}
-		if reference3 !=NULL{
+		if reference3 {
 			DEF0MINUS=reference3
 		}
-		if reference4 !=NULL{
+		if reference4 {
 			DEF1=reference4
 		}
-		if reference5 !=NULL{
+		if reference5 {
 			DEF2=reference5
 		}
 	}
 	if 攻击者!=指定人格{
-		if reference0 !=NULL{
+		if reference0 {
 			HP0=reference0
 		}
-		if reference1 !=NULL{
+		if reference1 {
 			HP2=reference1
 		}
-		if reference2 !=NULL{
+		if reference2 {
 			HP1=reference2
 		}
-		if reference4 !=NULL{
+		if reference4 {
 			DEF2=reference4
 		}
-		if reference5 !=NULL{
+		if reference5 {
 			DEF1=reference5
 		}
 	}
@@ -999,13 +999,13 @@ On挑战反击{
 	自身名字=reference5
 	攻击者=reference6
 	--
-	if reference0 !=NULL{
+	if reference0 {
 		HP0=reference0
 	}
-	if reference1 !=NULL{
+	if reference1 {
 		HP1=reference1
 	}
-	if reference3 !=NULL{
+	if reference3 {
 		DEF1=reference3
 	}
 	SILENT0=reference4

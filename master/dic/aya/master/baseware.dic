@@ -2,6 +2,8 @@ On_basewareversion{
 	On_BasewareVersion
 }
 On_BasewareVersion{
+	ERASEVAR('Baseware')
+	ERASEVAR('Baseware.Version')
 	Baseware=reference1
 	Baseware.Version=reference0
 	if reference2

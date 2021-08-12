@@ -13,7 +13,7 @@ OnOpenMenu{
 	}
 }
 OpenMenu{
-	if haveshell==0{
+	if !haveshell {
 		SilentShellChange=1
 		'\![change,shell,预设]'
 		return
@@ -79,7 +79,7 @@ SubMenu{
 					\q[◇与橘花说话,Communicate]		\_l[100,-]\q[◇教学,Teaching]					\_l[200,-]\q[◇刚才说了什么,OnLastTalk]\n/
 					\q[◇五十音,Onjap_v]				\_l[100,-]\q[◇秘密服务,SecretService]%(_heart)	\_l[200,-]\q[◇外语学习,japanesestudy]\n/
 					\q[◇花语,OnFlowers]				\_l[100,-]\q[◇诞生花,OnBirthdayFlowerList]		\_l[200,-]\q[◇塔罗占卜,OnFUT]\n/
-					\q[◇趣味测试,Onjumptest]		\_l[100,-]\q[◇橘花题库,OnExamTest]				\_l[200,-]\q[◇和橘花谈心,talktoheart]\n/
+					\q[◇趣味测试,Ontestmenu]		\_l[100,-]\q[◇橘花题库,OnExamTest]				\_l[200,-]\q[◇和橘花谈心,talktoheart]\n/
 					\q[◇查找诗歌,OnResearchPoesy]	\_l[100,-]\q[◇唐诗默写♪,OnPoesywrite]			\_l[200,-]\q[◇剧情故事,Opera]\n/
 					\q[◇动漫列表,OnDHs]				\_l[100,-]\q[◇咖啡厅,get_some_tea]			\_l[200,-]%(Onmeal)\n/
 					"
@@ -179,7 +179,7 @@ OpenMenuTalk{
 				"\0\s[27]讨厌，%(username)想被锯上一锯吗？\e:click=NULL"
 		}
 	}
-	elseif _phase == 0 {
+	elseif !_phase {
 		'\0\s[0]\b[2]？'
 		'\0\s[6]\b[2]干嘛'
 		'\0\s[7]\b[2]什么事。'
@@ -404,7 +404,7 @@ OnMenuExplorer{
 NotePadShow{
 	//ERASEVAR('notepad')
 	_offsety = 4
-	if ISVAR('notepad') == 0 {
+	if !ISVAR('notepad') {
 		notepad = (0,0,0,4,'84,85','128,128,128')
 	}
 	if _argc > 0 {
@@ -590,7 +590,7 @@ Select.System{
 	Lunar
 	_ampm = TimeName
 	_hour=hour12
-	if TOINT(timehour[0])==0{
+	if !TOINT(timehour[0]) {
 		_ampm=''
 		_hour=(hour+timehour[1])%24
 	}
@@ -645,16 +645,16 @@ OnOptionSet:void{
 Select.Option{
 	'\_q\b[2]'
 	--
-	_t = '○,◎'
+	_t = '○,●'
 	--
 	if SHIORI_FW.DebugMode{
-		'■开发机能设定■\n'
+		'\n■开发机能设定■\n'
 		--
 		TheDefaultValue('setting.OnNoMatchingEventAlarm','0')
 		"未定义事件警告		\_l[120]\q[%(_t[TOINT(setting.OnNoMatchingEventAlarm)]) ON,Onusage,setting.OnNoMatchingEventAlarm,1]  ・  \_l[180]\q[%(_t[1 - TOINT(setting.OnNoMatchingEventAlarm)]) OFF,Onusage,setting.OnNoMatchingEventAlarm,0]\n"
 	}
 	--
-	'■随机对话设定■\n'
+	'\n■随机对话设定■\n'
 	--
 	TheDefaultValue('talkSwitch.story','1')
 	"允许讲笑话		\_l[120]\q[%(_t[TOINT(talkSwitch.story)]) ON,Onusage,talkSwitch.story,1]  ・  \_l[180]\q[%(_t[1 - TOINT(talkSwitch.story)]) OFF,Onusage,talkSwitch.story,0]\n"
@@ -662,7 +662,7 @@ Select.Option{
 	TheDefaultValue('talkSwitch.poesy','1')
 	"允许对诗句		\_l[120]\q[%(_t[TOINT(talkSwitch.poesy)]) ON,Onusage,talkSwitch.poesy,1]  ・  \_l[180]\q[%(_t[1 - TOINT(talkSwitch.poesy)]) OFF,Onusage,talkSwitch.poesy,0]\n"
 	--
-	'■提醒设定■\n'
+	'\n■提醒设定■\n'
 	--
 	TheDefaultValue('autoweather','1')
 	"天气提醒		\_l[120]\q[%(_t[1 - TOINT(autoweather)]) ON,Onusage,autoweather,0]  ・  \_l[180]\q[%(_t[TOINT(autoweather)]) OFF,Onusage,autoweather,1]\n"
@@ -681,7 +681,7 @@ Select.Option{
 	TheDefaultValue('autobackupclosealert','1')
 	"自动备份关闭时提醒	\_l[120]\q[%(_t[TOINT(autobackupclosealert)]) ON,Onusage,autobackupclosealert,1]  ・  \_l[180]\q[%(_t[1 - TOINT(autobackupclosealert)]) OFF,Onusage,autobackupclosealert,0]\n"
 	--
-	'■其他设定■\n'
+	'\n■其他设定■\n'
 	--
 	TheDefaultValue('AllowInternetIPShowing','0')
 	"显示外网IP		\_l[120]\q[%(_t[TOINT(AllowInternetIPShowing)]) ON,Onusage,AllowInternetIPShowing,1]  ・  \_l[180]\q[%(_t[1 - TOINT(AllowInternetIPShowing)]) OFF,Onusage,AllowInternetIPShowing,0]\n"
@@ -740,7 +740,7 @@ Select.Option{
 	"\q[◇互动对话,OnAutoComm]		\_l[120]\q[%(_t[TOINT(communicate[0])]) ON,Onusage,communicate[0\],1]    \_l[180]\q[%(_t[1-TOINT(communicate[0])]) OFF,Onusage,communicate[0\],0]\n"
 	--
 	'\n[half]'
-	if ISVAR('voice.rate')==0
+	if !ISVAR('voice.rate')
 		voice.rate=3
 	--
 	'\n\q[◇返回上一层,OnOpenMenu,4]\n/
@@ -790,7 +790,7 @@ OnVoiceName{
 			_txt += "\q[○%(_t[_i]),Onusage,voicename,%(_t[_i])]\n"
 		}
 	}
-	if _n==0
+	if !_n
 		_txt+='没有安装语音库吗？\n[150]\![*]\q[刷新,OnVoiceName]\n'
 	_txt+='\n\n语速调节：'
 	_x=0
@@ -879,7 +879,7 @@ OnLanguage{
 	_txt="\_q请%(username)选择语言\n[150]"
 	_language='简体中文,繁体中文,日文,英文'
 	_lang='Chinese,Chinese_T,Japanese,English'
-	_t = '○,◎'
+	_t = '○,●'
 	for _i=0;_i<4;_i++{
 		if TOINT(language) == _i
 			_txt+="\q[%(_t[1])%(_language[_i]),OnLanguageChange,%(_i),%(_language[_i]),%(_lang[_i])]\n"
@@ -1066,7 +1066,7 @@ OnTrashClean{
 }
 OnTrashClean_s{
 	_gomisute = CALLSAORI('gomi', '-ef')
-	if _gomisute != 0{
+	if _gomisute {
 		kikkamood+=LOG(腹黑度*trashnum,2.718281)*kikkamood
 		kikkamood=MAX(MIN(kikkamoodmax,kikkamood),1)
 		if 萌度>200||腹黑度>200||萌度>腹黑度

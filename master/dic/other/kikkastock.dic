@@ -224,7 +224,7 @@ OnKikkaStockFound{
 	_txt+="\q[◇返回,OnKikkaStockMenu]            \q[◇刷新,OnKikkaStockFound,,'get']"
 	_buff=OnKikkaStockList.Read
 	_arr=_股票代码
-	if IsExistArray(_buff,_arr,'*')==0
+	if !IsExistArray(_buff,_arr,'*')
 		_txt+="\q[◇加自选,OnKikkaStockAdd,%(_股票代码)]"
 	else
 		_txt+="\q[◇删自选,OnKikkaStockDel,%(_股票代码)]"

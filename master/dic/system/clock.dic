@@ -138,7 +138,7 @@ OnMinuteChange{
 				AutoShellChangeflag[5]=1
 			}
 			if AutoShellChangeflag[5]==1{
-				if tshellid==NULL{
+				if !tshellid {
 					OnAutoChangeShell
 					tshellid=shellid
 				}
@@ -220,9 +220,9 @@ OnTrayBalloonClick{
 		if minute>=5 {
 			username
 			--
-			"刚才去哪里了呢？"
-			"刚才在做什么呢？"
-			"终于注意到了啊？"
+			'刚才去哪里了呢？'
+			'刚才在做什么呢？'
+			'终于注意到了啊？'
 			--
 			'\1呐,不知道...'
 			''
@@ -240,7 +240,7 @@ OnAlarmMenu{
 	AlarmMenu
 }
 AlarmMenu{
-	if ISVAR('alarmset') == 0 {
+	if !ISVAR('alarmset') {
 		alarmset = IARRAY
 		alarmset[0] = 'OFF'
 		alarmset[1] = '当天'
@@ -408,7 +408,7 @@ OnPlayRing:void{
 }
 //----- 时间判断 -------------------------------------
 Timejud{
-	if _argc == 0
+	if !_argc
 		_argv[0] = hour
 	case _argv[0] {
 		when 0-4	{ '凌晨'; '半夜'; }
@@ -422,7 +422,7 @@ Timejud{
 	}
 }
 Seasonjud{
-	if _argc == 0
+	if !_argc
 		_argv[0] = month
 	case _argv[0] {
 		when 1-2	{ '冬天';}
@@ -646,7 +646,7 @@ OnClockClose{
 }
 //**** 设定关机时间 ***********************************************************************************
 OnSetShutdownMenu{
-	if ISVAR('shutdownset') == 0{
+	if !ISVAR('shutdownset') {
 		shutdownset = IARRAY
 		shutdownset[0] = 'OFF'
 		shutdownset[1] = '当天'
@@ -674,7 +674,7 @@ OnSetShutdownMenu{
 		_txt += '自动关机频率：\q[○当天自动关机,OnShutdownSet,1,当天]\_l[180]\q[◎每天自动关机,OnShutdownSet,1,每天]\n'
 	}
 	--
-	'\n[half]\q[◇返回上一层,OnOpenMenu,3]    \q[◇终了,cancel]'
+	'\n[half]\q[◇返回上一层,OnOpenMenu,3]    \q[◇终了,Cancel]'
 }
 OnShutdownSet{
 	shutdownset[reference0] = reference1

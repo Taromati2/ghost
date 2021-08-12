@@ -180,13 +180,13 @@ ClearAyaTempVar {
 	for _i = 0 ; _i < _n ; _i++ {
 		ERASEVAR("%(tempvarname[_i])")
 	}
-	ERASEALLVARBEGINAS('Baseware')
 	ERASEVAR('tempvarname')
 
 	SHIORI_FW.ClearChainVariable
 	SHIORI_FW.ClearReferenceVariable
 	SHIORI_FW.ClearValueexVariable
 	SHIORI_FW.ClearAdditionalReturnVariable
+	SHIORI_FW.ClearAlternateOutputVariable
 }
 //******************************************************************************
 //load
@@ -219,10 +219,10 @@ load {
 	var.lib.result = ''
 
 	//初回起動時の初期化
-	if ISVAR('aitalkinterval') == 0 {
+	if !ISVAR('aitalkinterval') {
 		aitalkinterval = TALK_INTERVAL
 	}
-	if ISVAR('ghostupmin_last') == 0 {
+	if !ISVAR('ghostupmin_last') {
 		ghostupmin_last = 0
 	}
 
@@ -274,7 +274,6 @@ load {
 	}
 
 	SHIORI_FW.InitChain
-	SHIORI_FW.InitAdditionalReturnFunction
 
 	SHIORI_FW.SetDelayEvent('',0)
 
@@ -525,7 +524,12 @@ SHIORI_FW.MakeResponse{
 				Value: %(_result)%(C_CRLF)"
 				--
 				SHIORI_FW.AssembleReferenceHeader
-			} else {
+			}
+			elseif SHIORI_FW.HasAlternateOutput{
+				SHIORI_FW.MakeResponse(SHIORI_FW.GetAlternateOutput)
+				return
+			}
+			else{
 				if SHIORI_FW.DelayNotifyResults[0] && SHIORI_FW.Eventid == 'OnSecondChange'{//在空OnSecondChange环境下返回积压的Notify
 					_result = SHIORI_FW.DelayNotifyResults[0]
 					SHIORI_FW.DelayNotifyResults[0] = IARRAY
@@ -544,30 +548,70 @@ SHIORI_FW.MakeResponse{
 	--
 	C_CRLF
 }
+//------------------------------------------------------------------------------
+//関数名：SHIORI_FW.Make_X_SSTP_PassThru
+//機能　：X-SSTP-PassThruヘッダを追加します (設定はリクエストごとにリセットされます)
+//引数　：_argv[0] ヘッダ名  _argv[1~inf] 値
+//------------------------------------------------------------------------------
 SHIORI_FW.Make_X_SSTP_PassThru:void{
 	_argv[0]='X-SSTP-PassThru-'+_argv[0]
 	SHIORI_FW.MakeAdditionalReturn(_argv)
 }
+//------------------------------------------------------------------------------
+//関数名：SHIORI_FW.Make_X_SSTP_PassThru
+//機能　：ヘッダを追加されているか確認します。
+//------------------------------------------------------------------------------
 SHIORI_FW.HasAdditionalReturn{
 	SHIORI_FW.AdditionalReturn.String
 }
-SHIORI_FW.InitAdditionalReturnFunction:void{
-	SHIORI_FW.AdditionalReturn.String = ''
-}
+//------------------------------------------------------------------------------
+//関数名：SHIORI_FW.MakeAdditionalReturn
+//機能　：ヘッダを追加します (設定はリクエストごとにリセットされます)
+//引数　：_argv[0] ヘッダ名  _argv[1~inf] 値
+//------------------------------------------------------------------------------
 SHIORI_FW.MakeAdditionalReturn:void{
 	_key=_argv[0]+': '
 	_argv[0]=IARRAY
 	SHIORI_FW.AdditionalReturn.String += _key+TOSTR(_argv)+C_CRLF
 }
+//------------------------------------------------------------------------------
+//関数名：SHIORI_FW.ClearAdditionalReturnVariable
+//機能　：追加ヘッダ用変数を削除します
+//------------------------------------------------------------------------------
 SHIORI_FW.ClearAdditionalReturnVariable:void{
 	ERASEVAR('SHIORI_FW.AdditionalReturn.String')
 }
+//------------------------------------------------------------------------------
+//関数名：SHIORI_FW.GetAdditionalReturns
+//機能　：追加ヘッダを展開します
+//返値　：追加すべきヘッダ文字列 最後は必ず改行で終わる
+//------------------------------------------------------------------------------
 SHIORI_FW.GetAdditionalReturns{
 	_t=SHIORI_FW.AdditionalReturn.String
 	SHIORI_FW.AdditionalReturn.String = ''
 	_t
 }
-
+//erb相关
+SHIORI_FW.HasAlternateOutput{
+	SHIORI_FW.AlternateOutput.String
+}
+SHIORI_FW.GetAlternateOutput{
+	_t=SHIORI_FW.AlternateOutput.String
+	SHIORI_FW.AlternateOutput.String=''
+	_t
+}
+SHIORI_FW.ClearAlternateOutputVariable:void{
+	ERASEVAR('SHIORI_FW.AlternateOutput.String')
+}
+SHIORI_FW.ClearAlternateOutput:void{
+	SHIORI_FW.ClearAlternateOutputVariable
+}
+SHIORI_FW.Print:void{
+	SHIORI_FW.AlternateOutput.String+=TOSTR(_argv)
+}
+SHIORI_FW.PrintLine:void{
+	SHIORI_FW.AlternateOutput.String+=TOSTR(_argv)+'\n'
+}
 //------------------------------------------------------------------------------
 //関数名：SHIORI_FW.AssembleReferenceHeader
 //機能　：res_reference*変数を順次検査して返送用のReference文字列を作成します
@@ -578,7 +622,7 @@ SHIORI_FW.AssembleReferenceHeader {
 
 	_r = GETTYPEEX('res_reference')
 
-	if _r != 0 {
+	if _r {
 		if _r == 4 {
 			_n = ARRAYSIZE(res_reference)
 			for _i = 0 ; _i < _n ; _i++ {
@@ -801,7 +845,7 @@ SHIORI_FW.ControlAITalk {
 //引数　：_argv[0] イベント _argv[1] 遅れsec.
 //------------------------------------------------------------------------------
 SHIORI_FW.SetDelayEvent : void {
-	if STRLEN(_argv[0]) != 0 && _argv[1] {
+	if STRLEN(_argv[0]) && _argv[1] {
 		SHIORI_FW.DelayEventTime = TOINT(_argv[1])
 		SHIORI_FW.DelayEvent = _argv[0]
 		SHIORI_FW.DelayEventReference = _argv[2,100]//範囲外は削られるのでこれでOK
@@ -835,7 +879,7 @@ SHIORI_FW.MakeReferenceAndPassThruInsVariable : void {
 			reference[_refnum] = _value
 			reference.raw[_refnum] = var.req.rawvalue[_i]
 
-			if SHIORI_FW.REF_ACCEL==0 {//1にすると高速化
+			if !SHIORI_FW.REF_ACCEL {//1にすると高速化
 				_varname = 'reference'+_refnum
 				EVAL(_varname+' = _value')
 				SHIORI_FW.ReferenceList ,= _varname
@@ -1165,7 +1209,7 @@ FUNCTIONLOAD {
 //　　　　_argv[1]～ Argument0～
 //------------------------------------------------------------------------------
 FUNCTIONEX {
-	if FUNCTIONLOAD(_argv[0]) == 0 {
+	if !FUNCTIONLOAD(_argv[0]) {
 		0
 		return
 	}
@@ -1509,10 +1553,10 @@ SHIORI_EV.On_hwnd : void {
 			reference[0] = _i
 			reference0 = _i
 
-			if SHIORI_FW.HWndOld[_i] == 0 {
+			if !SHIORI_FW.HWndOld[_i] {
 				SHIORI_FW.OnWindowCreate
 			}
-			elseif SHIORI_FW.HWnd[_i] == 0 {
+			elseif !SHIORI_FW.HWnd[_i] {
 				SHIORI_FW.OnWindowDestroy
 			}
 
@@ -1693,4 +1737,14 @@ ISSTR{
 }
 INEVENT{
 	_argv[0]==SHIORI_FW.Eventid
+}
+RENAME_VAR:void{
+	if ISVAR(_argv[0])
+		EVAL(_argv[1]+'='+_argv[0])
+	ERASEVAR(_argv[0])
+}
+SWAP_VAR:void{
+	_t=EVAL(_argv[1])
+	EVAL(_argv[1]+'='+_argv[0])
+	EVAL(_argv[0]+'=_t')
 }

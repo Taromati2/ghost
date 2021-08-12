@@ -10,7 +10,7 @@ OnCalendar{
 	_year=year
 	_m=month
 	_d=day
-	if _argv[0]!=NULL {
+	if _argv[0] {
 		_year=TOINT(_argv[0])
 		_m=TOINT(_argv[1])
 		_d=TOINT(_argv[2])
@@ -48,7 +48,7 @@ OnCalendar{
 			_x-=3
 		_lunar=calendar[_i,':']
 		_jieqi=''
-		if _lunar[11]!=NULL
+		if _lunar[11]
 			_jieqi="%(_lunar[11])　"
 		_l="%(_lunar[0])年%(_lunar[1])月%(_lunar[2])日　%(_lunar[7])\n%(_lunar[4])(%(_lunar[3]))年 %(_lunar[5])月%(_lunar[6])\n%(_jieqi)%(_lunar[12])(%(_lunar[13])月%(_lunar[14])日)\n%(_lunar[9])\n%(_lunar[10])"
 		if _i+1==_d
@@ -57,7 +57,7 @@ OnCalendar{
 			_w+="\_l[%(_x),%(_y)]\f[color,110,110,110]\f[underline,1]\q[%(_i+1),OnCalendar,%(_l),%(_year),%(_m),%(_i+1),##]\f[default]\f[sup,1]◀\f[default]"
 		elseif _lunar[17]==0 || _lunar[17]==6
 			_w+="\f[color,255,0,0]\_l[%(_x),%(_y)]\q[%(_i+1),OnCalendar,%(_l),%(_year),%(_m),%(_i+1),##]\f[color,default]"
-		elseif _lunar[9]!=NULL || _lunar[10]!=NULL
+		elseif _lunar[9] || _lunar[10]
 			_w+="\f[color,110,110,110]\_l[%(_x),%(_y)]\q[%(_i+1),OnCalendar,%(_l),%(_year),%(_m),%(_i+1),##]\f[default]"
 		else
 			_w+="\_l[%(_x),%(_y)]\q[%(_i+1),OnCalendar,%(_l),%(_year),%(_m),%(_i+1),##]"
@@ -84,10 +84,10 @@ OnCalendar{
 	_w+="\_l[%(_xF+2),20]\q[<<上个月,OnCalendar,%(_yl)年%(_ml)月,%(_yl),%(_ml),1,##] \q[◇输入日期,OnINCalendar,%(_l)] \q[下个月>>,OnCalendar,%(_yn)年%(_mn)月,%(_yn),%(_mn),1,##]"
 	_lunar=calendar[_d-1,':']
 	_jieqi=''
-	if _lunar[11]!=NULL
+	if _lunar[11]
 		_jieqi="\f[color,255,0,0]%(_lunar[11]) \f[color,default]"
 	_jieri=_lunar[10]
-	if _lunar[9]!=NULL
+	if _lunar[9]
 		_jieri=_lunar[9]+'/'+_lunar[10]
 	SETDELIM(_jieri, '/')
 	_x=180//初始
@@ -115,7 +115,7 @@ OnAgenda{
 	_m=month
 	_d=day
 	_mode=reference3
-	if _argv[0]!=NULL {
+	if _argv[0] {
 		_year=TOINT(_argv[0])
 		_m=TOINT(_argv[1])
 		_d=TOINT(_argv[2])
@@ -192,10 +192,10 @@ OnAgenda{
 			_x-=3
 		_lunar=calendar[_i,':']
 		_jieqi=''
-		if _lunar[11]!=NULL
+		if _lunar[11]
 			_jieqi="%(_lunar[11])　"
 		_jieri=_lunar[10]
-		if _lunar[9]!=NULL
+		if _lunar[9]
 			_jieri=_lunar[9]+'/'+_lunar[10]
 		SETDELIM(_jieri, '/')
 		_l="%(_lunar[0])年%(_lunar[1])月%(_lunar[2])日　%(_lunar[7])\n%(_lunar[4])(%(_lunar[3]))年 %(_lunar[5])月%(_lunar[6])\n%(_jieqi)%(_lunar[12])(%(_lunar[13])月%(_lunar[14])日)\n%(_lunar[9])\n%(_lunar[10])"
@@ -206,7 +206,7 @@ OnAgenda{
 			_w+="\_l[%(_x),%(_y)]\f[color,110,110,110]\f[underline,1]\q[%(_i+1),OnAgenda,%(_l),%(_year),%(_m),%(_i+1),##,%(markmode[0])]\f[default]\f[sup,1]◀\f[default]"
 		elseif _lunar[17]==0 || _lunar[17]==6
 			_w+="\f[color,255,0,0]\_l[%(_x),%(_y)]\q[%(_i+1),OnAgenda,%(_l),%(_year),%(_m),%(_i+1),##,%(markmode[0])]\f[color,default]"
-		elseif _lunar[9]!=NULL || _lunar[10]!=NULL
+		elseif _lunar[9] || _lunar[10]
 			_w+="\f[color,110,110,110]\_l[%(_x),%(_y)]\q[%(_i+1),OnAgenda,%(_l),%(_year),%(_m),%(_i+1),##,%(markmode[0])]\f[default]"
 		else
 			_w+="\_l[%(_x),%(_y)]\q[%(_i+1),OnAgenda,%(_l),%(_year),%(_m),%(_i+1),##]"
@@ -334,10 +334,10 @@ OnAgenda{
 	_w+="\_l[%(_xF+2),30]\q[<<上一年,OnAgenda,%(_year-1)年%(_m)月,%(_year-1),%(_m),1,##] \q[<<上个月,OnAgenda,%(_yl)年%(_ml)月,%(_yl),%(_ml),1,##] \q[◇输入日期,OnINCalendar,%(_l)] \q[下个月>>,OnAgenda,%(_yn)年%(_mn)月,%(_yn),%(_mn),1,##]   \q[<<下一年,OnAgenda,%(_year+1)年%(_m)月,%(_year+1),%(_m),1,##]"
 	_lunar=calendar[_d-1,':']
 	_jieqi=''
-	if _lunar[11]!=NULL
+	if _lunar[11]
 		_jieqi="\f[color,255,0,0]%(_lunar[11]) \f[color,default]"
 	_jieri=_lunar[10]
-	if _lunar[9]!=NULL
+	if _lunar[9]
 		_jieri=_lunar[9]+'/'+_lunar[10]
 	SETDELIM(_jieri, '/')
 	_x=0//初始
@@ -381,7 +381,7 @@ OnEventEdit{
 	_mode=reference4
 	_j=TOINT(reference5)
 	_t=reference7
-	if _argv[0]!=NULL{
+	if _argv[0] {
 		_year=TOINT(_argv[0])
 		_m=TOINT(_argv[1])
 		_d=TOINT(_argv[2])
@@ -999,7 +999,7 @@ OnEventWrite{
 	_year=year
 	_m=month
 	_d=day
-	if _argv[0]!=NULL{
+	if _argv[0] {
 		_year=TOINT(_argv[0])
 		_m=TOINT(_argv[1])
 		_d=TOINT(_argv[2])
@@ -1112,7 +1112,7 @@ OnEventRead{
 	_m=month
 	_d=day
 	_mode=''
-	if _argv[0]!=NULL{
+	if _argv[0] {
 		_year=TOINT(_argv[0])
 		_m=TOINT(_argv[1])
 		_d=TOINT(_argv[2])
@@ -1169,7 +1169,7 @@ Lunartime:void{
 	_y=year
 	_m=month
 	_d=day
-	if _argv[2]!=NULL {
+	if _argv[2] {
 		_y=_argv[0]
 		_m=_argv[1]
 		_d=_argv[2]

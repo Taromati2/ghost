@@ -79,7 +79,7 @@ SubRpgGameMenu{
 	}
 }
 RpgGameVar{
-	if gamestart==NULL{
+	if !gamestart {
 		//rpggamereset
 		weaponAnum[0]=1
 		weaponBnum[0]=1
@@ -89,7 +89,7 @@ RpgGameVar{
 		itemBnum[0]=2
 		gamestart=1
 	}
-	if towashell == NULL{
+	if !towashell {
 		towashell=0
 	}
 	mlv =TOINT((lvl0 + lvl1 )/2 + mlvx)
@@ -335,10 +335,10 @@ On装备菜单{
 		foreach _weapon; _i{
 			if _i[3] > 0{
 				_txt += "\f[color,231,171,109]%(_i[2])\f[color,default]   \_l[65,-]%(_i[3])   \f[color,165,203,214]\_l[95,-]%(_i[6])  \_l[125,-]%(_i[7])    \f[color,default]"
-				if weapon0==NULL{
+				if !weapon0 {
 					_txt += "\_l[160,-]\q[◇橘花未装备,Onweapon0,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7])]"
 				}
-				elseif weapon0!=NULL{
+				elseif weapon0 {
 					if weaponID0==_i[1] && weaponsort0==_i[0]{
 						_txt += "\_l[160,-]\f[color,231,171,109]\q[◇橘花已装备,Onweapon0,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7])]\f[color,default]"
 					}
@@ -346,10 +346,10 @@ On装备菜单{
 						_txt += "\_l[160,-]\q[◇橘花未装备,Onweapon0,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7])]"
 					}
 				}
-				if weapon1==NULL{
+				if !weapon1 {
 					_txt += "\_l[230,-]\q[◇斗和未装备,Onweapon1,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7])]\n"
 				}
-				elseif weapon1!=NULL{
+				elseif weapon1 {
 					if weaponID1==_i[1] && weaponsort1==_i[0]{
 						_txt += "\_l[230,-]\f[color,231,171,109]\q[◇斗和已装备,Onweapon1,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7])]\f[color,default]\n"
 					}
@@ -366,10 +366,10 @@ On装备菜单{
 		foreach _armor; _i{
 			if _i[3] > 0{
 				_txt += "\f[color,231,171,109]%(_i[2])\f[color,default]   \_l[65,-]%(_i[3])   \f[color,165,203,214]\_l[95,-]%(_i[6])  \_l[125,-]%(_i[7])    \f[color,default]"
-				if armor0==NULL{
+				if !armor0 {
 					_txt += "\_l[160,-]\q[◇橘花未装备,Onarmor0,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7]),%(_i[8]),%(_i[9])]"
 				}
-				elseif armor0!=NULL{
+				elseif armor0 {
 					if armorID0==_i[1] && armorsort0==_i[0]{
 						_txt += "\_l[160,-]\f[color,231,171,109]\q[◇橘花已装备,Onarmor0,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7]),%(_i[8]),%(_i[9])]\f[color,default]"
 					}
@@ -377,10 +377,10 @@ On装备菜单{
 						_txt += "\_l[160,-]\q[◇橘花未装备,Onarmor0,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7]),%(_i[8]),%(_i[9])]"
 					}
 				}
-				if armor1==NULL{
+				if !armor1 {
 					_txt += "\_l[230,-]\q[◇斗和未装备,Onarmor1,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7]),%(_i[8]),%(_i[9])]\n"
 				}
-				elseif armor1!=NULL{
+				elseif armor1 {
 					if armorID1==_i[1] && armorsort1==_i[0]{
 						_txt += "\_l[230,-]\f[color,231,171,109]\q[◇斗和已装备,Onarmor1,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7]),%(_i[8]),%(_i[9])]\f[color,default]\n"
 					}
@@ -397,10 +397,10 @@ On装备菜单{
 		foreach _boots; _i{
 			if _i[3] > 0{
 				_txt += "\f[color,231,171,109]%(_i[2])\f[color,default]   \_l[65,-]%(_i[3])   \f[color,165,203,214]\_l[95,-]%(_i[6])  \_l[125,-]%(_i[7])    \f[color,default]"
-				if boots0==NULL{
+				if !boots0 {
 					_txt += "\_l[160,-]\q[◇橘花未装备,Onboots0,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7]),%(_i[8]),%(_i[9])]"
 				}
-				elseif boots0!=NULL{
+				elseif boots0 {
 					if bootsID0==_i[1] && bootssort0==_i[0]{
 						_txt += "\_l[160,-]\f[color,231,171,109]\q[◇橘花已装备,Onboots0,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7]),%(_i[8]),%(_i[9])]\f[color,default]"
 					}
@@ -408,10 +408,10 @@ On装备菜单{
 						_txt += "\_l[160,-]\q[◇橘花未装备,Onboots0,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7]),%(_i[8]),%(_i[9])]"
 					}
 				}
-				if boots1==NULL{
+				if !boots1 {
 					_txt += "\_l[230,-]\q[◇斗和未装备,Onboots1,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7]),%(_i[8]),%(_i[9])]\n"
 				}
-				elseif boots1!=NULL{
+				elseif boots1 {
 					if bootsID1==_i[1] && bootssort1==_i[0]{
 						_txt += "\_l[230,-]\f[color,231,171,109]\q[◇斗和已装备,Onboots1,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[3]),%(_i[6]),%(_i[7]),%(_i[8]),%(_i[9])]\f[color,default]\n"
 					}
@@ -666,7 +666,7 @@ On魔法菜单{
 }
 Onusemagic{
 	if (reference2=='回复'||reference2=='辅助') && reference3=='单体'{
-		if target==0
+		if !target
 			"给谁使用\n/
 			\q[◇橘花,Onkikka0,%(reference0),%(reference1),%(reference2),%(reference3),%(reference4),%(reference5),%(reference6)]\n/
 			\q[◇斗和,Ontowa0,%(reference0),%(reference1),%(reference2),%(reference3),%(reference4),%(reference5),%(reference6)]\n/
@@ -678,13 +678,13 @@ Onusemagic{
 			\n\n\n\n\q[◇返回,Onbackusemagic1]"
 	}
 	elseif (reference2=='回复'||reference2=='辅助') && reference3=='复体'{
-		if target==0
+		if !target
 			Ondouble0(reference0,reference1,reference2,reference3,reference4,reference5,reference6)
 		else
 			Ondouble1(reference0,reference1,reference2,reference3,reference4,reference5,reference6)
 	}
 	elseif reference2=='攻击'{
-		if target==0
+		if !target
 			Onmagicatk0(reference0,reference1,reference2,reference3,reference4,reference5,reference6,reference7)
 		else
 			Onmagicatk1(reference0,reference1,reference2,reference3,reference4,reference5,reference6,reference7)

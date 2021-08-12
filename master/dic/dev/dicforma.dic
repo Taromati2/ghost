@@ -131,7 +131,7 @@ dicforma.tabnum_change:void{
 	if RE_GREP(dicforma.now.morpheme_extraction,'^\s*}'){
 		dicforma.oneline_tab += -1
 	}
-	if RE_GREP(dicforma.before.morpheme_extraction,'^}*(if|for|while|else|elseif|case|when|others)[\s\(]') && (!RE_GREP(dicforma.before.morpheme_extraction,'(\{|blockmorpheme)$') && ';' !_in_ dicforma.before.morpheme_extraction && !RE_GREP(dicforma.before.morpheme_extraction,'{ $'))
+	if RE_GREP(dicforma.before.morpheme_extraction,'^}*(if|for|while|else|elseif|case|when|others)[\s\(]') && (!RE_GREP(dicforma.before.morpheme_extraction,'(\{|blockmorpheme) $') && ';' !_in_ dicforma.before.morpheme_extraction && !RE_GREP(dicforma.before.morpheme_extraction,'{ $'))
 		dicforma.oneline_tab += 1
 }
 dicforma.morpheme_extraction{
@@ -185,14 +185,14 @@ dicforma.readline:void{
 	dicforma.now.morpheme_extraction=dicforma.morpheme_extraction(dicforma.line.now)
 	if RE_GREP(dicforma.now.morpheme_extraction,'^\s*#')
 		return
-	if RE_GREP(dicforma.now.morpheme_extraction,'^}*(if|for|while|else|elseif|case|when|others)[\s\(]') && (!RE_GREP(dicforma.now.morpheme_extraction,'\{$')) && RE_GREP(dicforma.next.morpheme_extraction,'^\{'){
+	if RE_GREP(dicforma.now.morpheme_extraction,'^}*(if|for|while|else|elseif|case|when|others)[\s\(]') && (!RE_GREP(dicforma.now.morpheme_extraction,'\{ $')) && RE_GREP(dicforma.next.morpheme_extraction,'^\{'){
 		dicforma.line.now+='{'
 		dicforma.line.next=RE_REPLACE(dicforma.line.next,'^\{\s*','')
 		if !dicforma.line.next
 			dicforma.line.next=dicforma.readline.base
 	}
 	dicforma.reverse_bracenum=0
-	while RE_GREP(dicforma.morpheme_extraction(dicforma.line.now),dicforma.RE.everychar+'+(?<!;)\}$'){
+	while RE_GREP(dicforma.morpheme_extraction(dicforma.line.now),dicforma.RE.everychar+'+(?<!;)\} $'){
 		dicforma.reverse_bracenum++
 		dicforma.line.now=RE_REPLACE(dicforma.line.now,'\s*\}$','')
 	}
@@ -235,7 +235,7 @@ dicforma.writeline:void{
 	}else{
 		FWRITE_WITH_LF(dicforma.tfname,_t)
 	}
-	if dicforma.oneline_tab && !dicforma.line.now.isayacommit && !(dicforma.now.morpheme_extraction == '*/'&&RE_GREP(dicforma.before.morpheme_extraction,'^}*(if|for|while|else|elseif|case|when|others)[\s\(]'))
+	if dicforma.oneline_tab && !dicforma.line.now.isayacommit && !(dicforma.now.morpheme_extraction == '*/ '&&RE_GREP(dicforma.before.morpheme_extraction,'^}*(if|for|while|else|elseif|case|when|others)[\s\(]'))
 		dicforma.oneline_tab=0
 	while dicforma.reverse_bracenum{
 		dicforma.reverse_bracenum--

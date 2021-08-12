@@ -8,34 +8,33 @@ OnGobangInIt{
 		NeedUpdate
 		return
 	}
-	if wzq.Model==NULL
+	if !wzq.Model
 		wzq.Model=0//0人->机 1机->人 2对翌
 	player.gamenum=0
-	_txt=''
-	_txt+="\s[2]%(username)要和橘花下五子棋啊，\w9\w9\s[40]来吧，橘花可不是那么好赢的哦。\n"
-	_txt+='\n[half]\q[◇新游戏,OnGobangNewGame]'
-	_txt+='\n\q[◇返回上一层,OnOpenMenu,2]     \q[◇结束,OnGobangGameOver]'
 	mess=''
-	_txt
+	"\s[2]%(username)要和橘花下五子棋啊，\w9\w9\s[40]来吧，橘花可不是那么好赢的哦。\n/
+	\n[half]/
+	\q[◇新游戏,OnGobangNewGame]\n/
+	\q[◇返回上一层,OnOpenMenu,2]     \q[◇结束,OnGobangGameOver]"
 }
 OnGobangNewGame{
 	Black=1
 	White=0
 	Nought=-1
-	if Num==NULL
+	if !Num
 		Num=145
 	playingGobang=1
 	running='playingGobang'
-	if row.x[70]==NULL && row.y[70]==NULL && row.c[70]==NULL
+	if !row.x[70] && !row.y[70] && !row.c[70]
 		initdat
-	if Gobang.chessboard==NULL
+	if !Gobang.chessboard
 		Gobang.chessboard=1
-	if Gobang.piece==NULL
+	if !Gobang.piece
 		Gobang.piece=1
-	if Powerofcomputer==NULL
+	if !Powerofcomputer
 		Powerofcomputer=1
 	m_count=0
-	if player.playnum==0
+	if !player.playnum
 		GobangVarReset
 	Gobang.RankCheck
 	player.baseparam.Gobang.Rank=GetYingRank
@@ -49,7 +48,7 @@ OnGobangNewGame{
 	_w
 }
 Gobang.RankCheck{
-	if Gobang.Rank==NULL
+	if !Gobang.Rank
 		Gobang.Rank=3
 	if Gobang.Rank==3{
 		fight=49
@@ -224,15 +223,15 @@ OnGobangOption{
 		wzq.Model=reference1
 		先走=reference2
 	}
-	_txt='\C\![quicksession,true]\c\![set,choicetimeout,0]\b[2]'
-	_txt+="棋盘设定：当前为%(棋盘)\n\q[◇棋盘1,OnGobangOption,Gobang.chessboard,1,棋盘1]  \q[◇棋盘2,OnGobangOption,Gobang.chessboard,2,棋盘2]\n/
+	'\C\![quicksession,true]\c\![set,choicetimeout,0]\b[2]'
+	--
+	"棋盘设定：当前为%(棋盘)\n\q[◇棋盘1,OnGobangOption,Gobang.chessboard,1,棋盘1]  \q[◇棋盘2,OnGobangOption,Gobang.chessboard,2,棋盘2]\n/
 	棋子设定：当前为%(棋子) \n\q[◇棋子1,OnGobangOption,Gobang.piece,1,棋子1]  \q[◇棋子2,OnGobangOption,Gobang.piece,2,棋子2]\n/
 	棋力设定：当前为%(棋力)\n \q[◇入门,OnGobangOption,ql,1,入门]   \q[◇业余,OnGobangOption,ql,2,业余]  \q[◇专业,OnGobangOption,ql,3,专业]  \q[◇大师,OnGobangOption,ql,4,大师]\n/
 	段位设定：当前为%(段位) \n \q[◇3段,OnGobangOption,Gobang.Rank,3,3段]  \q[◇4段,OnGobangOption,Gobang.Rank,4,4段]  \q[◇5段,OnGobangOption,Gobang.Rank,5,5段]  \q[◇6段,OnGobangOption,Gobang.Rank,6,6段] \q[◇7段,OnGobangOption,Gobang.Rank,7,7段]  \q[◇8段,OnGobangOption,Gobang.Rank,8,8段]  \q[◇9段,OnGobangOption,Gobang.Rank,9,9段]\n/
 	先走模式：当前为%(先走) \n\q[◇%(username)先走,OnGobangOption,xz,0,%(username)先走]   \q[◇橘花先走,OnGobangOption,xz,1,橘花先走]\n/
-	"
-	_txt+='\n\q[◇返回上一层,OnGobangNewGame]     \q[◇结束,OnGobangGameOver]'
-	_txt
+	\n/
+	\q[◇返回上一层,OnGobangNewGame]     \q[◇结束,OnGobangGameOver]"
 }
 ClearGobangVar:void{//消除变量
 	ERASEVAR('playingGobang')
@@ -345,7 +344,7 @@ OnGobangShow{
 	xx=6
 	y=60
 	yy=5
-	if Gobang.chessboard==NULL
+	if !Gobang.chessboard
 		Gobang.chessboard=1
 	_txt+="\_l[%(x),%(y)]\_b[PATH/chessboard_%(Gobang.chessboard).png,inline,--option=opaque]"
 	_whowin=Whowincheck
@@ -355,7 +354,7 @@ OnGobangShow{
 				_txt+="\_l[%(_j*18+x+xx),%(_i*18+y+yy)]\__q[Ondownzi,%(_j),%(_i)]\_b[PATH/blank.png,inline]\__q"
 		}
 	}
-	if Whowincheck==0{
+	if !Whowincheck {
 		mess='\_l[0,0]白棋胜了'
 	}
 	elseif Whowincheck==1{
@@ -426,9 +425,9 @@ OnuserAd{//黑色下子
 OnuserBd{//白色下子
 	nx=reference0
 	ny=reference1
-	if _argv[0]!=NULL
+	if _argv[0]
 		nx=TOINT(_argv[0])
-	if _argv[1]!=NULL
+	if _argv[1]
 		ny=TOINT(_argv[1])
 	_txt='\C\![quicksession,true]\c'
 	if state[nx*15+ny]==6{
@@ -442,7 +441,7 @@ OnuserBd{//白色下子
 		nowy=ny
 		mess="\0\_l[0,0]第%(m_count)步，白子（%(nx),%(ny)）"
 	}
-	if Whowincheck==0{
+	if !Whowincheck {
 		player.losenum++
 		player.playnum++
 	}
@@ -504,9 +503,9 @@ Whowincheck{
 Ondownzi{//外部调用此函数下子
 	nx=reference0
 	ny=reference1
-	if _argv[0]!=NULL
+	if _argv[0]
 		nx=TOINT(_argv[0])
-	if _argv[1]!=NULL
+	if _argv[1]
 		ny=TOINT(_argv[1])
 	_txt = ''
 	if nx<0||nx>14||ny<0||nx>14{
@@ -1002,7 +1001,7 @@ wise{
 	}
 	return
 	/*
-	if fight-defense>10 || _M1>=_M2  && RAND(4)!=0{
+	if fight-defense>10 || _M1>=_M2  && RAND(4) {
 		wisex=_wisex1
 		wisey=_wisey1
 		return

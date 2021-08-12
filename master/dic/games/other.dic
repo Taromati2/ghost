@@ -361,15 +361,14 @@ OnBlackjack{
 	Blackjack
 }
 OnBlackjackRule{
-	_rule = "游戏规则就是一般的21点，\w5A表示1或11点，\w5J、Q和K则表示10点，/
+	"游戏规则就是一般的21点，\w5A表示1或11点，\w5J、Q和K则表示10点，\n/
 	游戏的目的就是尽量让手中的牌凑到21点，\w5但超过21点就变成爆牌，\w5\s[5]会直接出局喔。 \n/
-	\s[0]一开始先由斗和发一张暗牌给我们，\w5这张暗牌一直到游戏结束前都不会被对方看到。 \w5/
+	\s[0]一开始先由斗和发一张暗牌给我们，\w5这张暗牌一直到游戏结束前都不会被对方看到。 \w5\n/
 	确认过暗牌后先由%(username)决定是否要继续抽牌，\w5一旦决定不抽牌之后也不能再抽喔！ \n/
 	如果我们都决定不抽牌就必须互相翻开暗牌计算彼此的点数，\w5\s[5]当然是点数较高又没爆牌的人获胜！ \n/
 	\s[0]除了爆牌或不抽牌会结束游戏之外，\w5如果我们其中一人的牌的点数加起来刚好是21点，\w5那就直接获胜了！ \n/
-	又或者其中一个人连续抽了五张牌都没有爆牌，\w5则称为五龙，\w5\s[5]一样是直接获胜喔！"
-	_menu = '\n\n\q[◇新游戏,OnBlackjack,0]\n[150]\q[◇返回上一层,OnOpenMenu,2]\n\q[◇终了,OnBlackjackEnd]'
-	_rule + _menu
+	又或者其中一个人连续抽了五张牌都没有爆牌，\w5则称为五龙，\w5\s[5]一样是直接获胜喔！\n/
+	\n\q[◇新游戏,OnBlackjack,0]\n[150]\q[◇返回上一层,OnOpenMenu,2]\n\q[◇终了,OnBlackjackEnd]"
 }
 Blackjack{
 	kikkascard = (2,1,0,0,0,poker[0],poker[2])
@@ -762,7 +761,7 @@ OnDeluxeBall{
 	A=5000000
 	B=1500000
 	b=''
-	if ball==NULL
+	if !ball
 		ball=IARRAY
 	_rednum=0
 	_bluenum=0
@@ -906,7 +905,7 @@ OnDeluxeBall{
 	}
 	_txt+='\n已选蓝球：[点击号码可取消选择]\n'
 	for _i=0;_i<_bs;_i++{
-		if bball[_i]!=NULL{
+		if bball[_i] {
 			_txt += "\f[cursorstyle,none]\_l[%(_i%9*30 + 21 )]\__q[OnDeluxeBall,DB,%(bball[_i])]\_b[DATA_PATH\Game\RGB_Balls\BallBlue16.png,inline]\_l[%(_i%9*30 + 23 )]%(bball[_i])\__q\f[cursorstyle,default]"
 			if (_i+1) % 9 == 0
 				_txt += '\n[130]'
@@ -1801,7 +1800,7 @@ OnKikka反击{
 						'\![raise,OnKikkausespatkvs,1,10]'
 				}
 				{
-					if 赎罪回合[0]==-1&&battleflag==0&&RAND(5)==0{
+					if 赎罪回合[0]==-1&&battleflag==0&&!RAND(5){
 						if ANG[0]!=2{
 							'\![raise,OnKikkausespatkvs,3,10]'
 							if 呐喊回合[0]==-1
@@ -1810,7 +1809,7 @@ OnKikka反击{
 						else
 							'\![raise,OnKikkausespatkvs,1,10]'
 					}
-					if 赎罪回合[0]==-1&&神威祈福回合[0]!=-1&&RAND(10)==0{
+					if 赎罪回合[0]==-1&&神威祈福回合[0]!=-1&&!RAND(10){
 						if ANG[0]!=2{
 							'\![raise,OnKikkausespatkvs,3,10]'
 							if 呐喊回合[0]==-1
@@ -1819,7 +1818,7 @@ OnKikka反击{
 						else
 							'\![raise,OnKikkausespatkvs,1,10]'
 					}
-					if 天使之光回合[1]==-1&&battleflag==0&&RAND(4)==0{
+					if 天使之光回合[1]==-1&&battleflag==0&&!RAND(4){
 						if ANG[0]!=2{
 							'\![raise,OnKikkausespatkvs,4,15]'
 							if 呐喊回合[0]==-1
@@ -2266,7 +2265,7 @@ OnInnerHandGame{
 			'布\n\w9\x'
 		}
 		--
-		if reference1 ==NULL{
+		if !reference1 {
 			"\![raise,OnInnerHandGame,%(_p),%(_i),%(atk)]"
 		}
 		else{

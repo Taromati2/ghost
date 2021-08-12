@@ -560,7 +560,7 @@ Select.notsogood3{
 }
 Select.notsogood4{
 	_howb0 = howbady0
-	if howbady0 == 0{
+	if !howbady0 {
 		"\0\s[41]%(username)都没生病呢，真健康!"
 	}
 	else{

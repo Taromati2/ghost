@@ -17,7 +17,7 @@ Ondict{
 	_j=0
 	_p=1
 	_a=CUTSPACE(reference0)
-	if _argv[0]!=NULL {
+	if _argv[0] {
 		_p=TOINT(_argv[0])
 		_a=Dicword[0]
 	}
@@ -28,11 +28,11 @@ Ondict{
 	_b = RE_REPLACE(_a,'[abcdefghijklmnopqrstuvwxyz1234567890-]',NULL)
 	//_a = RE_REPLACE(_a,'\d',NULL)
 	_a = RE_REPLACE(_a,'[0123456789]',NULL)
-	if _b!=NULL
+	if _b
 		_j=SQLite('-f',"SELECT * FROM dictionary WHERE ONE LIKE'%%(_b)%'")
 	elseif STRLEN(_a)==1
 		_j=SQLite('-f',"SELECT * FROM dictionary WHERE ONE LIKE'%(_a)|%'")
-	elseif _a!=NULL
+	elseif _a
 		_j=SQLite('-f',"SELECT * FROM dictionary WHERE ONE LIKE'%(_a)%'")
 	_tola=(_j+7)/8
 	Dicword[1]=_tola
@@ -44,7 +44,7 @@ Ondict{
 			_Cdic='\f[color,240,20,220]已复制啦♪\f[default]'
 		_w+="\f[bold,true]%(_Endic)\f[bold,false]\_l[150,-]\![*]\__q[OnCopydic,%(_Endic),%(_p)]%(_Cdic)\__q\n"+_t[1,'|']+'\n[130]'
 	}
-	if _a==NULL {
+	if !_a {
 		Select.dictionary
 	}
 	else {
@@ -55,19 +55,15 @@ Ondict{
 				"\0\s[0]没有找到呢...\n[130]%(Select.dictionary)"
 		}
 		--
-		if (_p-1)*8+8<_j
-			"\0\s[26]\b[2]\_q符合记录条目为%(_j),以下为第%((_p-1)*8+1)-%((_p-1)*8+8)条结果:\n[150]%(_w)\n[50]"
-		else
-			"\0\s[26]\b[2]\_q符合记录条目为%(_j),以下为第%((_p-1)*8+1)-%(_j)条结果:\n[150]%(_w)\n[50]"
+		"\0\s[26]\b[2]\_q符合记录条目为%(_j),以下为第%(_p*8-7)-%(MIN(_p*8,_j))条结果:\n[150]%(_w)\n[50]"
 		--
-		if _p==1 && _j>8
-			"\_l[20,-]<<上一页\_l[93,-]\q[◇第1页,Ondicselepag]    共%(_tola)页\_l[200,-]\q[下一页>>,OndicPage,%(_p+1)]"
-		elseif _p==1
-			''
-		elseif (_p-1)*8+8>_j
-			"\_l[20,-]\q[<<上一页,OndicPage,%(_p-1)]\_l[93,-]\q[◇第%(_p)页,Ondicselepag]    共%(_tola)页\_l[200,-]下一页>>"
-		else
-			"\_l[20,-]\q[<<上一页,OndicPage,%(_p-1)]\_l[93,-]\q[◇第%(_p)页,Ondicselepag]    共%(_tola)页\_l[200,-]\q[下一页>>,OndicPage,%(_p+1)]"
+		if _p!=1
+			"\_l[20,-]\q[<<上一页,OndicPage,%(_p-1)]"
+		--
+		"\_l[93,-]\q[◇第%(_p)页,Ondicselepag]    共%(_tola)页"
+		--
+		if _p<_j
+			"\_l[200,-]\q[下一页>>,OndicPage,%(_p+1)]"
 		--
 		'\n[150]\![*]\q[继续搜索,dictionary]\![set,choicetimeout,36000]\n\![*]\q[返回上一层,OnOpenMenu,0]  \![*]\q[取消,Onoverdic]'
 	}
@@ -81,7 +77,7 @@ Ondicselepag{
 Ondicsp{//选页
 	_a=CUTSPACE(reference0)
 	_b=RE_REPLACE(_a,'[0123456789]',NULL)
-	if _b!=NULL || _a==NULL {
+	if _b || !_a {
 		Ondicselepag
 	}
 	else {

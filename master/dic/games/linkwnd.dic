@@ -31,7 +31,7 @@ CheckLinkWnd{//参数检查
 	m_dir[2] = 3
 	m_dir[3] = 4
 	*/
-	if LinkWndMode==NULL
+	if !LinkWndMode
 		LinkWndMode=0
 	if LinkWndMode==0{
 		LinkWnd_LEFT	= -20
@@ -67,7 +67,7 @@ CheckLinkWnd{//参数检查
 	}
 	LinkBallWIDTH=28
 	LinkBallHigh=32
-	if ISVAR('LinkWndnd')==0
+	if !ISVAR('LinkWndnd')
 		LinkWndnd=0
 	if LinkWndnd==0
 		难度='简单'
@@ -134,7 +134,7 @@ OnInitLinkWnd{//新游戏入口
 			zs ++
 			m = RAND(m_nRow-2)+ 1
 			n = RAND(m_nCol-2)+ 1
-			while  m_map[m*m_nCol+n] !=BLANK_STATE && zs<=(m_nRow-2)*(m_nCol-2);{
+			while  m_map[m*m_nCol+n] !=BLANK_STATE && zs<=(m_nRow-2)*(m_nCol-2){
 				m = RAND(m_nRow-2)+ 1
 				n = RAND(m_nCol-2)+ 1
 			}
@@ -334,7 +334,7 @@ OnDrawLinkWnd{//绘图
 	}
 	//_txt+=DrawFoot
 	_txt+=LinkWndMenu
-	if linkwndmusic==NULL{
+	if !linkwndmusic {
 		_txt+=BGMusic
 	}
 	_txt
@@ -407,7 +407,7 @@ BGMusic{//音乐
 		}
 	}
 	else{
-		//if linkwndmusic==NULL&&freemode==1{
+		//if !linkwndmusic &&freemode==1{
 			linkmusicfile=playlinkmusic[musicid]
 			_txt+=PlayLinkWndMusic('play',linkmusicfile)
 		//}
@@ -452,7 +452,7 @@ LinkWndMenu{//游戏目录
 		_txt+="\_l[120,0]◆%(TOINT(m_levels[levelsort])+1),N:%(m_MapSeed.Num),L:%(m_Map.nLeft)"
 	_txt+='\_l[230,-]\q[◇终了,OnLinkWndGameOver]'
 	_timeleft=link_timebar/1000
-	if link_timemode==NULL||link_timemode==1
+	if !link_timemode ||link_timemode==1
 		_txt+="\n\_l[10,-]\__q[OnLinkBar,%(_timeleft)]%(LinkBar(link_timebar,link_timebase))\__q\_l[15,-]%(_timeleft)"
 	else{
 		_txt+="\n\_l[10,-]生命数:%(LinkWndLife)"
@@ -466,13 +466,13 @@ LinkWndMenu{//游戏目录
 		_txt+='\_l[130,-]\q[◇提示,Onremind]'
 	else
 		_txt+='\_l[130,-]\f[color,192,192,192]提示\f[color,default]'
-	if link_timemode==NULL
+	if !link_timemode
 		_txt+=":%(LinkWndSeed)"
 	if LinkWndLife>=1
 		_txt+='\_l[180,-]\q[◇重排,OnResort]'
 	else
 		_txt+='\_l[180,-]\f[color,192,192,192]重排\f[color,default]'
-	if link_timemode==NULL
+	if !link_timemode
 		_txt+=":%(LinkWndLife)"
 	_txt+='\_l[230,-]\q[◇帮助,OnLinkWndHelp]'
 	if mess!=''
@@ -593,7 +593,7 @@ OnLinkWndOption{//设定
 	_m_levels=''
 	_txt+=CheckLinkWnd
 	_txt+=CheckLinkMapNum
-	if freemode==NULL{
+	if !freemode {
 		_t = '◆,◇,◇,◇,◆,◇,◇,◇,◆,◇,◇,◇,◆,◇,◇,◇,◆'
 		_txt+="游戏模式：\n\q[%(_t[TOINT(LinkWndMode)])人眼,OnLinkWndOption,ms,0,人眼]   \q[%(_t[TOINT(LinkWndMode)+3])地眼,OnLinkWndOption,ms,1,地眼]   \q[%(_t[TOINT(LinkWndMode)+6])天眼,OnLinkWndOption,ms,2,天眼]   \q[%(_t[TOINT(LinkWndMode)+9])神眼,OnLinkWndOption,ms,3,神眼]\n"
 		_t = '◆,◇,◇,◆,◇,◇,◆,◇,◇,◆,◇,◇,◆'
@@ -769,7 +769,7 @@ OnLinkWndGameOver{//游戏结束
 	'\0\s[0]\b[0]不玩了吗。'
 }
 ClearLinkWndVar{//变量消除
-	if linkwndmusic==NULL{
+	if !linkwndmusic {
 		'\![sound,stop]'
 	}
 	ERASEVAR('m_dir')
@@ -1260,7 +1260,7 @@ FindPath{
 	_ci = _pts.i - _pte.i
 	_cj = _pts.j - _pte.j
 	SetDirect(_ci, _cj)
-	while ( !StackEmpty(s) );{
+	while ( !StackEmpty(s) ){
 		if (Pass(map, curpos, pts, pte)){
 			if (rdr != cdr){
 				rdr = cdr
@@ -2084,10 +2084,10 @@ LinkMapMenu{//地图目录
 	}
 	else{
 	}
-	if select.mapseed==0&&SetLinkMap.mode=='SetLinkMap.Click';{
+	if select.mapseed==0&&SetLinkMap.mode=='SetLinkMap.Click'{
 		_txt+="\_l[0,50]\_b[%(_PIC[3]),inline,--option=opaque,--clipping=0 0 20 20]"
 	}
-	if select.mapseed==1&&SetLinkMap.mode=='SetLinkMap.Click';{
+	if select.mapseed==1&&SetLinkMap.mode=='SetLinkMap.Click'{
 		_txt+="\_l[145,50]\_b[%(_PIC[3]),inline,--option=opaque,--clipping=0 0 20 20]"
 	}
 	_txt
@@ -2124,7 +2124,7 @@ OnSetLinkMap{//地图设定
 	}
 	elseif _mode=='rowset'{
 		SetLinkMap.mode='rowset'
-		if select!=0{
+		if select {
 			for _j=0; _j<m_nCol-2; _j++{
 				m_MapSeed.Seed[_i*(m_nCol-2)+_j]=TOINT(reference1)
 			}
@@ -2132,7 +2132,7 @@ OnSetLinkMap{//地图设定
 	}
 	elseif _mode=='colset'{
 		SetLinkMap.mode='colset'
-		if select!=0{
+		if select {
 			for  _i=0; _i<m_nRow-2; _i++{
 				m_MapSeed.Seed[_i*(m_nCol-2)+_j]=TOINT(reference1)
 			}
@@ -2217,7 +2217,7 @@ OnLinkMapSave{//地图保存
 	_buff=''
 	_txt=''
 	FCHARSET(1)
-	if FOPEN(_mapfile,'r')==0{
+	if !FOPEN(_mapfile,'r') {
 		void FOPEN(_mapfile,'w')
 		void FWRITE(_mapfile,'自建连连看地图文本')
 		FCLOSE(_mapfile)

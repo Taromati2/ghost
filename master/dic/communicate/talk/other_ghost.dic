@@ -18,8 +18,7 @@ StartCommunicate{
 		}
 		{
 			"\0\s[0]你好、%(res_reference0)。"
-			_txt=REPLACE(OnOtherGreetings,"%(username)","%(res_reference0)")
-			_txt
+			REPLACE(OnOtherGreetings,"%(username)","%(res_reference0)")
 		}
 	}
 	else{

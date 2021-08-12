@@ -244,7 +244,7 @@ OnPlayCmd{
 PlayWithLyric{
 	_txt = ''
 	_cmd = _argv[0]
-	if ISVAR('musicplaywithlrc') == 0 || _argv[1] == 1 {
+	if !ISVAR('musicplaywithlrc') || _argv[1] == 1 {
 		musicplaywithlrc = 1
 	}
 	elseif _argv[1] == 0 {
@@ -324,10 +324,10 @@ MusicHotKey{
 #define		M3UPATH		'PROFILE_PATH\\default.m3u8'
 #define		M3U8PATH	'PROFILE_PATH\\playlist\\'
 OnMusicPlayer{
-	if ISVAR('musicplaymode') == 0 {
+	if !ISVAR('musicplaymode') {
 		musicplaymode = 2
 	}
-	if ISVAR('musiclrcenable') == 0 {
+	if !ISVAR('musiclrcenable') {
 		musiclrcenable = 1
 	}
 	DialogMusicOpenList
@@ -335,7 +335,7 @@ OnMusicPlayer{
 	_mode = ('普通','顺序播放','单曲循环','列表循环','乱序')[musicplaymode]
 	_lrcenable = ('OFF',' ON')[musiclrcenable]
 	_name = SPLITPATH(musicfile[2])
-	if musicplayinfo!=NULL{
+	if musicplayinfo {
 		_name=IARRAY
 		_name[2]=musicplayinfo
 		musicplayinfo=NULL
@@ -869,7 +869,7 @@ DialogMusicOpenList{
 			FCLOSE(_m3u)
 		}
 		FCHARSET.default
-		if ISVAR('musicfile') == 0 {
+		if !ISVAR('musicfile') {
 			musicfile = IARRAY
 		}
 		if ARRAYSIZE(musicfile)>5
@@ -948,7 +948,7 @@ OnMusicPlayListClose{
 GetRandList{
 	if _argc>0
 		musicfile[1]=_argv[0]
-	if _argv[1]!=NULL
+	if _argv[1]
 		musicfile[4]=TOINT(_argv[1])
 	_m3u = M3U8PATH
 	_file=_m3u+musicfile[4]+'.m3u8'
@@ -986,7 +986,7 @@ GetRandList{
 GetRangeList{
 	if _argc>0
 		musicfile[1]=_argv[0]
-	if _argv[1]!=NULL
+	if _argv[1]
 		musicfile[4]=TOINT(_argv[1])
 	if musicplaymode == 4{
 		_music=IARRAY
@@ -1164,7 +1164,7 @@ OnSoundStop{
 	elseif playingmusic && reference0 == musicfile[2]{
 		_txt = '\0\C'
 		kikkamood+=10
-		if ISVAR('musicrandlist')==0&&musicplayerrange || ISVAR('musiclist')==0&&musicplayerrange==0
+		if !ISVAR('musicrandlist') &&musicplayerrange || !ISVAR('musiclist') &&!musicplayerrange
 			DialogMusicOpenList
 		SETDELIM(musiclist,'*')
 		_txt+='\![sound,stop]\![sound,wait]'
