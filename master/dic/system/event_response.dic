@@ -238,6 +238,11 @@ OnTextDrop{
 		_t=CUTSPACE(temp)
 		if __t=Get_AYA_Function_Info(_t)
 			'aya自带底层函数\n'+__t+'\n'
+		elseif ISVAR(_t)
+			"变量“%(_t)”\n/
+			值：%(GetVarValue.SakuraScript(_t))\n/
+			类型：%(GETTYPE.string((GetVarValue(_t))))\n/
+			"
 		elseif ISFUNC(_t)||Is_Defened_Event(_t){
 			_t=Get_Full_Defened_Event_Name(_t)
 			_info=GETFUNCINFO(_t)
@@ -250,11 +255,6 @@ OnTextDrop{
 			起始于\q[◇%(_path),OnOpenDirOrFile,%(_info[0])] 第%(_info[1])行\n/
 			"
 		}
-		elseif ISVAR(_t)
-			"变量“%(_t)”\n/
-			值：%(GetVarValue.SakuraScript(_t))\n/
-			类型：%(GETTYPE.string((GetVarValue(_t))))\n/
-			"
 		elseif SUBSTR(_t,0,2) == 'On'
 			'这可能是一个还未定义的事件\n'
 	}

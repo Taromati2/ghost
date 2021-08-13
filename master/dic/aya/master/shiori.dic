@@ -178,7 +178,7 @@ ClearAyaTempVar {
 
 	_n = ARRAYSIZE(tempvarname)
 	for _i = 0 ; _i < _n ; _i++ {
-		ERASEVAR("%(tempvarname[_i])")
+		ERASEVAR(tempvarname[_i])
 	}
 	ERASEVAR('tempvarname')
 
@@ -262,7 +262,7 @@ load {
 	array_eventtranslate = ASORT('string,ascending',GETFUNCLIST('OnGhostEventTranslate'))
 	array_translateinternal = ASORT('string,ascending',GETFUNCLIST('OnTranslateInternal'))
 
-	if !FILEEXIST('SAVE_FILE') || FSIZE('SAVE_FILE')==0 {
+	if !username {
 		MAGICLOAD
 		foreach _OLD_SAVE_FILES_;_i{
 			if FILEEXIST(_i){

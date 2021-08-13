@@ -338,7 +338,7 @@ file,ghost/master/dic/aya/master/ERRORLOG.dic1fcde467e33989fb98f4b7b81f3309des
 file,ghost/master/dic/aya/master/file.diced43daa35ef30295ee4c50c71725a60fsize=3159
 file,ghost/master/dic/aya/master/ghost.dicb692e47f15c5ad1d102c525c4f280baasize=834
 file,ghost/master/dic/aya/master/LOADVAR.dic62544362aac048c25f75cc62aa5e2e87size=49
-file,ghost/master/dic/aya/master/shiori.dic3693a222a35c255fcceadada891e1c6csize=48297
+file,ghost/master/dic/aya/master/shiori.dic3da28b5403d6db1c2a117dd7e03469e7size=48253
 file,ghost/master/dic/aya/master/string.dicfd6775505a13a84e12604d9f2115f74fsize=2425
 file,ghost/master/dic/aya/master/sysex.dicd3b475e578270ef9753b32482777d52asize=1126
 file,ghost/master/dic/aya/master/url.dicbf9b6c8a4ef71166d2f635a4d7cb44a6size=76
@@ -394,7 +394,7 @@ file,ghost/master/dic/system/change_part.dicbc60c6305fb994764be3027ec43633fdsi
 file,ghost/master/dic/system/clock.dic5815bd2fb1aa53512ab178f8641f5503size=26440
 file,ghost/master/dic/system/database_edit.dic3aede4e7f5455c9333257617b21ab108size=20875
 file,ghost/master/dic/system/Debug.dic034e2e053b201701c57f5253842b01d7size=35527
-file,ghost/master/dic/system/event_response.dic20aed27bb64a6e554fe5f820ff5a178csize=31308
+file,ghost/master/dic/system/event_response.dic39c9f01876180f76bd660fe2a8df581bsize=31308
 file,ghost/master/dic/system/FileDrop.dic231331e58389742ee9f6393cd5bd7d83size=4360
 file,ghost/master/dic/system/hotkey.dic32939aee0a46918e5e794ca90edb4324size=8756
 file,ghost/master/dic/system/internet.dic358ded9656d0acedb128f47fc33ffea2size=29885
