@@ -94,18 +94,22 @@ CheckDifferenceBetweenTheDayAndNow
 	_daybymonth = (0,31,28,31,30,31,30,31,31,30,31,30,31)
 	if _year != year{
 		for _i = _year ; _i < year; _i++{
-		if _i % 4 == 0 && _i % 100 != 0 || _i % 400 == 0 {
-			_difference += 366}
-		else{
-			_difference += 365}
+			if _i % 4 == 0 && _i % 100 != 0 || _i % 400 == 0 {
+				_difference += 366
+			}
+			else{
+				_difference += 365
+			}
 		}
 	}
 	if _month != month{
 		for _j = _month ; _j < _month; j++{
-		if j == 2 && (_year % 4 == 0 && _year % 100!=0|| _year % 400 == 0){
-			_difference += 29}
-		else{
-			_difference +=28}
+			if j == 2 && (_year % 4 == 0 && _year % 100!=0|| _year % 400 == 0){
+				_difference += 29
+			}
+			else{
+				_difference +=28
+			}
 		}
 	}
 	_difference += day
@@ -125,7 +129,8 @@ OnDoing
 	_set = reference0
 	_bagitem = ''
 	for _i = 0 ; _i < ARRAYSIZE(h.bag) ; _i++{
-		_bagitem += "%(h.bag[_i])"}
+		_bagitem += "%(h.bag[_i])"
+	}
 	_differenceday = CheckDifferenceBetweenTheDayAndNow(h.Hfirstday[0],h.Hfirstday[1],h.Hfirstday[2])
 	_text = "\_q\1\![set,autoscroll,disable]\![set,balloontimeout,-1]\f[color,white]%(year)年%(month)月%(day)日 已经过了%(_differenceday)天      \f[color,pink]好感度：%(intimacy) \n/
 	\f[color,red]体力：%(h._kikkaHhp) %(ColorBar(1,175,h._kikkaHhp,kikkastmmax,,'colortxt=180'))\n/
@@ -143,18 +148,21 @@ OnDoing
 			_text += _text0
 			_text
 			--
-			OnHmodemenu}
+			OnHmodemenu
+		}
 		when 1{
 			_text += _text1
 			_text += _bagitem
 			_text
 			--
-			OnShopMenu}
+			OnShopMenu
+		}
 		when 2{
 			_text
 			--
-			OnExplore}
+			OnExplore
 		}
+	}
 }
 OnExplore
 {
@@ -243,12 +251,12 @@ OnBuy
 			h.pass = "h.bag%(CHR(91))0%(CHR(93)) += 1"
 			_text1 = '\b[1]普通的润滑液，让毫无经验者不会那么辛苦，让经验丰富者能更加游刃有余。\n'
 			_text1
-			}
+		}
 		when '媚药'{
 			h.pass = "h.bag%(CHR(91))1%(CHR(93)) += 1"
 			_text1 = '\b[1]下次再编（\n'
 			_text1
-			}
+		}
 	}
 	_text0 = "\f[color,230,0,255]\q[◇确认,OnConfirm,%(_price)]	\f[color,yellow]\q[◇返回,OnDoing,1]"
 	--
