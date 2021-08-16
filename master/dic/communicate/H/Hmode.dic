@@ -6,7 +6,9 @@ OnHtalking
 OnGoHmode
 {
 	if hexp == 0{
+		//我迟早要把这一坨改成一个单独的数组，这一长串也太tm碍事了
 		//总之我先初始化一下数值什么的
+		h.Hfirstday = (year,month,day)
 		h.快cball = 0
 		h.快clv = 0
 		h.快vball = 0
@@ -29,16 +31,31 @@ OnGoHmode
 		h.反感lv = 0
 		h.抑郁lv = 0
 		h.Hlover = 0
+		//21个0,对应21个消耗品
+		//润滑液，媚药，利尿剂 ，录像带，迷迭香，
+		//避孕药，镇定剂，浴盐，茉莉香，薰衣草香，
+		//麝香，檀香，扶她药，赤色糖果，青色糖果，
+		//白色糖果，黑色糖果，誓约卷轴，化蝶梦，记忆消除药，
+		//淫魔水滴。
+		h.bag = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+		//29个零，对应道具解锁进度
+		//跳蛋，按摩棒，电动按摩器，后庭按摩棒，假阳具，
+		//眼罩，摄像机，阴蒂夹，乳头夹，口枷，
+		//鞭，针，飞机杯，地垫，拘束工具，
+		//灌肠器+肛塞，穿环套件，榨乳器，项圈，梳妆镜，
+		//打气筒，扩展气囊，导尿管，夜经，高潮管理，
+		//禁忌知识，触手操控术，入夜阳伞，避孕护符。
+		h.unlock = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+		hexp = 1
 	}
 	{
 		//这是每次开始H都会重置的部分
 		h._hmode = 1
 		specialmode = 'h'
 		h._KikkaHmpMax = GetKikkaHmpMaxCheck
-		h.kikkaHmp = GetCkeckhmp
+		h._kikkaHmp = h._KikkaHmpMax
 		h._kikkaHhp = kikkastm
 		h._kikkaHmood = kikkamood
-		forh = 0
 		h._快c = 0
 		h._快v = 0
 		h._快b = 0
@@ -55,63 +72,202 @@ OnGoHmode
 		h._恐怖 = 0
 		h._反感 = 0
 		h._抑郁 = 0
-		h.性欲 = 0
+		h._性欲 = 0
 		h._精液欲 = 0
 		h._精液量 = 0
 		h._射精计量 = 0
 		h._体位 = '无'
 		h._正后 = '正面'
 		h._骑乘 = '否'
-		h.H氛围 = 0
+		h._H氛围 = 0
 		h._射精值 = 10000
 	}
 	--
 	OnDoing
 }
-GetCkeckhmp
+CheckDifferenceBetweenTheDayAndNow
 {
-	if TOINT((forh * 0.1) * (1 + h.H氛围 + h.性欲 * 0.01) + h.kikkaHmp) > TOINT(h._KikkaHmpMax){
-		TOINT(h._KikkaHmpMax)
+	_difference = 0
+	_year = TOINT(_argv[0])
+	_month = TOINT(_argv[1])
+	_day = TOINT(_argv[2])
+	_daybymonth = (0,31,28,31,30,31,30,31,31,30,31,30,31)
+	if _year != year{
+		for _i = _year ; _i < year; _i++{
+		if _i % 4 == 0 && _i % 100 != 0 || _i % 400 == 0 {
+			_difference += 366}
+		else{
+			_difference += 365}
+		}
 	}
-	else{
-		TOINT((forh * 0.1) * (1 + h.H氛围 + h.性欲 * 0.01) + h.kikkaHmp)
+	if _month != month{
+		for _j = _month ; _j < _month; j++{
+		if j == 2 && (_year % 4 == 0 && _year % 100!=0|| _year % 400 == 0){
+			_difference += 29}
+		else{
+			_difference +=28}
+		}
 	}
+	_difference += day
+	_difference	-= _day
+	_difference
 }
 GetKikkaHmpMaxCheck
 {
 	TOINT(h.苦痛lv*5 + h.恐怖lv*3 + h.屈服lv*2 + h.耻情lv*3 + h.恭顺lv + h.欲情lv - h.反感lv*5 - h.抑郁lv*10 + 20)
 }
+OnOpenstatus
+{
+	click = NULL
+}
 OnDoing
 {
-	"\_q\1\![set,autoscroll,disable]\![set,balloontimeout,0]好感度：%(intimacy) 侍奉快乐：%(h.Hlover) \n/
+	_set = reference0
+	_bagitem = ''
+	for _i = 0 ; _i < ARRAYSIZE(h.bag) ; _i++{
+		_bagitem += "%(h.bag[_i])"}
+	_differenceday = CheckDifferenceBetweenTheDayAndNow(h.Hfirstday[0],h.Hfirstday[1],h.Hfirstday[2])
+	_text = "\_q\1\![set,autoscroll,disable]\![set,balloontimeout,-1]\f[color,white]%(year)年%(month)月%(day)日 已经过了%(_differenceday)天      \f[color,pink]好感度：%(intimacy) \n/
 	\f[color,red]体力：%(h._kikkaHhp) %(ColorBar(1,175,h._kikkaHhp,kikkastmmax,,'colortxt=180'))\n/
 	\f[color,0,230,255]气力：%(h._kikkaHmp) %(ColorBar(3,175,h._kikkaHmp,h._KikkaHmpMax,,'colortxt=180'))\n/
 	\f[color,yellow]心情：%(h._kikkaHmood) %(ColorBar(8,175,h._kikkaHmood,kikkamoodmax,,'colortxt=180'))\n/
-	V润-LV%(h.V润lv) A润-LV%(h.A润lv)\n/
+	\q[◇开始调教,OnDoing,0] \q[◇购买道具,OnDoing,1] \q[◇外出探索,OnDoing,2] \q[◇休息,OnEndHMode]\n/"
+	_text0 = "V润-LV %(h.V润lv) A润-LV %(h.A润lv)\n/
 	快C-LV%(h.快clv) 快V-LV%(h.快vlv) 快B-LV%(h.快blv) 快M-LV%(h.快mlv) 快A-LV%(h.快alv) \n/
 	恭顺-LV%(h.恭顺lv) 欲情-LV%(h.欲情lv) 反感-LV%(h.反感lv) 抑郁-LV%(h.抑郁lv)\n/
 	苦痛-LV%(h.苦痛lv) 恐怖-LV%(h.恐怖lv) 屈服-LV%(h.屈服lv) 耻情-LV%(h.耻情lv)"
+	_text1 = "剩余金钱：%(money)"
 	--
-	OnHmodemenu
+	case _set{
+		when 0{
+			_text += _text0
+			_text
+			--
+			OnHmodemenu}
+		when 1{
+			_text += _text1
+			_text += _bagitem
+			_text
+			--
+			OnShopMenu}
+		when 2{
+			_text
+			--
+			OnExplore}
+		}
 }
-OnHmodemenu
+OnExplore
 {
-	'\b[0]\![set,balloontimeout,0]\_q\0想要对橘花做些什么呢?\n'
-	--
-	GetTheHMenu
+	'\0筹备中\n'
 }
-GetTheHMenu
-{
-	_txt = ''
-	for _i=0; _i<ARRAYSIZE(Hnormal.info); _i++ {
-		_txt += "\_l[%(78*(_i/10)-312*(_i/40)),%((15+14*(_i%10)+130*(_i/40)))]\q[%(Hnormal.name(_i)),OnHnormalget,%(Hnormal.name(_i))]\n"
-	}
-	_txt
-}
-EndHMode
+OnEndHMode
 {
 	specialmode = ''
 	hmode = 0
+	'\0这样就结束了吗？\n'
+}
+//打算放进秘境探索里的部分：扶她药，触手操控术，入夜阳伞，糖果，誓约卷轴，化蝶梦，记忆消除药，避孕护符，淫魔水滴。
+Shop.Info : array
+{
+	'润滑液,         ,50,￥'
+	'媚药,          ,200,￥'
+	'利尿剂,        ,100,￥'
+	'录像带,        ,300,￥'
+	'迷迭香,        ,700,￥'
+	'避孕药,       ,1000,￥'
+	'镇定剂,        ,300,￥'
+	'浴盐,          ,100,￥'
+	'茉莉香,        ,100,￥'
+	'薰衣草香,      ,400,￥'
+	'麝香,         ,1000,￥'
+	'檀香,          ,700,￥'
+	'跳蛋,          ,200,￥'
+	'按摩棒,        ,500,￥'
+	'电动按摩器,    ,500,￥'
+	'后庭按摩棒,    ,500,￥'
+	'假阳具,        ,200,￥'
+	'眼罩,          ,400,￥'
+	'摄像机,       ,3000,￥'
+	'阴蒂夹,        ,200,￥'
+	'乳头夹,        ,300,￥'
+	'口枷,          ,500,￥'
+	'鞭,            ,200,￥'
+	'针,            ,500,￥'
+	'飞机杯,        ,400,￥'
+	'地垫,         ,1000,￥'
+	'拘束工具,     ,2000,￥'
+	'灌肠器+肛塞,  ,3000,￥'
+	'穿环套件,     ,2000,￥'
+	'榨乳器,       ,1500,￥'
+	'项圈,          ,500,￥'
+	'梳妆镜,       ,1000,￥'
+	'打气筒,        ,300,￥'
+	'扩展气囊,     ,1000,￥'
+	'导尿管,       ,2000,￥'
+	'☆夜经,       ,5000,￥'
+	'☆高潮管理,   ,1000,￥'
+	'☆禁忌知识,  ,20000,￥'
+}
+OnShopMenu
+{
+	'\b[0]\![set,choicetimeout,-1]\_q\0想要买些什么呢?\n'
+	--
+	GetTheShopMenu
+}
+GetTheShopMenu
+{
+	_txt = '\![set,autoscroll,disable]'
+	for _i=0; _i<ARRAYSIZE(Shop.Info); _i++ {
+		_txt += "\_l[%(150*(_i/10)-300*(_i/20)),%((15+14*(_i%10)+138*(_i/20)))]\q[%(Shop.Info[_i][0])%(Shop.Info[_i][1])%(Shop.Info[_i][2])%(Shop.Info[_i][3]),OnBuy,%(Shop.Info[_i][2]),%(Shop.Info[_i][0])]\n"
+	}
+	_txt
+}
+OnHmodemenu
+{
+	'\b[0]\![set,choicetimeout,-1]\_q\0想要对橘花做些什么呢?\n'
+	--
+	GetTheHMenu
+}
+OnBuy
+{
+	_price = reference0
+	_thing = reference1
+	case _thing{
+		when '润滑液'{
+			h.pass = "h.bag%(CHR(91))0%(CHR(93)) += 1"
+			_text1 = '\b[1]普通的润滑液，让毫无经验者不会那么辛苦，让经验丰富者能更加游刃有余。\n'
+			_text1
+			}
+		when '媚药'{
+			h.pass = "h.bag%(CHR(91))1%(CHR(93)) += 1"
+			_text1 = '\b[1]下次再编（\n'
+			_text1
+			}
+	}
+	_text0 = "\f[color,230,0,255]\q[◇确认,OnConfirm,%(_price)]	\f[color,yellow]\q[◇返回,OnDoing,1]"
+	--
+	_text0
+}
+OnConfirm
+{
+	_price = reference0
+	if money >= _price{
+		'购买成功\n/
+		\f[color,yellow]\q[◇返回,OnDoing,1]'
+		--
+		money -= _price
+		EVAL(h.pass)}
+	else{
+		'钱似乎不是很够，下次再来吧\n/
+		\f[color,yellow]\q[◇返回,OnDoing,1]'}
+}
+GetTheHMenu
+{
+	_txt = '\![set,autoscroll,disable]'
+	for _i=0; _i<ARRAYSIZE(Hnormal.info); _i++ {
+		_txt += "\_l[%(78*(_i/10)-312*(_i/40)),%((15+14*(_i%10)+130*(_i/40)))]\q[%(Hnormal.info[_i][0]),OnHnormalget,%(Hnormal.info[_i][0])]\n"
+	}
+	_txt
 }
 //要进行的动作，快c，快v，快b ，快m ，快a，恭顺，欲情，屈服，耻情，习得 ，苦痛，恐怖，反感，抑郁 ，性欲 ，精液欲，射精计量，体位，正后，H氛围，骑乘体位，体力，气力，心情
 //可能还要加上类似于“口占用”、“前穴占用、后穴占用、是否拘束，是否抽插”之类的参数，后续再改吧。
@@ -125,7 +281,6 @@ Hnormal.info : array
 	'手交'
 	'口交'
 	'足交'
-	'结束h'
 }
 
 //动作
@@ -179,10 +334,10 @@ OnHnormalget
 		when '爱抚'{
 			_text = '\b[2]橘花在你的爱抚之下,身体仿佛火烧起来一般\n'
 			_text += GetStatusText(0)
-			_text += '\x'
+			_text += '\n'
+			_text += '\f[color,green]\q[◇继续,OnDoing,0]'
 			_text
 			--
-			OnDoing
 		}
 		when '肛门爱抚'{
 			_text = '\b[2]口口口肛门爱抚\n/'
@@ -199,10 +354,6 @@ OnHnormalget
 			_text
 			--
 			OnDoing
-		}
-		when '结束h'{
-			'\c这样就结束了吗？'
-			EndHMode
 		}
 	}
 	--
