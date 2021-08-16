@@ -262,10 +262,12 @@ OnConfirm
 		\f[color,yellow]\q[◇返回,OnDoing,1]'
 		--
 		money -= _price
-		EVAL(h.pass)}
+		EVAL(h.pass)
+	}
 	else{
 		'钱似乎不是很够，下次再来吧\n/
-		\f[color,yellow]\q[◇返回,OnDoing,1]'}
+		\f[color,yellow]\q[◇返回,OnDoing,1]'
+	}
 }
 GetTheHMenu
 {
