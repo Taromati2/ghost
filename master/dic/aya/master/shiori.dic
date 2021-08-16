@@ -165,6 +165,7 @@ ClearAyaTempVar {
 	ERASEVAR('SHIORI_FW.HWndOld')
 	ERASEVAR('SHIORI_FW.BalloonHWnd')
 	ERASEVAR('SHIORI_FW.UniqueID')
+	ERASEVAR('SHIORI_FW.SecurityLevel')
 	ERASEVAR('SHIORI_FW.Eventid')
 	ERASEVAR('SHIORI_FW.EventidTranslate')
 	ERASEVAR('SHIORI_FW.DelayEventTime')
@@ -354,6 +355,7 @@ request {
 	_idparsed = 0
 
 	status = ''
+	SHIORI_FW.Eventid=''
 
 	while _lineend > _linestart {
 		//行分割
@@ -410,10 +412,7 @@ request {
 		}
 		//セキュリティレベル='External'なら即返る
 		elseif _key == 'SecurityLevel' {
-			if _value == 'External' {
-				"SHIORI/3.0 204 No Content%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF2)"
-				return
-			}
+			SHIORI_FW.SecurityLevel = _value
 		}
 		//ベースウェア名取得
 		elseif _key == 'Sender' {
@@ -426,6 +425,11 @@ request {
 		//Status
 		elseif _key == 'Status' {
 			status = _value
+		}
+
+		if SHIORI_FW.SecurityLevel == 'External' && SHIORI_FW.Eventid != 'OnXUkagakaLinkOpen' {
+			SHIORI_FW.MakeEmptyResponse
+			return
 		}
 
 		//キーと値を記憶
@@ -535,7 +539,7 @@ SHIORI_FW.MakeResponse{
 					SHIORI_FW.DelayNotifyResults[0] = IARRAY
 					SHIORI_FW.MakeResponse(_result)
 				}else{
-					SHIORI_FW.MakeEmptyResponse
+					SHIORI_FW.MakeEmptyResponse.OneCRLF
 				}
 			}
 		}
@@ -777,7 +781,8 @@ SHIORI_FW.RaiseIDEvent {
 SHIORI_FW.MakeBadResponse{
 	"SHIORI/3.0 400 Bad Request%(C_CRLF2)"
 }
-SHIORI_FW.MakeEmptyResponse {
+SHIORI_FW.MakeEmptyResponse{SHIORI_FW.MakeEmptyResponse.OneCRLF+C_CRLF}
+SHIORI_FW.MakeEmptyResponse.OneCRLF {
 	case SHIORI_FW.Eventid {
 		when 'OnFirstBoot', 'OnBoot', 'OnWindowStateRestore', 'OnGhostChanged'
 			//スコープ0/1の基本サーフィスを出す必要があるイベント
