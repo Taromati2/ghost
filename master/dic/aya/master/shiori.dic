@@ -428,7 +428,7 @@ request {
 		}
 
 		if SHIORI_FW.SecurityLevel == 'External' && SHIORI_FW.Eventid != 'OnXUkagakaLinkOpen' {
-			SHIORI_FW.MakeEmptyResponse
+			SHIORI_FW.MakeBadResponse
 			return
 		}
 
@@ -524,8 +524,10 @@ SHIORI_FW.MakeResponse{
 		when 'GET' {
 			//GETリクエスト
 			if _result || SHIORI_FW.HasAdditionalReturn{
-				"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
-				Value: %(_result)%(C_CRLF)"
+				"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)"
+				--
+				if _result
+					"Value: %(_result)%(C_CRLF)"
 				--
 				SHIORI_FW.AssembleReferenceHeader
 			}
@@ -538,6 +540,7 @@ SHIORI_FW.MakeResponse{
 					_result = SHIORI_FW.DelayNotifyResults[0]
 					SHIORI_FW.DelayNotifyResults[0] = IARRAY
 					SHIORI_FW.MakeResponse(_result)
+					return
 				}else{
 					SHIORI_FW.MakeEmptyResponse.OneCRLF
 				}
@@ -545,7 +548,7 @@ SHIORI_FW.MakeResponse{
 		}
 		others
 			//未知のリクエスト
-			SHIORI_FW.MakeBadResponse
+			SHIORI_FW.MakeBadResponse.OneCRLF
 	}
 	--
 	SHIORI_FW.GetAdditionalReturns
@@ -654,7 +657,6 @@ SHIORI_FW.AssembleReferenceHeader {
 		}
 	}
 	if marker != '' {
-
 		_result += "Marker: %(marker)%(C_CRLF)"
 		ERASEVAR('marker')
 	}
@@ -778,8 +780,9 @@ SHIORI_FW.RaiseIDEvent {
 //適正な応答文字列を作成します
 //引数　：_argv[0] イベント名
 //------------------------------------------------------------------------------
-SHIORI_FW.MakeBadResponse{
-	"SHIORI/3.0 400 Bad Request%(C_CRLF2)"
+SHIORI_FW.MakeBadResponse{SHIORI_FW.MakeBadResponse.OneCRLF+C_CRLF}
+SHIORI_FW.MakeBadResponse.OneCRLF {
+	'SHIORI/3.0 400 Bad Request'+C_CRLF
 }
 SHIORI_FW.MakeEmptyResponse{SHIORI_FW.MakeEmptyResponse.OneCRLF+C_CRLF}
 SHIORI_FW.MakeEmptyResponse.OneCRLF {
@@ -1651,7 +1654,7 @@ SHIORI_EV.On_name {
 //デバッグ
 //******************************************************************************
 SHIORI_EV.On_enable_log : void {
-	if TOINT(reference[0]) {
+	if TOINT(reference0) {
 		SETSETTING('log','SHIORI_PATH/SHIORI_NAME.log')
 	}else{
 		SETSETTING('log','')
