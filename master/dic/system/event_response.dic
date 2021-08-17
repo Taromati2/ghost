@@ -579,6 +579,28 @@ OnBIFFFailure{
 OnUpdate{
 	'\![updatebymyself]'
 }
+GetUpdateFailureReason{
+	case reference0{
+		when 'timeout'
+			'连线逾时。'
+		when 'md5 miss'
+			'MD5不一致。'
+		when '404'
+			'error404：找不到档案。'
+		when 'fileio'
+			'硬碟写入失败。'
+		when 'artificial'
+			'人为停止。'
+		when 'readonly'
+			'缓存目录唯读。'
+		when 'virusdetect'
+			'检测到病毒。'
+		when 'toomanyredirect'
+			'重定向过多。'
+		others
+			"因：%(reference0)"
+	}
+}
 OnUpdateCheckFailure{
 	if reference0 == 'readonly'
 		return
@@ -588,20 +610,10 @@ OnUpdateCheckFailure{
 	}
 	'\0\s[3]'
 	--
-	if reference0 == 'timeout'
-		'连线逾时。'
-	elseif reference0 == 'md5 miss'
-		'MD5不一致。'
-	elseif reference0 == '404'
-		'error404：找不到档案。'
-	elseif reference0 == 'fileio'
-		'硬碟写入失败。'
-	elseif reference0 == 'artificial'
+	if reference0 == 'artificial'
 		'已人为停止检查。\e'
-	elseif reference0 == 'readonly'
-		'缓存目录唯读。'
 	else
-		"因：%(reference0)"
+		GetUpdateFailureReason
 	--
 	'\w9\w9\s[0]\n/
 	检查'
@@ -614,6 +626,8 @@ OnUpdateCheckFailure{
 	--
 	if reference0 == 'timeout'
 		'\n\w9\w9\s[8]有尝试加速器么？'
+	elseif reference0 == 'virusdetect'
+		'\n\w9\w9\s[8]按理说更新档案里不可能有病毒才是\w9.\w9.\w9.'
 	--
 	'\n\n/
 	\q[◇切换更新源,MirrorChange]\n/
@@ -696,20 +710,10 @@ OnUpdateFailure{
 	if !InAutoUpdate{
 		'\0\s[3]'
 		--
-		if reference0 == 'timeout'
-			'连线逾时。'
-		elseif reference0 == 'md5 miss'
-			'MD5不一致。'
-		elseif reference0 == '404'
-			'error404：找不到档案。'
-		elseif reference0 == 'fileio'
-			'硬碟写入失败。'
-		elseif reference0 == 'artificial'
+		if reference0 == 'artificial'
 			'已人为停止更新。\e'
-		elseif reference0 == 'readonly'
-			'缓存目录唯读。'
 		else
-			"因：%(reference0)"
+			GetUpdateFailureReason
 		--
 		'\w9\w9\s[0]\n/
 		更新'
@@ -722,6 +726,8 @@ OnUpdateFailure{
 		--
 		if reference0 == 'timeout'
 			'\n\w9\w9\s[8]有尝试加速器么？'
+		elseif reference0 == 'virusdetect'
+			'\n\w9\w9\s[22]请确保使用可靠的更新源哦~'
 		--
 		'\n\n/
 		\q[◇切换更新源,MirrorChange]\n/
@@ -742,20 +748,10 @@ OnURLDropping{
 OnURLDropFailure{
 	'\0\s[3]'
 	--
-	if reference0 == 'timeout'
-		'连线逾时。'
-	elseif reference0 == 'md5 miss'
-		'MD5不一致。'
-	elseif reference0 == '404'
-		'error404：找不到档案。'
-	elseif reference0 == 'fileio'
-		'硬碟写入失败。'
-	elseif reference0 == 'artificial'
+	if reference0 == 'artificial'
 		'已人为停止下载。\e'
-	elseif reference0 == 'readonly'
-		'缓存目录唯读。'
-	elseif reference0
-		"因：%(reference0)\n"
+	else
+		GetUpdateFailureReason
 	--
 	'下载失败。'
 }
