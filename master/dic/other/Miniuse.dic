@@ -1595,7 +1595,7 @@ OnPasteToExp{
 OnCopy{
 	_txt=reference0
 	if _argc
-		_txt=_argv
+		_txt=TOSTR(_argv)
 	_txt=REPLACE(_txt,CHR(1),C_LF)
 	void CALLSAORI('textcopy',_txt)
 	_txt=REPLACE(REPLACE(_txt,C_CR+C_LF,C_LF),C_CR,C_LF)
