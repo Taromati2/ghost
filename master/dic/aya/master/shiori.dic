@@ -542,7 +542,8 @@ SHIORI_FW.MakeResponse{
 					SHIORI_FW.MakeResponse(_result)
 					return
 				}else{
-					SHIORI_FW.MakeEmptyResponse.OneCRLF
+					SHIORI_FW.MakeEmptyResponse
+					return
 				}
 			}
 		}
