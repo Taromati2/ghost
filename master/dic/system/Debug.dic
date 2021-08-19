@@ -11,8 +11,6 @@ SakuraScriptArgConverter{
 	'"'+REPLACE(TOSTR(_argv[0]),'"','""')+'"'
 }
 
-#globaldefine GETTYPE.string(( GETTYPE.to_string(GETTYPE(
-//))))
 GETTYPE.to_string{
 	case _argv[0]{
 		when 1
