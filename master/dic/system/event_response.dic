@@ -252,7 +252,7 @@ OnTextDrop{
 			else
 				_path=_info[0]
 			"函数“%(_t)”\n/
-			起始于\q[◇%(_path),OnOpenDirOrFile,%(_info[0])] 第%(_info[1])行\n/
+			起始于\q[◇%(_path) 第%(_info[1])行,OnOpenDicWithLineNum,%(SakuraScriptArgConverter(_info[0])),%(_info[1])]\n/
 			"
 		}
 		elseif SUBSTR(_t,0,2) == 'On'

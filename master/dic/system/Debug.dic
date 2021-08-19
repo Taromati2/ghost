@@ -372,10 +372,17 @@ OnLogModeChange{
 }
 DebugModeChanged{
 	if ISINTSTR(_argv[0]) || ISINTEGER(_argv[0]){
+		/*
 		if TOINT(_argv[0])
 			'\![open,shioridebugmode]'
 		else
 			'\![close,shioridebugmode]'
+		*/
+		SHIORI_FW.DebugMode = TOINT(_argv[0])
+		'\0\s[100]注意：\w9\w9此功能的支持仅处于测试阶段，\w9切换效果持续到下次shiori载入为止\w9\w9\n/
+		如需永久打开调试模式，请按文档进行ssp设置\x'
+		--
+		OnDebugModeChange
 	}
 }
 //调试：无对应事件反应by steve02081504
@@ -774,6 +781,13 @@ OnUpdateSHIORICore{
 		'\0\s[0]未找到update_aya.bat，请前往github仓库补全开发文件'
 	}
 }
+OnOpenDicWithLineNum{
+	if !_argv[0]
+		_argv[0] = reference0
+	if !_argv[1]
+		_argv[1] = reference1
+	'\![open,editor,'+SakuraScriptArgConverter(_argv[0])+','+_argv[1]+']'
+}
 OnErrorLog{
 	ErrorList.Gene
 	_i=0
@@ -793,7 +807,7 @@ OnErrorLog{
 			_txt+=_t[2]+_t[3]
 		else
 			_txt+=ErrorList.filename[_i]
-		_txt+=',OnOpenDirOrFile,'+SakuraScriptArgConverter(ErrorList.filename[_i])+']'
+		_txt+=',OnOpenDicWithLineNum,'+SakuraScriptArgConverter(ErrorList.filename[_i])+','+ErrorList.linenum[_i]+']'
 		if ErrorList.linenum[_i]
 			_txt+='行'+ErrorList.linenum[_i]
 		_txt+='：'+ErrorList.Info[_i]+'\n'
