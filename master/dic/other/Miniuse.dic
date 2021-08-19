@@ -1593,7 +1593,7 @@ OnPasteToExp{
 	CalculatorShow
 }
 OnCopy{
-	_txt=reference0
+	_txt=reference.raw[0]
 	if _argc
 		_txt=TOSTR(_argv)
 	_txt=REPLACE(_txt,CHR(1),C_LF)
@@ -3351,7 +3351,7 @@ OnChangeChineseCode{
 }
 OnCopyTS{
 	_ts=reference0
-	_text=reference1
+	_text=reference.raw[1]
 	if _argc>1
 		_ts=_argv[1]
 	if _argc>0

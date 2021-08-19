@@ -440,14 +440,8 @@ request {
 				var.req.value ,= TOINT(_value)
 			elseif ISREALSTR(_value)
 				var.req.value ,= TOREAL(_value)
-			else {
-				case SHIORI_FW.Eventid {
-					when 'OnTextDrop','OnDeviceArrival','OnDeviceRemove','OnSakuraScript','OnSakuraScript.Forment','OnNetworkStatusChange','OnCopy','OnCopyTS'
-						var.req.value ,= _value
-					others
-						var.req.value ,= REPLACE(_value, C_BYTE1, ',')
-				}
-			}
+			else
+				var.req.value ,= REPLACE(_value, C_BYTE1, ',')
 		}
 		else {
 			var.req.value ,= TOAUTOEX(_value)

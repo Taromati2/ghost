@@ -63,48 +63,48 @@ GetVarValue.SakuraScript{
 
 OnSakuraScript{
 	if _argv[0]
-		reference0 = _argv[0]
+		reference.raw[0] = _argv[0]
 	if _argv[1]
 		reference1 = _argv[1]
 	//for test:'%username，\\!VAR_PATH'
 	if reference1 != 'no_defineprocess'{
 		if reference1 != 'no_convert'{
 			if reference1 != 'force_run'{
-				if ('\!' _in_ reference0 || '\-' _in_ reference0){
+				if ('\!' _in_ reference.raw[0] || '\-' _in_ reference.raw[0]){
 					'\0\s[100]/
 					警告\w9\w9：此Sakura Script可能含有较危险操作\n/
-					\q[◇确认執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',force_run]\n/
+					\q[◇确认執行,OnSakuraScript,'+SakuraScriptArgConverter(reference.raw[0])+',force_run]\n/
 					\q[◇无用,Cancel]\n/
 					'
 					return
 				}
 			}
-			if '%' _in_ reference0{
+			if '%' _in_ reference.raw[0]{
 				'\0\s[100]/
 				这段Sakura Script中似乎含有aya转义符\w9\n/
 				需要转义么？\w9\n/
-				\q[◇转义執行,OnSakuraScript.Forment,'+SakuraScriptArgConverter(reference0)+']\n/
-				\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',no_convert]\n/
+				\q[◇转义執行,OnSakuraScript.Forment,'+SakuraScriptArgConverter(reference.raw[0])+']\n/
+				\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference.raw[0])+',no_convert]\n/
 				\q[◇无用,Cancel]\n/
 				'
 				return
 			}
 		}
-		if reference0!=PROCESSGLOBALDEFINE(reference0){
+		if reference.raw[0]!=PROCESSGLOBALDEFINE(reference.raw[0]){
 			'\0\s[100]/
 			这段Sakura Script中似乎含有全局define\w9\n/
 			需要处理么？\w9\n/
-			\q[◇处理執行,OnSakuraScript,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
-			\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',no_defineprocess]\n/
+			\q[◇处理執行,OnSakuraScript,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference.raw[0]))+',no_defineprocess]\n/
+			\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference.raw[0])+',no_defineprocess]\n/
 			\q[◇无用,Cancel]\n/
 			'
 			return
 		}
 	}
-	reference0
+	reference.raw[0]
 }
 OnSakuraScript.Forment{
-	OnSakuraScript(EVAL('"'+reference0+'"'),'no_convert')
+	OnSakuraScript(EVAL('"'+reference.raw[0]+'"'),'no_convert')
 }
 
 On_ShioriEcho.GetName:void {

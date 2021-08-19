@@ -186,9 +186,9 @@ OnDeviceChange.Body{
 	_i=0
 	_txt=''
 	_uuid=''
-	while ISVAR('reference'+_i){
-		_txt+=OneDeviceChange(EVAL('reference'+_i))+'\n'
-		_uuid+=OneDeviceChange.GetDeviceUuid(EVAL('reference'+_i))+C_LF
+	while reference.raw[_i]{
+		_txt+=OneDeviceChange(reference.raw[_i])+'\n'
+		_uuid+=OneDeviceChange.GetDeviceUuid(reference.raw[_i])+C_LF
 		_i++
 	}
 	_txt
@@ -225,8 +225,8 @@ OnOpenDirOrFile{
 }
 //文字拖拽处理 by steve02081504
 OnTextDrop{
-	if reference0
-		temp = reference0
+	if reference.raw[0]
+		temp = reference.raw[0]
 	if !RE_GREP(temp,"(?!%(CHR(1)))%(CHR(1))(?!%(CHR(1)))")
 		temp = REPLACE(temp,CHR(1)+CHR(1),CHR(1))
 	if mode == '1'
@@ -929,14 +929,12 @@ OnDisplayChange{
 	displaywidth = reference1
 	displayheight = reference2
 }
-//---- URLドロップ ----------------------------------------------------------------------
-//---- CROW でゴーストインストーラからゴーストをインストールを始めた时にも呼ばれます ----
 OnNetworkStatusChange{
 	if !ISVAR('NetworkStatus')
 		NetworkStatus = reference0
 	if !ISVAR('NetworkStatus.IP')
 		OnUpdateNetworkStatus
-	if NetworkStatus == reference0 && NetworkStatus.IP _in_ reference1
+	if NetworkStatus == reference0 && NetworkStatus.IP _in_ reference.raw[1]
 		return
 	if NetworkStatus != reference0{
 		if reference0 == 'online'{
@@ -964,8 +962,8 @@ OnNetworkStatusChange{
 			'\0\s[6]IP已变动\n'
 	}
 	--
-	if reference1 && NetworkStatus.IP != reference1
-		"当前ip：%(REPLACE(reference1,CHR(1),'以及\n'))"
+	if reference.raw[1] && NetworkStatus.IP != reference.raw[1]
+		"当前ip：%(REPLACE(reference.raw[1],CHR(1),'以及\n'))"
 	--
 	OnUpdateNetworkStatus
 	NetworkStatus = reference0
@@ -1010,6 +1008,8 @@ ClearNetworkStatusVar{
 	ERASEVAR('NetworkStatus.Hostname')
 	ERASEVAR('NetworkStatus.InternetIP')
 }
+//---- URLドロップ ----------------------------------------------------------------------
+//---- CROW でゴーストインストーラからゴーストをインストールを始めた时にも呼ばれます ----
 OnURLQuery{
 	if shortcut==1{
 		temp=reference0
