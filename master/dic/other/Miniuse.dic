@@ -532,7 +532,7 @@ OnBackup{
 	_w='\b[2]\![quicksession,1]\![set,choicetimeout,0]'
 	_w+='■数据备份■\n\n[half]'
 	_txt=''
-	if FATTRIB('SHIORI_BACKUP_PATH')==-1
+	if !ISDIR('SHIORI_BACKUP_PATH')
 		_temp=MKDIR('SHIORI_BACKUP_PATH')
 	if reference0=='mem'{
 		if reference1==NULL
@@ -633,7 +633,7 @@ OnBackupLead{
 		}
 		else{
 			foreach _menudir;_i{
-				if FATTRIB("SHIORI_BACKUP_PATH\%(_i)")[2]
+				if ISDIR("SHIORI_BACKUP_PATH\%(_i)")
 					_txt+="%(_i) \_l[200,-]\q[◇进入该目录,OnBackupLead,dic,%(_i)]\n"
 			}
 			if reference1!=NULL{
@@ -641,9 +641,9 @@ OnBackupLead{
 				_dicdir=REPLACE(_dicdir,'\','')
 				_txt=''
 				foreach _dicdir;_i{
-					if FATTRIB("SHIORI_BACKUP_PATH\%(reference1)\%(_i)")[2]
+					if ISDIR("SHIORI_BACKUP_PATH\%(reference1)\%(_i)")
 						_txt+="%(_i) \_l[200,-]\q[◇进入该目录,OnBackupLead,dic,%(reference1),fold,%(_i)]\n"
-					elseif !FATTRIB("SHIORI_BACKUP_PATH\%(_i)")[2] && _i!='_SAVE_file'
+					elseif !ISDIR("SHIORI_BACKUP_PATH\%(_i)") && _i!='_SAVE_file'
 						_txt+="%(_i) \_l[200,-]\q[◇导入该辞书,OnBackupLead,dic,%(reference1),single,%(_i)]\n"
 				}
 				if reference2=='fold'{
@@ -691,7 +691,7 @@ OnBackupLead{
 		}
 		else{
 			foreach _menudir;_i{
-				if FATTRIB("SHIORI_BACKUP_PATH\%(_i)")[2]
+				if ISDIR("SHIORI_BACKUP_PATH\%(_i)")
 					_txt+="%(_i) \_l[200,-]\q[◇进入该目录,OnBackupLead,deb,%(_i)]\n"
 			}
 			if reference1!=NULL{
@@ -2735,8 +2735,7 @@ OnBookDirectOpen{
 	_i=reference0
 	_buff=bookmark[_i]
 	_book_file=_buff[0,'|']
-	_file=PlayReplace(_book_file)
-	"\C\![open,file,%(_file)]"+OnBookmarkLoad
+	"\C\![open,file,%(SakuraScriptArgConverter(_book_file))]"+OnBookmarkLoad
 }
 OnBookPathOpen{
 	_i=reference0
@@ -2744,8 +2743,7 @@ OnBookPathOpen{
 	_book_file=_buff[0,'|']
 	_file=REPLACE(_book_file,'\','\\')
 	_path=SPLITPATH.roughly(_file)[0]
-	_path=PlayReplace(_path)
-	"\C\![open,file,%(_path)]"+OnBookmarkLoad
+	"\C\![open,file,%(SakuraScriptArgConverter(_path))]"+OnBookmarkLoad
 }
 WriteBookMark:void{
 	_file='PROFILE_PATH\\bookmark.bk'

@@ -89,6 +89,7 @@ ReadTxt{
 			lrctime='暂不支持Unicode编码的TXT文件，请将TXT另存为UTF-8编码格式'
 			return
 		}
+		FCLOSE(_file)
 		FCHARSET.string(_charset)
 	}
 	if FOPEN(_file,'r') {
@@ -180,11 +181,6 @@ ShowLrc{
 	}
 	_txt
 }
-/*
-OnBalloonBreak{
-	ClearLrcVar
-}
-*/
 ClearLrcVar{
 	ERASEVAR('lrc')
 	ERASEVAR('lrctime')
@@ -192,10 +188,6 @@ ClearLrcVar{
 	ERASEVAR('musicplaystart')
 	ERASEVAR('musicplaytime')
 	ERASEVAR('musicplaytime')
-}
-PlayReplace{
-	_argv[0]=REPLACE(_argv[0],']','\]')
-	_argv[0]
 }
 IsVideo{
 	_file=_argv[0]
@@ -209,15 +201,14 @@ IsVideo{
 	_isvideo
 }
 OnPlayCmd{
-	if FATTRIB(reference1)[0]==-1{
+	if !FILEEXIST(reference1){
 		musicplayinfo='文件无效或不存在'
 	}
 	if IsVideo(reference1)&&rangevideojump&&musicplayerrange==1{
 		OnNextMusic
 		return
 	}
-	reference1=PlayReplace(reference1)
-	"\0\C\![sound,%(reference0),%(reference1)]"
+	"\0\C\![sound,%(SakuraScriptArgConverter(reference0)),%(SakuraScriptArgConverter(reference1))]"
 	--
 	_path = SPLITPATH(reference1)
 	_filelrc = _path[0] + _path[1] + _path[2] + '.lrc'
@@ -251,9 +242,8 @@ PlayWithLyric{
 		musicplaywithlrc = 0
 	}
 	_filemp3 = _argv[2]
-	_filemp3 = PlayReplace(_filemp3)
 	if _cmd == 'play' || _cmd == 'loop' {
-		_txt += "\![raise,OnPlayCmd,%(_cmd),%(_filemp3)]"
+		_txt += "\![raise,OnPlayCmd,%(_cmd),%(SakuraScriptArgConverter(_filemp3))]"
 		musicplaystart = GETTICKCOUNT
 		musicplaytime = 0
 		playingmusic = 1
@@ -371,8 +361,7 @@ OnMusicPlayer{
 OnMusicPathOpen{
 	_file=REPLACE(musicfile[2],'\','\\')
 	_path=SPLITPATH.roughly(_file)[0]
-	_path=PlayReplace(_path)
-	"\C\![open,file,%(_path)]"
+	"\C\![open,file,%(SakuraScriptArgConverter(_path))]"
 }
 OnLrcfolder{
 	"\C\![open,dialog,folder,--id=lrcfolder,--title=请选择歌词文件夹，当前歌词文件夹为%(lrcpath)]"
@@ -519,7 +508,7 @@ OnMusicPlayerList{
 	for _i = 0+music_listpage[_id]*100; _i < _total&&_i<(music_listpage[_id]+1)*100; _i ++ {
 		_path=musiclist[_i]
 		_path=REPLACE(_path,']','\]')
-		_tmp = (_i + 1) + "\_l[14]: \__q[OnSelectMusic,%(_i),%(_path)]" + SPLITPATH(musiclist[_i])[2] + '\__q'
+		_tmp = (_i + 1) + "\_l[20]: \__q[OnSelectMusic,%(_i),%(_path)]" + SPLITPATH(musiclist[_i])[2] + '\__q'
 		if _i == _now&&TOINT(musicfile[4])==musiclistfile[1]{
 			_status = ('\f[color,108,129,182]','\f[color,238,50,95]','\f[color,229,134,82]')[playingmusic]
 			_tmp =_status + _tmp
@@ -711,7 +700,7 @@ DefaultListName{
 		musiclistfile[2]='[默认]'
 		ERASEVAR('musiclistname')
 		_m3u = M3UPATH
-		if FATTRIB(_m3u)[0]==1{
+		if FILEEXIST(_m3u){
 			DialogMusicOpenList
 			DialogMusicSaveList(musiclistfile[0],1)
 		}
@@ -1009,7 +998,7 @@ GetRangeList{
 		musicrandlist=''
 		SETDELIM(_musicrangelist,'*')
 		_id=0
-		_n=musicfile[4];ttt=_n
+		_n=musicfile[4]
 		musicfile[3]=0
 		for _i=0;_i<TOINT(_n);_i++{
 			musicfile[3]+=musicfilecount[_i]
@@ -1240,7 +1229,7 @@ OnSoundStop{
 //---------------------------------------------------
 OnMusicPlayerCmd{
 	_temp=NULL
-	if FATTRIB(musicfile[2])[0]==-1{
+	if !FILEEXIST(musicfile[2]){
 		_temp='文件无效或不存在'
 	}
 	_txt = ''
@@ -1415,7 +1404,7 @@ MusicLoadFolder{
 		_t = _path + _f
 		_fileext = TOLOWER(SPLITPATH(_t)[3])
 		_folder=0
-		if FATTRIB(_t)[2] == 1{
+		if ISDIR(_t){
 			MusicLoadFolder(_t)
 		}else{
 			case _fileext {
@@ -1436,7 +1425,7 @@ MusicFileDrop{
 	_buff = _argv[0]
 	foreach _buff; _ref {
 		_fileext = TOLOWER(SPLITPATH(_ref)[3])
-		if FATTRIB(_ref)[2] == 1 {
+		if ISDIR(_ref) {
 			_n=STRLEN(_ref)
 			_t=SUBSTR(_ref,0,_n-1)
 			DialogMusicAddList(SPLITPATH(_t)[2])

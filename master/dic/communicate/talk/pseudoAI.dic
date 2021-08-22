@@ -804,7 +804,7 @@ AILoad.AIFile{
 						_A+=_t+'|'
 					}
 					if _Atemp!=''
-						_A=_Atemp+'|';ttt=_Atemp
+						_A=_Atemp+'|'
 				}
 				if '*' _in_ _Q||'%(' _in_ _Q{
 					if '.*' !_in_ _Q
@@ -2722,7 +2722,7 @@ OnSpeechRecognition.BeginVoiceToTxt.vbs{
 	FCLOSE(_file)
 }
 OnSpeechRecognition.LoadSpeech_Recognition.vbs{
-	if FATTRIB('SAORI_PATH/WScript.exe')[0]==-1{
+	if !FILEEXIST('SAORI_PATH/WScript.exe'){
 		_path = CALLSAORI('advanced_sysinfo','get_special_folder_path','Windows')
 		_file = REPLACE(_path,'\','\\') + '\\system32\\WScript.exe'
 		void FCOPY(_file,'SAORI_PATH')
@@ -2798,7 +2798,7 @@ OnSpeechRecognition.LoadInfFileQ{//OnSpeechRecognition.LoadInfFileQ('PSEUDO_AI_P
 }
 LoadSpVoiceName.vbs{
 	_file='PROFILE_PATH\\VoiceName.vbs'
-	if FATTRIB(_file)[0]==-1
+	if !FILEEXIST(_file)
 		WriteSpVoiceName.vbs
 	"\![open,file,%(_file)]"
 }
