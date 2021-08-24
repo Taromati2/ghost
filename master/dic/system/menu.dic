@@ -1132,6 +1132,9 @@ OnSetWallpaper{
 	//"\![set,wallpaper,%(Wallpaperfile)]"
 	ERASEVAR('Wallpaperfile')
 }
+ClearWallpaperVar{
+	ERASEVAR('Wallpaperfile')
+}
 //---------- 沟通 ------------------------------------------------------
 Select.Communicate{
 	'\![open,communicatebox]\0'

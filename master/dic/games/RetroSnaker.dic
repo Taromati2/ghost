@@ -280,4 +280,5 @@ ClearRetroSnakerVar:void{
 	ERASEVAR('RetroSnaker.node')
 	ERASEVAR('food.x')
 	ERASEVAR('food.y')
+	ERASEVAR('GameOver')
 }
