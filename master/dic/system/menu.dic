@@ -503,9 +503,7 @@ OnNotePadDel{
 //截屏
 //-------------------------------------------------------------------
 OnScreenShot{
-	'\_q截屏快捷键：F12\n\n[half]当鼠标变成十字形后选择需要截取的范围即可。'
-	--
-	'\n[150]\q[◇返回上一层,OnOpenMenu,0]    \q[◇终了,OnScreenShotEnd]\_q'
+	void RUNCMD('explorer ms-screenclip:')
 }
 Select.OpenUkagakaTieBa {
 	'\![open,browser,https://tieba.baidu.com/f?ie=utf-8&kw=%E4%BC%AA%E6%98%A5%E8%8F%9C]'
