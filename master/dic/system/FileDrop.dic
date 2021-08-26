@@ -27,6 +27,7 @@ OnFileDrop{
 				\![*]\q[居中,OnSetWallpaper,0]\n/
 				\![*]\q[并列,OnSetWallpaper,1]\n/
 				\![*]\q[放大,OnSetWallpaper,2]\n\n[half]/
+				\q[◇直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]\n/
 				\q[◇取消,Cancel]"
 			}
 			when '.txt'{
@@ -38,9 +39,11 @@ OnFileDrop{
 						'\1怎么做？'
 					}
 					--
-					'\n/
+					"\n/
 					\q[◇作为辞书打开,OnDicDrop]\n/
-					\q[◇作为小说阅读,OnOpenBook]'
+					\q[◇作为小说阅读,OnOpenBook]\n/
+					\q[◇直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]\n/
+					"
 				}
 				else
 					OnOpenBook(reference0)
