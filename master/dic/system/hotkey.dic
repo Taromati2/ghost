@@ -215,7 +215,7 @@ Multitask{
 		OnMultitask(running)
 		return
 	}
-	_task='playLinkWnd|连连看|ClearLinkWndVar,secondwatch|秒表|ClearSecondVar,playingbox|推箱子|ClearBoxVar,playingtetris|俄罗斯方块|CleartetrisVar,playingGobang|五子棋|ClearFiveVar,playRetroSnaker|贪食蛇|ClearRetroSnakerVar,playHuaRongDao|华容道|ClearHuaRongDaoVar,rpggame|外出冒险|ClearRpgGameVar,playGoldenFlower|扎金花|ClearGoldenFlowerVar,playhanoi|数字汉诺塔|ClearHanoiVar,calculate|计算器|calculate=0,chatroom|聊天室|ClearAIVar,rename|批量文件重命名|ClearFilesRenameVar,readbook|小说阅读|ClearReadBookVar,kikkaknowl|橘花知识库|ClearKnowlVar,agenda|日历日程|ClearAgendaVar,kikkastock|橘花行情|ClearKikkaStockVar,japwordquestion|单词测试|ClearJapwordQuestionVar,examtest|橘花题库测试|ClearTestVar,hmode|h中|EndHMode'
+	_task='playLinkWnd|连连看|ClearLinkWndVar,secondwatch|秒表|ClearSecondVar,playingbox|推箱子|ClearBoxVar,playingtetris|俄罗斯方块|CleartetrisVar,playingGobang|五子棋|ClearFiveVar,playRetroSnaker|贪食蛇|ClearRetroSnakerVar,playHuaRongDao|华容道|ClearHuaRongDaoVar,rpggame|外出冒险|ClearRpgGameVar,playGoldenFlower|扎金花|ClearGoldenFlowerVar,playhanoi|数字汉诺塔|ClearHanoiVar,calculate|计算器|calculate=0,chatroom|聊天室|ClearAIVar,rename|批量文件重命名|ClearFilesRenameVar,readbook|小说阅读|ClearReadBookVar,kikkaknowl|橘花知识库|ClearKnowlVar,agenda|日历日程|ClearAgendaVar,kikkastock|橘花行情|ClearKikkaStockVar,japwordquestion|单词测试|ClearJapwordQuestionVar,examtest|橘花题库测试|ClearTestVar'
 	_tasknum=0
 	_txt='\0\![quicksession,true]\![set,choicetimeout,0]\b[2]'
 	_txt+='当前含以下任务，要打开下面哪个？\t\q[◇打开任务管理器,OnOpenTaskmgr]\n[150]'

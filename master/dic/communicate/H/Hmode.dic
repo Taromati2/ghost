@@ -1,8 +1,4 @@
-OnHtalking
-{
-	//_txt = '('//未完成
-	'（平静的呼吸声）'
-}
+//框架部分
 OnGoHmode
 {
 	if hexp == 0{
@@ -85,6 +81,7 @@ OnGoHmode
 	--
 	OnDoing
 }
+//初次h到现在的时间
 CheckDifferenceBetweenTheDayAndNow
 {
 	_difference = 0
@@ -116,6 +113,7 @@ CheckDifferenceBetweenTheDayAndNow
 	_difference	-= _day
 	_difference
 }
+//动态变动的体力最大值
 GetKikkaHmpMaxCheck
 {
 	TOINT(h.苦痛lv*5 + h.恐怖lv*3 + h.屈服lv*2 + h.耻情lv*3 + h.恭顺lv + h.欲情lv - h.反感lv*5 - h.抑郁lv*10 + 20)
@@ -164,16 +162,13 @@ OnDoing
 		}
 	}
 }
-OnExplore
-{
-	'\0筹备中\n'
-}
 OnEndHMode
 {
 	specialmode = ''
 	hmode = 0
 	'\0这样就结束了吗？\n'
 }
+//商店部分
 //打算放进秘境探索里的部分：扶她药，触手操控术，入夜阳伞，糖果，誓约卷轴，化蝶梦，记忆消除药，避孕护符，淫魔水滴。
 Shop.Info : array
 {
@@ -224,24 +219,31 @@ OnShopMenu
 }
 GetTheShopMenu
 {
+	_checkbag = (,)
+	for _j=0; _j<ARRAYSIZE(Shop.Info); _j++ {
+		if _j < 12{
+			_checkbag[ARRAYSIZE(_checkbag)] = (Shop.Info[_j][0],Shop.Info[_j][1])
+			}
+		else{
+			if h.unlock[(_j-12)] == 0{
+				_checkbag[ARRAYSIZE(_checkbag)] = (Shop.Info[_j][0],Shop.Info[_j][1])
+				}
+			}
+		}
 	_txt = '\![set,autoscroll,disable]'
-	for _i=0; _i<ARRAYSIZE(Shop.Info); _i++ {
+	for _i=0; _i<ARRAYSIZE(_checkbag); _i++ {
 		_x=150*(_i/10)-300*(_i/20)
 		_y=15+14*(_i%10)+138*(_i/20)
 		_txt += "/
 		\_l[%(_x),%(_y)]/
-		\q[%(Shop.Info[_i][0]),OnBuy,%(Shop.Info[_i][1]),%(Shop.Info[_i][0])]/
-		\_l[%(_x+90)]￥%(Shop.Info[_i][1])\n/
+		\q[%(_checkbag[2*_i+2]),OnBuy,%(_checkbag[2*_i+3]),%(_checkbag[2*_i+2])]/
+		\_l[%(_x+90)]￥%(_checkbag[2*_i+3])\n/
 		"
 	}
 	_txt
 }
-OnHmodemenu
-{
-	'\b[0]\![set,choicetimeout,-1]\_q\0想要对橘花做些什么呢?\n'
-	--
-	GetTheHMenu
-}
+//这部分需要一个一个编文案了
+//我先把era的原封不动抄上去
 OnBuy
 {
 	_price = reference0
@@ -276,6 +278,14 @@ OnConfirm
 		'钱似乎不是很够，下次再来吧\n/
 		\f[color,yellow]\q[◇返回,OnDoing,1]'
 	}
+}
+//调教部分
+//好tm乱但是能跑起来所以一时半会懒得改（
+OnHmodemenu
+{
+	'\b[0]\![set,choicetimeout,-1]\_q\0想要对橘花做些什么呢?\n'
+	--
+	GetTheHMenu
 }
 GetTheHMenu
 {
@@ -442,4 +452,9 @@ GetStatusText{
 	精液欲+%(EVAL(Hnormal.info[_id][16]))\n/
 	射精计量+%(EVAL(Hnormal.info[_id][17]))\n/
 	H氛围+%(EVAL(Hnormal.info[_id][20]))"
+}
+//探索部分
+OnExplore
+{
+	'\0筹备中\n'
 }
