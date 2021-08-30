@@ -61,7 +61,7 @@ SubMenu{
 	case _submenu {
 		when 0 {
 			'\q[◇播放音乐,OnMusicPlayer]	\_l[100,-]\q[◇魔法时钟,OnAnalogClock]\n/
-			\q[◇闹钟,OnAlarmMenu]			\_l[100,-]\q[◇课程表,OnClassTable] \_l[200,-]\q[◇开始H,OnGoHmode] \n/
+			\q[◇闹钟,OnAlarmMenu]			\_l[100,-]\q[◇课程表,OnClassTable] \n/
 			\q[◇记事本,Onnotebook]			\_l[100,-]\q[◇截屏,OnScreenShot]\n/
 			\q[◇更换壁纸,OnWallPaper]		\_l[100,-]\q[◇清空垃圾箱,TrashClean]\n/
 			\q[◇英汉互查字典,dictionary]	\_l[100,-]\q[◇日历,OnCalendar]\n/
