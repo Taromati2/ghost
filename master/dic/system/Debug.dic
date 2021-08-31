@@ -757,6 +757,12 @@ Get_AYA_Function_Info{
 			'获取对应函数的定义位置与起始/终止行数，失败时返回-1'
 		when 'PROCESSGLOBALDEFINE'
 			'以辞书中的#globaldefine对参数字串进行处理'
+		when 'UNDEFFUNC'
+			'取消指定函数的定义，失败返回1，成功返回0'
+		when 'UNDEFGLOBALDEFINE'
+			'取消#globaldefine定义（并不会消除已带来的影响），失败返回1，成功返回0'
+		when 'DICUNLOAD'
+			'取消指定dic文件中定义的所有函数和#globaldefine，失败返回1，成功返回0'
 		others
 			'文档未记录'
 	}
