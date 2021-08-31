@@ -1,5 +1,5 @@
 //--------------------------------------扎金花----------------------------
-#define		PATH	DATA_PATH\GoldenFlower
+#define		PATH	DATA_PATH\Game\GoldenFlower
 OnGoldenFlower{
 	if QuickStartVersion{
 		NeedUpdate
