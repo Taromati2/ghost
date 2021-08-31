@@ -228,13 +228,13 @@ Tetris.Move{//方块移动
 			_txt+=DispTetris
 		}
 		else{
-			_x=CurrUnit.x;_y=CurrUnit.y; _r=CurrUnit.r
+			_x=CurrUnit.x;_y=CurrUnit.y;_r=CurrUnit.r
 			case iMdir{
-				if iMdir==btmLeft {_x--; }
-				elseif iMdir==btmRight {_x++; }
-				elseif iMdir==btmDown { _y++;    }
-				elseif iMdir==btmCW   { _r++; _r=_r%4;}
-				elseif iMdir==btmCCW  {
+				if		iMdir==btmLeft	{_x--;}
+				elseif	iMdir==btmRight	{_x++;}
+				elseif	iMdir==btmDown	{_y++;}
+				elseif	iMdir==btmCW	{_r++;_r=_r%4;}
+				elseif	iMdir==btmCCW	{
 					ck=CheckUnit(_x,_y-1,_r)
 					while ck!=2&&ck!=1{
 						_y++
@@ -253,7 +253,7 @@ Tetris.Move{//方块移动
 				_txt
 				return
 			}
-			CurrUnit.x=_x; CurrUnit.y=_y; CurrUnit.r=_r
+			CurrUnit.x=_x;CurrUnit.y=_y;CurrUnit.r=_r
 			_txt+=DispTetris
 			if ck==1 && iMdir!=btmDown{
 				BlockBuffer = DispBuffer

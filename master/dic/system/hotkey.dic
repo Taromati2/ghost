@@ -121,8 +121,7 @@ OnKeyPress{
 		OnOpenMasterMenu
 	}
 	elseif reference0 == 'f12' {
-		//截屏
-		void RUNCMD('explorer ms-screenclip:')
+		OnScreenShot
 	}
 	elseif reference0 == 'm' {
 		showkikka=1

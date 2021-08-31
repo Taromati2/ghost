@@ -1,17 +1,36 @@
 //ネットワーク更新の基准位置となるURL
 On_homeurl{
 	if !mirror_url
-		mirror_url='https://raw.githubusercontent.com/Taromati2/stable-mirror/master/Taromati2/'
-	--
+		mirror_url=default_mirror_url
 	mirror_url
+}
+default_mirror_url{
+	'https://raw.githubusercontent.com/Taromati2/stable-mirror/master/Taromati2/'
+}
+mirror_url.for_show{
+	if !mirror_url
+		mirror_url=default_mirror_url
+	REPLACE(mirror_url,'\','\\')
+}
+MirrorChange.confirm{
+	if _argv[0] != mirror_url
+		"\0\s[0]更改更新源为\_q%(_argv[0])？\_q\n/
+		\n/
+		当前源：\_q%(mirror_url.for_show)\_q\n/
+		\n/
+		\q[◇确认,OnMirrorInput,%(SakuraScriptArgConverter(_argv[0]))]\n/
+		\q[◇无用,Cancel]\n/
+		"
+	else
+		"\0\s[6]当前源已经是\_q%(mirror_url.for_show)\_q了。"
 }
 Select.MirrorChange{
 	"\0\s[0]那么，要修改为什么呢？\n/
-	当前源：\_q%(On_homeurl)\_q\n/
+	当前源：\_q%(mirror_url.for_show)\_q\n/
 	\q[◇查看源列表,OnUrlOpen,https://github.com/Taromati2/mirror-list]\n/
 	\q[◇无用,Cancel]\n/
 	\q[◇恢复默认源,ResetMirror]\n/
-	\![open,inputbox,OnMirrorInput,-1,%(On_homeurl)]"
+	\![open,inputbox,OnMirrorInput,-1,%(SakuraScriptArgConverter(On_homeurl))]"
 }
 Select.ResetMirror{
 	ERASEVAR('mirror_url')
@@ -24,7 +43,7 @@ Select.ResetMirror{
 OnMirrorInput{
 	mirror_url=reference0
 	"\0\s[0]源已更新\n/
-	当前源：\_q%(On_homeurl)\_q\n/
+	当前源：\_q%(mirror_url.for_show)\_q\n/
 	\q[◇开始更新,OnUpdate]\n/
 	\q[◇开始更新检查,OnUpdateCheck]\n/
 	\q[◇无用,Cancel]\n/

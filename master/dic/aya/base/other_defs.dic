@@ -1,0 +1,4 @@
+//by steve02081504
+//
+#globaldefine GETTYPE.string(( GETTYPE.to_string(GETTYPE(
+//))))

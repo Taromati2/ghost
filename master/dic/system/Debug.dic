@@ -11,8 +11,6 @@ SakuraScriptArgConverter{
 	'"'+REPLACE(TOSTR(_argv[0]),'"','""')+'"'
 }
 
-#globaldefine GETTYPE.string(( GETTYPE.to_string(GETTYPE(
-//))))
 GETTYPE.to_string{
 	case _argv[0]{
 		when 1
@@ -63,48 +61,48 @@ GetVarValue.SakuraScript{
 
 OnSakuraScript{
 	if _argv[0]
-		reference0 = _argv[0]
+		reference.raw[0] = _argv[0]
 	if _argv[1]
 		reference1 = _argv[1]
 	//for test:'%username，\\!VAR_PATH'
 	if reference1 != 'no_defineprocess'{
 		if reference1 != 'no_convert'{
 			if reference1 != 'force_run'{
-				if ('\!' _in_ reference0 || '\-' _in_ reference0){
+				if ('\!' _in_ reference.raw[0] || '\-' _in_ reference.raw[0]){
 					'\0\s[100]/
 					警告\w9\w9：此Sakura Script可能含有较危险操作\n/
-					\q[◇确认執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',force_run]\n/
+					\q[◇确认執行,OnSakuraScript,'+SakuraScriptArgConverter(reference.raw[0])+',force_run]\n/
 					\q[◇无用,Cancel]\n/
 					'
 					return
 				}
 			}
-			if '%' _in_ reference0{
+			if '%' _in_ reference.raw[0]{
 				'\0\s[100]/
 				这段Sakura Script中似乎含有aya转义符\w9\n/
 				需要转义么？\w9\n/
-				\q[◇转义執行,OnSakuraScript.Forment,'+SakuraScriptArgConverter(reference0)+']\n/
-				\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',no_convert]\n/
+				\q[◇转义執行,OnSakuraScript.Forment,'+SakuraScriptArgConverter(reference.raw[0])+']\n/
+				\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference.raw[0])+',no_convert]\n/
 				\q[◇无用,Cancel]\n/
 				'
 				return
 			}
 		}
-		if reference0!=PROCESSGLOBALDEFINE(reference0){
+		if reference.raw[0]!=PROCESSGLOBALDEFINE(reference.raw[0]){
 			'\0\s[100]/
 			这段Sakura Script中似乎含有全局define\w9\n/
 			需要处理么？\w9\n/
-			\q[◇处理執行,OnSakuraScript,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
-			\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference0)+',no_defineprocess]\n/
+			\q[◇处理執行,OnSakuraScript,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference.raw[0]))+',no_defineprocess]\n/
+			\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference.raw[0])+',no_defineprocess]\n/
 			\q[◇无用,Cancel]\n/
 			'
 			return
 		}
 	}
-	reference0
+	reference.raw[0]
 }
 OnSakuraScript.Forment{
-	OnSakuraScript(EVAL('"'+reference0+'"'),'no_convert')
+	OnSakuraScript(EVAL('"'+reference.raw[0]+'"'),'no_convert')
 }
 
 On_ShioriEcho.GetName:void {
@@ -372,6 +370,21 @@ OnLogModeChange{
 	elseif SHIORI_FW.LogMode
 		'中'
 }
+DebugModeChanged{
+	if ISINTSTR(_argv[0]) || ISINTEGER(_argv[0]){
+		/*
+		if TOINT(_argv[0])
+			'\![open,shioridebugmode]'
+		else
+			'\![close,shioridebugmode]'
+		*/
+		SHIORI_FW.DebugMode = TOINT(_argv[0])
+		'\0\s[100]注意：\w9\w9此功能的支持仅处于测试阶段，\w9切换效果持续到下次shiori载入为止\w9\w9\n/
+		如需永久打开调试模式，请按文档进行ssp设置\x'
+		--
+		OnDebugModeChange
+	}
+}
 //调试：无对应事件反应by steve02081504
 OnNoMatchingEvent{
 	if !SHIORI_FW.DebugMode || !setting.OnNoMatchingEventAlarm
@@ -579,7 +592,7 @@ Get_AYA_Function_Info{
 		when 'CHARSETLIBEX'
 			'设置载入某一外部库用的文字编码'
 		when 'RAND'
-			'随机取得一个整数。指定一个最大值时，取得范围为0～最大值-1。如果不指定，就会按照预设的最大值取随机。\0\s[9]\1\s[-1]\n预设似乎是99……\n\nTc551-1版本追加SRAND设定方法'
+			'随机取得一个整数。指定一个最大值时，取得范围为0～最大值-1。如果不指定，就会按照预设的最大值取随机。\n预设似乎是99……\n\nTc551-1版本追加SRAND设定方法'
 		when 'SRAND'
 			'RAND函数的补充设置函数，设置用於取得随机数的“种子”。如果不设置，则会以系统时间作为种子\n要注意RAND可能被使用在系统辞书中\nTc551-1版本追加'
 		when 'FLOOR'
@@ -744,6 +757,12 @@ Get_AYA_Function_Info{
 			'获取对应函数的定义位置与起始/终止行数，失败时返回-1'
 		when 'PROCESSGLOBALDEFINE'
 			'以辞书中的#globaldefine对参数字串进行处理'
+		when 'UNDEFFUNC'
+			'取消指定函数的定义，失败返回1，成功返回0'
+		when 'UNDEFGLOBALDEFINE'
+			'取消#globaldefine定义（并不会消除已带来的影响），失败返回1，成功返回0'
+		when 'DICUNLOAD'
+			'取消指定dic文件中定义的所有函数和#globaldefine，失败返回1，成功返回0'
 		others
 			'文档未记录'
 	}
@@ -768,17 +787,33 @@ OnUpdateSHIORICore{
 		'\0\s[0]未找到update_aya.bat，请前往github仓库补全开发文件'
 	}
 }
+OnOpenDicWithLineNum{
+	if !_argv[0]
+		_argv[0] = reference0
+	if !_argv[1]
+		_argv[1] = reference1
+	'\![open,editor,'+SakuraScriptArgConverter(_argv[0])+','+_argv[1]+']'
+}
 OnErrorLog{
 	ErrorList.Gene
 	_i=0
-	_txt='\![set,autoscroll,disable]以下文件有误：\n\_q'
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]"
+	--
+	_txt='\![set,autoscroll,disable]'
+	if mode == '1'
+		_txt+='\b[2]喏，\w9这些：'
+	else
+		_txt+='以下文件有误：'
+	--
+	_txt+='\n\_q'
 	while ErrorList.filename[_i]{
 		_txt+='\q[◇'
 		if _t=SPLITPATH(ErrorList.filename[_i])
 			_txt+=_t[2]+_t[3]
 		else
 			_txt+=ErrorList.filename[_i]
-		_txt+=',OnOpenDirOrFile,'+SakuraScriptArgConverter(ErrorList.filename[_i])+']'
+		_txt+=',OnOpenDicWithLineNum,'+SakuraScriptArgConverter(ErrorList.filename[_i])+','+ErrorList.linenum[_i]+']'
 		if ErrorList.linenum[_i]
 			_txt+='行'+ErrorList.linenum[_i]
 		_txt+='：'+ErrorList.Info[_i]+'\n'

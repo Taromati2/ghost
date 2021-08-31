@@ -165,6 +165,7 @@ ClearAyaTempVar {
 	ERASEVAR('SHIORI_FW.HWndOld')
 	ERASEVAR('SHIORI_FW.BalloonHWnd')
 	ERASEVAR('SHIORI_FW.UniqueID')
+	ERASEVAR('SHIORI_FW.SecurityLevel')
 	ERASEVAR('SHIORI_FW.Eventid')
 	ERASEVAR('SHIORI_FW.EventidTranslate')
 	ERASEVAR('SHIORI_FW.DelayEventTime')
@@ -178,7 +179,7 @@ ClearAyaTempVar {
 
 	_n = ARRAYSIZE(tempvarname)
 	for _i = 0 ; _i < _n ; _i++ {
-		ERASEVAR("%(tempvarname[_i])")
+		ERASEVAR(tempvarname[_i])
 	}
 	ERASEVAR('tempvarname')
 
@@ -262,7 +263,7 @@ load {
 	array_eventtranslate = ASORT('string,ascending',GETFUNCLIST('OnGhostEventTranslate'))
 	array_translateinternal = ASORT('string,ascending',GETFUNCLIST('OnTranslateInternal'))
 
-	if !FILEEXIST('SAVE_FILE') || FSIZE('SAVE_FILE')==0 {
+	if !username {
 		MAGICLOAD
 		foreach _OLD_SAVE_FILES_;_i{
 			if FILEEXIST(_i){
@@ -354,6 +355,7 @@ request {
 	_idparsed = 0
 
 	status = ''
+	SHIORI_FW.Eventid=''
 
 	while _lineend > _linestart {
 		//行分割
@@ -410,10 +412,7 @@ request {
 		}
 		//セキュリティレベル='External'なら即返る
 		elseif _key == 'SecurityLevel' {
-			if _value == 'External' {
-				"SHIORI/3.0 204 No Content%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF2)"
-				return
-			}
+			SHIORI_FW.SecurityLevel = _value
 		}
 		//ベースウェア名取得
 		elseif _key == 'Sender' {
@@ -428,6 +427,11 @@ request {
 			status = _value
 		}
 
+		if SHIORI_FW.SecurityLevel == 'External' && SHIORI_FW.Eventid != 'OnXUkagakaLinkOpen' {
+			SHIORI_FW.MakeBadResponse
+			return
+		}
+
 		//キーと値を記憶
 		var.req.rawvalue ,= _value
 
@@ -436,14 +440,8 @@ request {
 				var.req.value ,= TOINT(_value)
 			elseif ISREALSTR(_value)
 				var.req.value ,= TOREAL(_value)
-			else {
-				case SHIORI_FW.Eventid {
-					when 'OnTextDrop','OnDeviceArrival','OnDeviceRemove','OnSakuraScript','OnSakuraScript.Forment','OnNetworkStatusChange','OnCopy','OnCopyTS'
-						var.req.value ,= _value
-					others
-						var.req.value ,= REPLACE(_value, C_BYTE1, ',')
-				}
-			}
+			else
+				var.req.value ,= REPLACE(_value, C_BYTE1, ',')
 		}
 		else {
 			var.req.value ,= TOAUTOEX(_value)
@@ -520,8 +518,10 @@ SHIORI_FW.MakeResponse{
 		when 'GET' {
 			//GETリクエスト
 			if _result || SHIORI_FW.HasAdditionalReturn{
-				"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
-				Value: %(_result)%(C_CRLF)"
+				"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)"
+				--
+				if _result
+					"Value: %(_result)%(C_CRLF)"
 				--
 				SHIORI_FW.AssembleReferenceHeader
 			}
@@ -534,14 +534,16 @@ SHIORI_FW.MakeResponse{
 					_result = SHIORI_FW.DelayNotifyResults[0]
 					SHIORI_FW.DelayNotifyResults[0] = IARRAY
 					SHIORI_FW.MakeResponse(_result)
+					return
 				}else{
 					SHIORI_FW.MakeEmptyResponse
+					return
 				}
 			}
 		}
 		others
 			//未知のリクエスト
-			SHIORI_FW.MakeBadResponse
+			SHIORI_FW.MakeBadResponse.OneCRLF
 	}
 	--
 	SHIORI_FW.GetAdditionalReturns
@@ -650,7 +652,6 @@ SHIORI_FW.AssembleReferenceHeader {
 		}
 	}
 	if marker != '' {
-
 		_result += "Marker: %(marker)%(C_CRLF)"
 		ERASEVAR('marker')
 	}
@@ -774,10 +775,12 @@ SHIORI_FW.RaiseIDEvent {
 //適正な応答文字列を作成します
 //引数　：_argv[0] イベント名
 //------------------------------------------------------------------------------
-SHIORI_FW.MakeBadResponse{
-	"SHIORI/3.0 400 Bad Request%(C_CRLF2)"
+SHIORI_FW.MakeBadResponse{SHIORI_FW.MakeBadResponse.OneCRLF+C_CRLF}
+SHIORI_FW.MakeBadResponse.OneCRLF {
+	'SHIORI/3.0 400 Bad Request'+C_CRLF
 }
-SHIORI_FW.MakeEmptyResponse {
+SHIORI_FW.MakeEmptyResponse{SHIORI_FW.MakeEmptyResponse.OneCRLF+C_CRLF}
+SHIORI_FW.MakeEmptyResponse.OneCRLF {
 	case SHIORI_FW.Eventid {
 		when 'OnFirstBoot', 'OnBoot', 'OnWindowStateRestore', 'OnGhostChanged'
 			//スコープ0/1の基本サーフィスを出す必要があるイベント
@@ -1646,7 +1649,7 @@ SHIORI_EV.On_name {
 //デバッグ
 //******************************************************************************
 SHIORI_EV.On_enable_log : void {
-	if TOINT(reference[0]) {
+	if TOINT(reference0) {
 		SETSETTING('log','SHIORI_PATH/SHIORI_NAME.log')
 	}else{
 		SETSETTING('log','')

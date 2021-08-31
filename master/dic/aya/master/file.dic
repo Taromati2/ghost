@@ -177,6 +177,9 @@ GHOST.INgit{
 GHOST.INtempDir{
 	'\AppData\Local\Temp\' _in_ GETSETTING('coreinfo.path')
 }
+GHOST.IsSelfPath{
+	REPLACE(_argv[0],'/','\') _in_ GETSETTING('coreinfo.path')
+}
 //DUMP
 DUMP_to:void{
 	_file=_argv[0]

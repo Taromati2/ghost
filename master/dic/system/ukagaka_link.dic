@@ -1,0 +1,36 @@
+OnXUkagakaLinkOpen{
+	_action_type=reference0[0,':']
+	_action_info=reference0
+	_action_info[0,':']=IARRAY
+	case _action_type {
+		when 'UpdateSelf'
+			OnUpdate
+		when 'DebugModeChange'
+			DebugModeChanged(_action_info)
+		when 'OpenMasterMenu'
+			OnOpenMasterMenu
+		when 'MirrorChange'
+			MirrorChange.confirm(_action_info)
+		when 'ShowErrorLog'
+			OnErrorLog
+		when 'CopyErrorLog'{
+			if GETERRORLOG
+				OnCopy(GETERRORLOG)
+			else{
+				if mode=='0'
+					'\0\s[8]没有错误记录可以复制呢？'
+				else
+					"\1\s[%(specialmode != 'mealtime')10]\w9.\w9.\w9.\n/
+					\s[%(specialmode != 'mealtime')11]没有错误记录啊\w9，喂。"
+			}
+		}
+		others{
+			if mode=='0'
+				'\0\s[0]不支持的链接...\w9\w9\n/
+				\s[9]可以考虑更新一下哦？'
+			else
+				"\1\s[%(specialmode != 'mealtime')11]不支持的链接\w9\w9\n/
+				\s[%(specialmode != 'mealtime')10]该更新了啊。"
+		}
+	}
+}

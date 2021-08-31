@@ -37,6 +37,8 @@ INARRAY{
 	if _argc>2{
 		_t=_argv[_argc-1]
 		_argv[_argc-1]=IARRAY
+		ASEARCH(_t,_argv)!=-1
+		return
 	}
 	else{
 		_t=_argv[1]
@@ -47,4 +49,28 @@ INARRAY{
 			_aret=1
 	}
 	_aret
+}
+ARRAY.GetIndex{
+	_aret=0
+	_t=''
+	if _argc>2{
+		_t=_argv[_argc-1]
+		_argv[_argc-1]=IARRAY
+		ASEARCH(_t,_argv)
+		return
+	}
+	else{
+		_t=_argv[1]
+		_argv=_argv[0]
+	}
+	_size=ARRAYSIZE(_argv)
+	while _aret<_size{
+		if _t==_argv[_aret]
+			break
+		_aret++
+	}
+	if _aret==_size
+		-1
+	else
+		_aret
 }

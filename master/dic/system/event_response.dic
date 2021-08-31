@@ -186,9 +186,9 @@ OnDeviceChange.Body{
 	_i=0
 	_txt=''
 	_uuid=''
-	while ISVAR('reference'+_i){
-		_txt+=OneDeviceChange(EVAL('reference'+_i))+'\n'
-		_uuid+=OneDeviceChange.GetDeviceUuid(EVAL('reference'+_i))+C_LF
+	while reference.raw[_i]{
+		_txt+=OneDeviceChange(reference.raw[_i])+'\n'
+		_uuid+=OneDeviceChange.GetDeviceUuid(reference.raw[_i])+C_LF
 		_i++
 	}
 	_txt
@@ -225,8 +225,8 @@ OnOpenDirOrFile{
 }
 //文字拖拽处理 by steve02081504
 OnTextDrop{
-	if reference0
-		temp = reference0
+	if reference.raw[0]
+		temp = reference.raw[0]
 	if !RE_GREP(temp,"(?!%(CHR(1)))%(CHR(1))(?!%(CHR(1)))")
 		temp = REPLACE(temp,CHR(1)+CHR(1),CHR(1))
 	if mode == '1'
@@ -238,6 +238,11 @@ OnTextDrop{
 		_t=CUTSPACE(temp)
 		if __t=Get_AYA_Function_Info(_t)
 			'aya自带底层函数\n'+__t+'\n'
+		elseif ISVAR(_t)
+			"变量“%(_t)”\n/
+			值：%(GetVarValue.SakuraScript(_t))\n/
+			类型：%(GETTYPE.string((GetVarValue(_t))))\n/
+			"
 		elseif ISFUNC(_t)||Is_Defened_Event(_t){
 			_t=Get_Full_Defened_Event_Name(_t)
 			_info=GETFUNCINFO(_t)
@@ -247,14 +252,9 @@ OnTextDrop{
 			else
 				_path=_info[0]
 			"函数“%(_t)”\n/
-			起始于\q[◇%(_path),OnOpenDirOrFile,%(_info[0])] 第%(_info[1])行\n/
+			起始于\q[◇%(_path) 第%(_info[1])行,OnOpenDicWithLineNum,%(SakuraScriptArgConverter(_info[0])),%(_info[1])]\n/
 			"
 		}
-		elseif ISVAR(_t)
-			"变量“%(_t)”\n/
-			值：%(GetVarValue.SakuraScript(_t))\n/
-			类型：%(GETTYPE.string((GetVarValue(_t))))\n/
-			"
 		elseif SUBSTR(_t,0,2) == 'On'
 			'这可能是一个还未定义的事件\n'
 	}
@@ -579,6 +579,28 @@ OnBIFFFailure{
 OnUpdate{
 	'\![updatebymyself]'
 }
+GetUpdateFailureReason{
+	case reference0{
+		when 'timeout'
+			'连线逾时。'
+		when 'md5 miss'
+			'MD5不一致。'
+		when '404'
+			'error404：找不到档案。'
+		when 'fileio'
+			'硬碟写入失败。'
+		when 'artificial'
+			'人为停止。'
+		when 'readonly'
+			'缓存目录唯读。'
+		when 'virusdetect'
+			'检测到病毒。'
+		when 'toomanyredirect'
+			'重定向过多。'
+		others
+			"因：%(reference0)"
+	}
+}
 OnUpdateCheckFailure{
 	if reference0 == 'readonly'
 		return
@@ -588,20 +610,10 @@ OnUpdateCheckFailure{
 	}
 	'\0\s[3]'
 	--
-	if reference0 == 'timeout'
-		'连线逾时。'
-	elseif reference0 == 'md5 miss'
-		'MD5不一致。'
-	elseif reference0 == '404'
-		'error404：找不到档案。'
-	elseif reference0 == 'fileio'
-		'硬碟写入失败。'
-	elseif reference0 == 'artificial'
+	if reference0 == 'artificial'
 		'已人为停止检查。\e'
-	elseif reference0 == 'readonly'
-		'缓存目录唯读。'
 	else
-		"因：%(reference0)"
+		GetUpdateFailureReason
 	--
 	'\w9\w9\s[0]\n/
 	检查'
@@ -614,6 +626,8 @@ OnUpdateCheckFailure{
 	--
 	if reference0 == 'timeout'
 		'\n\w9\w9\s[8]有尝试加速器么？'
+	elseif reference0 == 'virusdetect'
+		'\n\w9\w9\s[8]按理说更新档案里不可能有病毒才是\w9.\w9.\w9.'
 	--
 	'\n\n/
 	\q[◇切换更新源,MirrorChange]\n/
@@ -696,20 +710,10 @@ OnUpdateFailure{
 	if !InAutoUpdate{
 		'\0\s[3]'
 		--
-		if reference0 == 'timeout'
-			'连线逾时。'
-		elseif reference0 == 'md5 miss'
-			'MD5不一致。'
-		elseif reference0 == '404'
-			'error404：找不到档案。'
-		elseif reference0 == 'fileio'
-			'硬碟写入失败。'
-		elseif reference0 == 'artificial'
+		if reference0 == 'artificial'
 			'已人为停止更新。\e'
-		elseif reference0 == 'readonly'
-			'缓存目录唯读。'
 		else
-			"因：%(reference0)"
+			GetUpdateFailureReason
 		--
 		'\w9\w9\s[0]\n/
 		更新'
@@ -722,6 +726,8 @@ OnUpdateFailure{
 		--
 		if reference0 == 'timeout'
 			'\n\w9\w9\s[8]有尝试加速器么？'
+		elseif reference0 == 'virusdetect'
+			'\n\w9\w9\s[22]请确保使用可靠的更新源哦~'
 		--
 		'\n\n/
 		\q[◇切换更新源,MirrorChange]\n/
@@ -742,20 +748,10 @@ OnURLDropping{
 OnURLDropFailure{
 	'\0\s[3]'
 	--
-	if reference0 == 'timeout'
-		'连线逾时。'
-	elseif reference0 == 'md5 miss'
-		'MD5不一致。'
-	elseif reference0 == '404'
-		'error404：找不到档案。'
-	elseif reference0 == 'fileio'
-		'硬碟写入失败。'
-	elseif reference0 == 'artificial'
+	if reference0 == 'artificial'
 		'已人为停止下载。\e'
-	elseif reference0 == 'readonly'
-		'缓存目录唯读。'
-	elseif reference0
-		"因：%(reference0)\n"
+	else
+		GetUpdateFailureReason
 	--
 	'下载失败。'
 }
@@ -933,14 +929,12 @@ OnDisplayChange{
 	displaywidth = reference1
 	displayheight = reference2
 }
-//---- URLドロップ ----------------------------------------------------------------------
-//---- CROW でゴーストインストーラからゴーストをインストールを始めた时にも呼ばれます ----
 OnNetworkStatusChange{
 	if !ISVAR('NetworkStatus')
 		NetworkStatus = reference0
 	if !ISVAR('NetworkStatus.IP')
 		OnUpdateNetworkStatus
-	if NetworkStatus == reference0 && NetworkStatus.IP _in_ reference1
+	if NetworkStatus == reference0 && NetworkStatus.IP _in_ reference.raw[1]
 		return
 	if NetworkStatus != reference0{
 		if reference0 == 'online'{
@@ -968,8 +962,8 @@ OnNetworkStatusChange{
 			'\0\s[6]IP已变动\n'
 	}
 	--
-	if reference1 && NetworkStatus.IP != reference1
-		"当前ip：%(REPLACE(reference1,CHR(1),'以及\n'))"
+	if reference.raw[1] && NetworkStatus.IP != reference.raw[1]
+		"当前ip：%(REPLACE(reference.raw[1],CHR(1),'以及\n'))"
 	--
 	OnUpdateNetworkStatus
 	NetworkStatus = reference0
@@ -1014,6 +1008,8 @@ ClearNetworkStatusVar{
 	ERASEVAR('NetworkStatus.Hostname')
 	ERASEVAR('NetworkStatus.InternetIP')
 }
+//---- URLドロップ ----------------------------------------------------------------------
+//---- CROW でゴーストインストーラからゴーストをインストールを始めた时にも呼ばれます ----
 OnURLQuery{
 	if shortcut==1{
 		temp=reference0
@@ -1184,7 +1180,6 @@ OnSysResourceLow
 //网卡
 OnNetworkHeavy
 {
-	'\0\s[3]似乎……\w9信号不太好呢……'
 	'\0\s[8]\w9…\w9…\n\w9\w9请耐心等候呢？'
 }
 

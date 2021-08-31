@@ -100,3 +100,6 @@ VERSION_UPGRADE_4:void{
 	ERASEVAR('mon')
 	RENAME_VAR('SlowTime','CloseTime')
 }
+VERSION_UPGRADE_5:void{//building
+	RENAME_VAR('showkikka','MenuMode')
+}
