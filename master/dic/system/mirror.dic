@@ -28,13 +28,14 @@ Select.MirrorChange{
 	"\0\s[0]那么，要修改为什么呢？\n/
 	当前源：\_q%(mirror_url.for_show)\_q\n/
 	\q[◇查看源列表,OnUrlOpen,https://github.com/Taromati2/mirror-list]\n/
-	\q[◇无用,Cancel]\n/
+	\q[◇无用,Cancel,with_sakura,%(SakuraScriptArgConverter('\![close,inputbox,OnMirrorInput]'))]\n/
 	\q[◇恢复默认源,ResetMirror]\n/
 	\![open,inputbox,OnMirrorInput,-1,%(SakuraScriptArgConverter(On_homeurl))]"
 }
 Select.ResetMirror{
 	ERASEVAR('mirror_url')
-	'\0\s[0]已恢复默认源\n/
+	'\![close,inputbox,OnMirrorInput]/
+	\0\s[0]已恢复默认源\n/
 	\q[◇开始更新,OnUpdate]\n/
 	\q[◇开始更新检查,OnUpdateCheck]\n/
 	\q[◇无用,Cancel]\n/
