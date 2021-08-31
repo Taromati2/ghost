@@ -346,7 +346,7 @@ file,ghost/master/dic/aya/master/string.dicfd6775505a13a84e12604d9f2115f74fsiz
 file,ghost/master/dic/aya/master/sysex.dicd3b475e578270ef9753b32482777d52asize=1126date=2021-08-05T15:49:42
 file,ghost/master/dic/aya/master/url.dic8d0f4a3109bbcc200ed2e36cfa86eb61size=101date=2021-08-20T00:05:12
 file,ghost/master/dic/aya/_loading_order.txt95e3fdd073b158a7479fca3eb50182basize=28date=2021-07-12T20:07:04
-file,ghost/master/dic/communicate/H/H.dic90919b917b1be45abcb2016252cb9450size=250date=2021-08-16T23:04:20
+file,ghost/master/dic/communicate/H/H.dic90919b917b1be45abcb2016252cb9450size=250date=2021-08-31T22:03:10
 file,ghost/master/dic/communicate/talk/learn.dic8e3e721846bb08672fc6a6ef041991e2size=16499date=2021-08-12T16:49:56
 file,ghost/master/dic/communicate/talk/other_ghost.dic7cb41f66f5639bf95446fa6df7530999size=3591date=2021-08-12T16:49:56
 file,ghost/master/dic/communicate/talk/pseudoAI.dic6eac2aba5d266fb9d4ea1d807bdfed9esize=70444date=2021-08-25T19:50:53
@@ -359,7 +359,7 @@ file,ghost/master/dic/dev/ERBconver.dic1d1ac9e4d65027caf2faa4e38d918dc2size=40
 file,ghost/master/dic/games/boxgame.dicc409b5f2f33142c41fe55b135100f536size=5217date=2021-08-12T16:49:56
 file,ghost/master/dic/games/Gobang/Gobang.dic7d8f5d1085a85076790c501657c9ef9bsize=44719date=2021-08-12T16:49:56
 file,ghost/master/dic/games/Gobang/GobangData.dicdabd4d6991556b11465d06b14f93741dsize=33588date=2021-08-06T01:29:12
-file,ghost/master/dic/games/GoldenFlower.dic2bb68ad20a1d1f9e545df0b87efd705dsize=22698date=2021-08-06T01:29:13
+file,ghost/master/dic/games/GoldenFlower.dic3c72ba8bc752d7224102c847574ad27bsize=22703date=2021-09-01T00:48:42
 file,ghost/master/dic/games/HuaRongDao.dic60c42509d5b66cabb302de22d423951csize=17177date=2021-08-12T16:49:56
 file,ghost/master/dic/games/interactive.dic9544371d2fa5b232d762916b6423f6dcsize=23583date=2021-08-12T16:49:56
 file,ghost/master/dic/games/linkwnd.dic2bbe6f554418721dd5728909a764f3c8size=66650date=2021-08-12T16:49:56
@@ -388,14 +388,14 @@ file,ghost/master/dic/story/amusement_park/amusement_park.dicccdaa41823c356d4ff
 file,ghost/master/dic/story/amusement_park/develop.dicd39719bd782d53125b83b5d313c9b367size=27043date=2021-08-12T16:49:56
 file,ghost/master/dic/story/opera.dice4b7810fc74cd0dd2a2fa074844477c5size=30050date=2021-08-12T16:49:56
 file,ghost/master/dic/system/anti_cheat.dic16f4f172c4bf08a2601b3b2e596b5404size=253date=2021-08-05T15:49:50
-file,ghost/master/dic/system/base.dic767a5033997e7a319c9aaa66a7f392c6size=1428date=2021-08-31T21:56:36
+file,ghost/master/dic/system/base.dic767a5033997e7a319c9aaa66a7f392c6size=1428date=2021-08-31T22:02:52
 file,ghost/master/dic/system/bootend.dicde1ed7d05830dcc08e9d931049ac753asize=60357date=2021-08-24T18:07:04
 file,ghost/master/dic/system/Calendar.dicd2edc114ffa5835a6449b34f88f9daabsize=39977date=2021-08-12T16:49:56
 file,ghost/master/dic/system/changeshell.dic6da90889c0a0efceb0fc66f012a97c07size=16435date=2021-08-12T16:49:56
 file,ghost/master/dic/system/change_part.dicbc60c6305fb994764be3027ec43633fdsize=568date=2021-08-05T15:49:51
 file,ghost/master/dic/system/clock.dic5815bd2fb1aa53512ab178f8641f5503size=26440date=2021-08-25T19:50:53
 file,ghost/master/dic/system/database_edit.dic3aede4e7f5455c9333257617b21ab108size=20875date=2021-08-12T16:49:56
-file,ghost/master/dic/system/Debug.dic30fcfbf4bb682694f5fb01760536591esize=36634date=2021-08-31T21:58:52
+file,ghost/master/dic/system/Debug.dic30fcfbf4bb682694f5fb01760536591esize=36634date=2021-08-31T22:02:52
 file,ghost/master/dic/system/event_response.dic2102765c50c8f53f4ae1996d1dfed8b3size=31093date=2021-08-19T23:34:43
 file,ghost/master/dic/system/FileDrop.dic7d727677f17fa6626dbb1f8a38b8c631size=4532date=2021-08-26T10:41:48
 file,ghost/master/dic/system/hotkey.dic5f5fa8fb83ee509572dbb646f5bf8636size=8719date=2021-08-24T20:35:38
@@ -404,7 +404,7 @@ file,ghost/master/dic/system/lunar.dic990b2952c3a610122816e766a75a769csize=744
 file,ghost/master/dic/system/MAGIC.ayca9167e5456c9813ca81ec6ae8d05b205size=922date=2021-07-14T01:21:40
 file,ghost/master/dic/system/MAGIC.dic617991bbb23a229dd827369574b5e042size=294date=2021-08-06T10:45:18
 file,ghost/master/dic/system/menu.dic08fe80aa3e317e423d112d20b5744b08size=91287date=2021-08-24T20:35:38
-file,ghost/master/dic/system/mirror.dic1b0568fff3f4934e0281f7f15cb68432size=1503date=2021-08-31T21:48:33
+file,ghost/master/dic/system/mirror.dic1b0568fff3f4934e0281f7f15cb68432size=1503date=2021-08-31T22:02:52
 file,ghost/master/dic/system/password.dic1b927bdd55415a5eb0cffab67c857ea6size=2594date=2021-08-12T16:49:56
 file,ghost/master/dic/system/SQL.dic3b66933097f1beaa68a990d5c39b857asize=9348date=2021-08-05T15:49:53
 file,ghost/master/dic/system/StateGraph.dicb99e8080467d8a0e93b578091ed753d9size=1552date=2021-08-05T15:49:53
