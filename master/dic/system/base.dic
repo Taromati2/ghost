@@ -8,6 +8,8 @@ Select.Cancel{
 		'\0\s[6]好的'
 	elseif mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]哦。\n"
+	--
+	BaseSelect.base(_argv)
 }
 Select.Thanks{
 	if mode == '0'
@@ -16,6 +18,20 @@ Select.Thanks{
 		'
 	elseif mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]哦\w9，也好。\n"
+	--
+	BaseSelect.base(_argv)
+}
+BaseSelect.base{
+	case _argv[0]{
+		when 'with_sakura'
+			_argv[1]
+		when 'with_func'{
+			_argv[0]=IARRAY
+			_fname=_argv[0]
+			_argv[0]=IARRAY
+			EVAL("Select.%(_fname)(%_argv)")
+		}
+	}
 }
 Select.UnFinished{
 	UnFinished

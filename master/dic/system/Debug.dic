@@ -142,7 +142,7 @@ On_ShioriEcho.TabPress{
 		SHIORI_FW.Make_X_SSTP_PassThru('Command',RE_REPLACE(reference0,_lastname+'$',_name_after_tab))
 	}
 }
-On_ShioriEcho.GetResult:void {
+On_ShioriEcho.GetResult {
 	if ISVAR('ShioriEcho.Special'){
 		SHIORI_FW.Make_X_SSTP_PassThru('Special',ShioriEcho.Special)
 		if !ShioriEcho.Special
@@ -161,7 +161,6 @@ ClearShioriEchoVar:void {
 }
 OnCalculateVar.Cancel{
 	ShioriEcho.Special='已取消求值'
-	EVAL('Select.'+reference0)
 }
 OnCalculateVar.ToSakuraScript{
 	ShioriEcho.Special='转为SakuraScript执行'
@@ -196,7 +195,7 @@ OnCalculateVar{
 						--
 						'\q[◇好,OnCalculateVar.CharConverter,'+SakuraScriptArgConverter(reference0)+']\n/
 						\q[◇直接执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',no_convert]\n/
-						\q[◇算了,OnCalculateVar.Cancel,Cancel]\n/
+						\q[◇算了,Cancel,with_func,OnCalculateVar.Cancel]\n/
 						'
 						return
 					}
@@ -210,7 +209,7 @@ OnCalculateVar{
 					'/
 					\q[◇仍然执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',force_run]\n/
 					\q[◇改作Sakura Script執行,OnCalculateVar.ToSakuraScript,'+SakuraScriptArgConverter(reference0)+']\n/
-					\q[◇算了,OnCalculateVar.Cancel,Cancel]\n/
+					\q[◇算了,Cancel,with_func,OnCalculateVar.Cancel]\n/
 					'
 					return
 				}
@@ -224,7 +223,7 @@ OnCalculateVar{
 				'/
 				\q[◇处理執行,OnCalculateVar,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
 				\q[◇直接執行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',no_defineprocess]\n/
-				\q[◇算了,OnCalculateVar.Cancel,Cancel]\n/
+				\q[◇算了,Cancel,with_func,OnCalculateVar.Cancel]\n/
 				'
 				return
 			}
@@ -237,14 +236,14 @@ OnCalculateVar{
 			--
 			'/
 			\q[◇仍然执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',warning_func_run]\n/
-			\q[◇算了,OnCalculateVar.Cancel,'
+			\q[◇算了,'
 			--
 			if _func == 'OnFirstBoot' || _func == 'MAGICLOAD' || RE_GREP(_func,'^Reset') || _func == 'OnKikkaReset'
 				'Thanks'
 			else
 				'Cancel'
 			--
-			']/
+			',with_func,OnCalculateVar.Cancel]/
 			'
 			return
 		}
