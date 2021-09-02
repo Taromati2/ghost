@@ -1,40 +1,51 @@
+OnTesting
+{
+	_a = 12
+	_b = 1
+	_c = 13
+	_d = 1
+	_txt = ARRAYSIZE(Hnormal.Info[1])
+	_program = ''
+	_txt
+}
 //框架部分
 OnGoHmode
 {
 	if hexp == 0{
-		//我迟早要把这一坨改成一个单独的数组，这一长串也太tm碍事了
-		//总之我先初始化一下数值什么的
+		//初始化
+		//第一次h的日期
 		h.Hfirstday = (year,month,day)
-		h.快cball = 0
-		h.快clv = 0
-		h.快vball = 0
-		h.快vlv = 0
-		h.快bball = 0
-		h.快blv = 0
-		h.快mball = 0
-		h.快mlv = 0
-		h.快aball = 0
-		h.快alv = 0
-		h.恭顺lv = 0
-		h.欲情lv = 0
-		h.屈服lv = 0
-		h.V润lv = 0
-		h.A润lv = 0
-		h.耻情lv = 0
-		h.习得lv = 0
-		h.苦痛lv = 0
-		h.恐惧lv = 0
-		h.反感lv = 0
-		h.抑郁lv = 0
-		h.Hlover = 0
-		//21个0,对应21个消耗品
+		//19项，19项能力
+		//顺从，欲望，技巧，c感觉（clitoris），v感觉（vagina）
+		//a感觉（ass）b感觉（breast），m感觉（mouse），奉仕，露出
+		//m属性,s属性，百合属性，自慰技巧，精液上瘾
+		//屈服，射精快感，反感，抑郁
+		h.level = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+		//七项，七种标记
+		//苦痛标记，快乐标记，屈服标记，恐怖标记，反感标记，排卵标记，怀孕标记
+		h.mark = (0,0,0,0,0)
+		//32项，32种经验
+		//v经验，a经验，高潮经验，射精经验，精液经验
+		//喷乳经验，放尿经验，自慰经验，百合经验，男同经验
+		//露出经验，侍奉经验，口交经验，接吻经验，受虐经验
+		//紧缚经验，v扩张经验 ，a扩张经验，异常经验，摄影经验
+		//歌唱经验，助手经验 ，调教排泄经验，饮精高潮经验，尿道扩张经验
+		//药物经验，乳腺开发经验，触手经验，失神经验，兽交经验
+		//料理经验，极致高潮经验
+		h.exp = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+		//14项，对应14个宝珠
+		//c快感，v快感，a快感，b快感，m快感
+		//欲望，恭顺，屈服，习惯，羞耻
+		//痛苦，恐惧，反感，主导
+		h.ball = (0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+		//21项,对应21个消耗品
 		//润滑液，媚药，利尿剂 ，录像带，迷迭香，
 		//避孕药，镇定剂，浴盐，茉莉香，薰衣草香，
 		//麝香，檀香，扶她药，赤色糖果，青色糖果，
 		//白色糖果，黑色糖果，誓约卷轴，化蝶梦，记忆消除药，
 		//淫魔水滴。
 		h.bag = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
-		//29个零，对应道具解锁进度
+		//29项，对应道具解锁进度
 		//跳蛋，按摩棒，电动按摩器，后庭按摩棒，假阳具，
 		//眼罩，摄像机，阴蒂夹，乳头夹，口枷，
 		//鞭，针，飞机杯，地垫，拘束工具，
@@ -42,41 +53,42 @@ OnGoHmode
 		//打气筒，扩展气囊，导尿管，夜经，高潮管理，
 		//禁忌知识，触手操控术，入夜阳伞，避孕护符。
 		h.unlock = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+		//特殊属性
+		h.tellent = IARRAY
+		//结构上的参数，无实际意义
+		h.shoppricepass = ''
+		h.shoptextpass = ''
 		hexp = 1
 	}
 	{
 		//这是每次开始H都会重置的部分
+		//进入hmode的标记
 		h._hmode = 1
 		specialmode = 'h'
+		//获取基本参数，体力，气力，心情
 		h._KikkaHmpMax = GetKikkaHmpMaxCheck
 		h._kikkaHmp = h._KikkaHmpMax
 		h._kikkaHhp = kikkastm
 		h._kikkaHmood = kikkamood
-		h._快c = 0
-		h._快v = 0
-		h._快b = 0
-		h._快m = 0
-		h._快a = 0
-		h._恭顺 = 0
-		h._欲情 = 0
-		h._屈服 = 0
-		h._V润 = 0
-		h._A润 = 0
-		h._耻情 = 0
-		h._习得 = 0
-		h._苦痛 = 0
-		h._恐怖 = 0
-		h._反感 = 0
-		h._抑郁 = 0
-		h._性欲 = 0
-		h._精液欲 = 0
-		h._精液量 = 0
-		h._射精计量 = 0
-		h._体位 = '无'
-		h._正后 = '正面'
-		h._骑乘 = '否'
-		h._H氛围 = 0
-		h._射精值 = 10000
+		//17项，17个相互冲突的项目
+		//眼部，口腔，乳房，阴道，尿道
+		//阴蒂，子宫，肠道，肛门，呼吸
+		//束缚，体位，身体,性别,上一指令
+		//主角性别,阴毛
+		h._place = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+		//不会相互冲突的标签项目
+		h._markd = IARRAY
+		//19项，19个数值
+		//c快感，v快感，a快感，b快感，m快感
+		//恭顺，欲望，屈服，v润滑，a润滑
+		//羞耻，习惯，痛苦，恐怖，性欲
+		//精液欲，射精欲,反感，抑郁
+		h._status = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+		//场景的数值
+		//主角高潮值
+		h._cum = 0
+		//H氛围
+		h._atomosphere = 0
 	}
 	--
 	OnDoing
@@ -116,30 +128,29 @@ CheckDifferenceBetweenTheDayAndNow
 //动态变动的体力最大值
 GetKikkaHmpMaxCheck
 {
-	TOINT(h.苦痛lv*5 + h.恐怖lv*3 + h.屈服lv*2 + h.耻情lv*3 + h.恭顺lv + h.欲情lv - h.反感lv*5 - h.抑郁lv*10 + 20)
+	//等待数值设计
+	TOINT(100)
 }
 OnOpenstatus
 {
 	click = NULL
 }
+//小菜单
 OnDoing
 {
 	_set = reference0
-	_bagitem = ''
-	for _i = 0 ; _i < ARRAYSIZE(h.bag) ; _i++{
-		_bagitem += "%(h.bag[_i])"
-	}
 	_differenceday = CheckDifferenceBetweenTheDayAndNow(h.Hfirstday[0],h.Hfirstday[1],h.Hfirstday[2])
 	_text = "\_q\1\![set,autoscroll,disable]\![set,balloontimeout,-1]\f[color,white]%(year)年%(month)月%(day)日 已经过了%(_differenceday)天      \f[color,pink]好感度：%(intimacy) \n/
 	\f[color,red]体力：%(h._kikkaHhp) %(ColorBar(1,175,h._kikkaHhp,kikkastmmax,,'colortxt=180'))\n/
 	\f[color,0,230,255]气力：%(h._kikkaHmp) %(ColorBar(3,175,h._kikkaHmp,h._KikkaHmpMax,,'colortxt=180'))\n/
 	\f[color,yellow]心情：%(h._kikkaHmood) %(ColorBar(8,175,h._kikkaHmood,kikkamoodmax,,'colortxt=180'))\n/
-	\q[◇开始调教,OnDoing,0] \q[◇购买道具,OnDoing,1] \q[◇外出探索,OnDoing,2] \q[◇休息,OnEndHMode]\n/"
-	_text0 = "V润-LV %(h.V润lv) A润-LV %(h.A润lv)\n/
-	快C-LV%(h.快clv) 快V-LV%(h.快vlv) 快B-LV%(h.快blv) 快M-LV%(h.快mlv) 快A-LV%(h.快alv) \n/
-	恭顺-LV%(h.恭顺lv) 欲情-LV%(h.欲情lv) 反感-LV%(h.反感lv) 抑郁-LV%(h.抑郁lv)\n/
-	苦痛-LV%(h.苦痛lv) 恐怖-LV%(h.恐怖lv) 屈服-LV%(h.屈服lv) 耻情-LV%(h.耻情lv)"
-	_text1 = "剩余金钱：%(money)"
+	\q[◇开始调教,OnDoing,0] \q[◇购买道具,OnDoing,1] \q[◇外出探索,OnDoing,2] \q[◇休息,OnEndHMode]\n"
+	_text0 = "快C-LV%(h.status[0]) 快V-LV%(h.status[1]) 快B-LV%(h.status[3])  快A-LV%(h.status[2]) \n/
+	快M-LV%(h.status[4]) 恭顺-LV%(h.status[5]) 欲望-LV%(h.status[6]) 屈服-LV%(h.status[7])\n/
+	V润-LV%(h.status[8]) A润-LV%(h.status[9]) 羞耻-LV%(h.status[10]) 习得-LV%(h.status[11])\n/
+	苦痛-LV%(h.status[12]) 恐怖-LV%(h.status[13]) 反感-LV%(h.status[14]) 抑郁-LV%(h.status[15])"
+	_text1 = "剩余金钱：%(money)\n/
+	\f[color,247,99,12]\q[查看背包,OnOpenbag]"
 	--
 	case _set{
 		when 0{
@@ -150,7 +161,6 @@ OnDoing
 		}
 		when 1{
 			_text += _text1
-			_text += _bagitem
 			_text
 			--
 			OnShopMenu
@@ -162,6 +172,7 @@ OnDoing
 		}
 	}
 }
+//结束h
 OnEndHMode
 {
 	specialmode = ''
@@ -230,8 +241,8 @@ GetTheShopMenu
 				}
 			}
 		}
-	_txt = '\![set,autoscroll,disable]'
-	for _i=0; _i<ARRAYSIZE(_checkbag); _i++ {
+	_txt = '\![set,autoscroll,disable]\_q'
+	for _i=0; _i<(ARRAYSIZE(_checkbag) - ARRAYSIZE(_checkbag)/2 - 1); _i++ {
 		_x=150*(_i/10)-300*(_i/20)
 		_y=15+14*(_i%10)+138*(_i/20)
 		_txt += "/
@@ -288,78 +299,205 @@ OnHmodemenu
 	GetTheHMenu
 }
 GetTheHMenu
-{
+{	_commandarray = IARRAY
+	for _j = 0 ; _j < ARRAYSIZE(Hnormal.info);_j++{
+		if HCHECK(Hnormal.info[_j][1]) == NULL{
+			_commandarray[ARRAYSIZE(_commandarray)] = Hnormal.info[_j][HCHECK(_j)]
+		}
+	}
 	_txt = '\![set,autoscroll,disable]'
-	for _i=0; _i<ARRAYSIZE(Hnormal.info); _i++ {
-		_txt += "\_l[%(78*(_i/10)-312*(_i/40)),%((15+14*(_i%10)+130*(_i/40)))]\q[%(Hnormal.info[_i][0]),OnHnormalget,%(Hnormal.info[_i][0])]\n"
+	for _i=0; _i<ARRAYSIZE(_commandarray); _i++ {
+		_txt += "\_l[%(100*(_i/10)-300*(_i/30)),%((15+14*(_i%10)+138*(_i/30)))]\q[%(_commandarray[_i]),OnHnormalget,%(_commandarray[_i])]\n"
 	}
 	_txt
 }
-//要进行的动作，快c，快v，快b ，快m ，快a，恭顺，欲情，屈服，耻情，习得 ，苦痛，恐怖，反感，抑郁 ，性欲 ，精液欲，射精计量，体位，正后，H氛围，骑乘体位，体力，气力，心情
-//可能还要加上类似于“口占用”、“前穴占用、后穴占用、是否拘束，是否抽插”之类的参数，后续再改吧。
-//不影响菜单等级
 Hnormal.info : array
 {
-	'爱抚,TOINT(1000+(h.快clv*400)),0,TOINT(100+(h.快blv*400)),0,0,TOINT(1000+(h.恭顺lv*300)),TOINT(1000+(h.欲情lv*500)),TOINT(100+(h.屈服lv*100)),TOINT(100+(h.耻情lv*100)),0,0,0,0,0,TOINT(300+(h.好感度lv*200)),TOINT(100+(Hlover*100)),3000,无,正面,500,否,-100,-1,-1'
-	'肛门爱抚,0,0,0,0,TOINT(100+(h.快alv*400)),TOINT(1000+(h.恭顺lv*300)),TOINT(1000+(h.欲情lv*500)),TOINT(100+(h.屈服lv*300)),TOINT(500+(h.耻情lv*500)),0,0,0,0,0,TOINT(300+(h.好感度lv*200)),TOINT(100+(Hlover*100)),3000,无,正面,500,否,-100,-1,-1'
-	'胸部爱抚'
-	'接吻'
-	'手交'
-	'口交'
-	'足交'
+	'爱抚,0'
+	'舔阴,1'
+	'肛门爱抚,2'
+	'自慰,3,按摩棒自慰,两穴按摩棒自慰'
+	'对橘花口交,4'
+	'胸爱抚,5,舔乳头,胸爱抚&舔乳头'
+	'接吻,6,温柔的吻'
+	'阴部爱抚,7'
+	'手指插入,8,刺激g点,抽插按摩棒,两穴抽插'
+	'舔肛,9'
+	'对橘花手交,10'
+	'对橘花足交,11'
+	'展示阴道,12,阴道观察'
+	'展示肛门,13,肛门观察,两穴展示,两穴观察'
+	'尿道手指插入,14'
+	'击剑,15'
+	'舔足,16'
+	'称赞,17'
+	'跳蛋,18'
+	'按摩棒,19,拔出按摩棒'
+	'电动按摩器,20'
+	'肛门按摩棒,21,拔出按摩棒'
+	'阴蒂夹,22'
+	'乳头夹,23'
+	'榨乳器,24'
+	'飞机杯,25'
+	'沐浴,26'
+	'跳蛋插入,27'
+	'肛珠,28'
+	'做爱,29'
+	'肛门做爱,30'
+	'乳交,31'
+	'尿道做爱,32'
+	'手交,33'
+	'乳交,34'
+	'腿交,35'
+	'沐浴,36'
+	'足交,37'
+	'舔肛侍奉,38'
+	'摩擦性器,39'
+	'69式,40'
+	'洗面奶,41'
+	'飞机杯侍奉,42'
+	'肛门按摩棒侍奉,43'
+	'逆向做爱,44'
+	'打屁股,45'
+	'鞭打,46'
+	'针,47'
+	'眼罩,48'
+	'捆绑,49'
+	'口枷,50'
+	'灌肠,51'
+	'扩张气囊,52'
+	'尿浴,53'
+	'安静的注视,54'
+	'口奸,55'
+	'拳交,56'
+	'肛门拳交,57'
+	'两穴拳交,58'
+	'放尿,59'
+	'剃毛,60'
+	'饮精,61'
+	'穿环,62'
+	'导尿管,63'
+	'深喉口交,64'
+	'尿道插棒,65'
+	'录像,66'
+	'野外play,67'
+	'浴室play,68'
+	'新婚play,69'
+	'羞耻play,70'
+	'触手召唤,71'
+	'触手插入,72'
+	'触手插入肛门,73'
+	'触手揉阴,74'
+	'触手榨乳,75'
+	'触手蹂躏乳头,76'
+	'触手紧缚,77'
+	'触手灌肠,78'
+	'触手口奸,79'
+	'触手蹂躏阴茎,80'
+	'触手插入乳房,81'
+	'触手活塞运动,82'
+	'用脚玩弄股间,83'
 }
 
 //动作
-Hnormal.name
+HCHECK
 {
-	Hnormal.info[_argv[0]][0]
-}
-//通过名称获取id
-Hnormal.GetIDbyName{
-	_i=0
-	while Hnormal.name(_i)!=_argv[0]{
-		_i++
-	}
-	_i
-}
-//上升的数值
-Hinormal.cost
-{
-	//Hnormal.info[_argv[0]][索引]
-	//没搞清楚在干什么？
+	_in = _argv[0]
+	case _in{
+		when 0{
+			0
+			}
+		when 1{
+			0
+			}
+		when 2{
+			0
+			}
+		when 3{
+			if h._place[3] = '' && h._place[8] == ''{
+				0
+				}
+			elseif h._place[3] == '按摩棒' || h._place[8] == '按摩棒'{
+				2
+				}
+			elseif h._place[3] == '按摩棒' && h._place[8] == '按摩棒'{
+				3
+				}
+			}
+		when 4{
+			0
+			}
+		when 5{
+			if h._place[14] == '爱抚' || h._place == '肛门爱抚'{
+				2
+				}
+			elseif h._place[14] == '胸爱抚'{
+				3
+				}
+			else{
+				0
+				}
+			}
+		when 6{
+			}
+		}
+
 }
 //动作的判定
 OnHnormalget
 {
 	_i = reference0
-	_id=Hnormal.GetIDbyName(_i)
-	h._快c+=EVAL(Hnormal.info[_id][1])
-	h._快v+=EVAL(Hnormal.info[_id][2])
-	h._快b+=EVAL(Hnormal.info[_id][3])
-	h._快m+=EVAL(Hnormal.info[_id][4])
-	h._快a+=EVAL(Hnormal.info[_id][4])
-	h._恭顺+=EVAL(Hnormal.info[_id][6])
-	h._欲情+=EVAL(Hnormal.info[_id][7])
-	h._屈服+=EVAL(Hnormal.info[_id][8])
-	h._耻情+=EVAL(Hnormal.info[_id][9])
-	h._习得+=EVAL(Hnormal.info[_id][10])
-	h._苦痛+=EVAL(Hnormal.info[_id][11])
-	h._恐怖+=EVAL(Hnormal.info[_id][12])
-	h._反感+=EVAL(Hnormal.info[_id][13])
-	h._抑郁+=EVAL(Hnormal.info[_id][14])
-	h._性欲+=EVAL(Hnormal.info[_id][15])
-	h._精液欲+=EVAL(Hnormal.info[_id][16])
-	h._射精计量+=EVAL(Hnormal.info[_id][17])
-	h._体位=Hnormal.info[_id][18]
-	h._正后=Hnormal.info[_id][19]
-	h._H氛围+=EVAL(Hnormal.info[_id][20])
-	h._kikkaHhp+=EVAL(Hnormal.info[_id][22])
-	h._kikkaHmp+=EVAL(Hnormal.info[_id][23])
-	h._kikkaHmood+=EVAL(Hnormal.info[_id][24])
 	case _i{
 		when '爱抚'{
 			_text = '\b[2]橘花在你的爱抚之下,身体仿佛火烧起来一般\n'
-			_text += GetStatusText(0)
+			if h.place[15] = '女'{
+				h.exp[8] += 1
+				_text += '百合经验+1\n'
+				}
+			h._status[19] += 7
+			intimacy += 1
+			_text += '<爱抚效果>\n/
+			H氛围增加了\n/
+			好感度上升了1\n'
+			_check = h._status[0] + h.status[1] + h.status[2]
+			if _check <= 100{
+				if ASEARCH('反抗心',h.tellen) != -1{
+					_text += '橘花虽然被爱抚着，但是故意板着脸一副不配合的表情'
+					}
+				else{
+					_text += '橘花有些痒痒的扭动着身体，但是好像并没有得到什么快感。'
+					}
+				}
+			elseif _check >100 && _check <= 300{
+				_text += '在这样的爱抚下，橘花诚实的身体偶尔会因为快乐而颤抖。'
+				}
+			elseif _check >300 && _check <= 1000{
+				_text += '在双手不断的游走爱抚下，橘花的身体像被轻微电击一样微微的颤抖。'
+				}
+			elseif _check >1000 && _check <= 3000{
+				_text += '橘花明显的感觉到快乐，止不住得吐出艳丽的喘息声。'
+				}
+			elseif _check >3000 && _check <=6000{
+				_text += '橘花渴求着爱抚带来更激烈的快乐，自己将敏感部位递了过来。'
+				}
+			elseif _check >6000 && _check <=10000{
+				_text += '橘花感受着身上手指时而瘙痒时而轻捏的调皮行为，身子随着手指的每一次玩弄而颤抖不已，快感连绵不断的打击着理智，已经没力气去控制身体了。'
+				}
+			else{
+				_text += '现在手指只是随便动动就能让橘花到达敏感界限的身体，像是离水的鱼儿一样蜷缩伸展、挣扎扭动，也不知道那拼了命地挣扎是为了挣脱出这欲望的深渊，还是在积蓄刺激，好让自己一头扎进那至高的快乐之中……'
+				if ASEARCH('害羞',h.tellent) != -1{
+					_text += 橘花因为十分害羞而拼命地闭上眼，只是紧夹着的流淌出液体的双腿和嘴里止不住的吐息明明白白的展示着一切……
+					}
+				elseif ASEARCH('承认快感',h.tellent) != -1 || ASEARCH('解放自我',h.tellent) != -1 {
+					_text += 现在的橘花完全一副快乐到极点的荡漾表情，夹杂着媚意和恳求的神色扭动着身体，如果不是因为在极限快乐边缘而无力行动，怕是会自己扑过来吧……
+					}
+				elseif ASEARCH('否认快感',h.tellent) != -1 || ASEARCH('压抑自我',h.tellent) != -1 {
+					_text += 橘花拼命的摇头拼命的否认，只是手紧紧的拉住旁边的东西，诚实的身体背叛了理智，抽搐的大腿止不住的流淌着，向你展示着投降宣告。
+					}
+				else{
+					_text += '橘花完全无法停止的喘息着，扭动与颤抖着将身体贴紧在你的手上，贪图着更多的快感，汹涌传来的欲望不断冲撞着濒临破碎的理智。'
+					}
+				}
 			_text += '\n'
 			_text += '\f[color,green]\q[◇继续,OnDoing,0]'
 			_text
@@ -367,7 +505,6 @@ OnHnormalget
 		}
 		when '肛门爱抚'{
 			_text = '\b[2]口口口肛门爱抚\n/'
-			_text += GetStatusText(1)
 			_text += '\x'
 			_text
 			--
@@ -375,7 +512,6 @@ OnHnormalget
 		}
 		when '胸部爱抚'{
 			_text = '\b[2]口口口胸部爱抚\n/'
-			_text += GetStatusText(2)
 			_text += '\x'
 			_text
 			--
@@ -431,27 +567,6 @@ OnHnormalget
 			普通腔内的演出
 		}
 	}
-}
-GetStatusText{
-	_id = _argv[0]
-	"快c+%(EVAL(Hnormal.info[_id][1]))\n/
-	快v+%(EVAL(Hnormal.info[_id][2]))\n/
-	快b+%(EVAL(Hnormal.info[_id][3]))\n/
-	快m+%(EVAL(Hnormal.info[_id][4]))\n/
-	快a+%(EVAL(Hnormal.info[_id][4]))\n/
-	恭顺+%(EVAL(Hnormal.info[_id][6]))\n/
-	欲情+%(EVAL(Hnormal.info[_id][7]))\n/
-	屈服+%(EVAL(Hnormal.info[_id][8]))\n/
-	耻情+%(EVAL(Hnormal.info[_id][9]))\n/
-	习得+%(EVAL(Hnormal.info[_id][10]))\n/
-	苦痛+%(EVAL(Hnormal.info[_id][11]))\n/
-	恐怖+%(EVAL(Hnormal.info[_id][12]))\n/
-	反感+%(EVAL(Hnormal.info[_id][13]))\n/
-	抑郁+%(EVAL(Hnormal.info[_id][14]))\n/
-	性欲+%(EVAL(Hnormal.info[_id][15]))\n/
-	精液欲+%(EVAL(Hnormal.info[_id][16]))\n/
-	射精计量+%(EVAL(Hnormal.info[_id][17]))\n/
-	H氛围+%(EVAL(Hnormal.info[_id][20]))"
 }
 //探索部分
 OnExplore
