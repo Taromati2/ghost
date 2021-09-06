@@ -579,6 +579,10 @@ OnBIFFFailure{
 OnUpdate{
 	'\![updatebymyself]'
 }
+OnSilentUpdate{
+	InSilentUpdate=1
+	'\![updatebymyself]'
+}
 GetUpdateFailureReason{
 	case reference0{
 		when 'timeout'
@@ -657,7 +661,7 @@ OnUpdateCheckComplete{
 }
 //---- ネットワーク更新开始 -------------------------------------------------------------
 OnUpdateBegin{
-	if !InAutoUpdate
+	if !(InAutoUpdate || InSilentUpdate)
 		'\0\s[0]更新开始。'
 	else
 		'\![leave,onlinemode]\b[-1]'
@@ -665,7 +669,7 @@ OnUpdateBegin{
 //---- ネットワーク更新准备完了 ---------------------------------------------------------
 OnUpdateReady{
 	HasUpdate = 1
-	if !InAutoUpdate {
+	if !(InAutoUpdate || InSilentUpdate) {
 		'\0\s[6]'
 		--
 		if reference0
@@ -681,7 +685,7 @@ OnUpdateComplete{
 	if HasUpdate >= 7
 		ERASEVAR('HasUpdate')
 	--
-	if !InAutoUpdate{
+	if !(InAutoUpdate || InSilentUpdate){
 		if reference0 == 'none'{
 			if HasUpdate
 				'\0\s[3]因服务器回传虚假更新档\n\w9重新开始更新'
@@ -693,6 +697,7 @@ OnUpdateComplete{
 		}
 	}else{
 		ERASEVAR('InAutoUpdate')
+		ERASEVAR('InSilentUpdate')
 	}
 	--
 	if HasUpdate && reference0 == 'none'
@@ -704,10 +709,13 @@ OnUpdateFailure{
 	if reference0 == 'readonly'
 		return
 	elseif reference0 == '403' || reference0 == '400'{
-		"\0\s[3]因服务器回传%reference0\n\w9重新开始更新\w9\w9\![updatebymyself]"
+		if !(InAutoUpdate || InSilentUpdate)
+			"\0\s[3]因服务器回传%reference0\n\w9重新开始更新\w9\w9"
+		--
+		'\![updatebymyself]'
 		return
 	}
-	if !InAutoUpdate{
+	if !(InAutoUpdate || InSilentUpdate){
 		'\0\s[3]'
 		--
 		if reference0 == 'artificial'
@@ -736,7 +744,8 @@ OnUpdateFailure{
 		\q[◇终了,Cancel]\n/
 		'
 	}else{
-		InAutoUpdate = 0
+		ERASEVAR('InAutoUpdate')
+		ERASEVAR('InSilentUpdate')
 		'\![leave,onlinemode]\b[-1]'
 	}
 }
@@ -762,31 +771,23 @@ OnURLDropped{
 }
 //---- ネットワーク更新 ダウンロード开始 ------------------------------------------------
 OnUpdate.OnDownloadBegin{
-	if !InAutoUpdate
+	if !(InAutoUpdate || InSilentUpdate)
 		"\0\s[0]\_q“%(reference0)”下载中\_q"
-	else
-		'\![leave,onlinemode]\b[-1]'
 }
 //---- ネットワーク更新 MD5値照合开始 ---------------------------------------------------
 OnUpdate.OnMD5CompareBegin{
-	if !InAutoUpdate
+	if !(InAutoUpdate || InSilentUpdate)
 		'\0\s[0]MD5确认中。'
-	else
-		'\![leave,onlinemode]\b[-1]'
 }
 //---- ネットワーク更新 MD5値一致 -------------------------------------------------------
 OnUpdate.OnMD5CompareComplete{
-	if !InAutoUpdate
+	if !(InAutoUpdate || InSilentUpdate)
 		"\0\s[0]\_qMD5:%(reference1)\n\_q\n\n[half]一致。"
-	else
-		'\![leave,onlinemode]\b[-1]'
 }
 //---- ネットワーク更新 MD5値不一致 -----------------------------------------------------
 OnUpdate.OnMD5CompareFailure{
 	if !InAutoUpdate
 		"\0\s[0]\_q正确MD5:%(reference1)\n本地MD5:%(reference2)\_q\s[20]\n\n[half]嗯？"
-	else
-		'\![leave,onlinemode]\b[-1]'
 }
 //**** ヘッドラインセンス ***************************************************************
 //---- ヘッドラインセンス开始 -----------------------------------------------------------

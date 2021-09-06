@@ -62,7 +62,7 @@ Ondict{
 		--
 		"\_l[93,-]\q[◇第%(_p)页,Ondicselepag]    共%(_tola)页"
 		--
-		if _p<_j
+		if _p*8<_j
 			"\_l[200,-]\q[下一页>>,OndicPage,%(_p+1)]"
 		--
 		'\n[150]\![*]\q[继续搜索,dictionary]\![set,choicetimeout,36000]\n\![*]\q[返回上一层,OnOpenMenu,0]  \![*]\q[取消,Onoverdic]'
