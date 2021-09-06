@@ -140,34 +140,30 @@ OnDoing
 {
 	_set = reference0
 	_differenceday = CheckDifferenceBetweenTheDayAndNow(h.Hfirstday[0],h.Hfirstday[1],h.Hfirstday[2])
-	_text = "\_q\1\![set,autoscroll,disable]\![set,balloontimeout,-1]\f[color,white]%(year)年%(month)月%(day)日 已经过了%(_differenceday)天      \f[color,pink]好感度：%(intimacy) \n/
+	"\_q\1\![set,autoscroll,disable]\![set,balloontimeout,-1]\f[color,white]%(year)年%(month)月%(day)日 已经过了%(_differenceday)天      \f[color,pink]好感度：%(intimacy) \n/
 	\f[color,red]体力：%(h._kikkaHhp) %(ColorBar(1,175,h._kikkaHhp,kikkastmmax,,'colortxt=180'))\n/
 	\f[color,0,230,255]气力：%(h._kikkaHmp) %(ColorBar(3,175,h._kikkaHmp,h._KikkaHmpMax,,'colortxt=180'))\n/
 	\f[color,yellow]心情：%(h._kikkaHmood) %(ColorBar(8,175,h._kikkaHmood,kikkamoodmax,,'colortxt=180'))\n/
 	\q[◇开始调教,OnDoing,0] \q[◇购买道具,OnDoing,1] \q[◇外出探索,OnDoing,2] \q[◇休息,OnEndHMode]\n"
-	_text0 = "快C-LV%(h.status[0]) 快V-LV%(h.status[1]) 快B-LV%(h.status[3])  快A-LV%(h.status[2]) \n/
-	快M-LV%(h.status[4]) 恭顺-LV%(h.status[5]) 欲望-LV%(h.status[6]) 屈服-LV%(h.status[7])\n/
-	V润-LV%(h.status[8]) A润-LV%(h.status[9]) 羞耻-LV%(h.status[10]) 习得-LV%(h.status[11])\n/
-	苦痛-LV%(h.status[12]) 恐怖-LV%(h.status[13]) 反感-LV%(h.status[14]) 抑郁-LV%(h.status[15])"
-	_text1 = "剩余金钱：%(money)\n/
-	\f[color,247,99,12]\q[查看背包,OnOpenbag]"
 	--
 	case _set{
 		when 0{
-			_text += _text0
-			_text
+			"/
+			快C-LV%(h.status[0]) 快V-LV%(h.status[1]) 快B-LV%(h.status[3])  快A-LV%(h.status[2]) \n/
+			快M-LV%(h.status[4]) 恭顺-LV%(h.status[5]) 欲望-LV%(h.status[6]) 屈服-LV%(h.status[7])\n/
+			V润-LV%(h.status[8]) A润-LV%(h.status[9]) 羞耻-LV%(h.status[10]) 习得-LV%(h.status[11])\n/
+			苦痛-LV%(h.status[12]) 恐怖-LV%(h.status[13]) 反感-LV%(h.status[14]) 抑郁-LV%(h.status[15])"
 			--
 			OnHmodemenu
 		}
 		when 1{
-			_text += _text1
-			_text
+			"/
+			剩余金钱：%(money)\n/
+			\f[color,247,99,12]\q[查看背包,OnOpenbag]"
 			--
 			OnShopMenu
 		}
 		when 2{
-			_text
-			--
 			OnExplore
 		}
 	}
@@ -234,13 +230,13 @@ GetTheShopMenu
 	for _j=0; _j<ARRAYSIZE(Shop.Info); _j++ {
 		if _j < 12{
 			_checkbag[ARRAYSIZE(_checkbag)] = (Shop.Info[_j][0],Shop.Info[_j][1])
-			}
+		}
 		else{
 			if h.unlock[(_j-12)] == 0{
 				_checkbag[ARRAYSIZE(_checkbag)] = (Shop.Info[_j][0],Shop.Info[_j][1])
-				}
 			}
 		}
+	}
 	_txt = '\![set,autoscroll,disable]\_q'
 	for _i=0; _i<(ARRAYSIZE(_checkbag) - ARRAYSIZE(_checkbag)/2 - 1); _i++ {
 		_x=150*(_i/10)-300*(_i/20)
@@ -262,99 +258,80 @@ OnBuy
 	case _thing{
 		when '润滑液'{
 			h.pass = "h.bag%(CHR(91))0%(CHR(93)) += 1"
-			_text1 = '\b[1]普通的润滑液，让毫无经验者不会那么辛苦，让经验丰富者能更加游刃有余。\n'
-			_text1
+			'\b[1]普通的润滑液，让毫无经验者不会那么辛苦，让经验丰富者能更加游刃有余。\n'
 		}
 		when '媚药'{
 			h.pass = "h.bag%(CHR(91))1%(CHR(93)) += 1"
-			_text1 = '\b[1]经过多次改良的版本，即使大量多次服用也不会出现副作用，任何可能像是副作用的东西都是药效的一部分。\n'
-			_text1
+			'\b[1]经过多次改良的版本，即使大量多次服用也不会出现副作用，任何可能像是副作用的东西都是药效的一部分。\n'
 		}
 		when '利尿剂'{
 			h.pass = "h.bag%(CHR(91))2%(CHR(93)) += 1"
-			_text1 = '\b[1]需要配合大量喝水使用的利尿剂，经过试验比仅仅大量喝水更有效一点。\n'
-			_text1
+			'\b[1]需要配合大量喝水使用的利尿剂，经过试验比仅仅大量喝水更有效一点。\n'
 		}
 		when '录像带'{
 			h.pass = "h.bag%(CHR(91))3%(CHR(93)) += 1"
-			_text1 = '\b[1]更加适合于收藏与怀旧的，将时间刻印在现实的现代魔法。\n'
-			_text1
+			'\b[1]更加适合于收藏与怀旧的，将时间刻印在现实的现代魔法。\n'
 		}
 		when '迷迭香'{
 			h.pass = "h.bag%(CHR(91))4%(CHR(93)) += 1"
-			_text1 = '\b[1]代表着回忆的熏香，产生氤氲的粉色雾气的同时也可以提神醒脑。\n'
-			_text1
+			'\b[1]代表着回忆的熏香，产生氤氲的粉色雾气的同时也可以提神醒脑。\n'
 		}
 		when '避孕药'{
 			h.pass = "h.bag%(CHR(91))5%(CHR(93)) += 1"
-			_text1 = '\b[1]包装上印着“为爱护航”的奇妙药剂。\n'
-			_text1
+			'\b[1]包装上印着“为爱护航”的奇妙药剂。\n'
 		}
 		when '镇定剂'{
 			h.pass = "h.bag%(CHR(91))6%(CHR(93)) += 1"
-			_text1 = '\b[1]能够有效对抗荷尔蒙的药品，如果不想要被早早缴枪的话，也是一种有效的尝试。\n'
-			_text1
+			'\b[1]能够有效对抗荷尔蒙的药品，如果不想要被早早缴枪的话，也是一种有效的尝试。\n'
 		}
 		when '浴盐'{
 			h.pass = "h.bag%(CHR(91))7%(CHR(93)) += 1"
-			_text1 = '\b[1]添加了大量粉色花瓣和玫瑰精油的版本，配合热水很容易营造出令人热血贲张的场面。\n'
-			_text1
+			'\b[1]添加了大量粉色花瓣和玫瑰精油的版本，配合热水很容易营造出令人热血贲张的场面。\n'
 		}
 		when '茉莉香'{
 			h.pass = "h.bag%(CHR(91))8%(CHR(93)) += 1"
-			_text1 = '\b[1]象征着纯洁爱意的熏香，散发着一种圣洁庄严的味道。\n'
-			_text1
+			'\b[1]象征着纯洁爱意的熏香，散发着一种圣洁庄严的味道。\n'
 		}
 		when '薰衣草香'{
 			h.pass = "h.bag%(CHR(91))9%(CHR(93)) += 1"
-			_text1 = '\b[1]象征着心心相印的熏香，会让淡蓝色的雾气布满整个屋子，明明是在白天却会给人一种在昏暗屋子里的安心感。\n'
-			_text1
+			'\b[1]象征着心心相印的熏香，会让淡蓝色的雾气布满整个屋子，明明是在白天却会给人一种在昏暗屋子里的安心感。\n'
 		}
 		when '麝香'{
 			h.pass = "h.bag%(CHR(91))10%(CHR(93)) += 1"
-			_text1 = '\b[1]散发着本身是作为动物信息素，让人很容易失去理智的香浓气味的熏香，在这种环境下心里防线是很脆弱的哦。\n'
-			_text1
+			'\b[1]散发着本身是作为动物信息素，让人很容易失去理智的香浓气味的熏香，在这种环境下心里防线是很脆弱的哦。\n'
 		}
 		when '檀香'{
 			h.pass = "h.bag%(CHR(91))11%(CHR(93)) += 1"
-			_text1 = '\b[1]具有悠久的历史，容易让人安心静气凝神的熏香\n'
-			_text1
+			'\b[1]具有悠久的历史，容易让人安心静气凝神的熏香\n'
 		}
 		when '跳蛋'{
 			h.pass = "h.unlock%(CHR(91))0%(CHR(93)) += 1"
-			_text1 = '\b[1]形状和性能都像是一只小奶猫一样的可可爱爱的跳蛋，既可以用温柔的磨蹭来完成热身，也可以向有小脾气一样把所有功率甩在身上。\n'
-			_text1
+			'\b[1]形状和性能都像是一只小奶猫一样的可可爱爱的跳蛋，既可以用温柔的磨蹭来完成热身，也可以向有小脾气一样把所有功率甩在身上。\n'
 		}
 		when '按摩棒'{
 			h.pass = "h.unlock%(CHR(91))1%(CHR(93)) += 1"
-			_text1 = '\b[1]长度和形状都不尽相同，却都有着惊人的高功率的一整组按摩棒整齐的排列在一起，会详细的记录下使用者的成长。\n'
-			_text1
+			'\b[1]长度和形状都不尽相同，却都有着惊人的高功率的一整组按摩棒整齐的排列在一起，会详细的记录下使用者的成长。\n'
 		}
 		when '电动按摩器'{
 			h.pass = "h.unlock%(CHR(91))2%(CHR(93)) += 1"
-			_text1 = '\b[1]脱离了原本使用方式的物品，有能带动半个身体一起振动程度的能力。\n'
-			_text1
+			'\b[1]脱离了原本使用方式的物品，有能带动半个身体一起振动程度的能力。\n'
 		}
 		when '后庭按摩棒'{
 			h.pass = "h.unlock%(CHR(91))3%(CHR(93)) += 1"
-			_text1 = '\b[1]一整组带着可怕纹路和凸起的按摩棒，最粗最令人兴奋的那根看起来很不妙....\n'
-			_text1
+			'\b[1]一整组带着可怕纹路和凸起的按摩棒，最粗最令人兴奋的那根看起来很不妙....\n'
 		}
 		when '假阳具'{
 			h.pass = "h.unlock%(CHR(91))4%(CHR(93)) += 1"
-			_text1 = '\b[1]可以紧密的固定在身体上，带来征服感的饰品，也许有更多的用途？\n'
-			_text1
+			'\b[1]可以紧密的固定在身体上，带来征服感的饰品，也许有更多的用途？\n'
 		}
 		when '眼罩'{
 			h.pass = "h.unlock%(CHR(91))5%(CHR(93)) += 1"
-			_text1 = '\b[1]可以完全的遮住视野却又不会挡住脸的设计\n/
+			'\b[1]可以完全的遮住视野却又不会挡住脸的设计\n/
 			看起来好可爱\n'
-			_text1
 		}
 	}
-	_text0 = "\f[color,230,0,255]\q[◇确认,OnConfirm,%(_price)]	\f[color,yellow]\q[◇返回,OnDoing,1]"
 	--
-	_text0
+	"\f[color,230,0,255]\q[◇确认,OnConfirm,%(_price)]	\f[color,yellow]\q[◇返回,OnDoing,1]"
 }
 OnConfirm
 {
@@ -487,41 +464,41 @@ HCHECK
 	case _in{
 		when 0{
 			0
-			}
+		}
 		when 1{
 			0
-			}
+		}
 		when 2{
 			0
-			}
+		}
 		when 3{
 			if h._place[3] = '' && h._place[8] == ''{
 				0
-				}
+			}
 			elseif h._place[3] == '按摩棒插入' || h._place[8] == '肛门按摩棒插入'{
 				2
-				}
+			}
 			elseif h._place[3] == '按摩棒插入' && h._place[8] == '肛门按摩棒插入'{
 				3
-				}
 			}
+		}
 		when 4{
 			0
-			}
+		}
 		when 5{
 			if h._place[14] == '爱抚' || h._place == '肛门爱抚'{
 				2
-				}
+			}
 			elseif h._place[14] == '胸爱抚'{
 				3
-				}
+			}
 			else{
 				0
-				}
-			}
-		when 6{
 			}
 		}
+		when 6{
+		}
+	}
 
 }
 //动作的判定
@@ -530,83 +507,80 @@ OnHnormalget
 	_i = reference0
 	case _i{
 		when '爱抚'{
-			_text = '\b[2]橘花在你的爱抚之下,身体仿佛火烧起来一般\n'
+			'\b[2]橘花在你的爱抚之下,身体仿佛火烧起来一般\n'
+			--
 			if h._place[15] = '女'{
 				h.exp[8] += 1
-				_text += '百合经验+1\n'
-				}
+				'百合经验+1\n'
+			}
+			--
 			h._status[19] += 7
 			intimacy += 1
-			_text += '<爱抚效果>\n/
+			'<爱抚效果>\n/
 			H氛围增加了\n/
 			好感度上升了1\n'
-			_text += HCountinueCheck
+			--
+			HCountinueCheck
+			--
 			_check = h._status[0] + h.status[1] + h.status[2]
 			if _check <= 100{
 				if ASEARCH('反抗心',h.tellen) != -1{
-					_text += '橘花虽然被爱抚着，但是故意板着脸一副不配合的表情'
-					}
-				else{
-					_text += '橘花有些痒痒的扭动着身体，但是好像并没有得到什么快感。'
-					}
+					'橘花虽然被爱抚着，但是故意板着脸一副不配合的表情'
 				}
+				else{
+					'橘花有些痒痒的扭动着身体，但是好像并没有得到什么快感。'
+				}
+			}
 			elseif _check >100 && _check <= 300{
-				_text += '在这样的爱抚下，橘花诚实的身体偶尔会因为快乐而颤抖。'
-				}
+				'在这样的爱抚下，橘花诚实的身体偶尔会因为快乐而颤抖。'
+			}
 			elseif _check >300 && _check <= 1000{
-				_text += '在双手不断的游走爱抚下，橘花的身体像被轻微电击一样微微的颤抖。'
-				}
+				'在双手不断的游走爱抚下，橘花的身体像被轻微电击一样微微的颤抖。'
+			}
 			elseif _check >1000 && _check <= 3000{
-				_text += '橘花明显的感觉到快乐，止不住得吐出艳丽的喘息声。'
-				}
+				'橘花明显的感觉到快乐，止不住得吐出艳丽的喘息声。'
+			}
 			elseif _check >3000 && _check <=6000{
-				_text += '橘花渴求着爱抚带来更激烈的快乐，自己将敏感部位递了过来。'
-				}
+				'橘花渴求着爱抚带来更激烈的快乐，自己将敏感部位递了过来。'
+			}
 			elseif _check >6000 && _check <=10000{
-				_text += '橘花感受着身上手指时而瘙痒时而轻捏的调皮行为，身子随着手指的每一次玩弄而颤抖不已，快感连绵不断的打击着理智，已经没力气去控制身体了。'
-				}
+				'橘花感受着身上手指时而瘙痒时而轻捏的调皮行为，身子随着手指的每一次玩弄而颤抖不已，快感连绵不断的打击着理智，已经没力气去控制身体了。'
+			}
 			else{
-				_text += '现在手指只是随便动动就能让橘花到达敏感界限的身体，像是离水的鱼儿一样蜷缩伸展、挣扎扭动，也不知道那拼了命地挣扎是为了挣脱出这欲望的深渊，还是在积蓄刺激，好让自己一头扎进那至高的快乐之中……'
+				'现在手指只是随便动动就能让橘花到达敏感界限的身体，像是离水的鱼儿一样蜷缩伸展、挣扎扭动，也不知道那拼了命地挣扎是为了挣脱出这欲望的深渊，还是在积蓄刺激，好让自己一头扎进那至高的快乐之中……'
 				if ASEARCH('害羞',h.tellent) != -1{
-					_text += 橘花因为十分害羞而拼命地闭上眼，只是紧夹着的流淌出液体的双腿和嘴里止不住的吐息明明白白的展示着一切……
-					}
-				elseif ASEARCH('承认快感',h.tellent) != -1 || ASEARCH('解放自我',h.tellent) != -1 {
-					_text += 现在的橘花完全一副快乐到极点的荡漾表情，夹杂着媚意和恳求的神色扭动着身体，如果不是因为在极限快乐边缘而无力行动，怕是会自己扑过来吧……
-					}
-				elseif ASEARCH('否认快感',h.tellent) != -1 || ASEARCH('压抑自我',h.tellent) != -1 {
-					_text += 橘花拼命的摇头拼命的否认，只是手紧紧的拉住旁边的东西，诚实的身体背叛了理智，抽搐的大腿止不住的流淌着，向你展示着投降宣告。
-					}
-				else{
-					_text += '橘花完全无法停止的喘息着，扭动与颤抖着将身体贴紧在你的手上，贪图着更多的快感，汹涌传来的欲望不断冲撞着濒临破碎的理智。'
-					}
+					'橘花因为十分害羞而拼命地闭上眼，只是紧夹着的流淌出液体的双腿和嘴里止不住的吐息明明白白的展示着一切……'
 				}
-			_text += '\n'
-			_text += '\f[color,green]\q[◇继续,OnDoing,0]'
-			_text
+				elseif ASEARCH('承认快感',h.tellent) != -1 || ASEARCH('解放自我',h.tellent) != -1 {
+					'现在的橘花完全一副快乐到极点的荡漾表情，夹杂着媚意和恳求的神色扭动着身体，如果不是因为在极限快乐边缘而无力行动，怕是会自己扑过来吧……'
+				}
+				elseif ASEARCH('否认快感',h.tellent) != -1 || ASEARCH('压抑自我',h.tellent) != -1 {
+					'橘花拼命的摇头拼命的否认，只是手紧紧的拉住旁边的东西，诚实的身体背叛了理智，抽搐的大腿止不住的流淌着，向你展示着投降宣告。'
+				}
+				else{
+					'橘花完全无法停止的喘息着，扭动与颤抖着将身体贴紧在你的手上，贪图着更多的快感，汹涌传来的欲望不断冲撞着濒临破碎的理智。'
+				}
+			}
 			--
+			'\n/
+			f[color,green]\q[◇继续,OnDoing,0]'
 		}
 		when '肛门爱抚'{
-			_text = '\b[2]口口口肛门爱抚\n/'
-			_text += '\x'
-			_text
+			'\b[2]口口口肛门爱抚\n\x'
 			--
 			OnDoing
 		}
 		when '胸部爱抚'{
-			_text = '\b[2]口口口胸部爱抚\n/'
-			_text += '\x'
-			_text
+			'\b[2]口口口胸部爱抚\n\x'
 			--
 			OnDoing
 		}
 		when '眼罩'{
 			h.exp[15] += 1
 			h._place[0] = '眼罩'
-			_text = '橘花被戴上了眼罩\n/
-			紧缚经验+1'
-			_text += '\n'
-			_text += '\f[color,green]\q[◇继续,OnDoing,0]'
-			_text
+			'橘花被戴上了眼罩\n/
+			紧缚经验+1\n/
+			\f[color,green]\q[◇继续,OnDoing,0]'
 		}
 	}
 	--
@@ -661,22 +635,20 @@ OnHnormalget
 }
 HCountinueCheck
 {
-	_text = ''
 	for _i = 0 ; _i < ARRAYSIZE(h._place);_i++{
 		case h._place[_i]{
 			when '眼罩'{
 				h.exp[15] +=1
-				_text += '<眼罩装备中>\n/
+				'<眼罩装备中>\n/
 				紧缚经验+1\n'
-				}
+			}
 			when '按摩棒插入'{
 				h.exp[0] += 1
-				_text += ' <按摩棒震动抽插中>\n/
+				'<按摩棒震动抽插中>\n/
 				V经验+1\n'
 			}
 		}
 	}
-	_text
 }
 
 //探索部分
