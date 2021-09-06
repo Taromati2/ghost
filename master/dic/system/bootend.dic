@@ -85,14 +85,14 @@ UpdateFirst{
 	'\![close,inputbox,OnPasswordUpdate]'
 	--
 	ERASEVAR('HaveNotGetPassword')
-	OpenDocForRuntime('welcome')
+	OpenDocForRuntime.string('welcome')
 	--
 	'\w9\w9\0\s[6]\c/
 	现在开始初次启动时的自动更新\w9\n/
 	可能会突然重启人格\w9\n/
-	请不必担心\w9\w9'
+	请不必担心'
 	--
-	OnSilentUpdate
+	'\w9\w9\![updatebymyself]'
 }
 //**** 时间帯判定 *****************************************************************************************************
 GetTimeSlot{
