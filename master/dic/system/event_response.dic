@@ -704,7 +704,10 @@ OnUpdateFailure{
 	if reference0 == 'readonly'
 		return
 	elseif reference0 == '403' || reference0 == '400'{
-		"\0\s[3]因服务器回传%reference0\n\w9重新开始更新\w9\w9\![updatebymyself]"
+		if !InAutoUpdate
+			"\0\s[3]因服务器回传%reference0\n\w9重新开始更新\w9\w9"
+		--
+		'\![updatebymyself]'
 		return
 	}
 	if !InAutoUpdate{
@@ -736,7 +739,7 @@ OnUpdateFailure{
 		\q[◇终了,Cancel]\n/
 		'
 	}else{
-		InAutoUpdate = 0
+		ERASEVAR('InAutoUpdate')
 		'\![leave,onlinemode]\b[-1]'
 	}
 }
