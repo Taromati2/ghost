@@ -937,33 +937,35 @@ Select.ChangeUserName{
 }
 //--- 选择“橘花的生日” ----
 Select.birthdaykikka{
-	"\0\s[26]橘花的生日是%(firstboottime[1])月%(firstboottime[2])日哦，\n%(username)知道为什么是这天吗？\n[150]/
-	\q[◇知道,birthdayY]\n/
-	\q[◇不知道呢,birthdayN]"
-}
-Select.birthdayY{
-	"\0\s[5]%(username)真的知道啊,橘花好高兴喔~\n[150]\w9\_q/
-	\q[A：是橘花被制作出来的诞生日,Onbirthday_Y,1]\n/
-	\q[B：是橘花被发布出来的日子,Onbirthday_Y,2]\n/
-	\__q[Onbirthday_Y,3]C：是%(username)和橘花相遇的日子\__q\n/
-	\q[D：是橘花最初的作者决定的日子,Onbirthday_Y,4]\n"
-}
-Onbirthday_Y{
-	if reference0 == 3 {
+	if !_argv[0]{
+		"\0\s[26]橘花的生日是%(firstboottime[1])月%(firstboottime[2])日哦，\n%(username)知道为什么是这天吗？\n[150]/
+		\q[◇知道,birthdaykikka,Y]\n/
+		\q[◇不知道呢,birthdaykikka,N]"
+	}
+	elseif _argv[0]=='Y'{
+		"\0\s[5]%(username)真的知道啊,橘花好高兴喔~\w9\_q\n[150]/
+		\q[A：是橘花被制作出来的诞生日,birthdaykikka,wrong]\n/
+		\q[B：是橘花被发布出来的日子,birthdaykikka,wrong]\n/
+		\q[C：是%(username)和橘花相遇的日子,birthdaykikka,right]\n/
+		\q[D：是橘花最初的作者决定的日子,birthdaykikka,wrong]\n"
+	}
+	elseif _argv[0]=='right'{
 		intimacy+=2
-		"\0\s[5]%(username)好厉害,\w9没有忘记我们相遇的日子呢,\w9橘花好高兴喔♪\w9\n[150]%(birthdayso)"
-		"\0\s[5]原来%(username)没有忘记啊,\w9橘花好高兴喔♪\w9\n[150]%(birthdayso)"
+		"\0\s[5]%(username)好厉害,\w9没有忘记我们相遇的日子呢,\w9橘花好高兴喔♪\w9\n[150]"
+		"\0\s[5]原来%(username)没有忘记啊,\w9橘花好高兴喔♪\w9\n[150]"
 	}
-	else {
+	elseif _argv[0]=='wrong'{
 		intimacy--
-		"\0\s[1]不是这样的呢\w9\w9\n%(Select.birthdayN)"
+		"\0\s[1]不是这样的呢\w9\w9\n"
 	}
-}
-Select.birthdayN{
-	"\0\s[1]%(username)不记得了吗,\w9这天是橘花和%(username)相遇的日子哦, \w9真是的...\w9\n[150]%(birthdayso)"
-}
-birthdayso{
-	"\0\s[40]%(username)是%(firstboottime[0])年%(firstboottime[1])月%(firstboottime[2])日和橘花相遇的哦,\w9\w5\n距离现在已经%(daysfromfirstboot)天了哦,\w9\n橘花陪伴在%(username)身边的时间超过%(elapsedtimetotal/60)小时了呢,\w9\n橘花希望可以一直陪伴着%(username)呢,\w9以后也请多多指教~\x"
+	--
+	if _argv[0]=='N'||_argv[0]=='wrong'{
+		"\0\s[1]%(username)不记得了吗,\w9这天是橘花和%(username)相遇的日子哦, \w9真是的...\w9\n[150]"
+	}
+	--
+	if _argv[0]&&_argv[0]!='Y'{
+		"\0\s[40]%(username)是%(firstboottime[0])年%(firstboottime[1])月%(firstboottime[2])日和橘花相遇的哦,\w9\w5\n距离现在已经%(daysfromfirstboot)天了哦,\w9\n橘花陪伴在%(username)身边的时间超过%(elapsedtimetotal/60)小时了呢,\w9\n橘花希望可以一直陪伴着%(username)呢,\w9以后也请多多指教~\x"
+	}
 }
 //====================告白(开始)====================
 Select.LoveGo{
