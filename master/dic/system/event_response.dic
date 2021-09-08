@@ -579,6 +579,10 @@ OnBIFFFailure{
 OnUpdate{
 	'\![updatebymyself]'
 }
+OnSilentUpdate{
+	InSilentUpdate=1
+	'\![updatebymyself]'
+}
 GetUpdateFailureReason{
 	case reference0{
 		when 'timeout'
@@ -643,21 +647,30 @@ OnUpdateCheckComplete{
 		'\s[100]没有更新的必要\n'
 	}
 	else{
-		'需更新以下文件：\n\_q'
+		_size = ARRAYSIZE(reference1)
+		if _size < 100{
+			'需更新以下文件：\n\_q'
+			--
+			REPLACE(REPLACE(reference1,'\','\\'),',','\_q\w9\w9\n\_q')
+			--
+			"\_q\n共%(_size)个\n"
+		}
+		else{
+			'需要更新的文件数量大于100。\n\n'
+		}
 		--
-		REPLACE(REPLACE(reference1,'\','\\'),',','\_q\w9\w9\n\_q')
-		--
-		"\_q\n共%(ARRAYSIZE(reference1))个\n"
+		if _size < 100
+			'\q[◇开始更新,OnUpdate]\n'
 		--
 		'/
-		\q[◇开始更新,OnUpdate]\n/
+		\q[◇静默更新,OnSilentUpdate]\n/
 		\q[◇了解了,Cancel]\n/
 		'
 	}
 }
 //---- ネットワーク更新开始 -------------------------------------------------------------
 OnUpdateBegin{
-	if !InAutoUpdate
+	if !InSilentUpdate
 		'\0\s[0]更新开始。'
 	else
 		'\![leave,onlinemode]\b[-1]'
@@ -665,7 +678,7 @@ OnUpdateBegin{
 //---- ネットワーク更新准备完了 ---------------------------------------------------------
 OnUpdateReady{
 	HasUpdate = 1
-	if !InAutoUpdate {
+	if !InSilentUpdate {
 		'\0\s[6]'
 		--
 		if reference0
@@ -681,7 +694,7 @@ OnUpdateComplete{
 	if HasUpdate >= 7
 		ERASEVAR('HasUpdate')
 	--
-	if !InAutoUpdate{
+	if !InSilentUpdate{
 		if reference0 == 'none'{
 			if HasUpdate
 				'\0\s[3]因服务器回传虚假更新档\n\w9重新开始更新'
@@ -692,7 +705,7 @@ OnUpdateComplete{
 			'\0\s[0]更新结束。'
 		}
 	}else{
-		ERASEVAR('InAutoUpdate')
+		ERASEVAR('InSilentUpdate')
 	}
 	--
 	if HasUpdate && reference0 == 'none'
@@ -704,13 +717,13 @@ OnUpdateFailure{
 	if reference0 == 'readonly'
 		return
 	elseif reference0 == '403' || reference0 == '400'{
-		if !InAutoUpdate
+		if !InSilentUpdate
 			"\0\s[3]因服务器回传%reference0\n\w9重新开始更新\w9\w9"
 		--
 		'\![updatebymyself]'
 		return
 	}
-	if !InAutoUpdate{
+	if !InSilentUpdate{
 		'\0\s[3]'
 		--
 		if reference0 == 'artificial'
@@ -739,7 +752,7 @@ OnUpdateFailure{
 		\q[◇终了,Cancel]\n/
 		'
 	}else{
-		ERASEVAR('InAutoUpdate')
+		ERASEVAR('InSilentUpdate')
 		'\![leave,onlinemode]\b[-1]'
 	}
 }
@@ -765,31 +778,23 @@ OnURLDropped{
 }
 //---- ネットワーク更新 ダウンロード开始 ------------------------------------------------
 OnUpdate.OnDownloadBegin{
-	if !InAutoUpdate
+	if !InSilentUpdate
 		"\0\s[0]\_q“%(reference0)”下载中\_q"
-	else
-		'\![leave,onlinemode]\b[-1]'
 }
 //---- ネットワーク更新 MD5値照合开始 ---------------------------------------------------
 OnUpdate.OnMD5CompareBegin{
-	if !InAutoUpdate
+	if !InSilentUpdate
 		'\0\s[0]MD5确认中。'
-	else
-		'\![leave,onlinemode]\b[-1]'
 }
 //---- ネットワーク更新 MD5値一致 -------------------------------------------------------
 OnUpdate.OnMD5CompareComplete{
-	if !InAutoUpdate
+	if !InSilentUpdate
 		"\0\s[0]\_qMD5:%(reference1)\n\_q\n\n[half]一致。"
-	else
-		'\![leave,onlinemode]\b[-1]'
 }
 //---- ネットワーク更新 MD5値不一致 -----------------------------------------------------
 OnUpdate.OnMD5CompareFailure{
-	if !InAutoUpdate
+	if !InSilentUpdate
 		"\0\s[0]\_q正确MD5:%(reference1)\n本地MD5:%(reference2)\_q\s[20]\n\n[half]嗯？"
-	else
-		'\![leave,onlinemode]\b[-1]'
 }
 //**** ヘッドラインセンス ***************************************************************
 //---- ヘッドラインセンス开始 -----------------------------------------------------------

@@ -105,10 +105,8 @@ OnMinuteChange{
 			}
 		}
 		elseif minute == 13 && !InAutoUpdate && AutoUpdate == 1{//电脑不卡的情况下每时13分四分之一概率自动更新//选13是因为13不吉利:)
-			if !RAND(4) {
-				InAutoUpdate=1
-				'\![updatebymyself]'
-			}
+			if !RAND(4)
+				OnSilentUpdate
 		}
 		elseif specialmode == 'smoking' && _boottime%3600/60 > 4{//最短4
 			if !RAND(4) || _boottime%3600/60 > 20//最多20分

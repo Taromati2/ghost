@@ -85,14 +85,16 @@ UpdateFirst{
 	'\![close,inputbox,OnPasswordUpdate]'
 	--
 	ERASEVAR('HaveNotGetPassword')
-	OpenDocForRuntime.string('welcome')
+	OpenDocForRuntime('welcome')
 	--
 	'\w9\w9\0\s[6]\c/
 	现在开始初次启动时的自动更新\w9\n/
+	现有人格功能在更新期间仍然可用\w9\n/
+	其余功能在更新成功后会获得补全\w9\n/
 	可能会突然重启人格\w9\n/
-	请不必担心'
+	请不必担心\w9\w9'
 	--
-	'\w9\w9\![updatebymyself]'
+	OnSilentUpdate
 }
 //**** 时间帯判定 *****************************************************************************************************
 GetTimeSlot{
@@ -493,10 +495,8 @@ OnBoot{
 		OnAstroFoundAuto
 	*/
 	--
-	if AutoUpdate{
-		InAutoUpdate=1
-		'\![updatebymyself]'
-	}
+	if AutoUpdate
+		OnSilentUpdate
 }
 Select.Goodevening_0{
 	Goodevening = '午安'
