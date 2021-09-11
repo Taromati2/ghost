@@ -256,7 +256,10 @@ OnTextDrop{
 			"
 		}
 		elseif SUBSTR(_t,0,2) == 'On'
-			'这可能是一个还未定义的事件\n'
+			'/
+			这可能是一个还未定义的事件\n/
+			\q[◇补充定义,OnEventAdd,'+_t+']\n/
+			'
 	}
 	--
 	if mode == '0'
@@ -1180,14 +1183,12 @@ OnSysResume{
 	SHIORI_FW.PushNotifyResult(OnBoot)
 }
 //资源不足
-OnSysResourceLow
-{
+OnSysResourceLow{
 	'\0\s[0]系统资源不足。'
 	'\0\s[8]那个……系统资源不足。'
 }
 //网卡
-OnNetworkHeavy
-{
+OnNetworkHeavy{
 	'\0\s[8]\w9…\w9…\n\w9\w9请耐心等候呢？'
 }
 

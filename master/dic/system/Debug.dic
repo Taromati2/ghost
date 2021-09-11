@@ -830,3 +830,26 @@ OnErrorLog{
 	ClearErrorListVar
 	_txt
 }
+OnEventAdd{
+	"/
+	这个事件是？\n/
+	\q[◇调试用事件,OnEventAdd.ToDic,./dic/system/Debug.dic,%(reference0)]\n/
+	\q[◇环境反应事件,OnEventAdd.ToDic,./dic/system/event_response.dic,%(reference0)]\n/
+	\q[◇其他事件,OnEventAdd.ToDic,./dic/other/Other.dic,%(reference0)]\n/
+	\q[◇让我看看事件文档,OnUrlOpen,%(Get_UKADOC_ofEvent(reference0))]\n/
+	"
+}
+OnEventAdd.ToDic{
+	_file=reference0
+	_event_name=reference1
+	FCHARSET(1)
+	_linenum=GETFILELINENUM(_file)
+	if FOPEN(_file,'ab'){
+		FWRITE_WITH_LF(_file,_event_name+'{')
+		FWRITE_WITH_LF(_file,'	'+'BUGNow('+"'函数未完成'"+')')
+		FWRITE_WITH_LF(_file,'}')
+	}
+	FCLOSE(_file)
+	FCHARSET.default
+	OnOpenDicWithLineNum(_file,_linenum+2)
+}
