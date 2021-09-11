@@ -1504,6 +1504,16 @@ TWO.dicpart{
 	elseif (_t=OnPoemAnswer(reference1))!=''{
 		"%(_t)"
 	}
+	elseif '报菜名' _in_ reference1{
+		_t=reference1[1,'报菜名']
+		_t=_t[0,'道']
+		TellMealName(_t)+''
+	}
+	elseif '说菜名' _in_ reference1{
+		_t=reference1[1,'说菜名']
+		_t=_t[0,'道']
+		TellMealName(_t,1)+''
+	}
 	elseif RE_GREP(reference1,'被\S*?欺负'){
 		_name=RE_REPLACEEX(reference1,'被(\S*?)欺负','$1')
 		_name = TOLOWER(TOSIMPLIFIED(_name))

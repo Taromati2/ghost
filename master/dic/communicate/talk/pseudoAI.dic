@@ -391,7 +391,13 @@ AILoad.InfFile{//AILoad.InfFile('PSEUDO_AI_PATH\common.ai','你好')
 			}
 			else
 				coutinue
-			if _filename!='USER'{
+			if _filename=='MEAL'{
+				if _strcha _in_ _Q&&dexnum<TOINT(chatroom_num)||_Q _in_ _strcha{
+					_dexori,=_buff2[1,'|']
+					dexnum++
+				}
+			}
+			elseif _filename!='USER'{
 				if '|' _in_ _buff2
 					qnum++
 				if '<topic' _in_ _buff2{
@@ -802,6 +808,13 @@ AILoad.AIFile{
 						}
 						*/
 						_A+=_t+'|'
+						if _dexmode &&_filename=='MEAL'&&(_str _in_ _Q||_Q _in_ _str){
+							_strtxt+=_t+'\n\n'
+							_foodnum++
+							_re='\f[color,255,0,0]'+_str+'\f[color,default]'
+							_strtxt=REPLACE(_strtxt,_str,_re)
+							_Lastm=1
+						}
 					}
 					if _Atemp!=''
 						_A=_Atemp+'|'
@@ -1150,6 +1163,7 @@ AILoad.AImlInfFile{
 	}
 	else{
 		infmode=1
+		FCHARSET(1)
 		void FOPEN(_inf,'w')
 		_buff2='md5='+_md5
 		void FWRITE(_inf,_buff2)
@@ -2472,6 +2486,8 @@ WriteChatroom{
 	FCHARSET.default
 }
 RandAITalk{
+	if !QuickStartVersion
+		"%(username)好，橘花会六千多种菜的做法及四百多种常用食物的性味及功效说明哦，请输入“麻婆豆腐”或“核桃”，橘花就会告诉你答案哦"
 	if GetPhase > 3
 		"%(username)，最喜欢你了，要和%(selfname)聊什么呢？"
 	"%(username)今天也要好好加油啊"
@@ -2600,6 +2616,60 @@ WeatherState{
 		_txt+="这个，%(selfname)也不知道呢，因为不能获得天气信息。"
 	}
 	_txt
+}
+TellMealName{
+	if QuickStartVersion{
+		NeedUpdate
+		return
+	}
+	_m=100
+	if TOINT(_argv[0])>0
+		_m=_argv[0]
+	_num=TOINT(_m*1.1)
+	_meal=MealName(_num)
+	_n=ARRAYSIZE(_meal)
+	_mealname=IARRAY
+	for _i=0;_i<TOINT(_m)&&_i<_n;_i++{
+		if TOINT(_argv[1])==1{
+			_mealname[_i]=_meal[_i]
+			if (_i+1)%10==0&&TOINT(voice)
+				_mealname[_i]=_mealname[_i]+'。'
+		}
+		else
+			_mealname[_i]='\__q[OnCommunicate<英文逗号>user<英文逗号>'+_meal[_i]+']'+_meal[_i]+'\__q'
+	}
+	_txt=TOSTR(_mealname)
+	if TOINT(voice)&&TOINT(_argv[1])==1{
+		_txt=REPLACE(_txt,',','、')
+		_txt=REPLACE(_txt,'。、','。')
+	}
+	else
+		_txt=REPLACE(_txt,',','，')
+	if _txt==''
+		_txt='奇怪，好像料理的数据丢失了呢，请检查“PSEUDO_AI_PATH\\meal.ai”是否存在'
+	_txt
+}
+MealName{
+	_num=100
+	if TOINT(_argv[0])!=0
+		_num=TOINT(_argv[0])
+	_file='PSEUDO_AI_PATH\meal.inf'
+	_name=IARRAY
+	_totel=6500
+	_n=_totel/_num
+	_i=0
+	FCHARSET(1)
+	if FOPEN(_file,'r'){
+		for _buff=FREAD(_file);_buff!=-1;_buff=FREAD(_file){
+			if _i/_num==RAND(_n) && '|' _in_ _buff && '(' !_in_ _buff{
+				_name,=_buff[0,'|']
+			}
+			_i++
+		}
+	}
+	FCLOSE(_file)
+	FCHARSET.default
+	_name
 }
 HtmlToAI{//HtmlToAI('D:\CHM','meal')
 	_path=_argv[0]
@@ -2774,7 +2844,8 @@ OnSpeechRecognition.AIInfFileLoad{
 		_fileext = TOLOWER(SPLITPATH(_file)[3])
 		case _fileext{
 			when '.inf'{
-				_txt+=OnSpeechRecognition.LoadInfFileQ(_file)
+				if _filename!='MEAL'
+					_txt+=OnSpeechRecognition.LoadInfFileQ(_file)
 			}
 		}
 	}
