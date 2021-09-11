@@ -234,8 +234,8 @@ OnTextDrop{
 	else
 		'\0\s[0]'
 	--
-	if SHIORI_FW.DebugMode{
-		_t=CUTSPACE(temp)
+	_t=CUTSPACE(temp)
+	if SHIORI_FW.DebugMode && RE_GREP(_t,'^[\w.]+$'){
 		if __t=Get_AYA_Function_Info(_t)
 			'aya自带底层函数\n'+__t+'\n'
 		elseif ISVAR(_t)

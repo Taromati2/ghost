@@ -338,7 +338,7 @@ file,ghost/master/dic/aya/master/array.dic4cf845eeab150e57d407fbd11e5542d9size
 file,ghost/master/dic/aya/master/baseware.dicf38ecf1ce37a91875f9a1b0e7608058csize=760date=2021-08-12T16:49:56
 file,ghost/master/dic/aya/master/cmd.dicde539fd2aff5d4da9d018ff0bb939eccsize=59date=2021-08-05T15:49:41
 file,ghost/master/dic/aya/master/ERRORLOG.dic1fcde467e33989fb98f4b7b81f3309desize=992date=2021-08-05T15:49:41
-file,ghost/master/dic/aya/master/file.dic76499cae5754257313a252e03bdab197size=3239date=2021-08-24T18:05:41
+file,ghost/master/dic/aya/master/file.dicf584f5f7598084c47c9daddfdf3b2baasize=3399date=2021-09-11T13:19:25
 file,ghost/master/dic/aya/master/ghost.dicb692e47f15c5ad1d102c525c4f280baasize=834date=2021-08-20T00:18:49
 file,ghost/master/dic/aya/master/LOADVAR.dic62544362aac048c25f75cc62aa5e2e87size=49date=2021-08-05T15:49:41
 file,ghost/master/dic/aya/master/shiori.dic257cc4da1d98cd986fdf82320d593beesize=48342date=2021-08-19T10:00:25
@@ -349,14 +349,14 @@ file,ghost/master/dic/aya/_loading_order.txt95e3fdd073b158a7479fca3eb50182basi
 file,ghost/master/dic/communicate/H/H.dic90919b917b1be45abcb2016252cb9450size=250date=2021-09-08T11:26:06
 file,ghost/master/dic/communicate/talk/learn.dic8e3e721846bb08672fc6a6ef041991e2size=16499date=2021-08-12T16:49:56
 file,ghost/master/dic/communicate/talk/other_ghost.dic7cb41f66f5639bf95446fa6df7530999size=3591date=2021-08-12T16:49:56
-file,ghost/master/dic/communicate/talk/pseudoAI.dic6eac2aba5d266fb9d4ea1d807bdfed9esize=70444date=2021-08-25T19:50:53
-file,ghost/master/dic/communicate/talk/talk.dic3753b0962f850f9c50c629d6a493c137size=173796date=2021-08-27T12:12:51
+file,ghost/master/dic/communicate/talk/pseudoAI.dic6eac2aba5d266fb9d4ea1d807bdfed9esize=70444date=2021-09-11T08:49:15
+file,ghost/master/dic/communicate/talk/talk.dic3753b0962f850f9c50c629d6a493c137size=173796date=2021-09-11T08:49:15
 file,ghost/master/dic/communicate/talk/talk_t.dic6bb3a528fabf831ac6a2b81d6792d6fesize=8898date=2021-08-12T16:49:56
 file,ghost/master/dic/communicate/touch/touch.dic81cf5d8d00cefd37c67fa23e19a3ef7esize=13527date=2021-08-06T00:37:50
 file,ghost/master/dic/dev/ayccoder.ayc1020d798d0a02b3e740b3f534064a788size=556date=2021-08-12T16:49:56
 file,ghost/master/dic/dev/dicforma.dic529b0d2029cbfff1ac3912e8595bd1edsize=8171date=2021-08-12T16:49:56
 file,ghost/master/dic/games/boxgame.dicc409b5f2f33142c41fe55b135100f536size=5217date=2021-08-12T16:49:56
-file,ghost/master/dic/games/Gobang/Gobang.diccae8ce505c464958b08248c5ce5d9077size=44326date=2021-09-08T18:39:09
+file,ghost/master/dic/games/Gobang/Gobang.diccae8ce505c464958b08248c5ce5d9077size=44326date=2021-09-09T00:03:25
 file,ghost/master/dic/games/Gobang/GobangData.dicdabd4d6991556b11465d06b14f93741dsize=33588date=2021-08-06T01:29:12
 file,ghost/master/dic/games/GoldenFlower.dic3c72ba8bc752d7224102c847574ad27bsize=22703date=2021-09-01T01:36:15
 file,ghost/master/dic/games/HuaRongDao.dic60c42509d5b66cabb302de22d423951csize=17177date=2021-08-12T16:49:56
@@ -376,7 +376,7 @@ file,ghost/master/dic/other/happyquest.dic2eec0863445715807498ffb95eb532d4size
 file,ghost/master/dic/other/jumptest.dicc50dec84dec7a0c7884caee8a8075216size=1930date=2021-08-12T16:49:56
 file,ghost/master/dic/other/kikkastock.dic9211342a44518ca7f62677467b87dc97size=9488date=2021-08-12T16:49:56
 file,ghost/master/dic/other/Miniuse.dic9b014932ae8e19586725938662f90971size=97378date=2021-08-25T19:50:53
-file,ghost/master/dic/other/Other.dic863ec0501f24c38c650e53460d2bd99fsize=76136date=2021-08-25T19:50:53
+file,ghost/master/dic/other/Other.dic863ec0501f24c38c650e53460d2bd99fsize=76136date=2021-09-11T14:53:22
 file,ghost/master/dic/other/otherserv.dic45a0bfcdfa2c286bbfb8faeb5bb89a6fsize=134326date=2021-08-12T16:49:56
 file,ghost/master/dic/other/playwithlrc.dicf5feaedefc10066e5b73446df2ffd29dsize=40591date=2021-08-22T12:10:45
 file,ghost/master/dic/other/poem.dicc2b6944fdac2c8eba79808f5c64f4c6fsize=12590date=2021-08-12T16:49:56
@@ -394,8 +394,8 @@ file,ghost/master/dic/system/changeshell.dic6da90889c0a0efceb0fc66f012a97c07si
 file,ghost/master/dic/system/change_part.dicbc60c6305fb994764be3027ec43633fdsize=568date=2021-08-05T15:49:51
 file,ghost/master/dic/system/clock.diceb257506cc586f71ed5307d43f61f33bsize=26408date=2021-09-08T23:12:25
 file,ghost/master/dic/system/database_edit.dic3aede4e7f5455c9333257617b21ab108size=20875date=2021-08-12T16:49:56
-file,ghost/master/dic/system/Debug.dica7ecd1d6408e2ce924fd1087f8d67e8dsize=36789date=2021-09-08T11:26:06
-file,ghost/master/dic/system/event_response.dic0b1aa2032b913940c6749b2883c3c32fsize=31231date=2021-09-08T23:12:40
+file,ghost/master/dic/system/Debug.dicbc6ba57d1f67911e401e9008c390f53esize=37500date=2021-09-11T14:30:24
+file,ghost/master/dic/system/event_response.dic906613a77cd72b1470ddce8653154d99size=31308date=2021-09-11T15:00:02
 file,ghost/master/dic/system/FileDrop.dic7d727677f17fa6626dbb1f8a38b8c631size=4532date=2021-08-26T10:41:48
 file,ghost/master/dic/system/hotkey.dic5f5fa8fb83ee509572dbb646f5bf8636size=8719date=2021-08-24T20:35:38
 file,ghost/master/dic/system/internet.dic358ded9656d0acedb128f47fc33ffea2size=29885date=2021-08-12T16:49:56
