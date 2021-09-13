@@ -341,7 +341,7 @@ file,ghost/master/dic/aya/master/ERRORLOG.dic1fcde467e33989fb98f4b7b81f3309des
 file,ghost/master/dic/aya/master/file.dicf584f5f7598084c47c9daddfdf3b2baasize=3399date=2021-09-11T13:19:25
 file,ghost/master/dic/aya/master/ghost.dicb692e47f15c5ad1d102c525c4f280baasize=834date=2021-08-20T00:18:49
 file,ghost/master/dic/aya/master/LOADVAR.dic62544362aac048c25f75cc62aa5e2e87size=49date=2021-08-05T15:49:41
-file,ghost/master/dic/aya/master/shiori.dic257cc4da1d98cd986fdf82320d593beesize=48342date=2021-08-19T10:00:25
+file,ghost/master/dic/aya/master/shiori.dice8e94c538e782349a71d00fdd9ee1260size=48341date=2021-09-13T13:05:51
 file,ghost/master/dic/aya/master/string.dicfd6775505a13a84e12604d9f2115f74fsize=2425date=2021-08-05T15:49:42
 file,ghost/master/dic/aya/master/sysex.dicd3b475e578270ef9753b32482777d52asize=1126date=2021-08-05T15:49:42
 file,ghost/master/dic/aya/master/url.dic8d0f4a3109bbcc200ed2e36cfa86eb61size=101date=2021-08-20T00:05:12

@@ -560,7 +560,7 @@ SHIORI_FW.Make_X_SSTP_PassThru:void{
 	SHIORI_FW.MakeAdditionalReturn(_argv)
 }
 //------------------------------------------------------------------------------
-//関数名：SHIORI_FW.Make_X_SSTP_PassThru
+//関数名：SHIORI_FW.HasAdditionalReturn
 //機能　：ヘッダを追加されているか確認します。
 //------------------------------------------------------------------------------
 SHIORI_FW.HasAdditionalReturn{
