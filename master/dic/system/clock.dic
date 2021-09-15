@@ -74,7 +74,7 @@ OnMinuteChange{
 			_boottime = ghostuptime
 			if minute == 0{
 				if timerm == 0{
-					整点报时
+					Hourlychime
 				}
 			}
 			elseif hour == 7 && minute == 30{
@@ -319,9 +319,8 @@ OnAlarmSetConfirmed{
 	AlarmMenu
 }
 //------ 整点报时\[2008-09_by KikkaAIdb] ---------------------------------------------------------------------
-整点报时{
-	//工作列报时，已知某些情况下工作列报时会延迟，如在看着电影时
-	"\0\s[0]\![raise,OnPlayBell]%(对话框报时)?\![set,trayballoon,--timeout=0,--title=整点报时,--text=%(对话框报时)?]"
+Hourlychime{
+	"\0\s[0]\![raise,OnPlayBell]%(Hourlychime.Text)\![set,trayballoon,--timeout=0,--title=整点报时,--text=%(Hourlychime.Text)]"
 }
 OnTrayBalloonTimeout{
 	"%(username)不理橘花呢？"
@@ -338,19 +337,21 @@ OnPlayRing:void{
 	CALLSAORI('mciaudior', 'load', 'UN_SAORI_path\SOUND_PATH\Ring.mp3')
 	CALLSAORI('mciaudior', 'play')
 }
-对话框报时{
-	整点报时特殊
-	整点报时公式
+Hourlychime.Text{
+	Hourlychime.Special
+	Hourlychime.Common
 }
-整点报时公式{
-	ANY('', '', '', "%(username).", 打招呼 + '..' )
+Hourlychime.Common{
+	ANY('', '', '', "%(username).", GreetingPhrase + '..' )
 	--
 	"现在时间%(Timejud)%(hour12)点喔"
 	"现在时间已经%(hour)点了喔"
 	"已经%(Timejud)%(hour12)点了"
 	"现在%(hour)点了"
+	--
+	'？'
 }
-整点报时特殊{
+Hourlychime.Special{
 	case hour{
 		when 0{
 			'凌晨12点'
@@ -365,39 +366,44 @@ OnPlayRing:void{
 			'熬夜这种事也不要一直做哦？'
 		}
 		when 1-4{
-			"%(hour)点了.%(username)还不睡吗"
-			"%(hour)点了.%(username)不睡吗.熬夜会变笨的喔"
+			"%(hour)点了.%(username)"
+			--
+			"还不睡吗？"
+			"不睡吗.熬夜会变笨的喔？"
 		}
 		when 5-6{
-			"%(hour)点了..要去看日出吗"
-			"呼哈～唔..%(hour)点了"
+			"%(hour)点了..要去看日出吗？"
+			"呼哈～唔..%(hour)点了？"
 		}
 		when 7-8{
-			"%(hour)点了.还沒清醒的话赶快打起精神喔"
+			"%(hour)点了.还沒清醒的话赶快打起精神喔？"
 		}
 		when 9-11{
-			"%(hour)点了..据说是人一天中记忆能力最好的時段呢，要好好利用喔"
+			"%(hour)点了..据说是人一天中记忆能力最好的時段呢，要好好利用喔？"
 		}
 		when 12{
 			'12点了.午餐时间～'
 		}
 		when 13-14{
-			"下午%(hour12)点了…總是很想睡的时间呢"
+			"下午%(hour12)点了…總是很想睡的时间呢？"
 		}
 		when 15-16{
-			"%(hour)点了.要不要來杯下午茶呢"
+			"%(hour)点了.要不要來杯下午茶呢？"
 		}
 		when 17-18{
 			"下午%(hour12)点.晚餐时间～"
 		}
 		when 19-23{
-			"%(hour)点了..接下來该做什么事呢"
-			"晚上%(hour12)点了呢..%(username)在做什么呢"
-			"晚上%(hour12)点了呢..这个时间%(username)应该都在电脑前吧"
+			"%(hour)点了.."
+			"晚上%(hour12)点了呢.."
+			--
+			"接下來该做什么事呢？"
+			"%(username)在做什么呢？"
+			"这个时间%(username)应该都在电脑前吧？"
 		}
 	}
 }
-打招呼{
+GreetingPhrase{
 	if hour < 4 || hour > 16	{'晚安';}
 	elseif  hour < 10			{'早安';}
 	else						{'午安';}
