@@ -75,11 +75,15 @@ OnFirstBoot{//改动于2020 by steve02081504
 	}
 }
 GetUsernameFirst{
-	"\w9\w9\s[100]那么、\w9\n可以告诉我名字吗？\n\q[◇跳过,Cancel]\![set,balloontimeout,0]\![open,inputbox,OnGetUsernameFirst,-1,%(SakuraScriptArgConverter(username))]"
+	"\w9\w9\s[100]那么、\w9\n可以告诉我名字吗？\n/
+	\q[◇跳过,Cancel,with_sakura,%(SakuraScriptArgConverter('\![close,inputbox,OnGetUsernameFirst]'))]/
+	\![set,balloontimeout,0]\![open,inputbox,OnGetUsernameFirst,-1,%(SakuraScriptArgConverter(username))]"
 }
 GetPasswordFirst{
 	HaveNotGetPassword = 1
-	"\1\s[10]\0\s[26]那么，保险起见，能和%(username)约定一个密码么？\w9\n（此密码用于‘秘密服务’模块，若不填写默认密码将为'void'）\n\q[◇跳过,Cancel]\![set,balloontimeout,0]\![open,passwordinput,OnPasswordUpdate,-1]"
+	"\1\s[10]\0\s[26]那么，保险起见，能和%(username)约定一个密码么？\w9\n（此密码用于‘秘密服务’模块，若不填写默认密码将为'void'）\n/
+	\q[◇跳过,Cancel,with_sakura,%(SakuraScriptArgConverter('\![close,inputbox,OnPasswordUpdate]'))]/
+	\![set,balloontimeout,0]\![open,passwordinput,OnPasswordUpdate,-1]"
 }
 UpdateFirst{
 	'\![close,inputbox,OnPasswordUpdate]'
