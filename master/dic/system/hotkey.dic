@@ -120,6 +120,11 @@ OnKeyPress{
 	elseif reference0 == 'f8' {
 		OnOpenMasterMenu
 	}
+	elseif reference0 == 'f9' {
+		if SHIORI_FW.DebugMode{
+			'\![execute,createupdatedata]'
+		}
+	}
 	elseif reference0 == 'f12' {
 		OnScreenShot
 	}

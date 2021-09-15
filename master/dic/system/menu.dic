@@ -1027,8 +1027,12 @@ Select.shortcutkey{
 		F7	\_l[23]表达式执行\n/
 		'
 	--
+	'F8	\_l[23]打开master目录\n'
+	--
+	if SHIORI_FW.DebugMode
+		'F9	\_l[23]更新档构建\n'
+	--
 	'/
-	F8	\_l[23]打开master目录\n/
 	F12	\_l[23]截屏功能\n/
 	W	\_l[23]天气预报（小窗口）\n/
 	A	\_l[23]星座运势（小窗口）\n/
