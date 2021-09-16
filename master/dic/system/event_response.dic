@@ -604,6 +604,10 @@ GetUpdateFailureReason{
 			'检测到病毒。'
 		when 'toomanyredirect'
 			'重定向过多。'
+		when 'executing'
+			'已在更新中。'
+		when 'paramerror'
+			'更新参数错误。'
 		others
 			"因：%(reference0)"
 	}
@@ -724,6 +728,10 @@ OnUpdateFailure{
 			"\0\s[3]因服务器回传%reference0\n\w9重新开始更新\w9\w9"
 		--
 		'\![updatebymyself]'
+		return
+	}
+	elseif reference0 == 'executing'&&InSilentUpdate{
+		ERASEVAR('InSilentUpdate')
 		return
 	}
 	if !InSilentUpdate{
