@@ -174,8 +174,6 @@ ClearAyaTempVar {
 	ERASEVAR('SHIORI_FW.GhostName')
 	ERASEVAR('SHIORI_FW.ShellNameOld')
 	ERASEVAR('SHIORI_FW.BalloonNameOld')
-	ERASEVAR('SHIORI_FW.EmergencyMode')
-
 
 	_n = ARRAYSIZE(tempvarname)
 	for _i = 0 ; _i < _n ; _i++ {
@@ -205,6 +203,7 @@ load {
 	C_CRLF2 = C_CRLF+C_CRLF
 	C_BYTE1 = CHR(0x1)
 
+	_LastBootInEmergencyMode = SHIORI_FW.EmergencyMode
 	SHIORI_FW.EmergencyMode = GETSETTING('coreinfo.mode') == 'emergency'
 
 	REQ.COMMAND		= 'LOAD'
@@ -284,8 +283,10 @@ load {
 		SHIORI_FW.PushNotifyResult(OnEmergencyMode)
 	elseif FILEEXIST('SHIORI_PATH\SHIORI_NAME_emerg.txt'){
 		foreach _DIC_DIRS_; _dir{
-			DIRSync(_dir,'EMERGENCYMODEDICDIR'+'\'+_dir)
+			void DIRSync(_dir,'EMERGENCYMODEDICDIR'+'\'+_dir)
 		}
+		if _LastBootInEmergencyMode
+			SHIORI_FW.PushNotifyResult(OnEmergencyModeEnd)
 	}
 }
 

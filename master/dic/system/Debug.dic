@@ -818,7 +818,7 @@ OnErrorLog{
 		_txt+=',OnOpenDicWithLineNum,'+SakuraScriptArgConverter(ErrorList.filename[_i])+','+ErrorList.linenum[_i]+']'
 		if ErrorList.linenum[_i]
 			_txt+='行'+ErrorList.linenum[_i]
-		_txt+='：'+ErrorList.Info[_i]+'\n'
+		_txt+='：'+REPLACE(ErrorList.Info[_i],'\','\\')+'\n'
 		_i++
 	}
 	_txt+='\_q\n/

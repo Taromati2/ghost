@@ -475,7 +475,20 @@ OnShioriReloadedbyself{
 			'\0\s[5]重载成功，没有出错哦'
 	}
 }
+SelfRecoveryFailed{
+	ERASEVAR('InSelfRecovery')
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]\w9…\w9…\n自我修复失败，\w9啧。"
+	else
+		'\0\s[3]自我修复失败'
+	--
+	'/
+	\q[◇再试一次,OnSelfRecovery]\n/
+	\q[◇无用,Cancel]\n/
+	'
+}
 OnEmergencyMode{
+	EmergencyBoot++
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]唔…\n辞书出错了啊。"
 	else
@@ -487,7 +500,53 @@ OnEmergencyMode{
 		\q[◇无用,Cancel]'
 	}
 	else{
+		if EmergencyBoot == 1{
+			if mode == '1'
+				"\1\s[%(specialmode != 'mealtime')10]唔…\n辞书出错了啊。"
+			else
+				'\0\s[3]辞书出错了哦？'
+			--
+			OnSelfRecovery
+		}
+		elseif InSelfRecovery{
+			SelfRecoveryFailed
+		}
+		else{
+			'/
+			\q[◇自我修复,OnSelfRecovery]\n/
+			\q[◇无用,Cancel]\n/
+			'
+		}
+		--
 		OpenDocForRuntime('Emergency_mode_but_Debug_mode_not_open')
+	}
+}
+OnEmergencyModeEnd{
+	ERASEVAR('EmergencyBoot')
+	if SHIORI_FW.DebugMode{
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]嗯，\n问题修好了。"
+		else
+			'\0\s[5]辞书修好了'
+	}
+	elseif InSelfRecovery{
+		ERASEVAR('InSelfRecovery')
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]\w9…\w9…\n幸好自我修复起作用了啊。"
+		else
+			'\0\s[5]自我修复完成'
+	}
+	else{
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]\w9…\w9…\n恭喜，问题修好了。"
+		else{
+			'\0\s[8]虽然不知道发生了什么\w9.\w9.\w9.\n/
+			\s[3]不过问题修好了呢\n/
+			'
+			--
+			if specialmode != 'smoking'
+				'\1\s[10]可喜可贺可喜可贺'
+		}
 	}
 }
 OnInstallRefuse{
@@ -585,6 +644,13 @@ OnUpdate{
 OnSilentUpdate{
 	InSilentUpdate=1
 	'\![updatebymyself]'
+}
+OnSelfRecovery{
+	InSelfRecovery=1
+	InSilentUpdate=1
+	'\'+mode+'开始自我修复'
+	--
+	'\![updatebymyself,recovery]'
 }
 GetUpdateFailureReason{
 	case reference0{
@@ -764,7 +830,8 @@ OnUpdateFailure{
 		'
 	}else{
 		ERASEVAR('InSilentUpdate')
-		'\![leave,onlinemode]\b[-1]'
+		if InSelfRecovery
+			SelfRecoveryFailed
 	}
 }
 OnURLDropping{

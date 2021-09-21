@@ -341,7 +341,7 @@ file,ghost/master/dic/aya/master/ERRORLOG.dic1fcde467e33989fb98f4b7b81f3309des
 file,ghost/master/dic/aya/master/file.dicf584f5f7598084c47c9daddfdf3b2baasize=3399date=2021-09-11T13:19:25
 file,ghost/master/dic/aya/master/ghost.dicb692e47f15c5ad1d102c525c4f280baasize=834date=2021-08-20T00:18:49
 file,ghost/master/dic/aya/master/LOADVAR.dic62544362aac048c25f75cc62aa5e2e87size=49date=2021-08-05T15:49:41
-file,ghost/master/dic/aya/master/shiori.dic325bb9a4ea9ddfa0a0a9d75e13a24767size=48335date=2021-09-19T18:41:51
+file,ghost/master/dic/aya/master/shiori.dicc8a2959eeed58d7dd4037fb48649eb5csize=48434date=2021-09-22T00:32:43
 file,ghost/master/dic/aya/master/string.dicfd6775505a13a84e12604d9f2115f74fsize=2425date=2021-08-05T15:49:42
 file,ghost/master/dic/aya/master/sysex.dicd3b475e578270ef9753b32482777d52asize=1126date=2021-08-05T15:49:42
 file,ghost/master/dic/aya/master/url.dic8d0f4a3109bbcc200ed2e36cfa86eb61size=101date=2021-08-20T00:05:12
@@ -394,8 +394,8 @@ file,ghost/master/dic/system/changeshell.dic6da90889c0a0efceb0fc66f012a97c07si
 file,ghost/master/dic/system/change_part.dicbc60c6305fb994764be3027ec43633fdsize=568date=2021-08-05T15:49:51
 file,ghost/master/dic/system/clock.dicc51dab625c4ff487ee6e1802c41d9e3csize=26351date=2021-09-15T23:40:41
 file,ghost/master/dic/system/database_edit.dic3aede4e7f5455c9333257617b21ab108size=20875date=2021-08-12T16:49:56
-file,ghost/master/dic/system/Debug.dicbc6ba57d1f67911e401e9008c390f53esize=37500date=2021-09-11T14:30:24
-file,ghost/master/dic/system/event_response.dicf9d80350f9aabd2f56a107b1e4455f1csize=31490date=2021-09-16T18:30:14
+file,ghost/master/dic/system/Debug.dic2c7784bf63d76644d3c6ef2e2fe09215size=37518date=2021-09-22T00:28:53
+file,ghost/master/dic/system/event_response.dic28f1a0f1c2c181390d798456e5a2983fsize=32929date=2021-09-22T07:59:06
 file,ghost/master/dic/system/FileDrop.dic7d727677f17fa6626dbb1f8a38b8c631size=4532date=2021-08-26T10:41:48
 file,ghost/master/dic/system/hotkey.dic4dcb9b5847e27e1aee93e9420b21df2bsize=8815date=2021-09-15T23:40:41
 file,ghost/master/dic/system/internet.dic358ded9656d0acedb128f47fc33ffea2size=29885date=2021-08-12T16:49:56
