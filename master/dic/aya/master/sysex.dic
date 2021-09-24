@@ -9,7 +9,9 @@ OnChoiceSelectEx{
 	}
 	if ISFUNC("Select.%(reference1)")
 		EVAL("Select.%(reference1)(%_arglist)")
-	elseif ISFUNC("%(reference1)")
+	elseif ISFUNC('Select.'+reference1[0,'('])
+		EVAL('Select.'+reference1)
+	elseif ISFUNC(reference1[0,'('])
 		do_nothing
 	else
 		BUGNow("事件“%(reference1)”未定义")
