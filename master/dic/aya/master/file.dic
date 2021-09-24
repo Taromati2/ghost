@@ -147,6 +147,18 @@ ISFILEEND{
 ISNOTFILEEND{
 	FTELL(_argv[0])!=FSIZE(_argv[0])
 }
+GETFILELINENUM{
+	_file=_argv[0]
+	_linenum=0
+	if FOPEN(_file,'rb'){
+		while ISNOTFILEEND(_file){
+			_linenum++
+			FREAD(_file)
+		}
+	}
+	FCLOSE(_file)
+	_linenum
+}
 //mklink
 MAKEFILELINK{//MAKEFILELINK('a.txt','aya.txt')
 	RUNCMD('mklink /h "'+_argv[0]+'" "'+_argv[1]+'"')

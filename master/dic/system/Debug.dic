@@ -1,4 +1,7 @@
 //by steve02081504
+OnAnchorSelect{
+	BUGNow("AnchorSelect\_q“%(REPLACE(reference0,'\','\\'))”\_q被触发了\w9\w9\n但是目前Taromati并不支持任何AnchorSelect")
+}
 OnReloadShiori{
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]唔"
@@ -815,7 +818,7 @@ OnErrorLog{
 		_txt+=',OnOpenDicWithLineNum,'+SakuraScriptArgConverter(ErrorList.filename[_i])+','+ErrorList.linenum[_i]+']'
 		if ErrorList.linenum[_i]
 			_txt+='行'+ErrorList.linenum[_i]
-		_txt+='：'+ErrorList.Info[_i]+'\n'
+		_txt+='：'+REPLACE(ErrorList.Info[_i],'\','\\')+'\n'
 		_i++
 	}
 	_txt+='\_q\n/
@@ -826,4 +829,27 @@ OnErrorLog{
 		_txt='没有错误记录'
 	ClearErrorListVar
 	_txt
+}
+OnEventAdd{
+	"/
+	这个事件是？\n/
+	\q[◇调试用事件,OnEventAdd.ToDic,./dic/system/Debug.dic,%(reference0)]\n/
+	\q[◇环境反应事件,OnEventAdd.ToDic,./dic/system/event_response.dic,%(reference0)]\n/
+	\q[◇其他事件,OnEventAdd.ToDic,./dic/other/Other.dic,%(reference0)]\n/
+	\q[◇让我看看事件文档,OnUrlOpen,%(Get_UKADOC_ofEvent(reference0))]\n/
+	"
+}
+OnEventAdd.ToDic{
+	_file=reference0
+	_event_name=reference1
+	FCHARSET(1)
+	_linenum=GETFILELINENUM(_file)
+	if FOPEN(_file,'ab'){
+		FWRITE_WITH_LF(_file,_event_name+'{')
+		FWRITE_WITH_LF(_file,'	'+'BUGNow('+"'函数未完成'"+')')
+		FWRITE_WITH_LF(_file,'}')
+	}
+	FCLOSE(_file)
+	FCHARSET.default
+	OnOpenDicWithLineNum(_file,_linenum+2)
 }

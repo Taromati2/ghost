@@ -234,8 +234,8 @@ OnTextDrop{
 	else
 		'\0\s[0]'
 	--
-	if SHIORI_FW.DebugMode{
-		_t=CUTSPACE(temp)
+	_t=CUTSPACE(temp)
+	if SHIORI_FW.DebugMode && RE_GREP(_t,'^[\w.]+$'){
 		if __t=Get_AYA_Function_Info(_t)
 			'aya自带底层函数\n'+__t+'\n'
 		elseif ISVAR(_t)
@@ -256,7 +256,10 @@ OnTextDrop{
 			"
 		}
 		elseif SUBSTR(_t,0,2) == 'On'
-			'这可能是一个还未定义的事件\n'
+			'/
+			这可能是一个还未定义的事件\n/
+			\q[◇补充定义,OnEventAdd,'+_t+']\n/
+			'
 	}
 	--
 	if mode == '0'
@@ -472,7 +475,20 @@ OnShioriReloadedbyself{
 			'\0\s[5]重载成功，没有出错哦'
 	}
 }
+SelfRecoveryFailed{
+	ERASEVAR('InSelfRecovery')
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]\w9…\w9…\n自我修复失败，\w9啧。"
+	else
+		'\0\s[3]自我修复失败'
+	--
+	'/
+	\q[◇再试一次,OnSelfRecovery]\n/
+	\q[◇无用,Cancel]\n/
+	'
+}
 OnEmergencyMode{
+	EmergencyBoot++
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]唔…\n辞书出错了啊。"
 	else
@@ -484,7 +500,53 @@ OnEmergencyMode{
 		\q[◇无用,Cancel]'
 	}
 	else{
+		if EmergencyBoot == 1{
+			if mode == '1'
+				"\1\s[%(specialmode != 'mealtime')10]唔…\n辞书出错了啊。"
+			else
+				'\0\s[3]辞书出错了哦？'
+			--
+			OnSelfRecovery
+		}
+		elseif InSelfRecovery{
+			SelfRecoveryFailed
+		}
+		else{
+			'/
+			\q[◇自我修复,OnSelfRecovery]\n/
+			\q[◇无用,Cancel]\n/
+			'
+		}
+		--
 		OpenDocForRuntime('Emergency_mode_but_Debug_mode_not_open')
+	}
+}
+OnEmergencyModeEnd{
+	ERASEVAR('EmergencyBoot')
+	if SHIORI_FW.DebugMode{
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]嗯，\n问题修好了。"
+		else
+			'\0\s[5]辞书修好了'
+	}
+	elseif InSelfRecovery{
+		ERASEVAR('InSelfRecovery')
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]\w9…\w9…\n幸好自我修复起作用了啊。"
+		else
+			'\0\s[5]自我修复完成'
+	}
+	else{
+		if mode == '1'
+			"\1\s[%(specialmode != 'mealtime')10]\w9…\w9…\n恭喜，问题修好了。"
+		else{
+			'\0\s[8]虽然不知道发生了什么\w9.\w9.\w9.\n/
+			\s[3]不过问题修好了呢\n/
+			'
+			--
+			if specialmode != 'smoking'
+				'\1\s[10]可喜可贺可喜可贺'
+		}
 	}
 }
 OnInstallRefuse{
@@ -579,6 +641,17 @@ OnBIFFFailure{
 OnUpdate{
 	'\![updatebymyself]'
 }
+OnSilentUpdate{
+	InSilentUpdate=1
+	'\![updatebymyself]'
+}
+OnSelfRecovery{
+	InSelfRecovery=1
+	InSilentUpdate=1
+	'\'+mode+'开始自我修复'
+	--
+	'\![updatebymyself,recovery]'
+}
 GetUpdateFailureReason{
 	case reference0{
 		when 'timeout'
@@ -597,6 +670,10 @@ GetUpdateFailureReason{
 			'检测到病毒。'
 		when 'toomanyredirect'
 			'重定向过多。'
+		when 'executing'
+			'已在更新中。'
+		when 'paramerror'
+			'更新参数错误。'
 		others
 			"因：%(reference0)"
 	}
@@ -643,21 +720,30 @@ OnUpdateCheckComplete{
 		'\s[100]没有更新的必要\n'
 	}
 	else{
-		'需更新以下文件：\n\_q'
+		_size = ARRAYSIZE(reference1)
+		if _size < 100{
+			'需更新以下文件：\n\_q'
+			--
+			REPLACE(REPLACE(reference1,'\','\\'),',','\_q\w9\w9\n\_q')
+			--
+			"\_q\n共%(_size)个\n"
+		}
+		else{
+			'需要更新的文件数量大于100。\n\n'
+		}
 		--
-		REPLACE(REPLACE(reference1,'\','\\'),',','\_q\w9\w9\n\_q')
-		--
-		"\_q\n共%(ARRAYSIZE(reference1))个\n"
+		if _size < 100
+			'\q[◇开始更新,OnUpdate]\n'
 		--
 		'/
-		\q[◇开始更新,OnUpdate]\n/
+		\q[◇静默更新,OnSilentUpdate]\n/
 		\q[◇了解了,Cancel]\n/
 		'
 	}
 }
 //---- ネットワーク更新开始 -------------------------------------------------------------
 OnUpdateBegin{
-	if !InAutoUpdate
+	if !InSilentUpdate
 		'\0\s[0]更新开始。'
 	else
 		'\![leave,onlinemode]\b[-1]'
@@ -665,7 +751,7 @@ OnUpdateBegin{
 //---- ネットワーク更新准备完了 ---------------------------------------------------------
 OnUpdateReady{
 	HasUpdate = 1
-	if !InAutoUpdate {
+	if !InSilentUpdate {
 		'\0\s[6]'
 		--
 		if reference0
@@ -681,7 +767,7 @@ OnUpdateComplete{
 	if HasUpdate >= 7
 		ERASEVAR('HasUpdate')
 	--
-	if !InAutoUpdate{
+	if !InSilentUpdate{
 		if reference0 == 'none'{
 			if HasUpdate
 				'\0\s[3]因服务器回传虚假更新档\n\w9重新开始更新'
@@ -692,7 +778,7 @@ OnUpdateComplete{
 			'\0\s[0]更新结束。'
 		}
 	}else{
-		ERASEVAR('InAutoUpdate')
+		ERASEVAR('InSilentUpdate')
 	}
 	--
 	if HasUpdate && reference0 == 'none'
@@ -704,13 +790,17 @@ OnUpdateFailure{
 	if reference0 == 'readonly'
 		return
 	elseif reference0 == '403' || reference0 == '400'{
-		if !InAutoUpdate
+		if !InSilentUpdate
 			"\0\s[3]因服务器回传%reference0\n\w9重新开始更新\w9\w9"
 		--
 		'\![updatebymyself]'
 		return
 	}
-	if !InAutoUpdate{
+	elseif reference0 == 'executing'&&InSilentUpdate{
+		ERASEVAR('InSilentUpdate')
+		return
+	}
+	if !InSilentUpdate{
 		'\0\s[3]'
 		--
 		if reference0 == 'artificial'
@@ -739,8 +829,9 @@ OnUpdateFailure{
 		\q[◇终了,Cancel]\n/
 		'
 	}else{
-		ERASEVAR('InAutoUpdate')
-		'\![leave,onlinemode]\b[-1]'
+		ERASEVAR('InSilentUpdate')
+		if InSelfRecovery
+			SelfRecoveryFailed
 	}
 }
 OnURLDropping{
@@ -765,31 +856,23 @@ OnURLDropped{
 }
 //---- ネットワーク更新 ダウンロード开始 ------------------------------------------------
 OnUpdate.OnDownloadBegin{
-	if !InAutoUpdate
+	if !InSilentUpdate
 		"\0\s[0]\_q“%(reference0)”下载中\_q"
-	else
-		'\![leave,onlinemode]\b[-1]'
 }
 //---- ネットワーク更新 MD5値照合开始 ---------------------------------------------------
 OnUpdate.OnMD5CompareBegin{
-	if !InAutoUpdate
+	if !InSilentUpdate
 		'\0\s[0]MD5确认中。'
-	else
-		'\![leave,onlinemode]\b[-1]'
 }
 //---- ネットワーク更新 MD5値一致 -------------------------------------------------------
 OnUpdate.OnMD5CompareComplete{
-	if !InAutoUpdate
+	if !InSilentUpdate
 		"\0\s[0]\_qMD5:%(reference1)\n\_q\n\n[half]一致。"
-	else
-		'\![leave,onlinemode]\b[-1]'
 }
 //---- ネットワーク更新 MD5値不一致 -----------------------------------------------------
 OnUpdate.OnMD5CompareFailure{
-	if !InAutoUpdate
+	if !InSilentUpdate
 		"\0\s[0]\_q正确MD5:%(reference1)\n本地MD5:%(reference2)\_q\s[20]\n\n[half]嗯？"
-	else
-		'\![leave,onlinemode]\b[-1]'
 }
 //**** ヘッドラインセンス ***************************************************************
 //---- ヘッドラインセンス开始 -----------------------------------------------------------
@@ -1175,14 +1258,12 @@ OnSysResume{
 	SHIORI_FW.PushNotifyResult(OnBoot)
 }
 //资源不足
-OnSysResourceLow
-{
+OnSysResourceLow{
 	'\0\s[0]系统资源不足。'
 	'\0\s[8]那个……系统资源不足。'
 }
 //网卡
-OnNetworkHeavy
-{
+OnNetworkHeavy{
 	'\0\s[8]\w9…\w9…\n\w9\w9请耐心等候呢？'
 }
 
