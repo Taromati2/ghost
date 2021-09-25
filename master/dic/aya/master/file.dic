@@ -1,5 +1,10 @@
 //by steve02081504
-
+FNAME.addpathbefore{
+	if SUBSTR(_argv[0],0,1)=='/' || ':' _in_ _argv[0]
+		_argv[0]
+	else
+		_argv[1]+_argv[0]
+}
 GETCHARSETINDEX{
 	case TOLOWER(_argv[0]){
 		when 'shift_jis'
