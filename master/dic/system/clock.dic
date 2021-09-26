@@ -70,7 +70,7 @@ OnMinuteChange{
 	if REQ.COMMAND!='GET'
 		return
 	if mode == '0'{
-		if specialmode == ''{
+		if !specialmode{
 			_boottime = ghostuptime
 			if minute == 0{
 				if timerm == 0{
@@ -103,10 +103,10 @@ OnMinuteChange{
 			elseif (memoryload>=80&&TOINT(memorybusyrm[1])==0||memoryload>=TOINT(memorybusyrm[1])&&TOINT(memorybusyrm[1])!=0)&&TOINT(memorybusyrm[0])==0{
 				'\0\v\s[33]电脑卡死了，\w9\w9少开点窗口。\n\q[◇打开任务管理器,OnOpenTaskmgr]\![set,trayballoon,--icon=info,--timeout=10,--title=任务繁忙,--text=电脑卡死了，少开点窗口。]'
 			}
-		}
-		elseif minute == 13 && !InAutoUpdate && AutoUpdate == 1{//电脑不卡的情况下每时13分四分之一概率自动更新//选13是因为13不吉利:)
-			if !RAND(4)
-				OnSilentUpdate
+			elseif minute == 13 && !InUpdate && AutoUpdate == 1{//电脑不卡的情况下每时13分四分之一概率自动更新//选13是因为13不吉利:)
+				if !RAND(4)
+					OnSilentUpdate
+			}
 		}
 		elseif specialmode == 'smoking' && _boottime%3600/60 > 4{//最短4
 			if !RAND(4) || _boottime%3600/60 > 20//最多20分

@@ -743,6 +743,7 @@ OnUpdateCheckComplete{
 }
 //---- ネットワーク更新开始 -------------------------------------------------------------
 OnUpdateBegin{
+	InUpdate=1
 	if !InSilentUpdate
 		'\0\s[0]更新开始。'
 	else
@@ -762,6 +763,7 @@ OnUpdateReady{
 		'\![leave,onlinemode]\b[-1]'
 }
 OnUpdateComplete{
+	ERASEVAR('InUpdate')
 	if HasUpdate
 		HasUpdate++
 	if HasUpdate >= 7
@@ -787,6 +789,7 @@ OnUpdateComplete{
 		ERASEVAR('HasUpdate')
 }
 OnUpdateFailure{
+	ERASEVAR('InUpdate')
 	if reference0 == 'readonly'
 		return
 	elseif reference0 == '403' || reference0 == '400'{
