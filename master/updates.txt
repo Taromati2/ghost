@@ -430,7 +430,7 @@ file,ghost/master/pseudoAI/physics.ai51288564a9922cb3e7f07da54469819esize=1838
 file,ghost/master/pseudoAI/userteach.ai.base68b329da9893e34099c7d8ad5cb9c940size=1date=2021-06-10T19:41:53
 file,ghost/master/pseudoAI/wiki.ai5d885d8618f5ca453d3a5802a891cf4esize=445date=2021-07-10T16:49:04
 file,ghost/master/pseudoAI/worry.ai5e214cfdb8502f8c83ffad82d6f02ec5size=96708date=2021-07-10T16:49:04
-file,ghost/master/readme.txt4c5c3243df57c343e47764e471afc899size=2925date=2021-03-10T10:27:58
+file,ghost/master/readme.txt4c5c3243df57c343e47764e471afc899size=2925date=2021-09-26T21:07:54
 file,ghost/master/saori/advanced_sysinfo.dllbc90ec8f5ec4e227f1882e24c6884c51size=66560date=2021-03-21T14:33:28
 file,ghost/master/saori/AnalogClock.dll16ca4f71bcc909510cb69e002e78f3d2size=69632date=2021-03-21T14:33:28
 file,ghost/master/saori/AnalogClock2_0/7c_face1.png866c2a77b64d080def1d6c6e19521047size=33765date=2021-03-12T13:19:29
@@ -441,7 +441,7 @@ file,ghost/master/saori/AnalogClock2_0/7c_second1.png66274db4b8b54b64719d32f2b6
 file,ghost/master/saori/AnalogClock2_0/AnalogClock.dll8be94dd3f54f9432508737b496490784size=48128date=2021-03-21T14:33:28
 file,ghost/master/saori/AnalogClock2_0/clock.txt938bad36cb0c6d503b26d77fa66f7dabsize=493date=2021-03-06T15:11:22
 file,ghost/master/saori/AnalogClock2_0/rbg.png32c3e40ac35ff4634f29ad7964f54864size=18108date=2021-03-21T14:33:28
-file,ghost/master/saori/ayc_coder.dll04fdd61ceaa8c878c4d527a956bd9a0fsize=58880date=2021-09-25T09:08:54
+file,ghost/master/saori/ayc_coder.dll933b62f13271740660a8dc22259d7975size=58880date=2021-09-26T19:54:00
 file,ghost/master/saori/ChConverter.dlldef3363a63b685967bb1459c4e6b3208size=33792date=2021-02-17T23:01:42
 file,ghost/master/saori/cmdrunner.dll76309282862201a6ad04cfbe752e3045size=45568date=2021-07-11T23:37:48
 file,ghost/master/saori/cpuid.dll552326006fa486ec8dd5d339caaa1cfasize=81920date=2021-03-21T14:33:28
