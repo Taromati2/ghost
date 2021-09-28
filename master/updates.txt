@@ -328,7 +328,7 @@ file,ghost/master/data/weather/XiaoYu.png34c9e1fec47840a5ebdeab4839af6392size=
 file,ghost/master/data/weather/Yin.png69817e1105e92832041f3644741d3be0size=735date=2021-03-21T14:33:28
 file,ghost/master/data/weather/ZhongXue.png7bf25e51f7e88b30da92215221c787c9size=1214date=2021-03-21T14:33:28
 file,ghost/master/data/weather/ZhongYu.png9a3f8e927f57d8973cd928fbdc31c0adsize=943date=2021-03-21T14:33:28
-file,ghost/master/descript.txt0018a1323e355ca71b09b6b4a02f25d1size=503date=2021-09-24T11:11:10
+file,ghost/master/descript.txtb318a8f44d3eddd0a154ab0feadff811size=501date=2021-09-28T20:44:05
 file,ghost/master/dic/aya/base/compatible.dic8676202368501602590037f39f0840cfsize=3668date=2021-08-05T15:49:41
 file,ghost/master/dic/aya/base/config.dicb4bcaf63d09eecf3236049c9f2a0d0a8size=2651date=2021-08-05T15:49:41
 file,ghost/master/dic/aya/base/other_defs.dicce2d16ee8f0f59140c8e8985856d4472size=87date=2021-08-19T13:49:32
@@ -488,6 +488,7 @@ file,ghost/master/sound/se_gost.mp32b00c37e2abae08d511febf744fc4e82size=471035
 file,ghost/master/sound/shot.wav5e250057d71288d6ee0c7352ca885c5csize=55926date=2021-02-17T23:01:42
 file,ghost/master/sound/tea.mp333dc524916fdceeb55459374eca427a9size=80296date=2021-07-17T21:51:07
 file,ghost/master/sound/tinkle.wavf115303b37f10d103980434f5662f405size=123650date=2021-02-17T23:01:42
+file,ghost/master/terms.txtd4a07a057c46326527cb2f0a143ae41bsize=2111date=2021-09-28T20:32:42
 file,ghost/master/thumbnail.pngec04fc0441f18bd5f5e14b7826ce2254size=9014date=2021-05-23T10:40:45
 file,shell/accessory(FREEDOM_WARS)/background.png4f861ccd01357bf606808e9c60e282cdsize=43998date=2021-08-05T01:44:12
 file,shell/accessory(FREEDOM_WARS)/descript.txta878c767f816436279876f3fa7d140afsize=1218date=2021-03-02T19:29:15
