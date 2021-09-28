@@ -61,6 +61,15 @@ GetVarValue.string{
 GetVarValue.SakuraScript{
 	REPLACE(GetVarValue.string(_argv[0]),'\','\\')
 }
+GetGlobalDefine{
+	PROCESSGLOBALDEFINE(_argv[0])
+}
+GetGlobalDefine.SakuraScript{
+	REPLACE(GetGlobalDefine(_argv[0]),'\','\\')
+}
+GetGlobalDefine.SakuraArg{
+	SakuraScriptArgConverter(GetGlobalDefine(_argv[0]))
+}
 
 OnSakuraScript{
 	if _argv[0]
@@ -203,7 +212,15 @@ OnCalculateVar{
 						return
 					}
 				}
-				if !ISVAR(_var) && !ISFUNC(_func) && GETTYPE(TOAUTOEX(_var)) == 3{
+				if !ISEVALUABLE(reference0){
+					if mode == '1'
+						"\1\s[%(specialmode != 'mealtime')10]这不是可行的表达式\w9\w9\n/
+						\s[%(specialmode != 'mealtime')11]细心点啊。"
+					else
+						'\0\s[3]这个\w9…\w9…\s[8]\n不是可行的表达式啊\n'
+					return
+				}
+				elseif !ISVAR(_var) && !ISFUNC(_func) && GETTYPE(TOAUTOEX(_var)) == 3{
 					if mode == '1'
 						"\1\s[%(specialmode != 'mealtime')10]没这个名字\n"
 					else
