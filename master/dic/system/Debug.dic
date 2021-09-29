@@ -883,3 +883,13 @@ OnEventAdd.ToDic{
 	FCHARSET.default
 	OnOpenDicWithLineNum(_file,_linenum+2)
 }
+On_yatamaOpen{
+	SETTAMAHWND(reference0)
+	SHIORI_FW.Make_X_SSTP_PassThru('Tittle','yatame test: Taromati2')
+	//SHIORI_FW.Make_X_SSTP_PassThru('Icon',GetSelfIconFullPath)
+	'yatama打开了'
+}
+On_yatamaExit{
+	'yatama结束了'
+	SETTAMAHWND(0)
+}
