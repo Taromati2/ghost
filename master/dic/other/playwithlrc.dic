@@ -74,8 +74,8 @@ ReadLrc{
 				_t = IARRAY
 			}
 		}
+		FCLOSE(_file)
 	}
-	FCLOSE(_file)
 	FCHARSET.default
 	_txt
 }
@@ -100,8 +100,8 @@ ReadTxt{
 		for _buff = FREAD(_file); _buff != -1; _buff = FREAD(_file) {
 			lrctime[1]+=_buff+'\n\![set,choicetimeout,0]'
 		}
+		FCLOSE(_file)
 	}
-	FCLOSE(_file)
 	FCHARSET.default
 	_txt
 }
