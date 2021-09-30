@@ -378,7 +378,7 @@ file,ghost/master/dic/other/kikkastock.dic9211342a44518ca7f62677467b87dc97size
 file,ghost/master/dic/other/Miniuse.dic9b014932ae8e19586725938662f90971size=97378date=2021-08-25T19:50:53
 file,ghost/master/dic/other/Other.dic863ec0501f24c38c650e53460d2bd99fsize=76136date=2021-09-11T14:53:22
 file,ghost/master/dic/other/otherserv.dic45a0bfcdfa2c286bbfb8faeb5bb89a6fsize=134326date=2021-08-12T16:49:56
-file,ghost/master/dic/other/playwithlrc.dicf5feaedefc10066e5b73446df2ffd29dsize=40591date=2021-08-22T12:10:45
+file,ghost/master/dic/other/playwithlrc.dic64b9fd03fd6ea6fdcfb5b1c26910de36size=40593date=2021-09-29T19:53:29
 file,ghost/master/dic/other/poem.dicc2b6944fdac2c8eba79808f5c64f4c6fsize=12590date=2021-08-12T16:49:56
 file,ghost/master/dic/other/story.dic532bcfe00f0b729658679b54be7f4f98size=66797date=2021-08-17T17:50:10
 file,ghost/master/dic/other/Tarro.dice70846109858ef3b4fecd784b903b51dsize=25419date=2021-08-12T16:49:56
@@ -394,7 +394,7 @@ file,ghost/master/dic/system/changeshell.dic6da90889c0a0efceb0fc66f012a97c07si
 file,ghost/master/dic/system/change_part.dicbc60c6305fb994764be3027ec43633fdsize=568date=2021-08-05T15:49:51
 file,ghost/master/dic/system/clock.dicca49ceb5ba9ca977fd314775fe8d8c8asize=26346date=2021-09-26T12:19:27
 file,ghost/master/dic/system/database_edit.dic3aede4e7f5455c9333257617b21ab108size=20875date=2021-08-12T16:49:56
-file,ghost/master/dic/system/Debug.dicdece6f08a24d5331abe14869583e3106size=38560date=2021-09-29T15:18:40
+file,ghost/master/dic/system/Debug.dic703196165ca10caf6fed0c6eb21b1c50size=38802date=2021-09-29T15:18:27
 file,ghost/master/dic/system/event_response.dic8736a0b8b9daa35b826fab73c6d19ca6size=33195date=2021-09-28T23:20:52
 file,ghost/master/dic/system/FileDrop.dic7d727677f17fa6626dbb1f8a38b8c631size=4532date=2021-08-26T10:41:48
 file,ghost/master/dic/system/hotkey.dic4dcb9b5847e27e1aee93e9420b21df2bsize=8815date=2021-09-24T11:11:10
@@ -464,7 +464,7 @@ file,ghost/master/saori/Speech_Recognition/Speech_Recognition.vbs72cb564fac4a93
 file,ghost/master/saori/textcopy.dllb985beb7de58ae316ce03da9e260416asize=25600date=2021-03-21T14:33:28
 file,ghost/master/saori/tl.lock6cc375438fb76385e58c69193046dd19size=63date=2021-03-13T16:37:46
 file,ghost/master/saori/txtpaste.dlld26df18e46cf845ed073e26be17b3125size=25088date=2021-03-21T14:33:28
-file,ghost/master/shiori/aya.dll652a7839e27ae02fb070cff640e897a6size=956416date=2021-09-28T18:33:35
+file,ghost/master/shiori/aya.dll0bcf4d4a747202b3840d488b70f88e7asize=956928date=2021-09-29T18:24:18
 file,ghost/master/shiori/aya.txt60e8c47a3dd03166c03a79039acad441size=24date=2021-07-12T20:07:04
 file,ghost/master/shiori/aya_base.txt3d97e6409a3f7b4bc1a606b6c2d7b4b4size=263date=2021-08-31T00:00:06
 file,ghost/master/shiori/aya_common.txt79d2b07e7b7c1de1ed6635973ada515csize=59date=2021-07-12T20:07:04
