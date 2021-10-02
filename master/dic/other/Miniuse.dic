@@ -25,10 +25,6 @@ Oncount{
 Select.countend{
 	'\![close,inputbox,Oncount]\s[0]取消倒数了。'
 }
-//更新检查
-OnUpdateCheck{
-	'\0\s[6]开始检查更新\n\![updatebymyself,checkonly]'
-}
 //----------------------秒表----------------------------------------------
 OnSecondWatch{
 	running='secondwatch'

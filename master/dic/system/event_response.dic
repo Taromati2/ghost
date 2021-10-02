@@ -644,18 +644,27 @@ OnBIFFFailure{
 }
 //**** ネットワーク更新 *****************************************************************
 OnUpdate{
-	'\![updatebymyself]'
+	'\![update,ghost+shell+balloon]'
 }
 OnSilentUpdate{
 	InSilentUpdate=1
-	'\![updatebymyself]'
+	'\![update,ghost+shell+balloon]'
+}
+OnSilentUpdate.shell{
+	InSilentUpdate=1
+	'\![update,shell]'
 }
 OnSelfRecovery{
 	InSelfRecovery=1
 	InSilentUpdate=1
 	'\'+mode+'开始自我修复'
 	--
-	'\![updatebymyself,recovery]'
+	'\![update,ghost+shell+balloon,recovery]'
+}
+
+//更新检查
+OnUpdateCheck{
+	'\0\s[6]开始检查更新\n\![update,ghost+shell+balloon,checkonly]'
 }
 GetUpdateFailureReason{
 	case reference0{
@@ -1271,4 +1280,3 @@ OnSysResourceLow{
 OnNetworkHeavy{
 	'\0\s[8]\w9…\w9…\n\w9\w9请耐心等候呢？'
 }
-

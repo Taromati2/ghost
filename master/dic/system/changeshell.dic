@@ -300,6 +300,9 @@ OnShellChanged{
 		'\0\s[0]'
 	}
 	--
+	if AutoUpdate
+		OnSilentUpdate.shell
+	--
 	_temp=shellID
 	shellID = reference0
 	if crystalnum>=36&&!TOINT(Userspitem[1][2]) {
