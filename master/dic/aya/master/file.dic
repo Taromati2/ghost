@@ -158,7 +158,7 @@ GETFILELINENUM{
 	if FOPEN(_file,'rb'){
 		while ISNOTFILEEND(_file){
 			_linenum++
-			FREAD(_file)
+			void FREAD(_file)
 		}
 	}
 	FCLOSE(_file)
