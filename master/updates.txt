@@ -1,5 +1,6 @@
 charset,UTF-8
 file,delete.txt4ac24f6f495ee812e6a3b01ef4d30ad8size=24570date=2021-09-06T23:10:13
+file,ghost/master/data/debug/aya_func_info.txt95840613fd21d54789c49923f7ae1c6esize=20881date=2021-10-02T08:37:24
 file,ghost/master/data/Game/BoxGame/box.txt4eb7bc822cf0d1cd24d14daa6ce16387size=33614date=2021-03-21T14:33:27
 file,ghost/master/data/Game/BoxGame/boxpng.png11dba3badd0ebfcfd727e21b710e87edsize=3932date=2021-03-21T14:33:27
 file,ghost/master/data/Game/Gobang/blackStone_1.png18d80968d0b66ad74eb9e70568c5045csize=860date=2021-03-21T14:33:27
@@ -354,7 +355,7 @@ file,ghost/master/dic/communicate/talk/talk.dic3753b0962f850f9c50c629d6a493c137
 file,ghost/master/dic/communicate/talk/talk_t.dic6bb3a528fabf831ac6a2b81d6792d6fesize=8898date=2021-08-12T16:49:56
 file,ghost/master/dic/communicate/touch/touch.dic81cf5d8d00cefd37c67fa23e19a3ef7esize=13527date=2021-08-06T00:37:50
 file,ghost/master/dic/dev/ayccoder.aycd7df86b0547b9b3e98b581643b9cfd2bsize=595date=2021-09-25T09:08:54
-file,ghost/master/dic/dev/dicforma.dic529b0d2029cbfff1ac3912e8595bd1edsize=8171date=2021-08-12T16:49:56
+file,ghost/master/dic/dev/dicforma.dic529b0d2029cbfff1ac3912e8595bd1edsize=8171date=2021-10-01T15:58:18
 file,ghost/master/dic/games/boxgame.dicc409b5f2f33142c41fe55b135100f536size=5217date=2021-08-12T16:49:56
 file,ghost/master/dic/games/Gobang/Gobang.diccae8ce505c464958b08248c5ce5d9077size=44326date=2021-09-24T11:11:10
 file,ghost/master/dic/games/Gobang/GobangData.dicdabd4d6991556b11465d06b14f93741dsize=33588date=2021-08-06T01:29:12
@@ -394,7 +395,7 @@ file,ghost/master/dic/system/changeshell.dic6da90889c0a0efceb0fc66f012a97c07si
 file,ghost/master/dic/system/change_part.dicbc60c6305fb994764be3027ec43633fdsize=568date=2021-08-05T15:49:51
 file,ghost/master/dic/system/clock.dicca49ceb5ba9ca977fd314775fe8d8c8asize=26346date=2021-09-26T12:19:27
 file,ghost/master/dic/system/database_edit.dic3aede4e7f5455c9333257617b21ab108size=20875date=2021-08-12T16:49:56
-file,ghost/master/dic/system/Debug.dic703196165ca10caf6fed0c6eb21b1c50size=38802date=2021-09-29T15:18:27
+file,ghost/master/dic/system/Debug.dic2bf044e2f578c8a8621a704032279b20size=16332date=2021-10-02T09:01:06
 file,ghost/master/dic/system/event_response.dic8736a0b8b9daa35b826fab73c6d19ca6size=33195date=2021-09-28T23:20:52
 file,ghost/master/dic/system/FileDrop.dic7d727677f17fa6626dbb1f8a38b8c631size=4532date=2021-08-26T10:41:48
 file,ghost/master/dic/system/hotkey.dic4dcb9b5847e27e1aee93e9420b21df2bsize=8815date=2021-09-24T11:11:10
@@ -430,7 +431,7 @@ file,ghost/master/pseudoAI/physics.ai51288564a9922cb3e7f07da54469819esize=1838
 file,ghost/master/pseudoAI/userteach.ai.base68b329da9893e34099c7d8ad5cb9c940size=1date=2021-06-10T19:41:53
 file,ghost/master/pseudoAI/wiki.ai5d885d8618f5ca453d3a5802a891cf4esize=445date=2021-07-10T16:49:04
 file,ghost/master/pseudoAI/worry.ai5e214cfdb8502f8c83ffad82d6f02ec5size=96708date=2021-07-10T16:49:04
-file,ghost/master/readme.txt4c5c3243df57c343e47764e471afc899size=2925date=2021-09-26T21:07:54
+file,ghost/master/readme.txt4c5c3243df57c343e47764e471afc899size=2925date=2021-10-01T16:23:02
 file,ghost/master/saori/advanced_sysinfo.dllbc90ec8f5ec4e227f1882e24c6884c51size=66560date=2021-03-21T14:33:28
 file,ghost/master/saori/AnalogClock.dll16ca4f71bcc909510cb69e002e78f3d2size=69632date=2021-03-21T14:33:28
 file,ghost/master/saori/AnalogClock2_0/7c_face1.png866c2a77b64d080def1d6c6e19521047size=33765date=2021-03-12T13:19:29
@@ -441,7 +442,7 @@ file,ghost/master/saori/AnalogClock2_0/7c_second1.png66274db4b8b54b64719d32f2b6
 file,ghost/master/saori/AnalogClock2_0/AnalogClock.dll8be94dd3f54f9432508737b496490784size=48128date=2021-03-21T14:33:28
 file,ghost/master/saori/AnalogClock2_0/clock.txt938bad36cb0c6d503b26d77fa66f7dabsize=493date=2021-03-06T15:11:22
 file,ghost/master/saori/AnalogClock2_0/rbg.png32c3e40ac35ff4634f29ad7964f54864size=18108date=2021-03-21T14:33:28
-file,ghost/master/saori/ayc_coder.dll933b62f13271740660a8dc22259d7975size=58880date=2021-09-26T19:54:00
+file,ghost/master/saori/ayc_coder.dll88ac412bc19dce74c045499561d1f814size=59392date=2021-10-01T16:22:10
 file,ghost/master/saori/ChConverter.dlldef3363a63b685967bb1459c4e6b3208size=33792date=2021-02-17T23:01:42
 file,ghost/master/saori/cmdrunner.dll76309282862201a6ad04cfbe752e3045size=45568date=2021-07-11T23:37:48
 file,ghost/master/saori/cpuid.dll552326006fa486ec8dd5d339caaa1cfasize=81920date=2021-03-21T14:33:28
