@@ -500,6 +500,7 @@ Get_AYA_Function_Info{
 						_result=SUBSTR(0,STRLEN(_result)-1)
 						_result+=FREAD(_data_file)
 					}
+					break
 				}
 			}
 			FCLOSE(_data_file)

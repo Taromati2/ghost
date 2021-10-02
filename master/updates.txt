@@ -395,8 +395,8 @@ file,ghost/master/dic/system/changeshell.dic6da90889c0a0efceb0fc66f012a97c07si
 file,ghost/master/dic/system/change_part.dicbc60c6305fb994764be3027ec43633fdsize=568date=2021-08-05T15:49:51
 file,ghost/master/dic/system/clock.dicca49ceb5ba9ca977fd314775fe8d8c8asize=26346date=2021-09-26T12:19:27
 file,ghost/master/dic/system/database_edit.dic3aede4e7f5455c9333257617b21ab108size=20875date=2021-08-12T16:49:56
-file,ghost/master/dic/system/Debug.dic2bf044e2f578c8a8621a704032279b20size=16332date=2021-10-02T09:34:33
-file,ghost/master/dic/system/event_response.dic80db0d6eef6eae93dbecad47ff860cfbsize=33123date=2021-10-02T09:33:20
+file,ghost/master/dic/system/Debug.dicdf1cf19a6d525ba7eff5397b03725d2dsize=16343date=2021-10-02T09:43:50
+file,ghost/master/dic/system/event_response.dic80db0d6eef6eae93dbecad47ff860cfbsize=33123date=2021-10-02T09:37:21
 file,ghost/master/dic/system/FileDrop.dic7d727677f17fa6626dbb1f8a38b8c631size=4532date=2021-08-26T10:41:48
 file,ghost/master/dic/system/hotkey.dic4dcb9b5847e27e1aee93e9420b21df2bsize=8815date=2021-09-24T11:11:10
 file,ghost/master/dic/system/internet.dic358ded9656d0acedb128f47fc33ffea2size=29885date=2021-08-12T16:49:56
