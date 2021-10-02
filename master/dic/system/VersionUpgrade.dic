@@ -22,7 +22,7 @@ VERSION_UPGRADE{
 }
 VERSION_UPGRADE_0:void{
 	FirstBootCount = 1
-
+	mirror_url=default_mirror_url
 	DELDIR('PROFILE_PATH')
 
 	ERASEALLVARBEGINAS('SHIORI3FW')

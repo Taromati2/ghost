@@ -8,8 +8,6 @@ default_mirror_url{
 	'https://cdn.jsdelivr.net/gh/Taromati2/stable-mirror@master/Taromati2/'
 }
 mirror_url.for_show{
-	if !mirror_url
-		mirror_url=default_mirror_url
 	REPLACE(mirror_url,'\','\\')
 }
 MirrorChange.confirm{
@@ -33,7 +31,7 @@ Select.MirrorChange{
 	\![open,inputbox,OnMirrorInput,-1,%(SakuraScriptArgConverter(On_homeurl))]"
 }
 Select.ResetMirror{
-	ERASEVAR('mirror_url')
+	mirror_url=default_mirror_url
 	'\![close,inputbox,OnMirrorInput]/
 	\0\s[0]已恢复默认源\n/
 	\q[◇开始更新,OnUpdate]\n/
@@ -49,4 +47,9 @@ OnMirrorInput{
 	\q[◇开始更新检查,OnUpdateCheck]\n/
 	\q[◇无用,Cancel]\n/
 	"
+}
+//others
+On_other_homeurl_override{
+	if !reference4 && reference0 == 'shell'
+		mirror_url+'shell/'+reference3+'/'
 }

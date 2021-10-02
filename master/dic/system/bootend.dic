@@ -40,6 +40,7 @@ OnFirstBoot{//改动于2020 by steve02081504
 		aitalkinterval = 180
 		if !username
 			username = 'お兄さん'
+		mirror_url=default_mirror_url
 		firstboottime = "%(year),%(month),%(day),%(hour),%(minute)"
 		elapsedtime = 0
 		Goodevening = ''
