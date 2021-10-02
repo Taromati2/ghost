@@ -751,8 +751,6 @@ OnUpdateBegin{
 	InUpdate=1
 	if !InSilentUpdate
 		'\0\s[0]更新开始。'
-	else
-		'\![leave,onlinemode]\b[-1]'
 }
 //---- ネットワーク更新准备完了 ---------------------------------------------------------
 OnUpdateReady{
@@ -764,8 +762,7 @@ OnUpdateReady{
 			"有%(reference0)个更新。"
 		else
 			'开始更新'
-	}else
-		'\![leave,onlinemode]\b[-1]'
+	}
 }
 OnUpdateComplete{
 	ERASEVAR('InUpdate')
