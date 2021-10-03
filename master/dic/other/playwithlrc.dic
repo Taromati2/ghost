@@ -1099,6 +1099,8 @@ OnLastMusic{
 		musicfile[2] = musicrandlist[_tmp][0,'|']
 		if playingmusic==1
 			_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
+		else
+			playingmusic = 0
 	}
 	elseif musicplaymode == 0 || musicplaymode == 1 || musicplaymode == 2 || musicplaymode == 3 {
 		musicfile[1]=(musicfile[0] + musicfile[1] - 1)%musicfile[0]
@@ -1107,6 +1109,8 @@ OnLastMusic{
 		musicfile[2] = musicrandlist[_tmp]
 		if playingmusic==1
 			_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
+		else
+			playingmusic = 0
 	}
 	_txt+=OnMusicPlayer
 	_txt
@@ -1126,6 +1130,8 @@ OnNextMusic{
 		musicfile[2] = musicrandlist[_tmp][0,'|']
 		if playingmusic==1
 			_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
+		else
+			playingmusic = 0
 	}
 	elseif musicplaymode == 0 || musicplaymode == 1 || musicplaymode == 2 || musicplaymode == 3 {
 		musicfile[1]=(musicfile[0] + musicfile[1] + 1)%musicfile[0]
@@ -1134,6 +1140,8 @@ OnNextMusic{
 		musicfile[2] = musicrandlist[_tmp]
 		if playingmusic==1
 			_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
+		else
+			playingmusic = 0
 	}
 	_txt+=OnMusicPlayer
 	_txt
