@@ -661,6 +661,10 @@ OnSelfRecovery{
 	--
 	'\![update,ghost+shell+balloon,recovery]'
 }
+OnRecoveryUpdate.Silent{
+	InSilentUpdate=1
+	'\![update,ghost+shell+balloon,recovery]'
+}
 
 //更新检查
 OnUpdateCheck{
