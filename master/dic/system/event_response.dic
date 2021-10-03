@@ -491,6 +491,8 @@ SelfRecoveryFailed{
 	\q[◇再试一次,OnSelfRecovery]\n/
 	\q[◇无用,Cancel]\n/
 	'
+	--
+	//OpenDocForRuntime('SelfRecoveryFailed')
 }
 OnEmergencyMode{
 	EmergencyBoot++
@@ -506,12 +508,9 @@ OnEmergencyMode{
 	}
 	else{
 		if EmergencyBoot == 1{
-			if mode == '1'
-				"\1\s[%(specialmode != 'mealtime')10]唔…\n辞书出错了啊。"
-			else
-				'\0\s[3]辞书出错了哦？'
-			--
 			OnSelfRecovery
+			--
+			OpenDocForRuntime('Emergency_mode_but_Debug_mode_not_open')
 		}
 		elseif InSelfRecovery{
 			SelfRecoveryFailed
@@ -522,8 +521,6 @@ OnEmergencyMode{
 			\q[◇无用,Cancel]\n/
 			'
 		}
-		--
-		OpenDocForRuntime('Emergency_mode_but_Debug_mode_not_open')
 	}
 }
 OnEmergencyModeEnd{
