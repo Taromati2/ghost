@@ -786,10 +786,18 @@ OnUpdateComplete{
 			if HasUpdate
 				'\0\s[3]因服务器回传虚假更新档\n\w9重新开始更新'
 			else
-				'\0\s[0]好像没有更新。'
+				'\0\s[0]好像没有更新。\n/
+				\q[◇更新'+Baseware+',"script:\![update,platform]"]\n/
+				\q[◇查看更新日志,OnUrlOpen,https://github.com/Taromati2/Update-log]\n/
+				\q[◇无用,Cancel]\n/
+				'
 		}
 		else{
-			'\0\s[0]更新结束。'
+			'\0\s[0]更新结束。\n/
+			\q[◇顺便更新'+Baseware+',"script:\![update,platform]"]\n/
+			\q[◇查看更新日志,OnUrlOpen,https://github.com/Taromati2/Update-log]\n/
+			\q[◇无用,Cancel]\n/
+			'
 		}
 	}else{
 		ERASEVAR('InSilentUpdate')

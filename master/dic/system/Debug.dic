@@ -477,7 +477,6 @@ Get_UKADOC_ofEvent{
 	_argv[0]=GetResourceEventRealName(_argv[0])
 	".html#%(_argv[0])"
 }
-//来自Dummy-47
 Get_AYA_Function_Info{
 	if ISFUNC(_argv[0])!=2
 		return

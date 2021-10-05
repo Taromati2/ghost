@@ -44,6 +44,11 @@ OnTranslate{
 	elseif language==2||language==3||_language==2||_language==3{
 		_txt = TranslateWithDictionary(_txt)
 	}
+	_ICT=0
+	if RE_GREP(_txt,"\%(IgnoreChoiceTimeout)$"){
+		_ICT=1
+		_txt=RE_REPLACE(_txt,"\%(IgnoreChoiceTimeout)$",'')
+	}
 	_temp=0
 	if running==''
 		_temp=TOINT(voice)
@@ -60,6 +65,9 @@ OnTranslate{
 		}
 	}
 	_txt
+	--
+	if _ICT
+		IgnoreChoiceTimeout
 }
 OnLastTalkToChatroom{
 	_lasttalk=_argv[0]
