@@ -760,7 +760,7 @@ OnUpdateCheckComplete{
 OnUpdateBegin{
 	InUpdate=1
 	if !InSilentUpdate
-		'\0\s[0]更新开始。'
+		'\0\s[72]更新开始。'
 }
 //---- ネットワーク更新准备完了 ---------------------------------------------------------
 OnUpdateReady{
@@ -772,6 +772,11 @@ OnUpdateReady{
 			"有%(reference0)个更新。"
 		else
 			'开始更新'
+		--
+		if reference0 > 100{
+			InSilentUpdate=1
+			'已进入静默更新'
+		}
 	}
 }
 OnUpdateComplete{
@@ -880,17 +885,17 @@ OnURLDropped{
 //---- ネットワーク更新 ダウンロード开始 ------------------------------------------------
 OnUpdate.OnDownloadBegin{
 	if !InSilentUpdate
-		"\0\s[0]\_q“%(reference0)”下载中\_q"
+		"\0\s[72]\_q“%(reference0)”下载中\_q"
 }
 //---- ネットワーク更新 MD5値照合开始 ---------------------------------------------------
 OnUpdate.OnMD5CompareBegin{
 	if !InSilentUpdate
-		'\0\s[0]MD5确认中。'
+		'\0\s[72]MD5确认中。'
 }
 //---- ネットワーク更新 MD5値一致 -------------------------------------------------------
 OnUpdate.OnMD5CompareComplete{
 	if !InSilentUpdate
-		"\0\s[0]\_qMD5:%(reference1)\n\_q\n\n[half]一致。"
+		"\0\s[72]\_qMD5:%(reference1)\n\_q\n\n[half]一致。"
 }
 //---- ネットワーク更新 MD5値不一致 -----------------------------------------------------
 OnUpdate.OnMD5CompareFailure{

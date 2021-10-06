@@ -2572,6 +2572,8 @@ OnSurfaceRestore.base{
 		'\1\s[110]'
 	}elseif specialmode == 'smoking'{
 		'\1\s[-1]'
+	}elseif InUpdate{
+		'\1\s[72]'
 	}else{
 		'\1\s[10]'
 	}
