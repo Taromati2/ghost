@@ -213,6 +213,7 @@ OnCalculateVar{
 					}
 				}
 				if !ISEVALUABLE(reference0){
+					ShioriEcho.Special='表达式非法'
 					if mode == '1'
 						"\1\s[%(specialmode != 'mealtime')10]这不是可行的表达式\w9\w9\n/
 						\s[%(specialmode != 'mealtime')11]细心点啊。"
