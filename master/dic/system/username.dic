@@ -1,13 +1,14 @@
 //----------------------称呼-----------------------------------------
 //first time
 OnGetUsernameFirst{
+	_name = reference.raw[0]
 	if OnUserName.IsMazo || OnUserName.IsTooClose {
 		"\0\s[2]\w9欸\w9.\w9.\w9.\s[8]那样的称呼、\w8我做不到。\w9\w9\n/
 		如果可以的话、\w8请让我用其他的称呼方式吧。\n/
 		\q[◇跳过,Cancel]/
 		\![set,balloontimeout,0]\![open,inputbox,OnGetUsernameFirst,-1,%(SakuraScriptArgConverter(username))]"
 	}
-	if !reference0{
+	if !_name{
 		if usermane
 			"那么日后就称呼为“%(username)”了哦。"
 		else
@@ -16,7 +17,7 @@ OnGetUsernameFirst{
 		OnGetUsernameFirst.End
 	}
 	elseif _t = OnUserName.SpecialCheck {
-		OnUserName.Set(reference0)
+		OnUserName.Set(_name)
 		"\0\s[0]『%(username)』是吗。"
 		--
 		_t
@@ -24,7 +25,7 @@ OnGetUsernameFirst{
 		OnGetUsernameFirst.End
 	}
 	else{
-		OnUserName.Set(reference0)
+		OnUserName.Set(_name)
 		"\0\s[0]『%(username)君』\w4这样可以吗？\n\n\q[◇可以,OnGetUsernameFirst.Addkeigo]\n\q[%(SakuraScriptArgConverter('◇『'+username+'』就行了')),OnGetUsernameFirst.Fin]"
 	}
 }
@@ -44,23 +45,16 @@ OnGetUsernameFirst.End{
 
 //common
 OnUserNameChange{
-	if reference0 {
-		"\0\s[26]那么、该怎么称呼呢？\![open,inputbox,OnUserNameInput,-1,%(SakuraScriptArgConverter(username))]"
-	}
-	else {
-		"\0\s[6]好的。\w9\s[0]\n那么、就跟目前一样用\w9\s[26]\n『%(username)』\w9来称呼喔。\n[150]"
-		--
-		'\q[◇返回上一层,OnOpenMenu,4]\n/
-		\q[◇终了,OptionEnd]'
-	}
+	"\0\s[26]那么、该怎么称呼呢？\![open,inputbox,OnUserNameInput,-1,%(SakuraScriptArgConverter(username))]"
 }
 OnUserNameInput{
-	if reference0 == username {
+	_name = reference.raw[0]
+	if _name == username {
 		'\0\s[0]………？\s[26]\n不用改变也可以吗？\n\n[half]/
 		\q[◇返回上一层,OnOpenMenu,4]\n/
 		\q[◇终了,OptionEnd]'
 	}
-	elseif !reference0 {
+	elseif !_name {
 		"\0\s[6]好的。\w9\s[0]\n那么、往后就用\w9\s[26]\n『无名氏』\w9来称呼喔。\w9\w9\n\n[half]/
 		\s[5]…\w9开玩笑的。\n/
 		\w9\s[0]\n继续称呼『%(username)』就可以了吗\w9？\n[150]/
@@ -72,7 +66,7 @@ OnUserNameInput{
 			'\0\s[2]\w9欸\w9.\w9.\w9.\s[8]那样的称呼、\w8我做不到。\w9\w9\n/
 			如果可以的话、\w8请让我用其他的称呼方式吧。'
 		else{
-			OnUserName.Set(reference0)
+			OnUserName.Set(_name)
 			_t
 		}
 		--
@@ -85,7 +79,7 @@ OnUserNameInput{
 			…\w9\s[6]如果你想被这样称呼的话、\w8也不是不可以。\w9\n/
 			\s[0]但是、\w8请不要讨厌我哦。\n/
 			\n/
-			\q[◇确认,OnUserNameConfirmed,%(SakuraScriptArgConverter(reference0))]\n/
+			\q[◇确认,OnUserNameConfirmed,%(SakuraScriptArgConverter(_name))]\n/
 			\q[◇还是算了,OnUserNameCancel]"
 		}else{
 			'\0\s[2]\w9欸\w9.\w9.\w9.\s[8]那样的称呼、\w8我做不到。\w9\w9\n/
@@ -96,20 +90,22 @@ OnUserNameInput{
 		}
 	}
 	else{
-		"\0\s[26]『%(REPLACE(reference0,'\','\\'))君』\w4这样可以吗？\n\n/
-		\q[◇可以,OnUserNameConfirmed,%(SakuraScriptArgConverter(reference0+'君'))]\n/
-		\q[%(SakuraScriptArgConverter('◇『'+reference0+'』就行了')),OnUserNameConfirmed,%(SakuraScriptArgConverter(reference0))]\n\n[half]/
+		"\0\s[26]『%(REPLACE(_name,'\','\\'))君』\w4这样可以吗？\n\n/
+		\q[◇可以,OnUserNameConfirmed,%(SakuraScriptArgConverter(_name+'君'))]\n/
+		\q[%(SakuraScriptArgConverter('◇『'+_name+'』就行了')),OnUserNameConfirmed,%(SakuraScriptArgConverter(_name))]\n\n[half]/
 		\q[◇还是算了,OnUserNameCancel]"
 	}
 }
 OnUserNameCancel{
-	"\0\s[0]那么、一样叫『%(username)』…\n[150]"
+	"\0\s[0]那么、仍然叫『%(username)』…\n[150]"
+	"\0\s[6]好的。\w9\s[0]\n那么、就跟目前一样用\w9\s[26]\n『%(username)』\w9来称呼喔。\n[150]"
 	--
 	'\q[◇返回上一层,OnOpenMenu,4]\n/
 	\q[◇终了,OptionEnd]'
 }
 OnUserNameConfirmed{
-	OnUserName.Set(reference0)
+	_name = reference.raw[0]
+	OnUserName.Set(_name)
 	"\0\s[6]好的。\w9\s[0]\n\n[half]那么、往后就用\w9\s[26]\n『%(username)』\w9来称呼喔。\n[150]"
 	--
 	'\q[◇返回上一层,OnOpenMenu,4]\n/
@@ -121,7 +117,8 @@ OnUserName.Set:void{
 	username = REPLACE(_argv[0],'\','\\')
 }
 OnUserName.IsMazo{
-	_simplified_name = TOLOWER(TOSIMPLIFIED(reference0))
+	_name = reference.raw[0]
+	_simplified_name = TOLOWER(TOSIMPLIFIED(_name))
 	case _simplified_name {
 		when '垃圾','豚','猪','垃圾虫','クズ','クソムシ','笨蛋','白痴','呆子','蠢猪','傻逼','废物','蠢货','阳痿','阳痿男','丑男','猪头男','猪头'{
 			1
@@ -131,7 +128,8 @@ OnUserName.IsMazo{
 	0
 }
 OnUserName.IsTooClose{
-	_simplified_name = TOLOWER(TOSIMPLIFIED(reference0))
+	_name = reference.raw[0]
+	_simplified_name = TOLOWER(TOSIMPLIFIED(_name))
 	case _simplified_name {
 		when '亲爱的','老公','老公大人','相公','宝贝','爸爸','父','父亲','爸','マスター','主人大人','主人','ごしゅじんさま','honey','だぁりん','宝宝','小宝宝','baby','little baby','darling'{
 			1
@@ -141,8 +139,9 @@ OnUserName.IsTooClose{
 	0
 }
 OnUserName.SpecialCheck{
+	_name = reference.raw[0]
 	if _t = OnUserName.SpecialCheck.base {
-		"\0\s[6]好的。\w9\s[0]\n\n[half]那么、往后就用\w9\s[26]\n『%(reference0)』\w9来称呼喔。\n[150]\w9\w9"
+		"\0\s[6]好的。\w9\s[0]\n\n[half]那么、往后就用\w9\s[26]\n『%(_name)』\w9来称呼喔。\n[150]\w9\w9"
 		--
 		_t
 		--
@@ -150,15 +149,16 @@ OnUserName.SpecialCheck{
 	}
 }
 OnUserName.SpecialCheck.base{
-	_simplified_name = TOLOWER(TOSIMPLIFIED(reference0))
+	_name = reference.raw[0]
+	_simplified_name = TOLOWER(TOSIMPLIFIED(_name))
 	case _simplified_name {
 		when '哥哥','大哥哥','哥','兄长大人','欧尼酱','にぃに','にぃ','兄さま','兄様','あに様'
 			"\s[3]\w9我、\w9虽然没有陪我长大的兄弟姐妹。\w9\s[6]\w9但是你能像疼爱妹妹一样疼爱我，\w9真的很开心。\w9\w9\n/
-			\s[1]\w9\w9%(reference0)。"
+			\s[1]\w9\w9%(_name)。"
 		when '亲爱的'
 			'\s[21]亲・爱・的…♡。'
 		when '老公','老公大人','相公','宝贝'
-			"\s[21]%(reference0)…♡"
+			"\s[21]%(_name)…♡"
 		when '爸爸','父','父亲','爸'
 			'\s[8]已经把我当成女儿了吗。\n/
 			\1\s[11]\w9呦，\w9可喜可贺可喜可贺\w9\n/

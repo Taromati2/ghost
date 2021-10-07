@@ -932,8 +932,8 @@ Select.OptionEnd{
 //---- 呼び方 ---------------------------------------------------------------------------------------------------------
 Select.ChangeUserName{
 	"\0\s[0]称作『%(username)』\w9不行吗？\n\n/
-	\q[◇改变,OnUserNameChange,1]\n/
-	\q[◇不改变,OnUserNameChange,0]"
+	\q[◇改变,OnUserNameChange]\n/
+	\q[◇不改变,OnUserNameCancel]"
 }
 //--- 选择“橘花的生日” ----
 Select.birthdaykikka{

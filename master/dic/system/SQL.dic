@@ -27,7 +27,7 @@
 */
 OnSQLSave:void{
 	if FILEEXIST('SAORI_PATH\debeso.db')
-		void FCOPY('SAORI_PATH\debeso.db','PROFILE_PATH')
+		FCOPY('SAORI_PATH\debeso.db','PROFILE_PATH')
 }
 OnSQLLoad:void{
 	if FILEEXIST('PROFILE_PATH\debeso.db')
