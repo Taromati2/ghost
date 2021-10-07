@@ -9,7 +9,7 @@ OnGetUsernameFirst{
 		\![set,balloontimeout,0]\![open,inputbox,OnGetUsernameFirst,-1,%(SakuraScriptArgConverter(username))]"
 	}
 	if !_name{
-		if usermane
+		if username
 			"那么日后就称呼为“%(username)”了哦。"
 		else
 			'\0\s[6]这样啊…\w9\w9\s[100]\n那请您想说时再告诉我喔。'
