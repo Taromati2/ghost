@@ -5,7 +5,7 @@ OnGetUsernameFirst{
 	if OnUserName.IsMazo || OnUserName.IsTooClose {
 		"\0\s[2]\w9欸\w9.\w9.\w9.\s[8]那样的称呼、\w8我做不到。\w9\w9\n/
 		如果可以的话、\w8请让我用其他的称呼方式吧。\n/
-		\q[◇跳过,Cancel]/
+		\q[◇跳过,Cancel,with_sakura,%(SakuraScriptArgConverter('\![close,inputbox,OnGetUsernameFirst]'))]/
 		\![set,balloontimeout,0]\![open,inputbox,OnGetUsernameFirst,-1,%(SakuraScriptArgConverter(username))]"
 	}
 	if !_name{
