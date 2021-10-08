@@ -147,6 +147,7 @@ ClearAyaTempVar {
 	ERASEVAR('res_securitylevel')
 	ERASEVAR('res_reference')
 	ERASEVAR('res_marker')
+	ERASEVAR('res_valuenotify')
 	ERASEVAR('sakurahwnd')
 	ERASEVAR('kerohwnd')
 	ERASEVAR('sakurablnhwnd')
@@ -357,6 +358,7 @@ request {
 
 	status = ''
 	SHIORI_FW.Eventid=''
+	SHIORI_FW.SecurityLevel='Internal' //互換性のためデフォルトはInternal
 
 	while _lineend > _linestart {
 		//行分割
@@ -411,7 +413,7 @@ request {
 			}
 			_idparsed = 1
 		}
-		//セキュリティレベル='External'なら即返る
+		//セキュリティレベル
 		elseif _key == 'SecurityLevel' {
 			SHIORI_FW.SecurityLevel = _value
 		}
@@ -652,9 +654,13 @@ SHIORI_FW.AssembleReferenceHeader {
 			}
 		}
 	}
-	if marker != '' {
-		_result += "Marker: %(marker)%(C_CRLF)"
-		ERASEVAR('marker')
+	if res_marker != "" {
+		_result += "Marker: %(res_marker)%(C_CRLF)"
+		ERASEVAR('res_marker')
+	}
+	if res_valuenotify != "" {
+		_result += "ValueNotify: %(res_valuenotify)"
+		ERASEVAR('res_valuenotify')
 	}
 
 	_result
