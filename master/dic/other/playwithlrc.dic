@@ -810,7 +810,7 @@ DialogMusicAddList{
 }
 //打開列表操作
 //---------------------------------------------------
-DialogMusicOpenList{
+DialogMusicOpenList:void{
 	_m3u = M3UPATH
 	if _argc > 0 {
 		_m3u = _argv[0]
@@ -1149,26 +1149,29 @@ OnNextMusic{
 //當音樂結束時
 //---------------------------------------------------
 OnSoundStop{
-	_txt=''
 	if playLinkWnd&&!linkwndmusic&&freemode && linkmusicfile _in_ reference0 {
-		_txt = '\0\C'
+		'\0\C'
+		--
 		musicid++
 		musicid=musicid%12
 		linkmusicfile=playlinkmusic[musicid]
-		_txt+='\![sound,stop]\![sound,wait]'
-		_txt+=PlayWithLyric('play',musiclrcenable,linkmusicfile)
+		'\![sound,stop]\![sound,wait]'
+		--
+		PlayWithLyric('play',musiclrcenable,linkmusicfile)
 	}
 	elseif playingmusic && reference0 == musicfile[2]{
-		_txt = '\0\C'
+		'\0\C'
+		--
+		_stop=0
 		kikkamood+=10
 		if !ISVAR('musicrandlist') &&musicplayerrange || !ISVAR('musiclist') &&!musicplayerrange
 			DialogMusicOpenList
 		SETDELIM(musiclist,'*')
-		_txt+='\![sound,stop]\![sound,wait]'
+		'\![sound,stop]\![sound,wait]'
+		--
 		playingmusic = 0
 		ClearLrcVar
 		if musicplaymode == 1{
-			_stop=0
 			if musicplayerrange{
 				SETDELIM(musicrandlist,'*')
 				if musicfile[3]<ARRAYSIZE(musicrandlist)-2
@@ -1190,11 +1193,6 @@ OnSoundStop{
 				musicfile[2] = musicrandlist[_tmp]
 				//musicfile[4]=musiclistfile[1]
 			}
-			if _stop==0
-				_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
-		}
-		elseif musicplaymode == 2 {
-			_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
 		}
 		elseif musicplaymode == 3 {
 			if musicplayerrange{
@@ -1213,7 +1211,6 @@ OnSoundStop{
 				musicfile[2] = musicrandlist[_tmp]
 				//musicfile[4]=musiclistfile[1]
 			}
-			_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
 		}
 		elseif musicplaymode == 4 || musicplayerrange{
 			SETDELIM(musicrandlist,'*')
@@ -1224,14 +1221,17 @@ OnSoundStop{
 			musicfile[1]=TOINT(musicfile[1])
 			_tmp = musicfile[3]
 			musicfile[2] = musicrandlist[_tmp][0,'|']
-			_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
 		}
+		if _stop==0
+			PlayWithLyric('play',musiclrcenable,musicfile[2])
 	}
-	if musicplayer
-		_txt+='\0\c\b[-1]'+OnMusicPlayer
-	if shutdownstart==1
-		_txt+='\0\c\b[-1]'
-	_txt
+	--
+	if musicplayer||shutdownstart{
+		'\0\c\b[-1]'
+		--
+		if musicplayer
+			OnMusicPlayer
+	}
 }
 //播放器面板的選項按鈕動作
 //---------------------------------------------------
