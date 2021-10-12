@@ -1737,6 +1737,9 @@ ISSTR{
 INEVENT{
 	_argv[0]==SHIORI_FW.Eventid
 }
+InNotify{
+	REQ.COMMAND == 'NOTIFY'
+}
 RENAME_VAR:void{
 	if ISVAR(_argv[0])
 		EVAL(_argv[1]+'='+_argv[0])

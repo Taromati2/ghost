@@ -67,7 +67,7 @@ OnMinuteChange{
 		return
 	}
 	--
-	if REQ.COMMAND!='GET'
+	if InNotify
 		return
 	if mode == '0'{
 		if !specialmode{
@@ -154,7 +154,7 @@ OnMinuteChange{
 ClassMonitor{
 	_classrm=OnClassDetailTimeCheck
 	if _classrm{
-		if REQ.COMMAND!='GET'
+		if InNotify
 			OnPlayAlarm
 		_classrm+"\![set,trayballoon,--icon=info,--timeout=10,--title=课程提醒,--text=%(_classrm),--text=（点击气泡关闭提醒）]"
 	}
@@ -177,7 +177,7 @@ AlarmMonitor{
 			"\c\f[bold,true]闹钟提醒\f[bold,default]\n[150]现在是%(hour)点%(minute)分\n%(_tmp)！\n（点击对话框关闭提醒）"
 		}
 		elseif alarmset[2] == '气泡' {
-			if REQ.COMMAND!='GET'
+			if InNotify
 				OnPlayAlarm
 			_tmp = "%(username)设定的时间到了"
 			if alarmstart > 1 {
