@@ -144,10 +144,7 @@ ClearAyaTempVar {
 	ERASEVAR('ghostboottime')
 	ERASEVAR('ghostbootmin')
 	ERASEVAR('status')
-	ERASEVAR('res_securitylevel')
 	ERASEVAR('res_reference')
-	ERASEVAR('res_marker')
-	ERASEVAR('res_valuenotify')
 	ERASEVAR('sakurahwnd')
 	ERASEVAR('kerohwnd')
 	ERASEVAR('sakurablnhwnd')
@@ -653,14 +650,6 @@ SHIORI_FW.AssembleReferenceHeader {
 				if _before == ''; break
 			}
 		}
-	}
-	if res_marker != "" {
-		_result += "Marker: %(res_marker)%(C_CRLF)"
-		ERASEVAR('res_marker')
-	}
-	if res_valuenotify != "" {
-		_result += "ValueNotify: %(res_valuenotify)"
-		ERASEVAR('res_valuenotify')
 	}
 
 	_result
