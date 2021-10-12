@@ -1230,6 +1230,9 @@ OnSoundStop{
 		}
 		if _stop==0
 			PlayWithLyric('play',musiclrcenable,musicfile[2])
+		--
+		if InNotify
+			SHIORI_FW.MakeValueNotify(OnPlayCmd('play',musicfile[2]))
 	}
 	--
 	if musicplayer||shutdownstart{

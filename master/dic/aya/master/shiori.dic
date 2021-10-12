@@ -508,7 +508,7 @@ SHIORI_FW.MakeResponse{
 				SHIORI_FW.DelayNotifyResults,=_result//Notify返回值积压
 			if SHIORI_FW.DebugMode && _result{
 				"SHIORI/3.0 200 OK%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
-				Value: %(_result)%(C_CRLF)"
+				ValueForDebug: %(_result)%(C_CRLF)"
 				--
 				SHIORI_FW.AssembleReferenceHeader
 			}else{
@@ -575,6 +575,14 @@ SHIORI_FW.MakeAdditionalReturn:void{
 	_key=_argv[0]+': '
 	_argv[0]=IARRAY
 	SHIORI_FW.AdditionalReturn.String += _key+TOSTR(_argv)+C_CRLF
+}
+//------------------------------------------------------------------------------
+//関数名：SHIORI_FW.MakeValueNotify
+//機能　：ヘッダをValueNotify追加します (設定はリクエストごとにリセットされます)
+//引数　：_argv[0~inf] 値
+//------------------------------------------------------------------------------
+SHIORI_FW.MakeValueNotify:void{
+	SHIORI_FW.MakeAdditionalReturn('ValueNotify',_argv)
 }
 //------------------------------------------------------------------------------
 //関数名：SHIORI_FW.ClearAdditionalReturnVariable

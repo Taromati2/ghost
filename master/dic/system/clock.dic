@@ -156,7 +156,13 @@ ClassMonitor{
 	if _classrm{
 		if InNotify
 			OnPlayAlarm
-		_classrm+"\![set,trayballoon,--icon=info,--timeout=10,--title=课程提醒,--text=%(_classrm),--text=（点击气泡关闭提醒）]"
+		_classrm
+		--
+		_trayballoon="\![set,trayballoon,--icon=info,--timeout=10,--title=课程提醒,--text=%(_classrm),--text=（点击气泡关闭提醒）]"
+		if InNotify
+			SHIORI_FW.MakeValueNotify(_trayballoon)
+		else
+			_trayballoon
 	}
 }
 AlarmMonitor{
@@ -177,14 +183,16 @@ AlarmMonitor{
 			"\c\f[bold,true]闹钟提醒\f[bold,default]\n[150]现在是%(hour)点%(minute)分\n%(_tmp)！\n（点击对话框关闭提醒）"
 		}
 		elseif alarmset[2] == '气泡' {
-			if InNotify
-				OnPlayAlarm
 			_tmp = "%(username)设定的时间到了"
 			if alarmstart > 1 {
 				_tmp = "已经超过%(username)设定的时间%(alarmstart - 1)分钟了"
 			}
 			alarmstart ++
-			"\![set,trayballoon,--icon=info,--timeout=10,--title=闹钟提醒,--text=现在是%(hour)点%(minute)分,--text=%(_tmp)！,--text=（点击气泡关闭提醒）]"
+			_trayballoon="\![set,trayballoon,--icon=info,--timeout=10,--title=闹钟提醒,--text=现在是%(hour)点%(minute)分,--text=%(_tmp)！,--text=（点击气泡关闭提醒）]"
+			if InNotify
+				SHIORI_FW.MakeValueNotify(_trayballoon)
+			else
+				_trayballoon
 		}
 	}
 }
@@ -320,7 +328,13 @@ OnAlarmSetConfirmed{
 }
 //------ 整点报时\[2008-09_by KikkaAIdb] ---------------------------------------------------------------------
 Hourlychime{
-	"\0\s[0]\![raise,OnPlayBell]%(Hourlychime.Text)\![set,trayballoon,--timeout=0,--title=整点报时,--text=%(Hourlychime.Text)]"
+	'\0\s[0]'
+	--
+	_trayballoon="\![raise,OnPlayBell]%(Hourlychime.Text)\![set,trayballoon,--timeout=0,--title=整点报时,--text=%(Hourlychime.Text)]"
+	if InNotify
+		SHIORI_FW.MakeValueNotify(_trayballoon)
+	else
+		_trayballoon
 }
 OnTrayBalloonTimeout{
 	"%(username)不理橘花呢？"
@@ -741,10 +755,13 @@ ShutdownMonitor{
 	}
 	--
 	if shutdownstart > 0{
-		"/
-		即将自动关机，请%(username)保存资料/
-		\![set,trayballoon,--icon=info,--timeout=10,--title=关机提醒,--text=现在是%(hour)点%(minute)分,--text=%(_txt)！,--text=（点击气泡关闭提醒）]/
-		"
+		"即将自动关机，请%(username)保存资料"
+		--
+		_trayballoon="\![set,trayballoon,--icon=info,--timeout=10,--title=关机提醒,--text=现在是%(hour)点%(minute)分,--text=%(_txt)！,--text=（点击气泡关闭提醒）]"
+		if InNotify
+			SHIORI_FW.MakeValueNotify(_trayballoon)
+		else
+			_trayballoon
 		--
 		'\w9\w9\w9\w9\w9'+OnClose
 		--
