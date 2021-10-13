@@ -697,7 +697,7 @@ OnUpdateCheckFailure{
 	if reference0 == 'readonly'
 		return
 	elseif reference0 == '403' || reference0 == '400'{
-		'\![updatebymyself,checkonly]'
+		'\![update,ghost+shell+balloon,checkonly]'
 		return
 	}
 	'\0\s[3]'
@@ -804,14 +804,14 @@ OnUpdateComplete{
 			\q[◇无用,Cancel]\n/
 			'
 		}
-	}else{
-		ERASEVAR('InSilentUpdate')
 	}
 	--
 	if HasUpdate && reference0 == 'none'
-		'\w9\w9\![updatebymyself]'
-	else
+		'\w9\w9\![update,ghost+shell+balloon]'
+	else{
 		ERASEVAR('HasUpdate')
+		ERASEVAR('InSilentUpdate')
+	}
 }
 OnUpdateFailure{
 	ERASEVAR('InUpdate')
@@ -821,7 +821,7 @@ OnUpdateFailure{
 		if !InSilentUpdate
 			"\0\s[3]因服务器回传%reference0\n\w9重新开始更新\w9\w9"
 		--
-		'\![updatebymyself]'
+		'\![update,ghost+shell+balloon]'
 		return
 	}
 	elseif reference0 == 'executing'&&InSilentUpdate{
