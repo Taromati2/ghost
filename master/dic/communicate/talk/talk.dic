@@ -2562,6 +2562,8 @@ OnSurfaceRestore.base{
 		'\0\s[-1]'
 	}elseif musiclrcenable == 1&& playingmusic == 1{
 		'\0\s[25]'
+	}elseif InUpdate{
+		'\0\s[72]'
 	}else{
 		'\0\s[0]'
 	}
@@ -2572,8 +2574,6 @@ OnSurfaceRestore.base{
 		'\1\s[110]'
 	}elseif specialmode == 'smoking'{
 		'\1\s[-1]'
-	}elseif InUpdate{
-		'\1\s[72]'
 	}else{
 		'\1\s[10]'
 	}
