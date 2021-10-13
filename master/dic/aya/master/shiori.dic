@@ -512,7 +512,7 @@ SHIORI_FW.MakeResponse{
 				--
 				SHIORI_FW.AssembleReferenceHeader
 			}else{
-				"SHIORI/3.0 200 OK%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)"
+				"SHIORI/3.0 204 No Content%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)"
 			}
 		}
 		when 'GET' {
