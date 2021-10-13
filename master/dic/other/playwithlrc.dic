@@ -237,6 +237,18 @@ OnPlayCmd{
 	if musicplaywithlrc == 1 && _cmd == 'play' && ReadTxt(_filetxt) == 'ok' {
 		ShowLrc('txt')
 	}
+	--
+	if playingtetris
+		OnPaintBox1
+	elseif playRetroSnaker
+		PaintRetroSnaker
+	--
+	if musicplayer||shutdownstart{
+		'\0\c\b[-1]'
+		--
+		if musicplayer
+			OnMusicPlayer
+	}
 }
 PlayWithLyric{
 	_txt = ''
@@ -1233,13 +1245,6 @@ OnSoundStop{
 		--
 		if InNotify
 			SHIORI_FW.MakeValueNotify(OnPlayCmd('play',musicfile[2]))
-	}
-	--
-	if musicplayer||shutdownstart{
-		'\0\c\b[-1]'
-		--
-		if musicplayer
-			OnMusicPlayer
 	}
 }
 //播放器面板的選項按鈕動作

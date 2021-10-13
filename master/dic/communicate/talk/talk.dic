@@ -52,7 +52,7 @@ OnTranslate{
 	_temp=0
 	if running==''
 		_temp=TOINT(voice)
-	if _txt{
+	if _txt && !playingtetris && !playRetroSnaker{
 		if _temp{
 			_t=SakuraToTxt(_txt)
 			if running!='chatroom'&&'引擎 (' !_in_ _t&&!CheckProcess('wscript.exe') //&&running!='readbook'&&read!='stop'
