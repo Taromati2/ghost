@@ -8,11 +8,12 @@ VERSION_INIT:void{
 //向后不兼容内容升级用
 VERSION_UPGRADE{
 	if !ISVAR('VERSION'){
-		VERSION = 0
-		VERSION_UPGRADE_0
 		if !ISVAR('FirstBootCount'){
 			'\1\s[10]\0\s[26]啊、\w9\w9那个…\w9\w9\w9暂时、\w9要在此处打扰您了。\n\w[3000]\s[5]开玩笑的啦\x'
 		}
+		--
+		VERSION = 0
+		VERSION_UPGRADE_0
 	}
 	--
 	while VERSION_NOW > VERSION {
@@ -26,6 +27,7 @@ VERSION_UPGRADE{
 	}
 }
 VERSION_UPGRADE_0:void{
+	void Select.Option
 	FirstBootCount = 1
 	mirror_url=default_mirror_url
 	DELDIR('PROFILE_PATH')
@@ -82,8 +84,10 @@ VERSION_UPGRADE_0:void{
 	VERSION_UPGRADE.NeedRec=1
 }
 VERSION_UPGRADE_1:void{
-	DELDIR('pseudoAI')
-	VERSION_UPGRADE.NeedRec=1
+	if !QuickStartVersion{
+		DELDIR('pseudoAI')
+		VERSION_UPGRADE.NeedRec=1
+	}
 
 	RENAME_VAR('rmmode','HolidayRemindFlag')
 	RENAME_VAR('Birthdayrmmode','BirthdayMode')
