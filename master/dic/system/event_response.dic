@@ -566,8 +566,10 @@ OnInstallRefuse{
 OnVanishSelecting{
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')11]"
-	else
+	else{
+		kikkamood/=2
 		'\0\s[3]'
+	}
 	--
 	'…\w9…\w9…'
 }
@@ -704,6 +706,8 @@ OnUpdateCheckFailure{
 	--
 	if reference0 == 'artificial'
 		'已人为停止检查。\e'
+	elseif reference0 == 'executing'
+		'已在更新中。\e'
 	else
 		GetUpdateFailureReason
 	--
@@ -833,6 +837,8 @@ OnUpdateFailure{
 		--
 		if reference0 == 'artificial'
 			'已人为停止更新。\e'
+		elseif reference0 == 'executing'
+			'已在更新中。\e'
 		else
 			GetUpdateFailureReason
 		--
