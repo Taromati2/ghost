@@ -29,13 +29,18 @@ OnSQLSave:void{
 	if FILEEXIST('SAORI_PATH\debeso.db')
 		FCOPY('SAORI_PATH\debeso.db','PROFILE_PATH')
 }
-OnSQLLoad:void{
+OnSQLLoad.base:void{
 	if FILEEXIST('PROFILE_PATH\debeso.db')
 		FCOPY('PROFILE_PATH\debeso.db','SAORI_PATH')
 	else{
 		FULLNAMEFCOPY('SAORI_PATH\debeso.db.base','PROFILE_PATH\debeso.db')
-		OnSQLLoad
+		OnSQLLoad.base
 	}
+}
+OnSQLLoad:void{
+	OnSQLLoad.base
+	CALLSAORI('debeso')
+	CHARSETLIBEX('SAORI_PATH\debeso',4)
 }
 ClearSQLVar{
 }
