@@ -59,7 +59,7 @@ OnMinuteChange{
 			UsualUserName,=UsualUserName.InPush
 			ERASEVAR('UsualUserName.InPush')
 			if ARRAYSIZE(UsualUserName) > 960 //记录近80年内的常用用户名
-				UsualUserName[TOINT(SQRT(1.0/RAND(960))*960)] = IARRAY
+				UsualUserName[TOINT(SQRT(1.0/RAND(990))*990-30)] = IARRAY//[1,960]，数值越低出现概率越大
 		}
 	}
 	--
