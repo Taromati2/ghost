@@ -763,7 +763,7 @@ GetPhase{
 	if intimacy >= 3600 && elapsedtime >= 691200{//彻底信任
 		5
 	}
-	elseif intimacy >= 800  && elapsedtime >= 345600{//可h
+	elseif intimacy >= 800 && elapsedtime >= 345600{//可h
 		4
 	}
 	elseif intimacy >= 200 && elapsedtime >= 172800{//好感

@@ -1208,7 +1208,7 @@ OnAncList{
 	_tbuff=SPLIT(_tbuff,'、')
 	_n=ARRAYSIZE(_tbuff)
 	_Tbuff=''
-	_anc='https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&dsp=baidubrowser&tn=baidu&bar=bd_collection&wd='
+	_anc='https://www.baidu.com/s?ie=utf-8&wd='
 	for _i=0;_i<_n;_i++{
 		_Tbuff+=OnAnc(_anc+_tbuff[_i])+"%(_tbuff[_i])\_a、"
 	}
