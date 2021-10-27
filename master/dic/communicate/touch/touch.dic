@@ -46,6 +46,8 @@ OnMouseMove0{
 			if stroke >= 32{
 				case reference4 {
 					when 'Head'{
+						DiscordCustomSet.CustomDetail('试图刷好感')
+						--
 						headpatflag = 1
 						headpattime = 0
 						OnTouch.FunctionCase('TalkSakuraHeadPat','headpatcount')
@@ -53,6 +55,8 @@ OnMouseMove0{
 					when 'Face'
 						OnTouch.FunctionCase.OnlyPhase('TalkSakuraFacePat')
 					when 'Bust'{
+						DiscordCustomSet.CustomDetail('抚摸案板')
+						--
 						bustpatflag = 1
 						bustpattime = 0
 						OnTouch.FunctionCase('TalkSakuraBustPat','bustpatcount')
@@ -242,12 +246,16 @@ TalkSakuraHandPat.4{
 }
 //---- 猫抚で ---------------------------------------------------------------------------------------------------------
 TalkKeroHeadPat{
+	DiscordCustomSet.CustomDetail('撸猫')
+	--
 	'\1\s[12]…\w9…\w9…\w9\s[10]'
 	'\1\s[10]呣…'
 	'\1\s[10]嗯～。\w9\w9\n算了、\w9随你高兴吧。'
 	'\1\s[10]呼噜呼噜…………'
 }
 TalkKeroTailPat{
+	DiscordCustomSet.CustomDetail('尝试拔出勇者之剑')
+	--
 	'\1\s[10]啊啊啊…\w9\s[12]\n给我停下来！'
 	'\1\s[10]呜～。'
 	'\1\s[12]咕嘎啊啊～！\w9\w9\n不准碰！'

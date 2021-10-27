@@ -2448,6 +2448,8 @@ TWO.others{
 }
 //---- 上面沟通用到的 ------------
 RestStart{
+	DiscordCustomSet.CustomDetail('休息、休息一下')
+	--
 	specialmode = 'rest'
 	if tea == '1'{
 		'\0\s[20]那么…\w9啊…\w9\w9\s[26]\n请稍微等一下。\w9\w9\w9\s[-1]\n\n[half]…\w9…\w9…\w9…\w9…\w9\w9\s[150]\n\n[half]久等了。\w9\w9\n\n[half]稍微休息一下、\w9\n效率可能会比较好喔。'
@@ -2525,6 +2527,8 @@ Select.nogotosea{
 	'\0\s[29]唔、明明很想去海边的呢。'
 }
 OnSmokingPlace{
+	DiscordCustomSet.CustomDetail('斗和不在家.avi')
+	--
 	specialmode = 'smoking'
 	'\1\s[10]暂离、\w9我要去补给菸分。\w9\w9\0\s[8]菸分？\1\s[-1]\b[-1]'
 }

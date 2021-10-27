@@ -357,6 +357,8 @@ OnInstallBegin{
 }
 //---- インストール完了メッセージ -------------------------------------------------------
 OnInstallComplete{
+	DiscordCustomSet.CustomDetail('搞了些新东西')
+	--
 	if mode == '0'
 		'\0\s[0]'
 	elseif mode == '1'
@@ -421,6 +423,8 @@ OnInstallComplete{
 }
 //---- インストール失败 -----------------------------------------------------------------------------------------------
 OnInstallFailure{
+	DiscordCustomSet.CustomDetail('拆弹失败')
+	--
 	if reference0 == 'artificial'{
 		'\0\s[3]好的。\w9\w9\n已取消安装。'
 		return
@@ -502,11 +506,15 @@ OnEmergencyMode{
 		'\0\s[3]辞书出错了哦？'
 	--
 	if SHIORI_FW.DebugMode{
+		DiscordCustomSet.CustomDetail('正在解决'+ARRAYSIZE(GETERRORLOG)+'个错误')
+		--
 		'\n/
 		\q[◇错误日志,OnErrorLog]\n/
 		\q[◇无用,Cancel]'
 	}
 	else{
+		DiscordCustomSet.CustomDetail('一脸茫然')
+		--
 		if EmergencyBoot == 1{
 			OnSelfRecovery
 			--
@@ -526,6 +534,8 @@ OnEmergencyMode{
 OnEmergencyModeEnd{
 	ERASEVAR('EmergencyBoot')
 	if SHIORI_FW.DebugMode{
+		DiscordCustomSet.CustomDetail('为劫后余生而庆祝')
+		--
 		if mode == '1'
 			"\1\s[%(specialmode != 'mealtime')10]嗯，\n问题修好了。"
 		else
@@ -552,6 +562,8 @@ OnEmergencyModeEnd{
 	}
 }
 OnInstallRefuse{
+	DiscordCustomSet.CustomDetail('认错人了')
+	--
 	"\0\s[20]这是…\w9\w9\n『%(reference0)收』。\w9\s[0]\n请直接交给本人。"
 	--
 	if IsGhostExist(reference0) || IsSakuraExist(reference0)
@@ -564,6 +576,8 @@ OnInstallRefuse{
 }
 //**** 消灭 ***********************************************************************************************************
 OnVanishSelecting{
+	DiscordCustomSet.CustomDetail('考虑要不要结束这一切')
+	--
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')11]"
 	else{
@@ -574,6 +588,8 @@ OnVanishSelecting{
 	'…\w9…\w9…'
 }
 OnVanishSelected{
+	DiscordCustomSet.CustomDetail('说再见')
+	--
 	if !SilentVanish{
 		uninstall=1
 		MAGICSAVE
@@ -596,6 +612,8 @@ OnVanishSelected{
 	}
 }
 OnVanishCancel{
+	DiscordCustomSet.CustomDetail('心软了')
+	--
 	talkmemo = 'e_0'
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]…\w9…\w9…"
@@ -603,6 +621,8 @@ OnVanishCancel{
 		'\0\s[3]…\w9请不要吓我…'
 }
 OnVanishButtonHold{
+	DiscordCustomSet.CustomDetail('突然想拉屎')
+	--
 	if FirstBootCount >= 4
 		'\![vanishbymyself]'
 	else{
@@ -643,9 +663,13 @@ OnBIFFFailure{
 }
 //**** ネットワーク更新 *****************************************************************
 OnUpdate{
+	DiscordCustomSet.CustomDetail('和网速作斗争')
+	--
 	'\![update,ghost+shell+balloon]'
 }
 OnSilentUpdate{
+	DiscordCustomSet.CustomDetail('眼睛在脉动')
+	--
 	InSilentUpdate=1
 	'\![update,ghost+shell+balloon]'
 }
@@ -654,6 +678,8 @@ OnSilentUpdate.shell{
 	'\![update,shell]'
 }
 OnSelfRecovery{
+	DiscordCustomSet.CustomDetail('试图通过虚空找回自我')
+	--
 	InSelfRecovery=1
 	InSilentUpdate=1
 	'\'+mode+'开始自我修复'
@@ -667,6 +693,8 @@ OnRecoveryUpdate.Silent{
 
 //更新检查
 OnUpdateCheck{
+	DiscordCustomSet.CustomDetail('做检查')
+	--
 	'\0\s[6]开始检查更新\n\![update,ghost+shell+balloon,checkonly]'
 }
 GetUpdateFailureReason{
@@ -739,6 +767,8 @@ OnUpdateCheckComplete{
 		'\s[100]没有更新的必要\n'
 	}
 	else{
+		DiscordCustomSet.CustomDetail('发现新大陆')
+		--
 		_size = ARRAYSIZE(reference1)
 		if _size < 100{
 			'需更新以下文件：\n\_q'
@@ -762,6 +792,8 @@ OnUpdateCheckComplete{
 }
 //---- ネットワーク更新开始 -------------------------------------------------------------
 OnUpdateBegin{
+	DiscordCustomSet.CustomDetail('启航')
+	--
 	InUpdate=1
 	if !InSilentUpdate
 		'\0\s[72]更新开始。'
@@ -784,6 +816,8 @@ OnUpdateReady{
 	}
 }
 OnUpdateComplete{
+	DiscordCustomSet.CustomDetail('如同洗了个澡一般舒爽')
+	--
 	ERASEVAR('InUpdate')
 	if HasUpdate
 		HasUpdate++
@@ -818,6 +852,8 @@ OnUpdateComplete{
 	}
 }
 OnUpdateFailure{
+	DiscordCustomSet.CustomDetail('落入海中')
+	--
 	ERASEVAR('InUpdate')
 	if reference0 == 'readonly'
 		return
@@ -917,6 +953,8 @@ Select.HEADLINECANCEL{
 	'\0\s[0]好的。'
 }
 OnHeadlinesenseBegin{
+	DiscordCustomSet.CustomDetail('看报')
+	--
 	"\0\s[0]『%(reference0)』 的Headline确认…"
 }
 //---- ヘッドライン読み上げ -------------------------------------------------------------
@@ -972,6 +1010,8 @@ OnHeadlinesenseFailure{
 //**** ファイル作成関连 *****************************************************************
 //---- updates2.dau作成开始 -------------------------------------------------------------
 OnUpdatedataCreating{
+	DiscordCustomSet.CustomDetail('打算搞个大新闻')
+	--
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]唔…\n"
 	else
@@ -979,6 +1019,8 @@ OnUpdatedataCreating{
 }
 //---- updates2.dau作成完了 -------------------------------------------------------------
 OnUpdatedataCreated{
+	DiscordCustomSet.CustomDetail('搞了个大新闻')
+	--
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]完成了。\n"
 	else
@@ -986,6 +1028,8 @@ OnUpdatedataCreated{
 }
 //---- NAR作成开始 ----------------------------------------------------------------------
 OnNarCreating{
+	DiscordCustomSet.CustomDetail('制作包裹')
+	--
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]唔…\n"
 	else
@@ -993,6 +1037,7 @@ OnNarCreating{
 }
 //---- NAR作成完了 ----------------------------------------------------------------------
 OnNarCreated{
+	DiscordCustomSet.CustomDetail('做了一个包裹')
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]"
 	else
@@ -1019,16 +1064,22 @@ Select.SNTPStart{
 //---- 时间同步处理开始 -----------------------------------------------------------------
 OnSNTPBegin{
 	reference0 = SNTPserver
+	DiscordCustomSet.CustomDetail('调制人生')
+	--
 	"\0\s[5]连线到\_q%(reference0)\_q伺服器了哦，时间同步开始。"
 }
 //---- 时刻取得成功、比较开始 -----------------------------------------------------------
 OnSNTPCompare{
 	'\0\s[6]'
 	if reference3 == 0{
+		DiscordCustomSet.CustomDetail('精确、精细、精致')
+		--
 		_nowtime = SPLIT(reference1,',')
 		"没有误差。\n现在时刻：%(_nowtime[0])年%(_nowtime[1])月%(_nowtime[2])日 %(_nowtime[3]):%(_nowtime[4])"
 	}
 	else{
+		DiscordCustomSet.CustomDetail('做了些小调整')
+		--
 		"误差%(reference3)秒。\n\n\n校准中......"
 	}
 }
@@ -1038,6 +1089,8 @@ OnSNTPCorrect{
 }
 //---- 时间同步处理失败 -----------------------------------------------------------------
 OnSNTPFailure{
+	DiscordCustomSet.CustomDetail('被时间抛弃')
+	--
 	'\0\s[3]……失败了？？呜……'
 }
 //**** そのほか *************************************************************************
@@ -1178,6 +1231,8 @@ ClearBatteryVar{
 	ERASEVAR('BatteryLevel')
 }
 OnBatteryLow{
+	DiscordCustomSet.CustomDetail('有点着急')
+	--
 	if reference0 < 80{
 		if mode == '1'
 			"\1\s[%(specialmode != 'mealtime')10]%(username)，\w9电池快要没有电了。\w9不想丢东西就快点保存吧。"
@@ -1298,5 +1353,7 @@ OnSysResourceLow{
 }
 //网卡
 OnNetworkHeavy{
+	DiscordCustomSet.CustomDetail('打发时间')
+	--
 	'\0\s[8]\w9…\w9…\n\w9\w9请耐心等候呢？'
 }

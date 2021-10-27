@@ -261,6 +261,10 @@ PlayWithLyric{
 	}
 	_filemp3 = _argv[2]
 	if _cmd == 'play' || _cmd == 'loop' {
+		DiscordCustomSet.CustomDetail('听音乐')
+		--
+		DiscordCustomSet.CustomState(SPLITPATH(_filemp3)[2])
+		--
 		_txt += "\![raise,OnPlayCmd,%(_cmd),%(SakuraScriptArgConverter(_filemp3))]"
 		musicplaystart = GETTICKCOUNT
 		musicplaytime = 0
@@ -272,6 +276,10 @@ PlayWithLyric{
 		playingmusic = 2
 	}
 	elseif _cmd == 'resume' {
+		DiscordCustomSet.CustomDetail('听音乐')
+		--
+		DiscordCustomSet.CustomState(SPLITPATH(_filemp3)[2])
+		--
 		_txt += '\![sound,resume]'
 		musicplaystart = GETTICKCOUNT
 		playingmusic = 1
@@ -280,10 +288,14 @@ PlayWithLyric{
 		}
 	}
 	elseif _cmd == 'stop' {
+		DiscordCustomSet.CustomDetail('不听了')
+		--
+		DiscordCustomSet.CustomState(' ')
+		--
 		_txt += '\![sound,stop]'
 		playingmusic = 0
 	}
-	_sound = reference0
+	--
 	_txt
 }
 MusicHotKey{

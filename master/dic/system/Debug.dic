@@ -326,6 +326,8 @@ OnCalculateVar.CharConverter{
 }
 //调试反应by steve02081504
 OnDebugModeChange{
+	DiscordCustom.DeveloperSet
+	--
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]唔…\w9\w9\n"
 	else
@@ -363,6 +365,8 @@ OnDebugModeChange{
 		'
 }
 OnLogModeChange{
+	DiscordCustom.LoggingSet
+	--
 	if SHIORI_FW.LogMode{
 		if mode == '1'
 			"\1\s[%(12+99*(specialmode != 'mealtime'))]注意下，\w9\w9"

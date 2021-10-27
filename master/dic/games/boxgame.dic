@@ -174,6 +174,8 @@ OnBoxGoBack{
 	}
 }
 OnBoxNewGame{
+	DiscordCustomSet.CustomDetail('推箱子')
+	--
 	'\0\s[40]要玩第几关呢？\![open,inputbox,OnBoxNewGameSuccess]'
 }
 OnBoxLastGame{

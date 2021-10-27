@@ -100,6 +100,8 @@ OnMouseMove1{
 			'\1\s[110]是想被菸烫烫看吗？'
 		}
 		elseif reference4 == 'Tail'{
+			DiscordCustomSet.CustomDetail('在龙的逆鳞上跳舞')
+			--
 			'\1\s[110]啊啊啊啊…\w9\s[117]\n住手！'
 			'\1\s[110]呜～。'
 			'\1\s[117]呜嘎啊啊～！\w9\w9\n把手拿开！'

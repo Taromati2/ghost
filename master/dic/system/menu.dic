@@ -1040,6 +1040,8 @@ Select.shortcutkey{
 	'
 }
 OnOpenMasterMenu{
+	DiscordCustomSet.CustomDetail('拆个人看看构造')
+	--
 	MAGICUNLOCK
 	if mode=='0'
 		'\0\s[5]打开master目录'
@@ -1051,6 +1053,8 @@ Select.TrashClean{
 	OnTrashClean
 }
 OnTrashClean{
+	DiscordCustomSet.CustomDetail('打扫卫生')
+	--
 	_gomicheck = CALLSAORI('gomi', '-n')
 	if _gomicheck == 0{
 		if 萌度>200||腹黑度>200||萌度>腹黑度{
@@ -1155,6 +1159,8 @@ Select.Communicate{
 }
 //---------- 吸烟室 ----------------------------------------------------
 Select.SmokingPlace{
+	DiscordCustomSet.CustomDetail('陪猫抽烟')
+	--
 	mode = '1'
 	if specialmode == 'smoking'{
 		{
@@ -1189,13 +1195,6 @@ OnDHs{
 	"\0\s[40]%(username)是动漫爱好者啊~~\w6进入动漫列表么？\w9\n\q[◇看动画列表,OnDH]\n\q[◇不看了,OnOpenMenu,1]"
 }
 OnDH{
-	//_keyword=REPLACE(DH,']',']\_a[OnUrl,https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&dsp=baidubrowser&tn=baidu&bar=bd_collection&wd=')
-	//_keyword=REPLACE(DH,'：',']\_a：OnAnc("https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&dsp=baidubrowser&tn=baidu&bar=bd_collection&wd=')
-	_anc=OnAnc('https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&dsp=baidubrowser&tn=baidu&bar=bd_collection&wd=')
-	//_keyword=REPLACE(DH,'、',"]\_a、%(_anc)")
-	//_keyword=REPLACE(_keyword,'、、',']\_a、')
-	//_keyword=REPLACE(_keyword,'. ',']\_a.')
-	//_keyword
 	OnAncList(DH)
 	--
 	'\n\n[half]\q[◇下一类型,OnDH]\n\q[◇不看了,OnOpenMenu,1]\![set,choicetimeout,0]'

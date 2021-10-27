@@ -3,6 +3,8 @@ OnRetroSnaker{
 		NeedUpdate
 		return
 	}
+	DiscordCustomSet.CustomDetail('贪吃蛇')
+	--
 	playRetroSnaker = 1
 	running='playRetroSnaker'
 	Started = 1
