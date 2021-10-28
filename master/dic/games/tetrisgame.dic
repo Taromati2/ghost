@@ -4,6 +4,12 @@
 #define		PATH		DATA_PATH/Game/Tetris
 
 OnNewGame{//游戏入口
+	if QuickStartVersion{
+		NeedUpdate
+		return
+	}
+	DiscordCustomSet.CustomDetail('俄罗斯方块')
+	--
 	_txt = '\C\![quicksession,true]\c\0\s[26]\b[2]'
 	CleartetrisVar
 	playingtetris=1
@@ -354,6 +360,8 @@ AddScore{//加分
 		elseif iRmv==3{ Score+=TOINT(Tetris.speed)*50;}
 		elseif iRmv==4{ Score+=TOINT(Tetris.speed)*80;}
 	}
+	DiscordCustomSet.CustomDetail('俄罗斯方块：得分'+Score)
+	--
 	Lines+=iRmv
 }
 CheckGameStatus{//游戏状态

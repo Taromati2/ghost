@@ -12,6 +12,8 @@ OnBoxGame{
 		NeedUpdate
 		return
 	}
+	DiscordCustomSet.CustomDetail('推箱子')
+	--
 	InitBox
 }
 //初始化推箱子

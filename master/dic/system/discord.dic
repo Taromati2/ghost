@@ -31,6 +31,14 @@ OnDiscordPluginCustomEnd{
 ClearDiscordPluginCustomVar{
 	ERASEVAR('InDiscordPluginCustom')
 }
+DiscordCustomSet.LargeImageKey{
+	if InDiscordPluginCustom
+		'\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomLargeImageKey,'+_argv[0]+']'
+}
+DiscordCustomSet.LargeImageText{
+	if InDiscordPluginCustom
+		'\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomLargeImageText,'+_argv[0]+']'
+}
 DiscordCustomSet.SmallImageKey{
 	if InDiscordPluginCustom
 		'\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomSmallImageKey,'+_argv[0]+']'

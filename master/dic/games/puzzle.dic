@@ -6,6 +6,8 @@ OnPuzzlePlay{//拼圖開始
 		NeedUpdate
 		return
 	}
+	DiscordCustomSet.CustomDetail('拼图')
+	--
 	MapIdx = reference0
 	PUZZLE_X = reference1
 	PUZZLE_SIZEX = PUZZLE_PIC_SIZE / PUZZLE_X

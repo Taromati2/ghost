@@ -783,6 +783,13 @@ GetPhase{
 }
 //**** 最小化 *********************************************************************************************************
 OnWindowStateMinimize{
+	DiscordCustomSet.LargeImageKey('kikka_eye_close')
+	--
+	DiscordCustomSet.CustomDetail('最小化中')
+	--
+	if playingmusic
+		DiscordCustomSet.CustomState('但是放着歌')
+	--
 	minimizestarttime = systemuptime
 	if mode != '1'{
 		'\0\s[3]……'
@@ -794,6 +801,10 @@ OnWindowStateMinimize{
 }
 //**** 最小化から复帰 *************************************************************************************************
 OnWindowStateRestore{
+	DiscordCustomSet.LargeImageKey('kikka_eye_open')
+	--
+	DiscordCustomSet.CustomDetail('从最小化中回来')
+	--
 	OnSurfaceRestore.base
 	--
 	if topmode/2
@@ -805,9 +816,13 @@ OnWindowStateRestore{
 	}
 	else{
 		if MinimizeTime >= 60*60*24{
+			DiscordCustomSet.CustomDetail('让人等了'+TOINT(MinimizeTime/(60*60*24))+'天的屑')
+			--
 			"\0\s[9]\w9.\w9.\w9.\w9\w9\w9我可是等了你整整%(TOINT(MinimizeTime/(60*60*24)))天哦？"
 		}
 		if MinimizeTime >= 60*60*5{
+			DiscordCustomSet.CustomDetail('让人等了'+TOINT(MinimizeTime/(60*60))+'天的屑')
+			--
 			'\0\s[9]\w9.\w9.\w9.\w9\w9\w9\s[6]\n把我忘掉了吧?\w9\w9\w9\w9\n\s[35]绝对\w9.\w9.\w9.'
 			"\0\s[9]\w9.\w9.\w9.\w9\w9\w9我可是等了你整整%(TOINT(MinimizeTime/(60*60)))小时哦？"
 		}

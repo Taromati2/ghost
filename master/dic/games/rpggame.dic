@@ -3,6 +3,8 @@ OnRpgGame{
 		NeedUpdate
 		return
 	}
+	DiscordCustomSet.CustomDetail('玩RPG')
+	--
 	rpggame=1
 	STRADD=1
 	DEFADD=1
@@ -68,14 +70,18 @@ SubRpgGameMenu{
 		when 1 {
 			装备
 		}
-		when 2 {魔法
-			}
-		when 3 {道具
-			}
-		when 4 {kikkashopMenu
-			}
-		when 5 {mission
-			}
+		when 2 {
+			魔法
+		}
+		when 3 {
+			道具
+		}
+		when 4 {
+			kikkashopMenu
+		}
+		when 5 {
+			mission
+		}
 	}
 }
 RpgGameVar{
