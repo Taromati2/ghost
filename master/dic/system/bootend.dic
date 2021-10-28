@@ -68,6 +68,8 @@ OnFirstBoot{//改动于2020 by steve02081504
 		--
 		'\n\n[half]暂时、\w9要在此处打扰您了。'
 		--
+		SHIORI_FW.PushNotifyResult(DiscordCustomSet.CustomDetail('初次见面'))
+		--
 		SHIORI_FW.PushNotifyResult(GetUsernameFirst)
 		SHIORI_FW.PushNotifyResult(GetPasswordFirst)
 		SHIORI_FW.PushNotifyResult(UpdateFirst)

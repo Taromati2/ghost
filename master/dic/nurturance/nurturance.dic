@@ -56,6 +56,8 @@ KikkaVar{
 	popUseritem
 }
 KikkaVar.ToMax{
+	SHIORI_FW.PushNotifyResult(DiscordCustomSet.CustomDetail('可耻的作弊者'))
+	--
 	kikkamood = kikkamoodmax
 	KikkaVar
 	kikkapow = kikkapowmax
@@ -425,6 +427,8 @@ KikkaGrow{
 	}
 }
 OnKikkaReset:void{
+	SHIORI_FW.PushNotifyResult(DiscordCustomSet.CustomDetail('这能带来什么？'))
+	--
 	kikkalvl =1
 	kikkaexp = 0
 	kikkapow = 0
