@@ -2457,6 +2457,12 @@ OnWindowsCmd{
 		_txt=REPLACE(OnClose,'\-','')+_txt+'\-'
 	if _cmd == 'reboot'
 		inreboot = 1
+	if _cmd == 'standby'{
+		DiscordCustomSet.LargeImageKey('kikka_eye_close')
+		--
+		DiscordCustomSet.CustomDetail('待机中')
+	}
+	--
 	_txt
 }
 DELSAMEARR{//删除相同元素阵列

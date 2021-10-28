@@ -1328,6 +1328,10 @@ OnSysSuspend{
 }
 //待机中恢复
 OnSysResume.base{
+	DiscordCustomSet.LargeImageKey('kikka_eye_open')
+	--
+	DiscordCustomSet.CustomDetail('从待机中恢复')
+	--
 	'\![set,balloontimeout,180000]'
 	--
 	case reference0{
