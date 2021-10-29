@@ -9,7 +9,12 @@ OnFileDrop{
 	elseif shortcut==1
 		OnShortcutFileDrop
 	elseif SHIORI_FW.DebugMode &&(_filename == 'aya.dll' || _filename == 'yaya.dll'){
-		'\0\s[0]更新aya？\n/
+		if mode=='0'
+			'\0\s[0]'
+		else
+			'\1'
+		--
+		'更新aya？\n/
 		\q[◇确定,OnUpdateSHIORICore,'+SakuraScriptArgConverter(reference0)+']\n/
 		\q[◇无用,Cancel]'
 	}
