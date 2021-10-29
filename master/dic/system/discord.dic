@@ -28,29 +28,27 @@ OnDiscordPluginCustom{
 OnDiscordPluginCustomEnd{
 	InDiscordPluginCustom=0
 }
-DiscordCustomSet.LargeImageKey{
+DiscordCustomSet.base{
 	if InDiscordPluginCustom
-		'\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomLargeImageKey,'+_argv[0]+']'
+		'\![raiseplugin,Discord Rich Presence,'+_argv[0]+','+SakuraScriptArgConverter(_argv[1])+']'
+}
+DiscordCustomSet.LargeImageKey{
+	DiscordCustomSet.base('OnDiscordPluginCustomLargeImageKey',_argv[0])
 }
 DiscordCustomSet.LargeImageText{
-	if InDiscordPluginCustom
-		'\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomLargeImageText,'+_argv[0]+']'
+	DiscordCustomSet.base('OnDiscordPluginCustomLargeImageText',_argv[0])
 }
 DiscordCustomSet.SmallImageKey{
-	if InDiscordPluginCustom
-		'\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomSmallImageKey,'+_argv[0]+']'
+	DiscordCustomSet.base('OnDiscordPluginCustomSmallImageKey',_argv[0])
 }
 DiscordCustomSet.SmallImageText{
-	if InDiscordPluginCustom
-		'\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomSmallImageText,'+_argv[0]+']'
+	DiscordCustomSet.base('OnDiscordPluginCustomSmallImageText',_argv[0])
 }
 DiscordCustomSet.CustomDetail{
-	if InDiscordPluginCustom
-		'\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomDetail,'+_argv[0]+']'
+	DiscordCustomSet.base('OnDiscordPluginCustomDetail',_argv[0])
 }
 DiscordCustomSet.CustomState{
-	if InDiscordPluginCustom
-		'\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomState,'+_argv[0]+']'
+	DiscordCustomSet.base('OnDiscordPluginCustomState',_argv[0])
 }
 DiscordCustom.DeveloperSet{
 	if !InDiscordPluginCustom
