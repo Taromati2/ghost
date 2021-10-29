@@ -28,9 +28,6 @@ OnDiscordPluginCustom{
 OnDiscordPluginCustomEnd{
 	InDiscordPluginCustom=0
 }
-ClearDiscordPluginCustomVar{
-	ERASEVAR('InDiscordPluginCustom')
-}
 DiscordCustomSet.LargeImageKey{
 	if InDiscordPluginCustom
 		'\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomLargeImageKey,'+_argv[0]+']'
