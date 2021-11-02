@@ -453,7 +453,7 @@ Seasonjud{
 		_argv[0] = month
 	case _argv[0] {
 		when 1-2	{ '冬天';}
-		when 3-5	{ '春天'; }
+		when 3-5	{ '春天';}
 		when 6-8	{ '夏天';}
 		when 9-11	{ '秋天';}
 		when 12		{ '冬天';}

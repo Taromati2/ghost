@@ -456,7 +456,7 @@ OnMouseWheel0{
 TalkSakuraHandLead.0{
 	'\0\s[3]…\w9…\w9…'
 }
-TalkSakuraHandLead{
+TalkSakuraHandLead.2{
 	'\0\s[29]…\w9…\w9…'
 	'\0\s[29]\![raise,OnPlaySound,se_05.wav]行きます\w9…'
 	'\0\s[26]要带橘花去哪呢？'

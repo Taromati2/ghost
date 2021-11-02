@@ -343,13 +343,13 @@ meal5 : nonoverlap{
 	'酸菜鲫鱼汤'
 	'黄瓜皮蛋汤'
 }
-meal6 : nonoverlap{
+meal6 : nonoverlap_pool{
 	'芒果布丁'
 	'草莓布丁'
 	'水密桃布丁'
 	'奇异果布丁'
 	'橘花奇异水果拼盘'
-	if Seasonjud == '夏天' || 'Summer'{
+	if Seasonjud == '夏天'{
 		'奶油冰激凌水果杯'
 		'菠罗刨冰'
 		'草莓刨冰'
