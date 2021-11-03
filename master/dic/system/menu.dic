@@ -1404,7 +1404,7 @@ Select.Cookbymyself{
 	"\0\s[0]%(username)真是固执...\w9\w9\s[26]谢谢。\w9\w9\n\n\q[◇别谢了，想吃什么？,Eatwhat]"
 }
 Select.Eatwhat{
-	"\0\s[6]嗯...\w9\w9\s[0]不知道耶...\w9\w9\n给%(username)决定吧。\w9\w9\n\1\s[10]不要做奇怪的东西。\w9\w9\0\n\q[◇蛋包饭,Omuraisu]\n\q[◇可乐饼,Korokke]\n\q[◇蕃茄义大利面,Pasuta]"
+	"\0\s[6]嗯...\w9\w9\s[0]不知道耶...\w9\w9\n给%(username)决定吧。\w9\w9\n\1\s[10]不要做奇怪的东西。\w9\w9\0\n\q[◇蛋包饭,Omuraisu]\n\q[◇可乐饼,Korokke]\n\q[◇蕃茄意大利面,Pasuta]"
 }
 Select.Omuraisu{
 	"\0\s[0]是吗？\w9\s[26]只要是%(username)做的我都喜欢吃喔...\w9\w9\n\1\s[10]如果哪天%(username)作炖猫肉怎么办？\w9你也会吃吗？\w9\w9\n\0\s[30]...\w9...\w9...\w9\n可以换菜色吗？\w9\w9\1\s[11]不要当真啊！"
