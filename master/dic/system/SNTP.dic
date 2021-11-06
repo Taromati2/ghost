@@ -109,6 +109,9 @@ OnTimeError{
 OnTimeErrorFixed{
 	'\0\s[0]那么，再一次：\x'
 	--
+	if !firstboottime
+		firstboottime = "%(year),%(month),%(day),%(hour),%(minute)"
+	--
 	BaseGhostStart.aboutTime
 	--
 	OnBoot.aboutTime
