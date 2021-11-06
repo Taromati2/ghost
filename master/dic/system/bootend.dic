@@ -9,9 +9,10 @@ BaseGhostStart{//改动于2020 by steve02081504
 	Lunartime
 	FCHARSET(1)
 	lastTalk = '\0\s[20]咦？分明才刚启动的說…\1\s[10]喵，刚才什么都没说'
-	_laststart = CloseTime
-	CloseTime = GETSECCOUNT
-	elapsetime = CloseTime - _laststart
+	if year < 2012 || (GETSECCOUNT - CloseTime) < 0 //为什么不是2020：我喜欢2012
+		InTimeError = 1
+	if !InTimeError
+		BaseGhostStart.aboutTime
 	playingmusic = 0
 	OnSQLLoad
 	OnAILoad
@@ -29,6 +30,11 @@ BaseGhostStart{//改动于2020 by steve02081504
 			OpenDocForRuntime('ghost_in_temp_dir')
 	}
 }
+BaseGhostStart.aboutTime{
+	_laststart = CloseTime
+	CloseTime = GETSECCOUNT
+	elapsetime = CloseTime - _laststart
+}
 //**** 初回起动 *******************************************************************************************************
 OnFirstBoot{//改动于2020 by steve02081504
 	MAGICLOCK
@@ -41,7 +47,8 @@ OnFirstBoot{//改动于2020 by steve02081504
 		if !username
 			username = 'お兄さん'
 		mirror_url=default_mirror_url
-		firstboottime = "%(year),%(month),%(day),%(hour),%(minute)"
+		if !InTimeError
+			firstboottime = "%(year),%(month),%(day),%(hour),%(minute)"
 		elapsedtime = 0
 		Goodevening = ''
 		intimacy = 0
@@ -73,6 +80,9 @@ OnFirstBoot{//改动于2020 by steve02081504
 		SHIORI_FW.PushNotifyResult(GetUsernameFirst)
 		SHIORI_FW.PushNotifyResult(GetPasswordFirst)
 		SHIORI_FW.PushNotifyResult(UpdateFirst)
+		--
+		if InTimeError
+			SHIORI_FW.PushNotifyResult(OnTimeError)
 	}else{
 		OnBoot('FromFirstBoot')
 	}
@@ -137,13 +147,14 @@ OnBoot{
 		OnFirstBoot
 		return
 	}
-	if elapsetime > 300 && specialmode == 'mealtime'{
-		void Onmealfin
-	}
 	if mode == '1'{
-		mealendtime=60
+		if specialmode == 'mealtime'
+			mealendtime=60
 		"\0\s[-1]\1\s[%(specialmode != 'mealtime')10]呦。"
 		return
+	}
+	if elapsetime > 300 && specialmode == 'mealtime'{
+		void Onmealfin
 	}
 	if uninstall || (_argv[0]=='FromFirstBoot' && elapsetime > 172800){
 		SilentShellChange=1
@@ -189,6 +200,32 @@ OnBoot{
 		return
 	}
 	--
+	if InTimeError
+		OnTimeError
+	else
+		OnBoot.aboutTime
+	--
+	if !TOINT(autobackup) && autobackupclosealert{
+		_t = '○,●'
+		"\C\_q\1\s[10]\0\s[40]■橘花提醒■\n为避免人格失忆，请设自动备份开关为On，当前自动备份功能关闭，请定期手动备份。\n/
+		自动备份　　　\q[%(_t[TOINT(autobackup)]) ON,Onusage,autobackup,1]  ・  \q[%(_t[1 - TOINT(autobackup)]) OFF,Onusage,autobackup,0]\n/
+		\q[◇不再提醒,Onusage,autobackupclosealert,0]\n/
+		\x"
+	}
+	--
+	/*
+	if TOINT(autoastro)==0
+		temp='autoastro'
+	if TOINT(autoweather)==0
+		OnWeatherFoundAuto
+	elseif TOINT(autoastro)==0
+		OnAstroFoundAuto
+	*/
+	--
+	if AutoUpdate
+		OnSilentUpdate
+}
+OnBoot.aboutTime{
 	_phase = GetPhase
 	_laststart=0
 	_timeslot=GetTimeSlot
@@ -484,26 +521,6 @@ OnBoot{
 		"\1\s[10]\0\s[40]\![raise,OnPlaySound,tinkle.wav]今天是%(lunartime[9]) %(lunartime[10])\n/
 		\q[◇10小时内不再提醒,stoprm]\n\x"
 	}
-	--
-	if !TOINT(autobackup) && autobackupclosealert{
-		_t = '○,●'
-		"\C\_q\1\s[10]\0\s[40]■橘花提醒■\n为避免人格失忆，请设自动备份开关为On，当前自动备份功能关闭，请定期手动备份。\n/
-		自动备份　　　\q[%(_t[TOINT(autobackup)]) ON,Onusage,autobackup,1]  ・  \q[%(_t[1 - TOINT(autobackup)]) OFF,Onusage,autobackup,0]\n/
-		\q[◇不再提醒,Onusage,autobackupclosealert,0]\n/
-		\x"
-	}
-	--
-	/*
-	if TOINT(autoastro)==0
-		temp='autoastro'
-	if TOINT(autoweather)==0
-		OnWeatherFoundAuto
-	elseif TOINT(autoastro)==0
-		OnAstroFoundAuto
-	*/
-	--
-	if AutoUpdate
-		OnSilentUpdate
 }
 Select.Goodevening_0{
 	Goodevening = '午安'
@@ -700,7 +717,8 @@ ClearTempVar:void{
 OnClose.base:void{
 	if reference0 == 'system'
 		inshutdown=1
-	CloseTime = GETSECCOUNT
+	if !InTimeError
+		CloseTime = GETSECCOUNT
 	--
 	ClearTempVar
 	--

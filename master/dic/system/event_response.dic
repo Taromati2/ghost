@@ -1050,50 +1050,6 @@ OnNarCreated{
 	--
 	'\w9\n完成了。'
 }
-//**** 时间同步处理 *******************************************************************************
-//**** みか (http://homepage2.nifty.com/ko-ki/) の辞书を参考にしました。感谢＞こーき氏
-Select.SNTPTIME{
-	"\1\b[2]\s[15]\n现在的校准伺服器是\n\_q%(SNTPserver)\_q\n要更换伺服器吗？\n\n/
-	\![*]\q[更改伺服器,SNTPChange]\n/
-	\![*]\q[校准开始,SNTPStart]\n"
-}
-Select.SNTPChange{
-	'\1\s[11]请输入新的伺服器地址。\![open,inputbox,sntpserver,-1,stdtime.gov.hk]'
-}
-Select.SNTPStart{
-	'\![executesntp]'
-}
-//---- 时间同步处理开始 -----------------------------------------------------------------
-OnSNTPBegin{
-	DiscordCustomSet.CustomDetail('调制人生')
-	--
-	"\0\s[5]连线到\_q%(reference0)\_q伺服器了哦，时间同步开始。"
-}
-//---- 时刻取得成功、比较开始 -----------------------------------------------------------
-OnSNTPCompare{
-	'\0\s[6]'
-	if reference3 == 0{
-		DiscordCustomSet.CustomDetail('精确、精细、精致')
-		--
-		_nowtime = SPLIT(reference1,',')
-		"没有误差。\n现在时刻：%(_nowtime[0])年%(_nowtime[1])月%(_nowtime[2])日 %(_nowtime[3]):%(_nowtime[4])"
-	}
-	else{
-		DiscordCustomSet.CustomDetail('做了些小调整')
-		--
-		"误差%(reference3)秒。\n\n\n校准中......"
-	}
-}
-OnSNTPCorrect{
-	_nowtime = SPLIT(reference1,',')
-	"\0\s[5]同步完成了，很顺利呢。\n现在时刻：%(_nowtime[0])年%(_nowtime[1])月%(_nowtime[2])日%(_nowtime[3])：%(_nowtime[4])"
-}
-//---- 时间同步处理失败 -----------------------------------------------------------------
-OnSNTPFailure{
-	DiscordCustomSet.CustomDetail('被时间抛弃')
-	--
-	'\0\s[3]……失败了？？呜……'
-}
 //**** そのほか *************************************************************************
 //---- ディスプレイ解像度変更 -----------------------------------------------------------
 OnDisplayChange{
