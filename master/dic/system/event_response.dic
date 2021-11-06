@@ -43,8 +43,9 @@ OnNotifySelfInfo:void{
 //缺省信息补全&同步信息更新 by steve02081504
 OnNotifyUserInfo.WhenEmpty.username:void{
 	if _argv[0]{
-		case _argv[0]{
-			when 'Administrator','User','Guest','SYSTEM','admin','管理员','root'{
+		_simplified_name = TOLOWER(TOSIMPLIFIED(_argv[0]))
+		case _simplified_name{
+			when 'administrator','user','guest','system','admin','管理员','root','autobvt','microsoft','test'{
 				do_nothing
 			}
 			others{
