@@ -88,7 +88,7 @@ OnSNTPCorrect{
 		DiscordCustomSet.CustomDetail('穿越成功')
 	--
 	_nowtime = SPLIT(reference1,',')
-	"\0\s[5]同步完成了，很顺利呢。\n现在时刻：%(_nowtime[0])年%(_nowtime[1])月%(_nowtime[2])日%(_nowtime[3])：%(_nowtime[4])"
+	"\0\s[5]同步完成了，很顺利呢。\n现在时刻：%(_nowtime[0])年%(_nowtime[1])月%(_nowtime[2])日%(_nowtime[3])：%(_nowtime[4])\n"
 	--
 	if InTimeError{
 		ERASEVAR('InTimeError')
@@ -99,6 +99,13 @@ OnSNTPFailure{
 	DiscordCustomSet.CustomDetail('被时间抛弃')
 	--
 	'\0\s[3]……失败了？？呜……'
+}
+
+//
+
+TimeErrorCheck{
+	if GETSECCOUNT
+		year < 2021 || (GETSECCOUNT - CloseTime) < 0
 }
 OnTimeError{
 	'\0\s[20]时间出错了哦？\n/
