@@ -13,5 +13,6 @@ craftmanw,8 and other contributors
 craftmanurl,https://github.com/Taromati2/Taromati2/blob/master/docs/contributors.md
 shiori.logo.file,./img/AI_state.png
 recommended.balloon,wiz
-cursor,./img/curs/common.ani
+mousecursor,./img/curs/common.ani
+mousecursor.text,./img/curs/text.ani
 homeurl,https://cdn.jsdelivr.net/gh/Taromati2/stable-mirror@master/Taromati2/
