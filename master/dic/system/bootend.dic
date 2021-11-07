@@ -149,7 +149,7 @@ OnBoot{
 	if mode == '1'{
 		if specialmode == 'mealtime'
 			mealendtime=60
-		"\0\s[-1]\1\s[%(specialmode != 'mealtime')10]呦。"
+		"\0\s[99]\1\s[%(specialmode != 'mealtime')10]呦。"
 		return
 	}
 	if elapsetime > 300 && specialmode == 'mealtime'{
@@ -173,7 +173,7 @@ OnBoot{
 					FirstBootCount=13//再也不见
 					MAGICSAVE//永久生效
 				}
-				'\1\s[-1]\0\s[-1]请不要玩弄我的心，我不会回来的'//致敬ddlc
+				'\1\s[19]\0\s[99]请不要玩弄我的心，我不会回来的'//致敬ddlc
 				--
 				SilentVanish = 1
 				topmode=1

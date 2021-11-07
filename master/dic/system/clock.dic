@@ -108,7 +108,7 @@ OnMinuteChange{
 					''
 					'\w9\w9\1\s[10]\n\n[half]装可爱就是猫的工作啊。\w9\w9\0\s[6]\n\n[half]既然如此、快点开始工作吧。\w9\w9\1\n\n[half]…\w9…\w9…'
 				}
-				'\1\s[11]啊゛啊゛啊゛呀─────！！\w9\0\s[30]怎么了？\w9\w9\1\s[12]\n\n[half]那个断掉了─────！！\w9\w9\1\s[-1]\b[-1]\w9\w9\0\s[30]\n\n[half]…\w9…\w9…\w9\w9\w9\w9\1\s[10]\c呼～～～。\w9\w9\n呃、\w9见笑了。\w9\w9\0\s[8]\n\n[half]…\w9…\w9…'
+				'\1\s[11]啊゛啊゛啊゛呀─────！！\w9\0\s[30]怎么了？\w9\w9\1\s[12]\n\n[half]那个断掉了─────！！\w9\w9\1\s[19]\b[-1]\w9\w9\0\s[30]\n\n[half]…\w9…\w9…\w9\w9\w9\w9\1\s[10]\c呼～～～。\w9\w9\n呃、\w9见笑了。\w9\w9\0\s[8]\n\n[half]…\w9…\w9…'
 				'\![raise,OnSmokingPlace]'
 			}
 			elseif (memoryload>=80&&TOINT(memorybusyrm[1])==0||memoryload>=TOINT(memorybusyrm[1])&&TOINT(memorybusyrm[1])!=0)&&TOINT(memorybusyrm[0])==0{

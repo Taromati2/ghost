@@ -18,7 +18,7 @@ OnShellChanging{
 	}
 	if judgeshell(reference0)=='0|'&& Userspitem[0][2]!=1&& Userspitem[1][2]!=1{
 		haveshell=0
-		'\0\s[-1]\b[-1]'
+		'\0\s[99]\b[-1]'
 	}
 	else{
 		haveshell=1
@@ -294,7 +294,7 @@ OnShellChanged{
 	if IsHShell(reference0) && !CanH{
 		if IsHShell(shellID)
 			shellID='预设'
-		"\0\s[-1]\![raise,OnSilentChangeShell,%(shellID)]"
+		"\0\s[99]\![raise,OnSilentChangeShell,%(shellID)]"
 		return
 	}else{
 		'\0\s[0]'
@@ -331,7 +331,7 @@ OnShellChanged{
 			'\0\s[0]…嗯、\w9\w9\s[5]这样子如何呢？'
 		}
 		elseif summer == '1'{
-			"\1\s[-1]\0\s[0]…嗯、\w9\w9\s[5]这样子如何呢？\n%(uername)好看吗？\n\q[◇好看,goodlook]\n\q[◇换一件吧,notgoodlook]"
+			"\1\s[19]\0\s[0]…嗯、\w9\w9\s[5]这样子如何呢？\n%(uername)好看吗？\n\q[◇好看,goodlook]\n\q[◇换一件吧,notgoodlook]"
 		}
 		elseif bedroom == '1'{
 			'\0\s[0]…嗯、\w9\w9\s[5]洗好了吗？\n\n\q[◇洗好了,Choice9]\n\q[◇没事了,Choice2]\x'
@@ -513,15 +513,15 @@ OnChangeShellTalk{
 			--
 			'\w7\s[26]知道了\n'
 			--
-			'\w5\s[-1]那橘花去换衣服了哦'
-			'\w5\s[-1]橘花换衣服了哦'
+			'\w5\s[99]那橘花去换衣服了哦'
+			'\w5\s[99]橘花换衣服了哦'
 			--
 			'~'
 			",%(username)不许偷看哈♪"
 		}
 	}
 	--
-	'\s[-1]\b[-1]\w9'
+	'\s[99]\b[-1]\w9'
 }
 Select.overchangeshell{
 	"\0不用换也行吗?\w6\n果然是%(shellID)好吗～"

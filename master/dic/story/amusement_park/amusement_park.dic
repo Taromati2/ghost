@@ -29,7 +29,7 @@ Select.入游乐园园门{
 }
 Select.gosthous{
 	"\1\s[10]这间鬼屋原来是一间富豪的别墅，\n\w8不过不知道什么原因\w8\n被荒废了很久\w8\w8\0\s[40]那我们进去探险吧\w8\w8\![raise,OnPlaySound,se_gost.mp3]这里很阴暗%(username)要注意脚步\w9\w9\w9\1\s[10]\c或许是屋主刻意营造这种气氛\w8\w8\w9\s[12]\c听说这游乐园在兴建的时候\w8\w8\n有工人听到女孩子的哭声\w8以及烧焦的味道\w9\w9\w9\1\s[11]\c而我们现在正走过的地方\w8\w8\n就是工人听到哭声的地方\w9\w9\0\s[8]\c你说的是真的吗？斗和！？\w9\n\q[◇这种鬼故事是讲给小孩子的吧,gosthous_yes1]\n\q[◇斗和像这类的故事还是少说为妙,gosthous_no2]"
-	"\![raise,OnPlaySound,se_gost.mp3]\1\s[10]一般都是人扮的吧\w9\w9\w9\0\s[2]是吗？\w9\w9\s[7],活体啊..\w5.\w9\w9\s[8]\c那鬼屋不就没意义了吗 ?\w9\w9\w9\0\s[-1]\c啊!!\w9\w9\0\s[-1]\b[-1]\c\w9\w9\w9\1\s[11]\c小公主呢？\w9\w9\w9\w9\0\s[40]\c哇！！！！\w9\w9\0\s[0]\w9\w9\c\%(username)有吓到吗？\n\q[◇有,gosthous_yes]\n\q[◇没有,gosthous_no]"
+	"\![raise,OnPlaySound,se_gost.mp3]\1\s[10]一般都是人扮的吧\w9\w9\w9\0\s[2]是吗？\w9\w9\s[7],活体啊..\w5.\w9\w9\s[8]\c那鬼屋不就没意义了吗 ?\w9\w9\w9\0\s[99]\c啊!!\w9\w9\0\s[99]\b[-1]\c\w9\w9\w9\1\s[11]\c小公主呢？\w9\w9\w9\w9\0\s[40]\c哇！！！！\w9\w9\0\s[0]\w9\w9\c\%(username)有吓到吗？\n\q[◇有,gosthous_yes]\n\q[◇没有,gosthous_no]"
 }
 Select.gosthous_yes1{
 	"\1\s[11]你就不要不信邪了%(username)\w9\w9\0\s[20]要说尸体的话\w9\w9\0\s[5]\n我看过满山满谷的尸体\w9\w9\w8\n像斗和说的\w8幽灵阿\w8、鬼魂阿\w9我倒是没见过半个\w8\w9\1\s[13]\c老实说%(username)\w9后面就有一位身穿黑衣的女孩\w8\0\s[32]\c喀擦！\w5\1\s[11]\c等等！！！\w5等等！！！！！！！\w8是我看错了\w8\s[10]\c对不起\w9\w9\w9\0\s[30]\c知道就好\w8\w9\w9\0\s[40]\c%(username)这里还要继续逛吗?\w8\w9\n\q[◇这里只有阴森而已其他没什么特别的，换下一个地方吧,gosthous_b1]\n\q[◇后面还有一大段耶，没走完不甘心,gosthous_b2]"
@@ -41,7 +41,7 @@ Select.gosthous_b1{
 	Select.parkmenu
 }
 Select.gosthous_b2{
-	"\1\s[10]\![raise,OnPlaySound,se_gost.mp3]一般都是人扮的吧\w9\w9\w9\0\s[2]是吗？\w9\w9\s[20],活体啊..\w5.\w9\w9\s[8]\c那鬼屋不就没意义了吗 ?\w9\w9\w9\0\s[-1]\c啊!!\w9\w9\0\s[-1]\b[-1]\c\w9\w9\w9\1\s[11]\c小公主呢？\w9\w9\w9\w9\0\s[40]\c哇！！！！\w9\w9\0\s[0]\w9\w9\c\%(username)有吓到吗？\n\q[◇有,gosthous_yes]\n\q[◇没有,gosthous_no]"
+	"\1\s[10]\![raise,OnPlaySound,se_gost.mp3]一般都是人扮的吧\w9\w9\w9\0\s[2]是吗？\w9\w9\s[20],活体啊..\w5.\w9\w9\s[8]\c那鬼屋不就没意义了吗 ?\w9\w9\w9\0\s[99]\c啊!!\w9\w9\0\s[99]\b[-1]\c\w9\w9\w9\1\s[11]\c小公主呢？\w9\w9\w9\w9\0\s[40]\c哇！！！！\w9\w9\0\s[0]\w9\w9\c\%(username)有吓到吗？\n\q[◇有,gosthous_yes]\n\q[◇没有,gosthous_no]"
 }
 Select.gosthous_yes{
 	intimacy += 1
@@ -138,19 +138,19 @@ Select.Ferris_wheel{
 }
 Select.Ferris_wheel_chico1{
 	intimacy += 1
-	"\0\s[26]那我就跟%(username)\w8一起乘上车厢吧!\w9\1\s[10]那我就在底下等你们。\w9\1\s[-1]\w9\w9\1\C\s[-1]旁白:\n车厢缓缓地向上移动\w9\0\s[2]\c哇～\w9眼前的景物渐渐的变远了!\w9\w8\1\s[-1]\1\c\s[-1]旁白:坐在对面的橘花以小小的身躯靠在车厢旁\w9\w9\0\s[30]\c%(username)你看!\w8\w8斗和越来越小只了。\w9\w9\w9\s[0]嗯..\w8...\w9\w8呐！\w5%(username)觉得\w8橘花\w8看起来像小孩子吗？\n\w8\w8\q[◇怎么说呢，确实像小孩子,saysomething1]\n\q[◇怎么会，一点都不像,saysomething2]"
+	"\0\s[26]那我就跟%(username)\w8一起乘上车厢吧!\w9\1\s[10]那我就在底下等你们。\w9\1\s[19]\w9\w9\1\C\s[19]旁白:\n车厢缓缓地向上移动\w9\0\s[2]\c哇～\w9眼前的景物渐渐的变远了!\w9\w8\1\s[19]\1\c\s[19]旁白:坐在对面的橘花以小小的身躯靠在车厢旁\w9\w9\0\s[30]\c%(username)你看!\w8\w8斗和越来越小只了。\w9\w9\w9\s[0]嗯..\w8...\w9\w8呐！\w5%(username)觉得\w8橘花\w8看起来像小孩子吗？\n\w8\w8\q[◇怎么说呢，确实像小孩子,saysomething1]\n\q[◇怎么会，一点都不像,saysomething2]"
 }
 Select.Ferris_wheel_chico2{
-	"\1\s[10]那我就跟%(username)一起乘上车厢吧。\w9\0\s[0]那么~\w8请稍等一下。\0\s[-1]\w8\w9\w9\0\s[27]不好意思久等了~~\w9\w9\1\s[11]小公主你为什么拿枪......\n\x\q[◇继续,parkmenu]"
+	"\1\s[10]那我就跟%(username)一起乘上车厢吧。\w9\0\s[0]那么~\w8请稍等一下。\0\s[99]\w8\w9\w9\0\s[27]不好意思久等了~~\w9\w9\1\s[11]小公主你为什么拿枪......\n\x\q[◇继续,parkmenu]"
 	'\1\s[11]跟我ㄧ起？！\w9好吧。\w9\0\s[5]玩得愉快唷~~\w9\1\s[12]小公主不会对我怎样吧???\x\q[◇继续,parkmenu]'
 }
 Select.saysomething1{
-	"\0\s[8]是吗...\w9\1\s[-1]旁白:原以为会被橘花枪杀的%(username)不知怎么的松了一口气...\n\n[half]/
+	"\0\s[8]是吗...\w9\1\s[19]旁白:原以为会被橘花枪杀的%(username)不知怎么的松了一口气...\n\n[half]/
 	\q[◇继续,parkmenu]"
 }
 Select.saysomething2{
 	intimacy += 1
-	"\0\s[9]那.....那%(username)...\w9\w9\0\s[1]你喜欢...\w9\w9\1\s[-1]旁白:\w9\n阳光随着车厢的缓缓向上从刺眼的黄色，\w9\n转变成偏橘黄色的夕阳\n\0\s[1]喜欢我吗?\n\n[half]/
+	"\0\s[9]那.....那%(username)...\w9\w9\0\s[1]你喜欢...\w9\w9\1\s[19]旁白:\w9\n阳光随着车厢的缓缓向上从刺眼的黄色，\w9\n转变成偏橘黄色的夕阳\n\0\s[1]喜欢我吗?\n\n[half]/
 	\q[◇当然喜欢!!,saysomething.loveup]\n/
 	\q[◇嗯...很讨厌。,saysomething.lovedn]\n/
 	\q[◇这...我还不清楚自己的感情...,saysomething.loveno]"
@@ -198,7 +198,7 @@ Select.saysomething.lovedn3{
 	\q[◇继续,saysomething.lovedn_00]"
 }
 Select.saysomething.lovedn_00{
-	"\0\s[-1](旁白)于是%(username)和橘花在回家的路上都沉默不语......\w9\w9\n/
+	"\0\s[99](旁白)于是%(username)和橘花在回家的路上都沉默不语......\w9\w9\n/
 	\1\s[10]这个...\w9\w9到底出了什么事了?"
 }
 Select.saysomething.loveno{
