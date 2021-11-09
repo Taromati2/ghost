@@ -11,6 +11,6 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: shiori-check
-        uses: Taromati2/yaya-CI-check@v2
+        uses: Taromati2/yaya-CI-check@v1
         with:
           shiori-path: .\master\shiori\aya.dll
