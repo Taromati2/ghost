@@ -706,6 +706,7 @@ ClearTempVar:void{
 	S_CHARSET = GETSETTING('charset.output')
 }
 OnClose.base:void{
+	OnCloseCalled=1
 	if reference0 == 'system'
 		inshutdown=1
 	if !TimeErrorCheck

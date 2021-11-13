@@ -275,6 +275,7 @@ load {
 
 	SHIORI_FW.SetDelayEvent('',0)
 
+	ERASEVAR('OnCloseCalled')
 	CALLALLFUNCTIONBEGINAS('Init.')
 
 	if SHIORI_FW.EmergencyMode
@@ -286,6 +287,10 @@ load {
 		if _LastBootInEmergencyMode
 			SHIORI_FW.PushNotifyResult(OnEmergencyModeEnd)
 	}
+
+	if ShioriReloading
+		SHIORI_FW.PushNotifyResult(OnShioriReloaded)
+	ERASEVAR('ShioriReloading')
 }
 
 //******************************************************************************
@@ -304,6 +309,9 @@ unload {
 	var.req.rawvalue = IARRAY
 
 	ghostupmin_last = MAX(ghostupmin_total,elapsedtimetotal)
+
+	if !OnCloseCalled
+		ShioriReloading=1
 
 	CALLALLFUNCTIONBEGINAS('Fin.')
 
