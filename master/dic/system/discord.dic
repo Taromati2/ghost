@@ -1,7 +1,6 @@
 OnDiscordPluginCustom{
 	InDiscordPluginCustom=1
-	'\0\s[0]好的，Discord个人资料已经更新了\n/
-	\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomALL,'
+	'\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomALL,'
 	--
 	'902362898960117830,'//Appid
 	--
@@ -24,6 +23,8 @@ OnDiscordPluginCustom{
 	DiscordCustom.DeveloperSet
 	--
 	DiscordCustom.LoggingSet
+	--
+	'\0\s[0]好的，Discord个人资料已经更新了\n'
 }
 OnDiscordPluginCustomEnd{
 	InDiscordPluginCustom=0
