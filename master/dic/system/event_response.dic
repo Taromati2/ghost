@@ -474,6 +474,7 @@ OnInstallFailure{
 		"\1\s[10]原因是：%(reference0)。"
 }
 OnShioriReloadedbyself{
+	OnSQLLoad.Fixer//非中文环境编码问题再修复
 	if mode == '1'{
 		"\1\s[%(specialmode != 'mealtime')10]唔…\n重载完了。"
 		return

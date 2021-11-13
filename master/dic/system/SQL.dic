@@ -37,10 +37,13 @@ OnSQLLoad.base:void{
 		OnSQLLoad.base
 	}
 }
-OnSQLLoad:void{
-	OnSQLLoad.base
+OnSQLLoad.Fixer:void{
 	CALLSAORI('debeso')
 	CHARSETLIBEX('SAORI_PATH\debeso',4)
+}
+OnSQLLoad:void{
+	OnSQLLoad.base
+	OnSQLLoad.Fixer
 }
 ClearSQLVar{
 }
