@@ -211,12 +211,7 @@ OnBalloonClose{
 	if alarmstart && '闹钟提醒' _in_ reference0 {
 		alarmstart = 0
 		'\![sound,stop]'
-	}elseif '重新讀取SHIORI' _in_ reference0
-		OnShioriReloadedbyself
-}
-OnBalloonTimeout{
-	if '重新讀取SHIORI' _in_ reference0
-		OnShioriReloadedbyself
+	}
 }
 OnTrayBalloonClick{
 	if reference0 == '闹钟提醒' {
