@@ -3,6 +3,7 @@
 /////////written by umeici.
 //平台更新反应by steve02081504
 OnBasewareUpdating{
+	BasewareUpdating=1
 	'\1\s[10]\0\s[6]嗯…\w9\w9\s[0]\n'
 	--
 	"/
@@ -14,6 +15,8 @@ OnBasewareUpdating{
 	'\s[6]\w9\w9\w9'
 }
 OnBasewareUpdated{
+	ERASEVAR('BasewareUpdating')
+	OnSQLLoad.Fixer
 	BaseGhostStart
 	--
 	'\0\s[5]我回来了\n\w9\w9'
