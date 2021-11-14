@@ -179,7 +179,6 @@ CheckRetroSnakerStatus{//游戏状态
 			"\c\b[2]获得奖励金钱%(TOINT(2*Score))\x"
 		--
 		money+=TOINT(2*Score)
-		anti_cheat('money')
 		iChanged = -1
 		//LoadParams
 		for i=0; i<NumScores; i++{

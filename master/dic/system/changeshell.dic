@@ -278,7 +278,6 @@ OnBuyShell{
 	if money>=30000{
 		haveshell=1
 		money-=30000
-		anti_cheat('money')
 		crystalnum=TOINT(crystalnum)+1
 		ERASEVAR('SilentShellChange')
 		"\1\s[10]\0\s[0]花费￥30000金钱购买能量水晶#%(crystalnum)以激活%(reference0)。\w9\w9\x\![change,shell,%(reference0)]]"

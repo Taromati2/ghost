@@ -180,7 +180,6 @@ KikkaStatusChange{
 	if 'money=' _in_ _ref {
 		_tmp = _ref[1,'money=']
 		money += EVAL(_tmp[0])
-		anti_cheat('money')
 	}
 	if 'love=' _in_ _ref {
 		_tmp = _ref[1,'love=']
@@ -245,7 +244,6 @@ KikkaStatus{
 		_txt += ColorText("\n\_l[120,-]体力：\_l[0,-]幸福度：%(幸福度)","bold,color=%(ColorIdx(1))") + ColorBar(1,175,kikkastm,kikkastmmax,,'colortxt=178')
 		_txt += ColorText("\n\_l[0,-]心情：%(kikkamood)","bold,color=%(ColorIdx(8))") + ColorBar(8,175,kikkamood,kikkamoodmax)
 		_txt += ColorText("\n好感度：%(intimacy)","bold,color=%(ColorIdx(6))")
-		anti_cheat('intimacy')
 		_heart = '\_l[103]'
 		for _i = TOINT(log(1.584893,intimacy)) / 3; _i > 0; _i -- {//POW(intimacy,0.39208)
 			_heart += '\_b[RPGPATH\heart2.gif,inline]'
@@ -296,7 +294,6 @@ KikkaStatusMain{
 	_txt += ColorText("\n\_l[0,-]土能量指数：%(SUBSTR(100*幸福度/_能量,0,5))%  \_l[134]幸福度：%(幸福度)  \_l[220]幸运：%(幸运)","bold,color=%(ColorIdx(9))")
 	_txt += ColorText("\n[half]\n\_l[0,-]金钱：%(money)       服装装量：%(HaveShellCount)","bold,color=%(ColorIdx(2))")
 	_txt += ColorText("\n\_l[0,-]好感度：%(intimacy)      \q[◇对话装量,OnGetTalkCount]：%(talkcount)","bold,color=%(ColorIdx(6))")
-	anti_cheat('intimacy')
 	_txt
 }
 OnGetTalkCount{
@@ -387,7 +384,6 @@ KikkaGrow{
 				}
 			}else{
 				money -= 600
-				anti_cheat('money')
 				KikkaStatusChange('stm=300')
 				KikkaStatusChange('exp=30')
 			}
@@ -498,7 +494,6 @@ OnKikkaItem{
 			KikkaIteminfo=("%(year)年%(month)月%(day)日%(hour)时%(minute)分收到%(KikkaItem[reference5][1])。" , KikkaIteminfo)
 		}
 		KikkaStatusChange("money=%(reference1),%(reference2),%(reference3),%(reference4)")
-		anti_cheat('money')
 	}
 	--
 	reference0=TOINT(reference0)

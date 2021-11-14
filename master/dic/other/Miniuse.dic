@@ -479,7 +479,6 @@ gift{
 Onmoneyadd{
 	_num = TOINT(reference0)
 	money += _num
-	anti_cheat('money')
 }
 Select.likebirthdaygift{
 	intimacy += 200

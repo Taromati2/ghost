@@ -489,7 +489,6 @@ OnBuyLinkSeed{//种子购买
 	if reference0=='buy'{
 		if money>=TOINT(reference1){
 			money-=TOINT(reference1)
-			anti_cheat('money')
 			LinkWndSeed+=TOINT(reference2)
 			_txt+="购买%(reference2)粒种子，花费%(reference1)金钱。\n"
 		}
@@ -1054,7 +1053,6 @@ WinCheck{//胜利检查
 		if levelname==0{
 			playLinkWnd=4
 			money+=TOINT(linkwndmoney)
-			anti_cheat('money')
 			_txt+="\c\0\s[5]恭喜%(username)胜利闯关,获得金钱%(linkwndmoney)。即将开始新局\x"
 			if LinkWndnd<2
 				LinkWndnd++
@@ -1139,7 +1137,6 @@ WinCheck{//胜利检查
 			_txt+="\c恭喜%(username)完成闯关次数10次，获得额外%(_linkballname)×100，额外金钱1000\x"
 			mylinkball[0]=TOINT(mylinkball[0])+100
 			money+=1000
-			anti_cheat('money')
 		}
 		_txt+=OnInitLinkWnd
 	}

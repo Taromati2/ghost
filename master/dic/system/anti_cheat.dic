@@ -1,8 +1,56 @@
 //by steve02081504
-//简单防作弊
-//本来想做作弊检测啥的，但涉及到金丝雀值啥的写起来太麻烦，就单纯无法作弊吧
-anti_cheat{//原理：地址变动
-	_t=EVAL(_argv[0])
-	ERASEVAR(_argv[0])
-	_t=EVAL(_argv[0]+'='+"%_t")
+AntiCheatWatcher{
+	_varname=_argv[0]
+	_var=_argv[1]
+	AntiCheatSetter(_varname,_var,_var)
+}
+AntiCheatSetter{
+	_varname=_argv[0]
+	_var=_argv[1]
+	_var_before=_argv[2]
+	_CanaryValueName='CanaryValue.'+_varname
+	_CanaryValue=EVAL(_CanaryValueName)+72
+	if _CanaryValue!=_var_before{
+		if ISVAR(_CanaryValueName){
+			void EVAL(_varname+'='+_CanaryValue)
+			SHIORI_FW.PushNotifyResult(ValueCheatted(_varname,_CanaryValue,_var))
+			_CanaryValue
+			return
+		}
+	}
+	void EVAL(_CanaryValueName+'='+(_var-72))
+	_var
+}
+AntiCheat{
+	FUNCDECL_READ(_argv[0],'AntiCheatWatcher')
+	FUNCDECL_WRITE(_argv[0],'AntiCheatSetter')
+}
+Init.AntiCheatIniter{
+	AntiCheat('money')
+	AntiCheat('intimacy')
+}
+ValueCheatted{
+	_varname=_argv[0]
+	_var_should_have=_argv[1]
+	_var_cheatting_to=_argv[2]
+	case _varname{
+		when 'money'{
+			if _var_cheatting_to>_var_should_have
+				money-=money/2+100
+			else
+				'\0\s[8]把金钱改为负值\w9.\w9.\w9.\n/
+				这是什么新的惩罚项目吗？\n'
+				--
+				if _var_cheatting_to < -200000
+					'\1\s[10]也可能是改的数值过大结果溢出了啊，\w9\w9\s[12]对吧\w9\n/
+					\0\s[8]啊哈哈'
+		}
+		when 'intimacy'{
+			if _var_cheatting_to>_var_should_have{
+				intimacy=MIN(-10,-intimacy/2)
+			}
+			else
+				''
+		}
+	}
 }

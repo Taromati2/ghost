@@ -1841,7 +1841,6 @@ Onyeslodging{
 		hp1=hpmax1
 		ep1=epmax1
 		money-=100+5*(lvl0-1)
-		anti_cheat('money')
 	}
 	else
 		'金额不足，不能住宿\x'
@@ -1977,7 +1976,6 @@ OnCircleConfirm{
 		'转生失败，金钱不足，不能转生，转生一次花费的金钱为10000，请酌情考虑是否转生。\x'
 	}
 	--
-	anti_cheat('money')
 	OpenRpgGameMenu(4)
 }
 OnCircleCancel{
@@ -2122,7 +2120,6 @@ Onbuy{
 			'金钱不足，购买失败\x'
 		}
 		--
-		anti_cheat('money')
 		--
 		OpenRpgGameMenu(4)
 	}
@@ -2243,7 +2240,6 @@ Onsell{
 				}
 			}
 			--
-			anti_cheat('money')
 			--
 			OpenRpgGameMenu(4)
 		}
@@ -2287,7 +2283,6 @@ Onitembuy{
 				'金钱不足，购买失败\x'
 			}
 			--
-			anti_cheat('money')
 			--
 			OpenRpgGameMenu(4)
 		}
@@ -2443,7 +2438,6 @@ Onaward{
 		'\0\s[8]未达到奖励条件，领取失败\x'
 	}
 	--
-	anti_cheat('money')
 	--
 	OpenRpgGameMenu(5)
 }
@@ -2521,7 +2515,6 @@ Onbattle{
 		\q[◇休息一下,On休息]\n/
 		\q[◇回去吧,back]"
 		money+=5*mlv
-		anti_cheat('money')
 	}
 	elseif f>50{
 		if mnum==9{
@@ -4176,7 +4169,6 @@ Onmspattack{
 	mnum+=1
 	_reward=bosslevel*level*mlv*bata
 	money+=TOINT(4*_reward)
-	anti_cheat('money')
 	exp0+=TOINT(2*_reward)
 	exptotal0+=TOINT(2*_reward)
 	exp1+=TOINT(2*_reward)

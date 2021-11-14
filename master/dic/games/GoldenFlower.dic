@@ -509,7 +509,6 @@ OnCardCharge{
 	if reference0=='charge'{
 		if money>=TOINT(reference1){
 			money-=TOINT(reference1)
-			anti_cheat('money')
 			usercoin+=TOINT(reference1)
 			_txt+="成功充值%(TOINT(reference1))金币，现在金币为%(usercoin),金钱%(money)\n"
 		}
@@ -530,7 +529,6 @@ OnCoinChange{
 		if usercoin>=TOINT(reference1){
 			usercoin-=TOINT(reference1)
 			money+=TOINT(reference1)
-			anti_cheat('money')
 			_txt+="成功兑换%(TOINT(reference1))金钱，现在金钱为%(money)，金币为%(usercoin)\n"
 		}
 		else

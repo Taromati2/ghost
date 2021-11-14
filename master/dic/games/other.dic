@@ -466,7 +466,6 @@ BlackjackJudge{
 			"\0\s[30]%(username)的点数比较大呢……"
 		}
 	}
-	anti_cheat('money')
 }
 BlackjackCal{
 	kikkascard[2] = 0
@@ -927,7 +926,6 @@ OnDeluxeBall{
 		if BallMode==1{
 			if money>=2*_p{
 				money-=2*_p
-				anti_cheat('money')
 			}
 			else{
 				_txt+='金钱不足，不能购买'
@@ -972,7 +970,6 @@ OnDeluxeBall{
 			_txt+="\n\s[8]很遗憾，%(username)没有中奖，当作是为人民作贡献吧\n"
 		if BallMode==1 &&  money>=2*_p{
 			money+=_reward
-			anti_cheat('money')
 		}
 	}
 	_txt+="\n\q[◇购买,OnDeluxeBall,购买,%(2*_p)]"

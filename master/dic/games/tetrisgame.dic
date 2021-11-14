@@ -371,7 +371,6 @@ CheckGameStatus{//游戏状态
 			"\c\b[2]获得奖励金钱%(TOINT(2*Score))\x"
 		--
 		money+=TOINT(2*Score)
-		anti_cheat('money')
 		_iChanged = -1
 		for _i=0; _i<NumScores; _i++{
 			if Score>Scores[_i]{
