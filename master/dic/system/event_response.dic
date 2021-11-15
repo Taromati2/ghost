@@ -478,6 +478,8 @@ OnInstallFailure{
 }
 OnShioriReloaded{
 	OnSQLLoad.Fixer//非中文环境编码问题再修复
+	if SHIORI_FW.LastBootInEmergencyMode
+		return
 	if mode == '1'{
 		"\1\s[%(specialmode != 'mealtime')10]唔…\n重载完了。"
 		return
