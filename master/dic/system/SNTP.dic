@@ -1,10 +1,18 @@
 OnSNTPmenu{
-	"\1\b[2]\s[10]\n现在的校准伺服器是\n\_q%(REPLACE(SNTPserver,'\','\\'))\_q\n要更换伺服器吗？\n\n/
-	\![*]\q[更改伺服器,OnSNTPServerChange]\n/
-	\![*]\q[校准开始,OnSNTPexecute]\n"
+	if SNTPserver
+		"\1\b[2]\s[10]\n现在的校准伺服器是\n\_q%(REPLACE(SNTPserver,'\','\\'))\_q\n要更换伺服器吗？\n\n/
+		\![*]\q[更改伺服器,OnSNTPServerChange]\n/
+		\![*]\q[校准开始,OnSNTPexecute]\n"
+	else
+		OnSNTPServerChange
 }
 OnSNTPServerChange{
-	'\1\s[11]请输入新的伺服器地址。\![open,inputbox,OnSNTPServerChange.input,-1,pool.ntp.org]'
+	'\1\s[11]请输入'
+	--
+	if SNTPserver
+		'新的'
+	--
+	'同步伺服器地址。\![open,inputbox,OnSNTPServerChange.input,-1,pool.ntp.org]'
 }
 OnSNTPServerChange.input{
 	if !reference0
