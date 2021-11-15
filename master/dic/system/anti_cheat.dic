@@ -48,6 +48,7 @@ ValueCheatted{
 		when 'intimacy'{
 			if _var_cheatting_to>_var_should_have{
 				intimacy=MIN(-10,-intimacy/2)
+				bsod('0xc000007F')
 			}
 			else
 				''
