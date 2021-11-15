@@ -181,6 +181,13 @@ OpenMenuTalk{
 		'\0\s[7]\b[2]什么事。'
 		'\0\s[25]\b[2]有何贵干。'
 	}
+	elseif _phase < 0 {
+		'\0\s[0]\b[2]？'
+		'\0\s[6]\b[2]干嘛'
+		'\0\s[7]\b[2]什么事。'
+		--
+		'\e'
+	}
 	else {
 		'\0\s[26]\b[2]好的、什么事呢？'
 		"\0\s[26]\b[2]什么事呢、%(username)？"
@@ -260,7 +267,7 @@ Select.MenuCancel{
 	--
 	infomode=0
 	_phase = GetPhase
-	if _phase == 0{
+	if _phase <= 0{
 		'\0\s[0]嗯。'
 	}
 	elseif _phase >= 2{
@@ -1145,17 +1152,20 @@ ClearWallpaperVar{
 }
 //---------- 沟通 ------------------------------------------------------
 Select.Communicate{
-	'\![open,communicatebox]\0'
+	'\0'
 	--
 	if GetPhase == 0 {
 		'\s[0]想说什么？'
+	}
+	elseif GetPhase < 0{
+		'\s[0]？\e'
 	}
 	else {
 		"\s[26]嗯？\w9想聊点什么呢，%(username)？"
 		"\s[26]%(username)想要和橘花说什么呢？"
 	}
 	--
-	'\n\q[◇聊天室,OnChatRoomClear]'
+	'\n\q[◇聊天室,OnChatRoomClear]\![open,communicatebox]'
 }
 //---------- 吸烟室 ----------------------------------------------------
 Select.SmokingPlace{
@@ -1434,7 +1444,10 @@ Select.Bedroom{
 }
 Select.Comemyroom{
 	_phase = GetPhase
-	if _phase == 0{
+	if _phase < 0{
+		'\0\s[8]。\w9\w9\n\s[6]你哪来的自信？\x'
+	}
+	elseif _phase == 0{
 		"\1\s[10]\0\s[25]橘花才不要呢，\w9\w9%(username)是个大坏蛋！！\1\s[12]%(username)啊，橘花对你的好感太低了\x"
 	}
 	elseif _phase == 1{
