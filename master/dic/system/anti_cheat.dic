@@ -2,7 +2,21 @@
 AntiCheatWatcher{
 	_varname=_argv[0]
 	_var=_argv[1]
-	AntiCheatSetter(_varname,_var,_var)
+	_CanaryValueName='CanaryValue.'+_varname
+	_CanaryValue=EVAL(_CanaryValueName)+72
+	if _CanaryValue!=_var{
+		if ISVAR(_CanaryValueName){
+			void EVAL(_varname+'='+_CanaryValue)//触发OnValueCheatted
+			EVAL(_CanaryValueName)+72
+			return
+		}
+		else{
+			void EVAL(_CanaryValueName+'='+(_var-72))
+			_var
+			return
+		}
+	}
+	_CanaryValue
 }
 AntiCheatSetter{
 	_varname=_argv[0]
@@ -12,9 +26,11 @@ AntiCheatSetter{
 	_CanaryValue=EVAL(_CanaryValueName)+72
 	if _CanaryValue!=_var_before{
 		if ISVAR(_CanaryValueName){
-			void EVAL(_varname+'='+_CanaryValue)
-			SHIORI_FW.PushNotifyResult(ValueCheatted(_varname,_CanaryValue,_var))
-			_CanaryValue
+			if !EVAL('CheattedTrigging.'+_varname){
+				EVAL('CheattedTrigging.'+_varname+'=1')
+				SHIORI_FW.PushNotifyResult("\![raise,OnValueCheatted,%(_varname),%(_CanaryValue),%(_var)]")
+			}
+			EVAL(_CanaryValueName)+72//恢复值内容
 			return
 		}
 	}
@@ -29,29 +45,75 @@ Init.AntiCheatIniter{
 	AntiCheat('money')
 	AntiCheat('intimacy')
 }
-ValueCheatted{
-	_varname=_argv[0]
-	_var_should_have=_argv[1]
-	_var_cheatting_to=_argv[2]
+OnValueCheatted{
+	ERASEVAR('CheattedTrigging.'+_varname)
+	_varname=reference0
+	_var_should_have=reference1
+	_var_cheatting_to=reference2
 	case _varname{
 		when 'money'{
-			if _var_cheatting_to>_var_should_have
-				money-=money/2+100
-			else
-				'\0\s[8]把金钱改为负值\w9.\w9.\w9.\n/
+			if _var_cheatting_to>_var_should_have{
+				money-=MAX(_var_should_have/2,100)
+				"\0\s[0]嗯，\s[26]\w9如果缺钱的话，\w9橘花觉得%(username)还是好好去工作比较好哦\w9\n/
+				\s[22]作弊是要接受惩罚的哦？"
+				// 哎？%(username)缺钱了吗？
+				// 嗯…………如果是这样的话……
+				// 稍等一下哦，橘花去跑一趟。
+				// 跑个外快什么的
+				// 等一下，你拿枪做什么？给我回来！
+			}
+			else{
+				'\0\s[8]把金钱改的更小\w9.\w9.\w9.\n/
 				这是什么新的惩罚项目吗？\n'
 				--
 				if _var_cheatting_to < -200000
 					'\1\s[10]也可能是改的数值过大结果溢出了啊，\w9\w9\s[12]对吧\w9\n/
 					\0\s[8]啊哈哈'
+			}
 		}
 		when 'intimacy'{
 			if _var_cheatting_to>_var_should_have{
-				intimacy=MIN(-10,-intimacy/2)
-				bsod('0xc000007F')
+				intimacy=MIN(-10,-_var_should_have/2,_var_should_have*10)-72
+				"\0\s[30]斗和，问你一个问题。\w9\n/
+				\1\s[11]什么？\w9\n/
+				\0如果有人强行要把你和他的关系拉好\w9，而且不顾你的意愿的话要怎么办呢？\w9\w9\n/
+				\1这种人一般会被叫做渣男吧？\w9\n/
+				\0\s[6]说得也是呢。\w9\n/
+				\s[22]那就让%(username)成为渣男好了，物理意义上的。\w9\n/
+				\1啊，%(username)你最好快点道歉比较好哦。\w9\n/
+				\![raise,OntriggerBSOD,0xc000007F]\0\s[32]迟了。\w9\n"
 			}
-			else
-				''
+			else{
+				case GetPhase{
+					when -1
+						bsod('0xc000007F')
+					when 4-5
+						"%(username)是不是讨厌我了呢?\n/
+						可以的话直说就好....."
+					//when 3-2
+						
+				}
+
+				// 好感度本身高的情况下就0（
+
+				// 唔……斗和，人会在什么样的情况下要让一个关系本来不错的人关系变差呢？
+
+				// 你是在说想要分手却又不肯明说的人吗？
+
+				// 啊，原来是分手吗？
+				// 原来如此，橘花明白了，我听过一个词，是分手炮来着？
+				// （拿枪）那么这是分手礼物，接下吧，橘花的炮，一定会很壮观呢。
+
+				// 等一下，这个词不是这么用的！
+				// 不对，这个词你是从哪听来的！
+				
+				// 如果是好感度本身不高的情况下直接负值
+
+
+				// 如果好感本身低:
+				// 是抖m么?
+				// 真是没救的阳痿猪头男呢.
+			}
 		}
 	}
 }

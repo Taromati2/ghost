@@ -2078,6 +2078,9 @@ bsod{
 	MAGICSAVE
 	CALLSAORI('bsod',_argv[0])
 }
+OntriggerBSOD{
+	bsod(reference0)
+}
 Select.newjapanese{
 	_txt = '\0\![quicksession,true]\![set,choicetimeout,0]\b[2]\s[40]请选择课程\n[150]'
 	_i = 0
