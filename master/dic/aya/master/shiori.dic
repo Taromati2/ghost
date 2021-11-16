@@ -1,61 +1,3 @@
-//******************************************************************************
-/*
-SHIORI/3.0制御スクリプト for AYA
-original written by umeici.
-履歴
-ver. date		note
-1.0  ?			aya向けに書き換え by C.Ponapalt
-1.1  20070428	config分離、READFMOを使ったルーチン追加
-1.2  20080323	構造変更（shiori3,config,compatible,optional)
-jb	 20210201	steve02081504整合自emily4
-
-使用可能な変数
-
-SHIORI_FW.Status
-　初期起動ステータス Runで初期化済み
-
-SHIORI_FW.Eventid
-　イベントID
-
-SHIORI_FW.LastTalk
-　直前のトーク（すべて）
-
-SHIORI_FW.LastAITalk
-　直前のランダムトーク
-
-SHIORI_FW.LastSurface
-　直前に表示していたサーフィス SHIORI_FW.LastSurface[0] がさくら側
-
-SHIORI_FW.IsVisible
-　現在サーフィスが表示されているかどうか(1/0) SHIORI_FW.IsVisible[0] がさくら側
-
-SHIORI_FW.HWnd
-SHIORI_FW.BalloonHWnd
-　キャラウインドウ・バルーンのHWND。 SHIORI_FW.HWnd[0] がさくら側
-
-SHIORI_FW.UniqueID
-　Auth.SSTPに使用するID
-
-SHIORI_FW.GhostName
-　ゴースト名★
-
-SHIORI_FW.ShellName
-SHIORI_FW.ShellPath
-　シェル名とパス★
-
-SHIORI_FW.BalloonName
-SHIORI_FW.BalloonPath
-　バルーン名とパス★
-
-使用可能な疑似イベント
-
-SHIORI_FW.OnChangeSelfInfo
-　上記★マークがついた変数が更新されたときに呼び出される
-
-*/
-//******************************************************************************
-
-
 //------------------------------------------------------------------------------
 //以下のdefineは基本的に弄らないで下さい
 //------------------------------------------------------------------------------
@@ -1766,4 +1708,10 @@ SWAP_VAR:void{
 	_t=EVAL(_argv[1])
 	EVAL(_argv[1]+'='+_argv[0])
 	EVAL(_argv[0]+'=_t')
+}
+ABS{
+	if _argv[0] < 0
+		-_argv[0]
+	else
+		_argv[0]
 }
