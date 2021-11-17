@@ -28,7 +28,7 @@ AntiCheatSetter{
 		if ISVAR(_CanaryValueName){
 			if !EVAL('CheattedTrigging.'+_varname){
 				EVAL('CheattedTrigging.'+_varname+'=1')
-				SHIORI_FW.PushNotifyResult("\![raise,OnValueCheatted,%(_varname),%(_CanaryValue),%(_var)]")
+				SHIORI_FW.PushNotifyResult("\![raise,OnValueCheatted,%(_varname),%(_CanaryValue),%(_var_before)]")
 			}
 			EVAL(_CanaryValueName)+72//恢复值内容
 			return
@@ -46,10 +46,10 @@ Init.AntiCheatIniter{
 	AntiCheat('intimacy')
 }
 OnValueCheatted{
-	ERASEVAR('CheattedTrigging.'+_varname)
 	_varname=reference0
 	_var_should_have=reference1
 	_var_cheatting_to=reference2
+	ERASEVAR('CheattedTrigging.'+_varname)
 	case _varname{
 		when 'money'{
 			if _var_cheatting_to>_var_should_have{
@@ -86,8 +86,8 @@ OnValueCheatted{
 			else{
 				case GetPhase{
 					when 4-5
-						"%(username)是不是讨厌我了呢?\n/
-						可以的话直说就好....."
+						"\0\s[26]%(username)是不是讨厌我了呢?\w9\w9\n/
+						\s[3]可以的话直说就好\w9.\w9.\w9.\w9.\w9."
 					when 3-2{
 						'唔……斗和，人会在什么样的情况下要让一个关系本来不错的人关系变差呢？\n/
 						你是在说想要分手却又不肯明说的人吗？'
@@ -97,19 +97,21 @@ OnValueCheatted{
 								intimacy=0
 							else
 								intimacy=-10
-							'啊，原来是分手吗？\n/
-							原来如此，橘花明白了，我听过一个词，是分手炮来着？\n/
-							（拿枪）那么这是分手礼物，接下吧，橘花的炮，一定会很壮观呢。'
+							'\0\s[20]啊\w9，原来是分手吗？\w9\n/
+							原来如此，橘花明白了，我听过一个词，是分手炮来着？\w9\n/
+							\s[22]那么这是分手礼物，接下吧，橘花的炮，一定会很壮观呢。\w9'
 							--
-							'等一下，这个词不是这么用的！'
-							'不对，这个词你是从哪听来的！'
+							'\1\s[11]'
+							--
+							'等一下\w9，这个词不是这么用的！'
+							'不对\w9，这个词你是从哪听来的！'
 							--
 							'\![raise,OntriggerBSOD,0xc000007F]'
 						}
 					}
 					when 1
-						'啊，那个——\n/
-						把好感改低，是什么意思呢？'
+						'\0\s[26]啊，\w9那个\w9—\w9—\w9\n/
+						\s[8]把好感改低，\w9是什么意思呢？'
 					when 0
 						'是抖m么?\n/
 						真是没救的阳痿猪头男呢.'
