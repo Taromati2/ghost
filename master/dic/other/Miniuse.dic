@@ -2416,7 +2416,7 @@ OnStandby{
 }
 OnSystemHalte{
 	'\0\s[26]确定要死机吗？\n/
-	\q[◇是的,OnRAMBomb]\n/
+	\q[◇是的,OntriggerBSOD,0xc000007F]\n/
 	\q[◇不了,OnOpenMenu,3]'
 }
 OnRAMBomb{

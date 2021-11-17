@@ -144,8 +144,12 @@ SubMenu{
 			\q[◇选择语言,OnLanguage]			\_l[138,-]\q[◇帮肋,help]\n/
 			\q[◇总在最前,AlwaysOnTop] ｜ \q[◇恢复默认,NotOnTop] | \q[◇最小化,Trayicon]\n/
 			\q[◇GhostExplorer,GhostExplorer]	\_l[138,-]\q[◇ShellExplorer,ShellExplorer]\n/
-			\q[◇BalloonExplorer,BalloonExplorer]\_l[138,-]\q[◇更新检查,OnUpdateCheck]\n/
-			"
+			\q[◇BalloonExplorer,BalloonExplorer]\_l[138,-]"
+			--
+			if AutoUpdate==0 && SHIORI_FW.DebugMode
+				"\q[◇更新%(Baseware),"+'"script:\![update,platform]"'+']\n'
+			else
+				'\q[◇更新检查,OnUpdateCheck]\n'
 		}
 	}
 }
