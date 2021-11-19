@@ -5,8 +5,6 @@ BaseGhostStart{//改动于2020 by steve02081504
 	VERSION_UPGRADE
 	OnOptionSet
 	--
-	Lunar
-	Lunartime
 	FCHARSET(1)
 	lastTalk = '\0\s[20]咦？分明才刚启动的說…\1\s[10]喵，刚才什么都没说'
 	if TimeErrorCheck
@@ -31,6 +29,8 @@ BaseGhostStart{//改动于2020 by steve02081504
 	}
 }
 BaseGhostStart.aboutTime{
+	Lunar
+	Lunartime
 	elapsetime = GETSECCOUNT - CloseTime
 	CloseTime = GETSECCOUNT
 }
