@@ -106,7 +106,10 @@ OnSNTPCorrect{
 OnSNTPFailure{
 	DiscordCustomSet.CustomDetail('被时间抛弃')
 	--
-	'\0\s[3]……失败了？？呜……'
+	'\0\s[3]……失败了？？呜……\n/
+	\q[◇重试,"script:\6"]\n/
+	\q[◇无用,Cancel]\n/
+	'
 }
 
 //
