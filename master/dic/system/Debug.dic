@@ -520,7 +520,6 @@ Get_AYA_Function_Info{
 			'文档未记录'
 	}
 }
-/*
 On_Get_AYA_Function_Info_Test{
 	_l=GETSYSTEMFUNCLIST()
 	_txt='文档未记录的aya底层函数有：\n'
@@ -530,8 +529,6 @@ On_Get_AYA_Function_Info_Test{
 	}
 	_txt
 }
-/*
-*/
 OnUpdateSHIORICore{
 	if FILEEXIST('SHIORI_PATH\update_aya.bat'){
 		'\![open,file,SHIORI_PATH\update_aya.bat,'+SakuraScriptArgConverter(reference0)+']'
