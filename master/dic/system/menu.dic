@@ -72,32 +72,21 @@ SubMenu{
 			'
 		}
 		when 1 {
-			case _submenuex{
-				when 0{
-					_heart='\f[color,238,50,95]\&[hearts]\f[default]'
-					"\q[◇话题,ForcedTalk]			\_l[100,-]\q[◇自我介绍,Introduction]			\_l[200,-]\q[◇说笑话,Story]\n/
-					\q[◇与橘花说话,Communicate]		\_l[100,-]\q[◇教学,Teaching]					\_l[200,-]\q[◇刚才说了什么,OnLastTalk]\n/
-					\q[◇五十音,Onjap_v]				\_l[100,-]\q[◇秘密服务,SecretService]%(_heart)	\_l[200,-]\q[◇外语学习,japanesestudy]\n/
-					\q[◇花语,OnFlowers]				\_l[100,-]\q[◇诞生花,OnBirthdayFlowerList]		\_l[200,-]\q[◇塔罗占卜,OnFUT]\n/
-					\q[◇趣味测试,Ontestmenu]		\_l[100,-]\q[◇橘花题库,OnExamTest]				\_l[200,-]\q[◇和橘花谈心,talktoheart]\n/
-					\q[◇查找诗歌,OnResearchPoesy]	\_l[100,-]\q[◇唐诗默写♪,OnPoesywrite]			\_l[200,-]\q[◇剧情故事,Opera]\n/
-					\q[◇动漫列表,OnDHs]				\_l[100,-]\q[◇咖啡厅,get_some_tea]			\_l[200,-]%(Onmeal)\n/
-					"
-					--
-					if towaflag != '0'
-						'\q[◇吸烟室,SmokingPlace]\_l[100,-]'
-					--
-					"\q[◇试衣间,OnFittingRoom]		\_l[200,-]\q[◇进寝室,Bedroom]\n/
-					\q[◇其它服务,otherserv]			\_l[100,-]\q[◇橘花知识库,OnKikkaKnowl]			\_l[200,-]%(Onclosetouch)\n"
-				}
-				when 1{
-					'/
-					\q[◇准备晚餐,Cookingtonight]\n/
-					'
-				}
-			}
+			_heart='\f[color,238,50,95]\&[hearts]\f[default]'
+			"\q[◇话题,ForcedTalk]			\_l[100,-]\q[◇自我介绍,Introduction]			\_l[200,-]\q[◇说笑话,Story]\n/
+			\q[◇与橘花说话,Communicate]		\_l[100,-]\q[◇教学,Teaching]					\_l[200,-]\q[◇刚才说了什么,OnLastTalk]\n/
+			\q[◇五十音,Onjap_v]				\_l[100,-]\q[◇秘密服务,SecretService]%(_heart)	\_l[200,-]\q[◇外语学习,japanesestudy]\n/
+			\q[◇花语,OnFlowers]				\_l[100,-]\q[◇诞生花,OnBirthdayFlowerList]		\_l[200,-]\q[◇塔罗占卜,OnFUT]\n/
+			\q[◇趣味测试,Ontestmenu]		\_l[100,-]\q[◇橘花题库,OnExamTest]				\_l[200,-]\q[◇和橘花谈心,talktoheart]\n/
+			\q[◇查找诗歌,OnResearchPoesy]	\_l[100,-]\q[◇唐诗默写♪,OnPoesywrite]			\_l[200,-]\q[◇准备晚餐,Cookingtonight]\n/
+			\q[◇动漫列表,OnDHs]				\_l[100,-]\q[◇咖啡厅,get_some_tea]			\_l[200,-]%(Onmeal)\n/
+			"
 			--
-			"\_l[90,180]\q[%(_sub[_submenuex])1,OnSubMenu,%(_submenu),0]    \q[%(_sub[_submenuex + 4])2,OnSubMenu,%(_submenu),1]"
+			if towaflag != '0'
+				'\q[◇吸烟室,SmokingPlace]\_l[100,-]'
+			--
+			"\q[◇试衣间,OnFittingRoom]		\_l[200,-]\q[◇进寝室,Bedroom]\n/
+			\q[◇其它服务,otherserv]			\_l[100,-]\q[◇橘花知识库,OnKikkaKnowl]			\_l[200,-]%(Onclosetouch)\n"
 		}
 		when 2 {
 			'\q[◇猜拳,OnHandGame]			\_l[80,-]扑克游戏：						\_l[168,-]\q[◇外出冒险,OnRpgGame] \n/
@@ -205,24 +194,6 @@ Select.otherserv{
 	\q[◇我身体不舒服,notsogood]\n/
 	\q[◇返回上一层,OnOpenMenu,1]\n/
 	\q[◇退出,OptionEnd]'
-}
-Select.Opera{
-	if QuickStartVersion{
-		NeedUpdate
-		return
-	}
-	'■橘花的情景剧■(欢迎提供剧本)\n[150]/
-	\q[◇来到此城市,city]\n/
-	\q[◇去海边,OnSummer]\n/
-	\q[◇去野餐,OnPicnic]\n/
-	'
-	--
-	OnOperaSelect
-	--
-	'/
-	\q[◇去游乐园,OnDoor]\n/
-	\q[◇游乐园剧情开发,开发确认]\n/
-	\n[half]\q[◇返回上一层,OnOpenMenu,1]       \q[◇退出,OptionEnd]'
 }
 Select.help{
 	"\0\s0啊、\w9有需要帮忙吗?\s[40]\n[150]/
