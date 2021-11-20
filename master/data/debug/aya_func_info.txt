@@ -307,8 +307,4 @@ SETTAMAHWND
 ISGLOBALDEFINE
 判断某个名称是否是#globaldefine
 SETGLOBALDEFINE
-运行时定义#globaldefine\n/
-第一参数：定义名\n/
-第二参数：定义内容\n/
-追加的全局定义被放在虚拟辞书“runtime”中\n/
-如果覆盖了之前的定义，则返回1，否则返回0\n/
+运行时定义#globaldefine\n第一参数：定义名\n第二参数：定义内容\n追加的全局定义被放在虚拟辞书“_RUNTIME_DIC_”中\n如果覆盖了之前的定义，则返回1，否则返回0
