@@ -77,7 +77,7 @@ OnFileDrop{
 }
 GetSHIORInameFromDicExt{
 	case _argv[0]{
-		when '.dic','.ayc'
+		when '.dic','.ayc','.aym'
 			'文'//aya
 		when '.sat'
 			'里々'//satoriya
@@ -93,7 +93,7 @@ GetDicEncodedFromDicExt{
 	case _argv[0]{
 		when '.ayc','.sat','.__1','.kiw'
 			1
-		when '.dic','.kis','.txt'
+		when '.dic','.kis','.txt','.aym'
 			0
 	}
 }
