@@ -1630,6 +1630,13 @@ SHIORI_EV.On_enable_debug : void {
 	}
 }
 
+shiori.OnLoopLimit:void{
+	SHIORI_FW.PushNotifyResult(OnshioriLimit('loop',_argv))
+}
+shiori.OnCallLimit:void{
+	SHIORI_FW.PushNotifyResult(OnshioriLimit('call',_argv))
+}
+
 //******************************************************************************
 //時刻系変数
 //******************************************************************************
@@ -1691,7 +1698,7 @@ On_getaistateex{
 	On_GetAIStateEX
 }
 ISSTR{
-	GETTYPE(_argv[0])==3
+	GETTYPE(_argv[0])==3&&_argc==1
 }
 INEVENT{
 	_argv[0]==SHIORI_FW.Eventid
