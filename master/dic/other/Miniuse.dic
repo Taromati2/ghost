@@ -1884,21 +1884,21 @@ FilesRenameMenu{
 	if _argc > 0 {
 		_submenu = TOINT(_argv[0])
 	}
-	_txt='\C\![quicksession,true]\c\![set,choicetimeout,0]\b[2]'
-	_txt+='■批量文件重命名■\n'
-	_txt+='\![*]\q[选择目录,OnFileRenameListAdd,folder]'
-	_txt+="\_l[70]\![*]\q[清空文件,OnFilesRenameSet,%(_submenu),clearfile]"
-	_txt+="\_l[140]\![*]\q[编辑列表,OnFilesRenameSet,%(_submenu),editlist]"
-	_txt+="\_l[210]\![*]\q[说明,OnFileRenameIntro,%(_submenu)]"
-	_txt+='\_l[255]\![*]\q[退出,OnExitFileRename]'
-	_txt+='\n'
 	_sub[_submenu]='\f[color,192,192,192]'
 	_subend[_submenu]='\f[color,default]'
-	_txt+="\__q[OnFilesRenameSub,0]%(_sub[0])替换内容%(_subend[0])\__q"
-	_txt+="\_l[55]\__q[OnFilesRenameSub,1]%(_sub[1])替换位置%(_subend[1])\__q"
-	_txt+="\_l[110]\__q[OnFilesRenameSub,2]%(_sub[2])替换扩展名%(_subend[2])\__q"
-	_txt+="\_l[175]\__q[OnFilesRenameSub,3]%(_sub[3])前后缀设置%(_subend[3])\__q"
-	_txt+="\_l[240]\__q[OnFilesRenameSub,4]%(_sub[4])全局配置%(_subend[4])\__q\n"
+	_txt="\C\![quicksession,true]\c\![set,choicetimeout,0]\b[2]/
+		■批量文件重命名■\n/
+		\![*]\q[选择目录,OnFileRenameListAdd,folder]/
+		\_l[70]\![*]\q[清空文件,OnFilesRenameSet,%(_submenu),clearfile]/
+		\_l[140]\![*]\q[编辑列表,OnFilesRenameSet,%(_submenu),editlist]/
+		\_l[210]\![*]\q[说明,OnFileRenameIntro,%(_submenu)]/
+		\_l[255]\![*]\q[退出,OnExitFileRename]/
+		\n/
+		\__q[OnFilesRenameSub,0]%(_sub[0])替换内容%(_subend[0])\__q/
+		\_l[55]\__q[OnFilesRenameSub,1]%(_sub[1])替换位置%(_subend[1])\__q/
+		\_l[110]\__q[OnFilesRenameSub,2]%(_sub[2])替换扩展名%(_subend[2])\__q/
+		\_l[175]\__q[OnFilesRenameSub,3]%(_sub[3])前后缀设置%(_subend[3])\__q/
+		\_l[240]\__q[OnFilesRenameSub,4]%(_sub[4])全局配置%(_subend[4])\__q\n"
 	_txt+=FilesRenameCondition(_submenu)
 	_txt
 }
