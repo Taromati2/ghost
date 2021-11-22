@@ -42,7 +42,7 @@ UnFinished{
 	自己动手才能丰衣足食哦\w9\n/
 	\0/
 	\q[◇协助项目开发,OnUrlOpen,https://github.com/Taromati2/Taromati2#%E6%88%91%E8%AF%A5%E5%A6%82%E4%BD%95%E5%8F%82%E4%B8%8E%E5%BC%80%E5%8F%91]\n/
-	\q[◇不了,Cancel]/
+	\q[◇不了,Cancel]\n/
 	'
 }
 BUGNow{
@@ -55,7 +55,8 @@ BUGNow{
 	--
 	'/
 	\q[◇前往汇报,OnUrlOpen,https://github.com/Taromati2/Taromati2#bug%E5%8F%8D%E9%A6%88]\n/
-	\q[◇不了,Cancel]'
+	\q[◇不了,Cancel]\n/
+	'
 }
 OpenDocForRuntime.string{
 	'\![open,browser,https://github.com/Taromati2/Taromati2/blob/master/docs/runtime/'+_argv[0]+'.md]'
