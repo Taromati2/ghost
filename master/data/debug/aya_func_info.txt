@@ -308,3 +308,7 @@ ISGLOBALDEFINE
 判断某个名称是否是#globaldefine
 SETGLOBALDEFINE
 运行时定义#globaldefine\n第一参数：定义名\n第二参数：定义内容\n追加的全局定义被放在虚拟辞书“_RUNTIME_DIC_”中\n如果覆盖了之前的定义，则返回1，否则返回0
+APPEND_RUNTIME_DIC
+运行时附加函数定义，配合UNDEFFUNC函数可以进行定义的更改\n失败返回-1，成功返回0
+SLEEP
+休眠shiori指定的毫秒数\n失败返回-1，成功返回0
