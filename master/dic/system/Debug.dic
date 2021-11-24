@@ -2,6 +2,32 @@
 OnAnchorSelect{
 	BUGNow("AnchorSelect\_q“%(REPLACE(reference0,'\','\\'))”\_q被触发了\w9\w9\n但是目前Taromati并不支持任何AnchorSelect")
 }
+OnshioriLimit{
+	_stack=GETCALLSTACK
+	_type=_argv[0]
+	_type_txt=''
+	_func=_argv[1]
+	_linenum=_argv[2]
+	_errorinfo_for_copy=''
+	case _argv[0]{
+		when 'call'
+			_type_txt='递归'
+		when 'loop'
+			_type_txt='循环'
+		when 'memory'{
+			_type_txt='内存'
+			_func=_stack[ARRAYSIZE(_stack)-2]
+		}
+	}
+	_errorinfo_for_copy=_type_txt+'至限：函数'+_func+'所在文件第'+_linenum+'行'+CHR(1)+'调用堆栈：'+REPLACE(TOSTR(_stack),',',CHR(1))
+	--
+	BUGNow('')
+	--
+	'\q[◇复制错误记录,OnCopy,'+SakuraScriptArgConverter(_errorinfo_for_copy)+']\n/
+	\q[◇复制并前往提交issue]\n/
+	\q[◇无用,Cancel]\n/
+	'
+}
 OnReloadShiori{
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]唔"

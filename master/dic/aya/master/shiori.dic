@@ -1636,6 +1636,9 @@ shiori.OnLoopLimit:void{
 shiori.OnCallLimit:void{
 	SHIORI_FW.PushNotifyResult(OnshioriLimit('call',_argv))
 }
+shiori.OnMemoryLimit:void{
+	SHIORI_FW.PushNotifyResult(OnshioriLimit('memory',_argv))
+}
 
 //******************************************************************************
 //時刻系変数
