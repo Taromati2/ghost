@@ -189,6 +189,9 @@ OnBoot{
 			"\0\s[26]再次见面，%(username)。\s[8]\w9\1\s[10]\什么啊，虚惊一场么\w9\w9\w9\n\x"
 		}
 	}
+	elseif SHIORI_FW.InVarFileMiss{//完全失忆
+		//完全失忆的对话
+	}
 	elseif LOADED_FROM_MAGIC{//数据来自MAGICSAVE
 		intimacy -= 1
 		'\0\s[35]\w9.\w9.\w9.\w9\w9\w9\n\s[0]啊\w9\w9\s[6]，很抱歉\n\w9\w9\w9我做了个恶梦\w9\w9\w9\n\x'

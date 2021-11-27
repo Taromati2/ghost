@@ -115,6 +115,7 @@ ClearAyaTempVar {
 	ERASEVAR('SHIORI_FW.ShellNameOld')
 	ERASEVAR('SHIORI_FW.BalloonNameOld')
 	ERASEVAR('SHIORI_FW.LastBootInEmergencyMode')
+	ERASEVAR('SHIORI_FW.InVarFileMiss')
 
 	_n = ARRAYSIZE(tempvarname)
 	for _i = 0 ; _i < _n ; _i++ {
@@ -212,6 +213,8 @@ load {
 			}
 		}
 		SAVEVAR
+		if !username
+			SHIORI_FW.InVarFileMiss=1
 	}
 
 	SHIORI_FW.InitChain
