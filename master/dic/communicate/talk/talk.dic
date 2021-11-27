@@ -110,14 +110,21 @@ OnLastTalk{
 	--
 	lastTalk
 }
+RandomTalk{
+	if !RAND(5) && RandomTalk.others{
+		RandomTalk.others
+		return
+	}
+	RandomTalk.pool
+}
 RandomTalk.others{
 	//----- Poesy ----------------------------------------
 	if talkSwitch.poesy{
-		"%(TalkPoesyShow)"
+		TalkPoesyShow
 	}
 	//-------讲笑话---------------------------------------
 	if talkSwitch.story{
-		"%(Onstoryok)"
+		Onstoryok
 	}
 	if acjeachday
 		Onautojeachday
@@ -125,13 +132,7 @@ RandomTalk.others{
 		OnJapWordDay
 	}
 }
-RandomTalk : nonoverlap_pool{
-	//**** ランダムトーク *************************************************************************************************
-	//---- 杂项 -----------------------------------------------------------------------------------------------------------
-	if !RAND(5) && RandomTalk.others{
-		RandomTalk.others
-		return
-	}
+RandomTalk.pool : nonoverlap_pool{
 	{
 		//---- 宗教 -----------------------------------------------------------------------------------------------------------
 		'\0\s[0]『以我的形象造人统御万物』\w9\w9\w9\n\n[half]这就是最大的失败吧。\w9\w9\1\s[10]造出恶魔的\w9\n到头来也是神。\w9\w9\w9\0\s[0]\n\n[half]被饲养的狗咬到手、\n也叫做『全知全能』、\w9\w9真是令人失笑呢。 '
