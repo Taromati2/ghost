@@ -1,6 +1,11 @@
 //by steve02081504
 OnUrlOpen{
-	if !_argv[0]
-		_argv[0]=reference0
+	if !_argc
+		_argv=reference
 	'\![open,browser,'+_argv[0]+']'
+	--
+	case _argv[1]{
+		when 'with_copy'
+			OnCopy(_argv[2])
+	}
 }
