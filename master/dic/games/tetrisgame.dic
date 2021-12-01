@@ -10,7 +10,6 @@ OnNewGame{//游戏入口
 	}
 	DiscordCustomSet.CustomDetail('俄罗斯方块')
 	--
-	_txt = '\C\![quicksession,true]\c\0\s[26]\b[2]'
 	CleartetrisVar
 	playingtetris=1
 	running='playingtetris'
@@ -43,7 +42,7 @@ OnNewGame{//游戏入口
 	TBaseTetris
 	GenNewUnit
 	--
-	_txt+OnPaintBox1
+	'\C\![quicksession,true]\c\0\s[26]\b[2]'+OnPaintBox1
 }
 OnTimer1Timer{//自动下降。
 	_txt=''
@@ -64,7 +63,7 @@ FormKeyDown{//键盘输入
 	elseif reference0 == 'l'	{_txt+=OnShowHighScores;}
 	elseif reference0 == 'e'	{OntetrisgameOver;break}
 	elseif reference0 == 'o'	{Ontetrisgameoption;return}
-	elseif reference0 == 'p'	{Paused=TOINT(Paused+1)%2;}
+	elseif reference0 == 'p'	{Paused=!Paused;}
 	if !GameOver && Started && !Paused{
 		btm = 0
 		case reference0{
@@ -466,8 +465,7 @@ Ontetrisgameoption{
 		Tetris.speed=reference1
 		Tetris.timespeed=reference2
 	}
-	_txt='\![quicksession,true]\![set,choicetimeout,0]\b[2]'
-	_txt+="游戏速度：当前为%(Tetris.speed)\n\q[◇1,Ontetrisgameoption,sp,1,40] \q[◇2,Ontetrisgameoption,sp,2,36] \q[◇3,Ontetrisgameoption,sp,3,32] \q[◇4,Ontetrisgameoption,sp,4,28] \q[◇5,Ontetrisgameoption,sp,5,24] \q[◇6,Ontetrisgameoption,sp,6,20] \q[◇7,Ontetrisgameoption,sp,7,16] \q[◇8,Ontetrisgameoption,sp,8,12] \q[◇9,Ontetrisgameoption,sp,9,8]"
-	_txt+='\n\n\q[◇返回,OnTimer1Timer]\n\n\q[◇终了,OntetrisgameOver]'
-	_txt
+	"\![quicksession,true]\![set,choicetimeout,0]\b[2]/
+	游戏速度：当前为%(Tetris.speed)\n\q[◇1,Ontetrisgameoption,sp,1,40] \q[◇2,Ontetrisgameoption,sp,2,36] \q[◇3,Ontetrisgameoption,sp,3,32] \q[◇4,Ontetrisgameoption,sp,4,28] \q[◇5,Ontetrisgameoption,sp,5,24] \q[◇6,Ontetrisgameoption,sp,6,20] \q[◇7,Ontetrisgameoption,sp,7,16] \q[◇8,Ontetrisgameoption,sp,8,12] \q[◇9,Ontetrisgameoption,sp,9,8]/
+	\n\n\q[◇返回,OnTimer1Timer]\n\n\q[◇终了,OntetrisgameOver]"
 }
