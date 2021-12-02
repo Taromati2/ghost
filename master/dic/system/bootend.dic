@@ -569,8 +569,6 @@ ClearVar{
 	ERASEVAR('SecondWatch.m')
 	ERASEVAR('SecondWatch.ss')
 	ERASEVAR('SecondWatch.s')
-	ERASEVAR('fjswitch')
-	ERASEVAR('G')
 	ERASEVAR('sss')
 	ERASEVAR('drg')
 	ERASEVAR('radio')

@@ -74,6 +74,8 @@ VERSION_UPGRADE_0:void{
 	ERASEVAR('ans.bExist')
 	ERASEVAR('ans.Points')
 	ERASEVAR('d')
+	ERASEVAR('fjswitch')
+	ERASEVAR('G')
 	RENAME_VAR('kikkamoney','money')
 	RENAME_VAR('autobakeup','autobackup')
 	RENAME_VAR('yuyinshibie','Speech_Recognition')
