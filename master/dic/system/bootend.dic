@@ -34,6 +34,23 @@ BaseGhostStart.aboutTime{
 	elapsetime = GETSECCOUNT - CloseTime
 	CloseTime = GETSECCOUNT
 }
+UpdateFirstBootCount:void{
+	_save_dir=GETENV('USERPROFILE')
+	if _save_dir{
+		_save_dir+='\AppData\Local\Taromati'
+		_save_file=_save_dir+'\FirstBootCount'
+		MKDIR(_save_dir)
+		if FOPEN(_save_file,'r'){
+			_tFirstBootCount=TOINT(FREAD(_save_file))
+			FCLOSE(_save_file)
+		}
+		FirstBootCount=MAX(_tFirstBootCount,FirstBootCount)
+		if FOPEN(_save_file,'w'){
+			FWRITE(_save_file,TOSTR(FirstBootCount))
+			FCLOSE(_save_file)
+		}
+	}
+}
 //**** 初回起动 *******************************************************************************************************
 OnFirstBoot{//改动于2020 by steve02081504
 	MAGICLOCK
@@ -63,8 +80,11 @@ OnFirstBoot{//改动于2020 by steve02081504
 		--
 		if ISINTEGER(reference0)
 			FirstBootCount = reference0
+		elseif ISINTEGER(_argv[0])
+			FirstBootCount = _argv[0]
 		else
 			FirstBootCount = 0
+		UpdateFirstBootCount
 		if FirstBootCount == 0{
 			'\1\s[10]\0\s[26]啊、\w9\w9那个…\w9\w9\w9'
 		}else{
@@ -138,10 +158,6 @@ OnBoot{
 	MAGICLOCK
 	BaseGhostStart
 	--
-	if !ISVAR('FirstBootCount'){
-		OnFirstBoot
-		return
-	}
 	if mode == '1'{
 		if specialmode == 'mealtime'
 			mealendtime=60
@@ -161,6 +177,7 @@ OnBoot{
 			intimacy -= 3
 		if elapsetime > 172800{//卸载时长超过两天：有效卸载
 			FirstBootCount++
+			UpdateFirstBootCount
 			if FirstBootCount >= 4{//三次有效卸载后惩罚
 				{//自我销毁
 					void DELDIR('PROFILE_PATH')//清除用户数据
@@ -190,11 +207,17 @@ OnBoot{
 		}
 	}
 	elseif SHIORI_FW.InVarFileMiss{//完全失忆
-		//完全失忆的对话
+		OnFirstBoot(1)
+		return
 	}
 	elseif LOADED_FROM_MAGIC{//数据来自MAGICSAVE
 		intimacy -= 1
 		'\0\s[35]\w9.\w9.\w9.\w9\w9\w9\n\s[0]啊\w9\w9\s[6]，很抱歉\n\w9\w9\w9我做了个恶梦\w9\w9\w9\n\x'
+		return
+	}
+	--
+	if !ISVAR('FirstBootCount'){
+		OnFirstBoot(1)
 		return
 	}
 	--
