@@ -504,6 +504,9 @@ Get_UKADOC_ofEvent{
 	_argv[0]=GetResourceEventRealName(_argv[0])
 	".html#%(_argv[0])"
 }
+Get_AYA_Function_Doc{
+	'http://emily.shillest.net/ayaya/?%E3%83%9E%E3%83%8B%E3%83%A5%E3%82%A2%E3%83%AB/%E9%96%A2%E6%95%B0/'+_argv[0]
+}
 Get_AYA_Function_Info{
 	if ISFUNC(_argv[0])!=2
 		return

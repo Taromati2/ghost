@@ -241,7 +241,9 @@ OnTextDrop{
 	_t=CUTSPACE(temp)
 	if SHIORI_FW.DebugMode && RE_GREP(_t,'^[\w.]+$'){
 		if __t=Get_AYA_Function_Info(_t)
-			'aya自带底层函数\n'+__t+'\n'
+			'aya自带底层函数\n'+__t+'\n/
+			\q[◇打开在线文档,OnUrlOpen,'+Get_AYA_Function_Doc(_t)+']\n/
+			'
 		elseif ISVAR(_t)
 			"变量“%(_t)”\n/
 			值：%(GetVarValue.SakuraScript(_t))\n/
