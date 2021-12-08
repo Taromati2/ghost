@@ -478,6 +478,10 @@ OnInstallFailure{
 }
 OnShioriReloaded{
 	OnSQLLoad.Fixer//非中文环境编码问题再修复
+	if ReloadFromTerminal{
+		ShioriEcho.Special='重载完成'
+		ERASEVAR('ReloadFromTerminal')
+	}
 	if SHIORI_FW.LastBootInEmergencyMode
 		return
 	if mode == '1'{

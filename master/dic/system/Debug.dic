@@ -147,8 +147,8 @@ On_ShioriEcho {
 	ClearShioriEchoVar
 	case CUTSPACE(reference0){
 		when 'reload'{
+			ReloadFromTerminal=1
 			OnReloadShiori
-			ShioriEcho.Special='重载中'
 		}
 		when 'errorlog'{
 			OnErrorLog
