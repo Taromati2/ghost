@@ -226,7 +226,8 @@ KikkaInfo{
 	InternetIPShowing
 }
 Cpuusage{
-	if _t=CALLSAORI('cpuusage','get')
+	_t=CALLSAORI('cpuusage','get')
+	if _t >= 0
 		"CPU使用：%(_t)%"
 }
 KikkaStatus{
