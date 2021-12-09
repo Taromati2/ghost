@@ -6,7 +6,7 @@ OnshioriLimit{
 	_stack=GETCALLSTACK
 	_type=_argv[0]
 	_type_txt=''
-	_func=_argv[1]
+	_file=_argv[1]
 	_linenum=_argv[2]
 	_errorinfo_for_copy=''
 	case _argv[0]{
@@ -17,10 +17,14 @@ OnshioriLimit{
 		when 'memory'{
 			_type_txt='内存'
 			_func=_stack[ARRAYSIZE(_stack)-2]
+			_info=GETFUNCINFO(_func)
+			_file=_info[0]
+			_linenum=_info[1]
 		}
 	}
-	_errorinfo_header=_type_txt+'至限：函数'+_func+'所在文件第'+_linenum+'行'
+	_errorinfo_header=_type_txt+'至限：文件'+_file+'第'+_linenum+'行'
 	_errorinfo_for_copy=_errorinfo_header+CHR(1)+'调用堆栈：'+REPLACE(TOSTR(_stack),',',CHR(1))
+	_errorinfo_header=REPLACE(_errorinfo_header,'\','\\')
 	--
 	BUGNow(_errorinfo_header,_errorinfo_for_copy)
 }
