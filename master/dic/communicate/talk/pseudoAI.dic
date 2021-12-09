@@ -954,7 +954,7 @@ AILoad.FindResult
 	_r=0
 	_thinkmode=0
 	if '<pattern>' _in_ _category{
-		while _category[_Qnum,'<pattern>']!=""{
+		while _category[_Qnum,'<pattern>']!=''{
 			_Qnum++
 		}
 	}
@@ -966,7 +966,7 @@ AILoad.FindResult
 		_Anum=0
 		_Atemp=''
 		if '<template>' _in_ _category{
-			while _category[_Anum,'<template>']!=""{
+			while _category[_Anum,'<template>']!=''{
 				_Anum++
 			}
 			for _j=0;_j<_Anum-1;_j++{
