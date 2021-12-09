@@ -991,12 +991,12 @@ DrawHint{
 			_m = 0
 			_n = 4
 		}
-		pDC->BitBlt(_rc[0]+_m, _rc[1], LinkBallWIDTH-_m-1, LinkBallHigh-1,LinkBallWIDTH+1+m, (abs(m_map[_pt1.i*m_nCol+_pt1.j])-1)*48+1)
-		pDC->BitBlt(_rc2[0]+_n, _rc2[1], LinkBallWIDTH-_n-1, LinkBallHigh-1,LinkBallWIDTH +1+_n, (abs(m_map[_pt2.i*m_nCol+_pt2.j])-1)*48+1)
+		pDC->BitBlt(_rc[0]+_m, _rc[1], LinkBallWIDTH-_m-1, LinkBallHigh-1,LinkBallWIDTH+1+m, (ABS(m_map[_pt1.i*m_nCol+_pt1.j])-1)*48+1)
+		pDC->BitBlt(_rc2[0]+_n, _rc2[1], LinkBallWIDTH-_n-1, LinkBallHigh-1,LinkBallWIDTH +1+_n, (ABS(m_map[_pt2.i*m_nCol+_pt2.j])-1)*48+1)
 		pWnd->DrawFocus(pDC, pWnd->m_fi, pWnd->m_fj)
 		//::Sleep(150)
-		//pDC->BitBlt(rc.left+m, rc.top, 41-m, 47, &crydc, 1+m, (abs(pWnd->m_map[pWnd->pt1.i][pWnd->pt1.j])-1)*48+1, SRCCOPY)
-		//pDC->BitBlt(rc2.left+n, rc2.top, 41-n, 47, &crydc, 1+n, (abs(pWnd->m_map[pWnd->pt2.i][pWnd->pt2.j])-1)*48+1, SRCCOPY)
+		//pDC->BitBlt(rc.left+m, rc.top, 41-m, 47, &crydc, 1+m, (ABS(pWnd->m_map[pWnd->pt1.i][pWnd->pt1.j])-1)*48+1, SRCCOPY)
+		//pDC->BitBlt(rc2.left+n, rc2.top, 41-n, 47, &crydc, 1+n, (ABS(pWnd->m_map[pWnd->pt2.i][pWnd->pt2.j])-1)*48+1, SRCCOPY)
 		//pWnd->DrawFocus(pDC, pWnd->m_fi, pWnd->m_fj)
 		//::Sleep(150)
 		m = 0
@@ -1325,7 +1325,7 @@ StackEmpty{
 SetDirect{
 	_ci=_argv[0]
 	_cj=_argv[1]
-	if (abs(_ci) > abs(_cj) && _cj != 0) || _ci == 0{
+	if (ABS(_ci) > ABS(_cj) && _cj != 0) || _ci == 0{
 		if _cj<0{
 			m_dir[0] = 4
 			m_dir[2] = 2
@@ -1382,7 +1382,7 @@ Pass{
 	}
 	else if (pt.i  == pts.i && pt.j == pts.j){
 		if (map[pt.i][pt.j] > 0){
-			map[pt.i][pt.j] = 0 - abs(map[pt.i][pt.j])
+			map[pt.i][pt.j] = 0 - ABS(map[pt.i][pt.j])
 			return 1
 		}
 	}

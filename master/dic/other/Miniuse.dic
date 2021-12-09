@@ -935,11 +935,6 @@ popm_resrecord{
 		}
 	}
 }
-abs{
-	_num=_argv[0]
-	if _num>=0{_num;return;}
-	elseif _num<0{-_num;return;}
-}
 ChangCarry{
 	endNumber=1
 	newcarry=_argv[0]
@@ -1011,7 +1006,7 @@ Operate1{//函数运算
 		when 'd' {_result=ATAN(1/_a);if radio;_result*=57.295779513;}
 		when 'q' {_result=SQRT(_a);}
 		when 'n' {_result=POW(_a,1.0/3);}
-		when 'b' {_result=abs(_a);}
+		when 'b' {_result=ABS(_a);}
 		when 'l' {_result=log(_a,_b);}
 		when 'g' {_result=sigma(_a,_b);}
 		when 'r' {_result=arrange(_a,_b);}
@@ -1078,7 +1073,7 @@ decto{
 	_newcarry=TOINT(_argv[1])
 	_neg=(_num<0)
 	if _newcarry==10 || _num==0{_num;return;}
-	_num=0.0+abs(_num)
+	_num=0.0+ABS(_num)
 	_newnum=''
 	while _num!=0{
 		_newnum=SUBSTR(hexnum,_num%_newcarry,1)+_newnum
@@ -1294,7 +1289,7 @@ evaluate{//表达式求值主函数
 		_opnd[_opnd_i-1]+_index
 		return
 	}
-	_num=abs(_opnd[_opnd_i-1])
+	_num=ABS(_opnd[_opnd_i-1])
 	_zpart=FLOOR(_num)
 	_xpart=_num-_zpart
 	if _xpart<=0

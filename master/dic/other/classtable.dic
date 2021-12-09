@@ -209,12 +209,12 @@ OnClassDetailTimeCheck{
 					_minute=_time[1]
 					_second=_time[2]
 					_timeleft=secondnowtime(_hour,_minute,_second)
-					if abs(_timeleft-_timetick) <= classtimerm*60 && _timeleft - _timetick>0{
+					if ABS(_timeleft-_timetick) <= classtimerm*60 && _timeleft - _timetick>0{
 						CT=_timeleft
 						_rmflag=1
 						_txt+='马上开始上课咯。科目：'+classdata[_j * 7 + _i]+'，备注：'+classdetail[_j * 7 + _i]+''
 					}
-					elseif abs(_timeleft-_timetick) <= classtimerm*60&& _timeleft - _timetick<=0{
+					elseif ABS(_timeleft-_timetick) <= classtimerm*60&& _timeleft - _timetick<=0{
 						CT=_timeleft
 						_rmflag=1
 						_txt+='已经开始上课咯。科目：'+classdata[_j * 7 + _i]+'，备注：'+classdetail[_j * 7 + _i]+''

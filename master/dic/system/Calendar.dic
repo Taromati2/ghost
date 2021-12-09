@@ -926,7 +926,7 @@ OnEventInputOver{
 	_i=TOINT(temp[6])
 	_k=TOINT(temp[7])
 	_l=TOINT(temp[8])//重复天数/周年数的列数
-	_name=abs(reference0)//重复天数/周年的值
+	_name=ABS(reference0)//重复天数/周年的值
 	if ISREAL(_name)
 		_name=TOINT(_name)
 	if TOINT(_year)%4==0
