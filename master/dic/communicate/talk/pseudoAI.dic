@@ -189,6 +189,8 @@ AILoad{//AILoad('你好','aiml')  AILoad('你好，喜欢什么')
 			case _fileext{
 				when '.ai'
 					_t=AILoad.AIFile(_file,_str,e,_txt)
+				when '.aiml','.aiml8'
+					_t=AILoad.AImlFile(_file,_str,e,_txt)
 			}
 			if aimode=='break'{
 				_txt=''
@@ -889,6 +891,514 @@ AILoad.AIFile{
 	e=_E
 	_txt
 }
+AILoad.Topic
+{
+	_file = _argv[0]
+	_buff = _argv[1]
+	_match = NULL
+	if '<topic' _in_ _buff&&TextToEnd(_buff,'>',1)=='>'{
+		_topicdex=FTELL(_file)
+		_topicmode=1
+		_topic=_buff
+		_match = (_topicdex,_topicmode,_topic)
+	}
+	_match
+}
+
+AILoad.Category
+{
+	_file = _argv[0]
+	_buff = _argv[1]
+	_match = NULL
+	if '<category>' _in_ _buff{
+		_dex=FTELL(_file)
+		_topicmode=2；
+		_table++
+		_match =(_dex,_topicmode,_table)
+	}
+	_match
+}
+//AILoad.FindResult(_file,_buff,_category,_str,_txt,_e,_Lastm,_laststar,_ql,_strtxt)
+AILoad.FindResult
+{
+	_file = _argv[0]
+	_buff=  _argv[1]
+	_category = _argv[2]
+	_str = _argv[3]
+	_txt = _argv[4]
+	_e = _argv[5]
+	_Lastm = _argv[6]
+	_laststar = _argv[7]
+	_ql = _argv[8]
+	_strtxt = _argv[9]
+	_filename=TOUPPER(SPLITPATH(_file)[2])
+
+	_result = ''
+
+	_Qnum=1
+	_Q=''
+	_A=''
+	_r=0
+	_thinkmode=0
+	if '<pattern>' _in_ _category{
+		while _category[_Qnum,'<pattern>']!=''{
+			_Qnum++
+		}
+	}
+
+	for _i=0; _i<_Qnum-1;_i++{
+		_Q=TextBetween(_category,'<pattern>','</pattern>',_i)
+
+		_A=''
+		_Anum=0
+		_Atemp=''
+		if '<template>' _in_ _category{
+			while _category[_Anum,'<template>']!=''{
+				_Anum++
+			}
+			for _j=0;_j<_Anum-1;_j++{
+				_Aflag=0
+				_t=TextBetween(_category,'<template>','</template>',_j)
+				_temp=''
+				if '<think>' _in_ _t{
+					_thinkmode=1
+				}
+				if '<topic' _in_ _t{
+					_temp=AILoad.TopicMatch(_t)
+					if _temp!=''{
+						_Atemp=_temp
+
+					}
+					_t=TextToEnd(_t,'>',1)
+					_t=_t[0,'</topic>']
+
+					_Aflag=1
+				}
+				if '<that>' _in_ _t{
+					if _temp==''&&_Aflag{
+						continue
+					}
+					_temp=AILoad.ThatMatch(_t)
+					if _temp!=''{
+						_Atemp=_temp
+					}
+					elseif _Aflag==1{
+						_Atemp=''
+					}
+					_t=_t[1,'</that>']
+
+					_Aflag=1
+				}
+				if '<if' _in_ _t{
+					_temp=AILoad.IfMatch(_t)
+					_t=_temp
+					_Aflag=2
+				}
+				if _temp==''&&_Aflag{
+					continue
+				}
+				/*	elseif _Aflag==1
+				{
+					if '<think>' _in_ _t
+						AILoad.Think(_t)
+				}*/
+				_A+=_t+'|'
+			}
+
+			if _Atemp!=''{
+				_A=_Atemp+'|'
+			}
+		}
+		if '*' _in_ _Q||'%(' _in_ _Q{
+			if '.*' !_in_ _Q{
+				_Q=REPLACE(_Q,'*','.*')//将通配符换成正则匹配
+			}
+			if '%(' _in_ _A{
+				_A=GETRETXT(_str,_Q,_A)
+			}
+			elseif '<star' _in_ _A{
+				_A=ReplaceStarTxt(_str,_Q,_A)
+			}
+			if _Q=='.*'{
+				_t=CHAREPLACE(_Q)
+				_t=RE_REPLACE(_t,'%\((.*?)\)','.*')
+				if (_tmp=AILoad.QMatch(_str,_t,_e))!=''
+					_Q=_tmp
+			}
+		}
+		if _A=='|'{
+			continue
+		}
+		_Q=REPLACE(_Q,'.*','*')
+		if _Q=='*'{
+			continue
+		}
+		if '&' _in_ _Q||'*' _in_ _Q{
+			_Qs=_Q
+			_k=0
+			_n=0
+			if '&' _in_ _Q{
+				SETDELIM(_Qs,'&')
+				_n=ARRAYSIZE(_Qs)
+				_k+=_n-1
+			}
+			elseif '*' _in_ _Q{
+				SETDELIM(_Qs,'*')
+				_n=ARRAYSIZE(_Qs)
+			}
+
+			for _l=0,_m=1;_l<_n && _m==1;_l++{
+				_m=(_Qs[_l] _in_ _str)
+				_k+=STRLEN(_Qs[_l])
+			}
+			if _m==1&& '*' _in_ _Q&&_e==STRLEN(_str)&&_laststar==1{
+				_k=_e+STRLEN(_Q)-_ql
+			}
+			elseif  _m==1&& '*' _in_ _Q{
+				_k=STRLEN(_str)
+				_laststar=1
+				_ql=STRLEN(_Q)
+			}
+			if _m==1 && _k==_e && _Lastm==1{
+				_txt+=_A
+				anum+=_Anum-1
+				_r=1
+			}
+			elseif _m==1 && _k>_e{
+				_Lastm=1
+				_e=_k
+				_txt=_A
+				anum=_Anum-1
+				_r=1
+			}
+		}
+
+		if _Q _in_ _str && STRLEN(_Q)==_e && _Lastm==0{
+			_txt+=_A
+			anum+=_Anum-1
+			_r=1
+		}
+		elseif  _strtxt!=''{
+			_txt+='#'+_strtxt+'#'
+			_strtxt=''
+		}
+		elseif _Q _in_ _str && STRLEN(_Q)>=_e{
+			//当上次最大长度匹配＞这次,不管是何种保留都放弃
+			_Lastm=0
+			_e=STRLEN(_Q)
+			_txt=_A
+			_r=1
+			anum=_Anum-1
+		}
+
+	}
+	_result = (_r,_category,_buff,_txt,_e,_Lastm,_laststar,_ql,_thinkmode,_strtxt)
+	_result
+}
+
+//AILoad.AIMLGetCategory(_file,_inf,_buff,_str,_txt,_e,_Lastm,_laststar)
+AILoad.AIMLGetCategory
+{
+	_file = _argv[0]
+	_inf = _argv[1]
+	_buff = _argv[2]
+	_str = _argv[3]
+	_txt = _argv[4]
+	_e = _argv[5]
+	_Lastm = _argv[6]
+	_laststar = _argv[7]
+
+	_topicdex=''
+	_topicmode=0
+	_topic=''
+
+	if '<topic' _in_ _buff && TextToEnd(_buff,'>',1)=='>'{
+		_topicdex = FTELL(_file)
+		_topicmode = 1
+		_topic = _buff
+	}
+
+	_category=''
+	_dex=''
+
+	if '<category>' _in_ _buff{
+		_table++
+		_dex=FTELL(_file)
+		_topicmode=2
+	}
+
+	_answerdex=''
+	_answermode=0
+	_answer=''
+	if '<answer>' _in_ _buff{
+		_answerdex=FTELL(_file)
+		_answermode=1
+		_answer=_buff
+	}
+
+	_subjectdex=''
+	_subjectmode=0
+	_subject=''
+	if '<subject' _in_ _buff&&TextToEnd(_buff,'>',1)=='>'{
+		_subjectdex=FTELL(_file)
+		_subjectmode=1
+		_subject=_buff
+	}
+
+	if _topicmode==1{
+		if infmode{
+			_buff2=_topic+'|'+_topicdex
+			_t=FWRITE(_inf,_buff2)
+		}
+		_t=_buff
+		_temp=AILoad.TopicMatch(_t)
+		if _temp!=''{
+			while '<category>' !_in_ _buff&&_buff!=-1{
+				_buff=FREAD(_file)
+			}
+
+			_category=_buff
+			while '</category>' !_in_ _buff&&_buff!=-1{
+				_buff=FREAD(_file)
+				_category+=_buff+'\n'
+			}
+		}
+		else{
+			while '</topic>' !_in_ _buff&&_buff!=-1{
+				_buff=FREAD(_file)
+			}
+		}
+	}
+	elseif _topicmode==2||Tflag==1{
+		while '<category>' !_in_ _buff&&_buff!=-1{
+			_buff=FREAD(_file)
+		}
+
+		_category=_buff
+		while '</category>' !_in_ _buff&&_buff!=-1{
+			_buff=FREAD(_file)
+			_category+=_buff+'\n'
+			if infmode{
+				_Q=TextBetween(_buff,'<pattern>','</pattern>')
+				if _Q!=''{
+					_cha=_Q
+					_buff2=_cha+'|'+_dex
+					_t=FWRITE(_inf,_buff2)
+				}
+			}
+		}
+	}
+
+	if _subjectmode==1||Tflag==2 {//暂时无用
+		if infmode{
+			_buff2=_subject+'|'+_subjectdex
+			_t=FWRITE(_inf,_buff2)
+		}
+		_subject=TextBetween(_buff,'<subject name="','">')
+		if TflagTxt!=''{
+			_subject=TflagTxt
+		}
+		if '记住' !_in_ _str && (AILoad.KeyMatch(_str,_subject)||Tflag==2){
+			//_subject;	return//AiLoad('小红')
+			while '</subject>' !_in_ _buff&&_buff!=-1{
+				while '<state' !_in_ _buff&&_buff!=-1{
+					_buff=FREAD(_file)
+				}
+				_state=TextBetween(_buff,'<state name="','">')
+				while '</state' !_in_ _buff&&_buff!=-1{
+					if _str==_subject{
+						while '<object>' !_in_ _buff&&_buff!=-1{
+							_buff=FREAD(_file)
+						}
+						_object=TextBetween(_buff,'<object>','</object>')
+						_txt+=_subject+_state+_object+'|'
+						//aimode='continue'
+					}
+					elseif AILoad.KeyMatch(_str,_state){
+						while '<object>' !_in_ _buff&&_buff!=-1{
+							_buff=FREAD(_file)
+						}
+						_object=TextBetween(_buff,'<object>','</object>')
+						if _subject+_state+_object==_str
+							_txt='是的|'
+						elseif _subject+_state _in_ _str
+							_txt=_subject+_state+_object+'|'
+						if talkflag!=''{
+							_txt=REPLACE(talkflag,'*',_state+_object)
+							aimode='return'
+							//return
+						}
+					}
+					elseif AILoad.KeyMatch('是',_state){
+						while '<object>' !_in_ _buff&&_buff!=-1{
+							_buff=FREAD(_file)
+						}
+						_object=TextBetween(_buff,'<object>','</object>')
+						string,=REPLACE(_buff,_subject,_object)
+						strnum=ARRAYSIZE(string)
+						aimode='break'
+						talkflag=_subject+'是'+_object+'，所以*'
+						//return
+					}
+					_buff=FREAD(_file)
+				}
+				_buff=FREAD(_file)
+			}
+		}
+		else{
+			while '</subject>' !_in_ _buff&&_buff!=-1{
+				_buff=FREAD(_file)
+			}
+		}
+	}
+	if _answermode==1||Tflag==3{
+		Tflag=0
+		if infmode&&_answermode==1{
+			_buff2=_answer+'|'+_answerdex
+			void FWRITE(_inf,_buff2)
+		}
+		_answer=TextBetween(_buff,'<answer>','</answer>')
+		if TflagTxt!=''{
+			_answer=TflagTxt
+		}
+		_answer=REPLACE(_answer,'。','')
+		if aimode!='return'&&'记住' !_in_ _str{
+			_t=AILoad.AnswerTxt(_str,_answer)
+		}
+		if _t!=''{
+			_txt=_t
+		}
+	}
+
+	if aimode=='return'{
+		_buff = -1
+	}
+	_category = TextBetween(_category,'<category>','</category>',0)
+	_result = (_category,_buff,_txt,_e,_Lastm,_laststar,_table)
+	_result
+}
+//AILoad.AIMLFileRead(_file,_inf,_dexori,_str,_txt,_e)
+AILoad.AIMLFileRead
+{
+	_file = _argv[0]
+	_inf = _argv[1]
+	_dexori = _argv[2]
+	_str = _argv[3]
+	_txt = _argv[4]
+	_e = _argv[5]
+	SETDELIM(_dexori,'|')
+
+	_table=0
+	_buff=''
+	dexid=0
+	_dexre=12
+	_dexmode=0
+	_strtxt=''
+	FCHARSET(1)
+	if FOPEN(_inf,'a'){
+		//_N=0
+		_Lastm=0
+		_laststar=0
+		_ql=0
+		_found = 0
+		//_r = 0
+		while _buff != -1{
+			if aimode=='return'{
+				break
+			}
+			if dexnum>0&&dexid<dexnum{
+				void FSEEK(_file,TOINT(_dexori[dexid])-_dexre,'start')
+				_buff=FREAD(_file)
+				dexid++
+				_dexmode=1
+			}
+			elseif dexnum>0&&dexid==dexnum{
+				_buff=-1
+			}
+			else{
+				_buff=FREAD(_file)
+			}
+
+			_result = AILoad.AIMLGetCategory(_file,_inf,_buff,_str,_txt,_e,_Lastm,_laststar)
+			_category = _result[0]
+			_buff = _result[1]
+			_txt = _result[2]
+			_e = _result[3]
+			_Lastm = _result[4]
+			_laststar =_result[5]
+			_table = _result[6]
+			_strtxt = _result[7]
+
+			_result = AILoad.FindResult(_file,_buff,_category,_str,_txt,_e,_Lastm,_laststar,_ql,_strtxt)
+			_r = _result[0]
+			_category = _result[1]
+			_buff = _result[2]
+			_txt = _result[3]
+			_e = _result[4]
+			_Lastm = _result[5]
+			_laststar =_result[6]
+			_ql = _result[7]
+			_thinkmode = _result[8]
+
+			if _r{
+				_found=_r
+				if '<think>' _in_ _category&&!_thinkmode{
+					AILoad.Think(_category)
+				}
+			}
+		}
+		snum+=_table
+		FCLOSE(_inf)
+	}
+	num=ARRAYSIZE(_dexori)
+	_result = (_found,_txt,_e)
+	_result
+}
+
+AILoad.AIMLFile
+{
+	_file=_argv[0]
+	_str=_argv[1]
+	_e=TOINT(_argv[2])
+	_txt=_argv[3]
+	_path=SPLITPATH(_file)[1]
+	_filename=TOUPPER(SPLITPATH(_file)[2])
+	_inf=_path + TOLOWER(_filename)+'.inf'
+	_found=0
+	infmode=0
+	dexnum=0
+	_dexori=AILoad.InfFile(_file,_str,_e)
+	if _dexori == -1{
+		_dexori
+		return
+	}
+	_dexoriStr = ''
+	foreach _dexori;_dex
+	{
+		_dexoriStr = _dex + '|' + _dexoriStr
+	}
+	xori = _dexoriStr
+	FCHARSET(1)
+	if FOPEN(_file,'r'){
+		_result = AILoad.AIMLFileRead(_file,_inf,_dexoriStr,_str,_txt,_e)
+		_found = _result[0]
+		_txt = _result[1]
+		_e = _result[2]
+	}
+	FCLOSE(_file)
+	FCHARSET.default
+	if _found{
+		if '<srai>' _in_ _txt&&'记住' !_in_ _str{
+			if '<think>' _in_ _txt
+				AILoad.Think(_txt)
+			string,=TextBetween(_txt,'<srai>','</srai>')
+			strnum=ARRAYSIZE(string)
+			aimode='break'
+		}
+	}
+	e=_E
+	_txt
+}
 AILoad.AnswerMatch{//AILoad.AnswerMatch('爸爸的爸爸','B是C的爸爸',_E)
 	_str=_argv[0]
 	_answer=_argv[1]
@@ -1051,6 +1561,248 @@ AILoad.IsRepeat{
 		}
 	}
 	_mode
+}
+AILoad.AImlInfFile{
+	_file=_argv[0]
+	_str=_argv[1]
+	_E=TOINT(_argv[2])
+	_path=SPLITPATH(_file)[1]
+	_filename=TOUPPER(SPLITPATH(_file)[2])
+	_dexori=IARRAY
+	_md5=FDIGEST(_file,'MD5')
+	_inf=_path + TOLOWER(_filename)+'.infml'
+	if FOPEN(_inf,'r'){
+		_buff2=FREAD(_inf)
+		_newmd5=_buff2[1,'md5=']
+		_buff2=FREAD(_inf)
+		if !_buff2
+			_newmd5=''
+		_strcha=_str
+		while _buff2!=-1{
+			_Q=_buff2[0,'|']
+			if _Q!=''{
+				_open++
+				if !TOINT(_buff2[1,'|'])
+					_newmd5=''
+			}
+			else
+				coutinue
+			{
+				if '|' _in_ _buff2
+					qnum++
+				_m=0
+				_Q=REPLACE(_Q,'_','*')
+				if '*' _in_ _Q{
+					_Qs=_Q
+					SETDELIM(_Qs,'*')
+					_n=ARRAYSIZE(_Qs)
+					_k=0
+					for _l=0,_m=1;_l<_n && _m==1;_l++{
+						_Qs[_l]=CUTSPACE(_Qs[_l])
+						_m=(_Qs[_l] _in_ _str)
+						_k+=STRLEN(_Qs[_l])
+					}
+					if _m==1 && _k==_E && _lastm==1{
+						_dexori,=_buff2[1,'|']
+						dexnum++
+						anum+=_Anum-1
+					}
+					elseif _m==1 && _k>_E{
+						_lastm=1
+						_E=_k
+						dexnum=1
+						_dexori=IARRAY
+						_dexori=_buff2[1,'|']
+						anum=_Anum-1
+					}
+				}
+				if _Q _in_ _str && STRLEN(_Q)==_E && _Lastm==0{
+					_dexori,=_buff2[1,'|']
+					dexnum++
+					anum+=_Anum-1
+				}
+				elseif _Q _in_ _str && STRLEN(_Q)>=_E{//当上次最大长度匹配＞这次,不管是何种保留都放弃
+					_Lastm=0
+					_E=STRLEN(_Q)
+					dexnum=1
+					_dexori=IARRAY
+					_dexori=_buff2[1,'|']
+				}
+			}
+			_buff2=FREAD(_inf)
+		}
+		FCLOSE(_inf)
+		if _md5!=_newmd5{
+			dexnum=0
+			infmode=1
+			void FOPEN(_inf,'w')
+			_buff2='md5='+_md5
+			void FWRITE(_inf,_buff2)
+		}
+		elseif dexnum==0
+			_dexori=-1
+	}
+	else{
+		infmode=1
+		void FOPEN(_inf,'w')
+		_buff2='md5='+_md5
+		void FWRITE(_inf,_buff2)
+	}
+	FCLOSE(_inf)
+	FCHARSET.default
+	e=_E
+	_dexori
+}
+AILoad.AImlFile{
+	_file=_argv[0]
+	_str=_argv[1]
+	_E=TOINT(_argv[2])
+	_txt=_argv[3]
+	_path=SPLITPATH(_file)[1]
+	_filename=TOUPPER(SPLITPATH(_file)[2])
+	_inf=_path + TOLOWER(_filename)+'.infml'
+	_txt=''
+	_str=TOUPPER(_str)
+	_found=0
+	/*
+	if SUBSTR(_filename,0,1)!=SUBSTR(CUTSPACE(_str),0,1){
+		-1
+		return
+	}
+	*/
+	if !RE_GREP(_str,'[A-Z/^(\d)*$/ ]') {
+		-1
+		return
+	}
+	_str=''
+	foreach RE_GETSTR;_i{
+		_str+=_i
+	}
+	while '  ' _in_ _str{
+		_str=RE_REPLACE(_str,'  ',' ')
+	}
+	infmode=0
+	dexnum=0
+	_dexori=AILoad.AImlInfFile(_file,_str,_E)
+	if _dexori==-1{
+		_dexori
+		return
+	}
+	if _fileext=='.aiml8'
+		FCHARSET(1)
+	else
+		FCHARSET(127)
+	if FOPEN(_file,'rb'){
+		_table=0
+		_buff=''
+		dexid=0
+		_dexre=STRLEN('<category>'+GET_ENDLINE.file_was_opened(_file))
+		_strtxt=''
+		FCHARSET(1)
+		void FOPEN(_inf,'a')
+		_E=0
+		_N=0
+		_Lastm=0
+		while _buff!=-1{
+			/*
+			if dexnum>0&&dexid<dexnum{
+				void FSEEK(_file,TOINT(_dexori[dexid]-_dexre),'start')
+				_buff=FREAD(_file)
+				dexid++
+				_dexmode=1
+			}
+			elseif dexnum>0&&dexid==dexnum
+				_buff=-1
+			else
+				*/
+				_buff=FREAD(_file)
+			while '<category>' !_in_ _buff&&_buff!=-1{
+				_buff=FREAD(_file)
+			}
+			_dex=''
+			if '<category>' _in_ _buff{
+				_table++
+				_dex=FTELL(_file)
+			}
+			_session=_buff
+			//_session+=_buff+'\n'
+			if infmode{
+				_Q=TextBetween(_buff,'<pattern>','</pattern>')
+				if _Q!=''{
+					_cha=_Q
+					_buff2=_cha+'|'+_dex
+					void FWRITE(_inf,_buff2)
+				}
+			}
+			//_buff;return
+			_Q=TextBetween(_session,'<pattern>','</pattern>')
+			_template=TextBetween(_session,'<template>','</template>')
+			_A=_template+'|'
+			_Anum=1
+			if '<li>' _in_ _template{
+				_A=''
+				while  _template[_Anum,'<li>']!=''{
+					_Anum++
+				}
+				for _k=0;_k<_Anum-1;_k++{
+					_A+=TextBetween(_template,'<li>','</li>',_k)+'|'
+				}
+			}
+			_m=0
+			_r=0
+			if _A=='|'
+				continue
+			_Q=REPLACE(_Q,'_','*')
+			if '*' _in_ _Q{
+				/*
+				_Q=REPLACE(_Q,'*','.*')
+				_A=REPLACE(_A,'<star/>','%(_star)')
+				if '%' _in_ _A
+					_A=GETRETXT(_str,_Q,_A)
+				_t=CHAREPLACE(_Q)
+				_t=RE_GREP(_str,_t)
+				if _t{
+					_ori=RE_GETSTR
+					_ori=RE_CHAREPLACE(_ori)
+					_Q=_ori
+				}
+				*/
+			}
+			if _Q _in_ _str && STRLEN(_Q)==_E && _Lastm==0{
+				_txt+=_A
+				anum+=_Anum-1
+				_r=1
+			}
+			elseif _Q _in_ _str && STRLEN(_Q)>=_E{//当上次最大长度匹配＞这次,不管是何种保留都放弃
+				_Lastm=0
+				_E=STRLEN(_Q)
+				_txt=''
+				_txt+=_A
+				_r=1
+				anum=_Anum-1
+			}
+			if _r{
+				_found=_r
+				if '<think>' _in_ _session&&!_thinkmode{
+					AILoad.Think(_session)
+				}
+			}
+		}
+		//_A;return
+		snum+=_table
+		FCLOSE(_inf)
+	}
+	FCLOSE(_file)
+	FCHARSET.default
+	if _found{
+		if '<srai>' _in_ _txt{
+			string,=TextBetween(_txt,'<srai>','</srai>')
+			strnum=ARRAYSIZE(string)
+			aimode='break'
+			//_txt=''
+		}
+	}
+	_txt
 }
 AILoad.AddLearn{
 	_file='PSEUDO_AI_PATH\logiclearn.ai'
@@ -1595,6 +2347,67 @@ ReplaceStarTxt{
 		}
 	}
 	_txt
+}
+AImlSearch{
+	_str=_argv[1]
+	_Q=_argv[2]
+	_Qnum=1//_Q=TextBetween(_session,'<pattern>','</pattern>')
+	_template=TextBetween(_session,'<template>','</template>')
+	_A=_template
+	_Anum=1
+	if '<li>' _in_ _template{
+		_A=''
+		while  _template[_Anum,'<li>']!=''{
+			_Anum++
+		}
+	}
+	for _k=0;_k<_Anum-1;_k++{
+		_A+=TextBetween(_template,'<li>','</li>',_k)+'|'
+	}
+	_m=0
+	if '*' _in_ _Q{
+		_Qs=_Q
+		SETDELIM(_Qs,'*')
+		_n=ARRAYSIZE(_Qs)
+		_k=0
+		for _l=0,_m=1;_l<_n && _m==1;_l++{
+			_m=(_Qs[_l] _in_ _str)
+			_k+=STRLEN(_Qs[_l])
+		}
+		if _m==1 && _k==_E && _lastm==1{
+			_o=ARRAYSIZE(_g)
+			_g[_o]=_i
+			_txt+=_A
+			anum+=_Anum-1
+		}
+		elseif _m==1 && _k>_E{
+			_lastm=1
+			_E=_k
+			_g=IARRAY
+			_g[0]=_i
+			_txt=''
+			_txt+=_A
+			anum=_Anum-1
+		}
+	}
+	if _Q _in_ _str && STRLEN(_Q)==_E && _lastm==0{
+		_txt+=_A
+		anum+=_Anum-1
+	}
+	elseif _Q _in_ _str && STRLEN(_Q)>_E{//当上次最大长度匹配＞这次,不管是何种保留都放弃
+		_lastm=0
+		_E=STRLEN(_Q)
+		_g=IARRAY
+		_g[0]=_i
+		_ex=SUBSTR(_str,STRLEN(_Q),STRLEN(_str))
+		if (_t=ExFunction(_Q,_ex))!=''{
+			_txt=_t
+			break
+		}
+		_txt=''
+		_txt+=_A
+		anum=_Anum-1
+	}
 }
 ExcelTxtToAI{
 	if _argc=2{
