@@ -225,17 +225,17 @@ load {
 	CALLALLFUNCTIONBEGINAS('Init.')
 
 	if SHIORI_FW.EmergencyMode
-		SHIORI_FW.PushNotifyResult(OnEmergencyMode)
+		SHIORI_FW.PushNotifyResult('\![raise,OnEmergencyMode]')
 	elseif FILEEXIST('SHIORI_PATH\SHIORI_NAME_emerg.txt'){
 		foreach _DIC_DIRS_; _dir{
 			void DIRSync(_dir,'EMERGENCYMODEDICDIR'+'\'+_dir)
 		}
 		if SHIORI_FW.LastBootInEmergencyMode
-			SHIORI_FW.PushNotifyResult(OnEmergencyModeEnd)
+			SHIORI_FW.PushNotifyResult('\![raise,OnEmergencyModeEnd]')
 	}
 
 	if ShioriReloading
-		SHIORI_FW.PushNotifyResult(OnShioriReloaded)
+		SHIORI_FW.PushNotifyResult('\![raise,OnShioriReloaded]')
 	ERASEVAR('ShioriReloading')
 }
 
