@@ -904,19 +904,6 @@ AILoad.Topic
 	}
 	_match
 }
-AILoad.Category
-{
-	_file = _argv[0]
-	_buff = _argv[1]
-	_match = NULL
-	if '<category>' _in_ _buff{
-		_dex=FTELL(_file)
-		_topicmode=2；
-		_table++
-		_match =(_dex,_topicmode,_table)
-	}
-	_match
-}
 //AILoad.FindResult(_file,_buff,_category,_str,_txt,_e,_Lastm,_laststar,_ql,_strtxt)
 AILoad.FindResult
 {
@@ -1094,10 +1081,8 @@ AILoad.FindResult
 	_result = (_r,_category,_buff,_txt,_e,_Lastm,_laststar,_ql,_thinkmode,_strtxt)
 	_result
 }
-
 //AILoad.AIMLGetCategory(_file,_inf,_buff,_str,_txt,_e,_Lastm,_laststar)
-AILoad.AIMLGetCategory
-{
+AILoad.AIMLGetCategory{
 	_file = _argv[0]
 	_inf = _argv[1]
 	_buff = _argv[2]
@@ -1277,8 +1262,7 @@ AILoad.AIMLGetCategory
 	_result
 }
 //AILoad.AImlFileRead(_file,_inf,_dexori,_str,_txt,_e)
-AILoad.AImlFileRead
-{
+AILoad.AImlFileRead{
 	_file = _argv[0]
 	_inf = _argv[1]
 	_dexori = _argv[2]
@@ -1353,9 +1337,7 @@ AILoad.AImlFileRead
 	_result = (_found,_txt,_e)
 	_result
 }
-
-AILoad.AImlFile
-{
+AILoad.AImlFile{
 	_file=_argv[0]
 	_str=_argv[1]
 	_e=TOINT(_argv[2])
@@ -1433,7 +1415,6 @@ AILoad.AnswerMatch{//AILoad.AnswerMatch('爸爸的爸爸','B是C的爸爸',_E)
 	}
 	e=_E
 	_match
-
 }
 AILoad.TopicMatch{
 	_t=_argv[0]
@@ -1460,20 +1441,6 @@ AILoad.ThatMatch{
 			_Atemp=_t
 			_startxt=_i
 		}
-	}
-	if '<thatstar/>' _in_ _Atemp
-		_Atemp=ReplaceStarTxt(_startxt,_that,_Atemp,'thatstar')
-	_Atemp
-}
-AILoad.ThatLastMatch{
-	_t=_argv[0]
-	_Atemp=''
-	_that=TextBetween(_t,'<that>','</that>')
-	_startxt=''
-	if AILoad.KeyMatch(lastTalkHistory[0],_that){
-		_t=_t[1,'</that>']
-		_Atemp=_t
-		_startxt=_i
 	}
 	if '<thatstar/>' _in_ _Atemp
 		_Atemp=ReplaceStarTxt(_startxt,_that,_Atemp,'thatstar')
@@ -1547,19 +1514,6 @@ AILoad.Learn{
 	_txt=_argv[0]
 	_learn=TextBetween(_txt,'<learn>','</learn>')
 	AILoad.AddLearn(_learn)
-}
-AILoad.IsRepeat{
-	_temp=_argv[0]
-	_buff=_argv[1]
-	_mode=0
-	SETDELIM(_temp,'#')
-	foreach _temp;_i{
-		if _i==_buff&&_i!=''{
-			1
-			return
-		}
-	}
-	_mode
 }
 AILoad.AddLearn{
 	_file='PSEUDO_AI_PATH\logiclearn.ai'
@@ -2205,18 +2159,6 @@ AITalkAdd{//('PSEUDO_AI_PATH\user.ai','你好*你也好','write')
 	}
 	FCLOSE(_file)
 	FCHARSET.default
-}
-ARRTOSTR{
-	_arr=_argv[0]
-	_s='|'
-	if _argv[1]!=''
-		_s=_argv[1]
-	_str=''
-	SETDELIM(_arr,',')
-	foreach _arr;_i{
-		_str+=_i+_s
-	}
-	_str
 }
 ExFunction{
 	_str=reference0
