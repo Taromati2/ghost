@@ -924,7 +924,6 @@ AILoad.AnswerMatch{//AILoad.AnswerMatch('爸爸的爸爸','B是C的爸爸',_E)
 	}
 	e=_E
 	_match
-
 }
 AILoad.TopicMatch{
 	_t=_argv[0]
@@ -951,20 +950,6 @@ AILoad.ThatMatch{
 			_Atemp=_t
 			_startxt=_i
 		}
-	}
-	if '<thatstar/>' _in_ _Atemp
-		_Atemp=ReplaceStarTxt(_startxt,_that,_Atemp,'thatstar')
-	_Atemp
-}
-AILoad.ThatLastMatch{
-	_t=_argv[0]
-	_Atemp=''
-	_that=TextBetween(_t,'<that>','</that>')
-	_startxt=''
-	if AILoad.KeyMatch(lastTalkHistory[0],_that){
-		_t=_t[1,'</that>']
-		_Atemp=_t
-		_startxt=_i
 	}
 	if '<thatstar/>' _in_ _Atemp
 		_Atemp=ReplaceStarTxt(_startxt,_that,_Atemp,'thatstar')
@@ -1038,19 +1023,6 @@ AILoad.Learn{
 	_txt=_argv[0]
 	_learn=TextBetween(_txt,'<learn>','</learn>')
 	AILoad.AddLearn(_learn)
-}
-AILoad.IsRepeat{
-	_temp=_argv[0]
-	_buff=_argv[1]
-	_mode=0
-	SETDELIM(_temp,'#')
-	foreach _temp;_i{
-		if _i==_buff&&_i!=''{
-			1
-			return
-		}
-	}
-	_mode
 }
 AILoad.AddLearn{
 	_file='PSEUDO_AI_PATH\logiclearn.ai'
@@ -1731,18 +1703,6 @@ AITalkAdd{//('PSEUDO_AI_PATH\user.ai','你好*你也好','write')
 	}
 	FCLOSE(_file)
 	FCHARSET.default
-}
-ARRTOSTR{
-	_arr=_argv[0]
-	_s='|'
-	if _argv[1]!=''
-		_s=_argv[1]
-	_str=''
-	SETDELIM(_arr,',')
-	foreach _arr;_i{
-		_str+=_i+_s
-	}
-	_str
 }
 ExFunction{
 	_str=reference0
