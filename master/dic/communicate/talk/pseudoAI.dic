@@ -187,35 +187,22 @@ AILoad{//AILoad('你好','aiml')  AILoad('你好，喜欢什么')
 			_file = _path +'/'+ _file
 			_fileext = TOLOWER(SPLITPATH(_file)[3])
 			case _fileext{
-				when '.ai'{
+				when '.ai'
 					_t=AILoad.AIFile(_file,_str,e,_txt)
-					if aimode=='break'{
-						_txt=''
-						break
-					}
-					elseif aimode=='return'{
-						_found=''
-						_txt=_t
-						break
-					}
-					elseif _t!=-1
-						_txt=_t
-				}
-				when '.aiml','.aiml8'{
+				when '.aiml','.aiml8'
 					_t=AILoad.AImlFile(_file,_str,e,_txt)
-					if aimode=='break'{
-						_txt=''
-						break
-					}
-					elseif aimode=='return'{
-						_found=''
-						_txt=_t
-						break
-					}
-					elseif _t!=-1
-						_txt+=_t
-				}
 			}
+			if aimode=='break'{
+				_txt=''
+				break
+			}
+			elseif aimode=='return'{
+				_found=''
+				_txt=_t
+				break
+			}
+			elseif _t!=-1
+				_txt+=_t
 		}
 		if ('logiclearn' _in_ _files||'logic' _in_ _files)&&KikkaAILogic!=2{
 			_file='PSEUDO_AI_PATH\logic.ai'
