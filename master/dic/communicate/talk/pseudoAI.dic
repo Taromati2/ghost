@@ -888,7 +888,7 @@ AILoad.AIFile{
 			aimode='break'
 		}
 	}
-	e=_e
+	e=_E
 	_txt
 }
 AILoad.Topic
