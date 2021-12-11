@@ -221,7 +221,6 @@ load {
 
 	SHIORI_FW.SetDelayEvent('',0)
 
-	ERASEVAR('OnCloseCalled')
 	CALLALLFUNCTIONBEGINAS('Init.')
 
 	if SHIORI_FW.EmergencyMode
@@ -258,6 +257,7 @@ unload {
 
 	if !OnCloseCalled && !BasewareUpdating
 		ShioriReloading=1
+	ERASEVAR('OnCloseCalled')
 
 	CALLALLFUNCTIONBEGINAS('Fin.')
 

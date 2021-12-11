@@ -80,6 +80,12 @@ OnMinuteChange{
 	--
 	if InNotify
 		return
+	if SHIORI_FW.DebugMode && !SHIORI_FW.EmergencyMode{
+		if GETERRORLOG{
+			OnErrorLog
+			return
+		}
+	}
 	if mode == '0'{
 		if !specialmode{
 			_boottime = ghostuptime

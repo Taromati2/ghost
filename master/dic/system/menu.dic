@@ -618,6 +618,9 @@ Select.Option{
 		--
 		TheDefaultValue('setting.OnNoMatchingEventAlarm','0')
 		"未定义事件警告		\_l[120]\q[%(_t[TOINT(setting.OnNoMatchingEventAlarm)]) ON,Onusage,setting.OnNoMatchingEventAlarm,1]  ・  \_l[180]\q[%(_t[1 - TOINT(setting.OnNoMatchingEventAlarm)]) OFF,Onusage,setting.OnNoMatchingEventAlarm,0]\n"
+
+		TheDefaultValue('setting.OnErrorLogAlarm','1')
+		"错误记录警告		\_l[120]\q[%(_t[TOINT(setting.OnErrorLogAlarm)]) ON,Onusage,setting.OnErrorLogAlarm,1]  ・  \_l[180]\q[%(_t[1 - TOINT(setting.OnErrorLogAlarm)]) OFF,Onusage,setting.OnErrorLogAlarm,0]\n"
 	}
 	--
 	'\n■随机对话设定■\n'
