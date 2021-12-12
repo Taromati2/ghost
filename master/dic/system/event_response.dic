@@ -254,7 +254,10 @@ OnTextDrop{
 			内容：%(GetGlobalDefine.SakuraScript(_t))\n/
 			\q[◇复制定义内容,OnCopy,"+GetGlobalDefine.SakuraArg(_t)+']\n/
 			'
-		elseif ISFUNC(_t)||Is_Defened_Event(_t){
+		elseif Is_Defened_Event(_t)||Is_Defened_Event(_t+'Ex'){
+			_EXfunc=!Is_Defened_Event(_t)
+			if _EXfunc
+				_t=_t+'Ex'
 			_t=Get_Full_Defened_Event_Name(_t)
 			_info=GETFUNCINFO(_t)
 			_path=SPLITPATH(_info[0])
@@ -262,8 +265,12 @@ OnTextDrop{
 				_path=_path[2]+_path[3]
 			else
 				_path=_info[0]
-			"函数“%(_t)”\n/
-			起始于\q[◇%(_path) 第%(_info[1])行,OnOpenDicWithLineNum,%(SakuraScriptArgConverter(_info[0])),%(_info[1])]\n/
+			"函数“%(_t)”\n"
+			--
+			if _EXfunc
+				'（Ex版本事件）\n'
+			--
+			"起始于\q[◇%(_path) 第%(_info[1])行,OnOpenDicWithLineNum,%(SakuraScriptArgConverter(_info[0])),%(_info[1])]\n/
 			"
 		}
 		elseif SUBSTR(_t,0,2) == 'On'
