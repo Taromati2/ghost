@@ -5,7 +5,7 @@ OnChoiceSelectEx{
 	_size=ARRAYSIZE(_arglist)
 	for _i=0;_i!=_size;_i++{
 		if ISSTR(_arglist[_i])
-			_arglist[_i]="'"+_arglist[_i]+"'"
+			_arglist[_i]=ValueTOstring(_arglist[_i])
 	}
 	if ISFUNC("Select.%(reference1)")
 		EVAL("Select.%(reference1)(%_arglist)")
