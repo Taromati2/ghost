@@ -1067,7 +1067,7 @@ OnHanoiShow{
 	}
 	_time=0
 	if hanoi_timebegin>0
-		_time=(GETTICKCOUNT-hanoi_timebegin)/1000+'.'+(GETTICKCOUNT-hanoi_timebegin+0.0)/10%100
+		_time=(GETTICKCOUNT-hanoi_timebegin)/1000+'.'+(TOREAL(GETTICKCOUNT-hanoi_timebegin))/10%100
 	_txt+="\n\_l[132]第%(hanoi_level-2)关\n"
 	_txt+="\_l[115]第%(hanoi_step)步,第%(_time)秒\n"
 	_txt+=mess
@@ -1161,7 +1161,7 @@ OnHanoikey{
 		}
 	}
 	if _level[2]==hanoi_level&&hanoi_win==0&&hanoi_select[0]==-1{
-		_time=(GETTICKCOUNT-hanoi_timebegin)/1000+'.'+(GETTICKCOUNT-hanoi_timebegin+0.0)/10%100
+		_time=(GETTICKCOUNT-hanoi_timebegin)/1000+'.'+(TOREAL(GETTICKCOUNT-hanoi_timebegin))/10%100
 		mess="\0\s[5]好棒，%(username)胜利完成了。步骤：%(hanoi_step)步，用时%(_time)秒。"
 		hanoi_win=1
 		if TOINT(hanoi_step)<TOINT(hanoi_best[2*(hanoi_level-3)])||TOINT(hanoi_best[2*(hanoi_level-3)])==0{

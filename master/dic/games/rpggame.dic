@@ -135,7 +135,7 @@ RpgGameVar{
 		cp0=cpmax0
 	if cp1 > cpmax1
 		cp1=cpmax1
-	_能量=亲密度+依赖度+萌度+幸福度+腹黑度+0.0
+	_能量=TOREAL(亲密度+依赖度+萌度+幸福度+腹黑度)
 	_能量指数=TOINT(_能量)
 	str0_=TOINT(2*0.05*B0 + 20) + '+' + TOINT(weaponequip_str0 + armorequip_str0)+'+'+TOINT(力量)+'+'+TOINT(_circleinfo0[3])+'+'+TOINT(kikkapow/10)
 	def0_=TOINT(0.8*0.05*B0) + '+' + TOINT(armorequip_def0 + bootsequip_def0)+'+'+TOINT(0.5*敏捷)+'+'+TOINT(_circleinfo0[4])+'+'+TOINT(kikkapow/10)

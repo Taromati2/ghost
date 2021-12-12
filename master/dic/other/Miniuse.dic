@@ -991,8 +991,8 @@ Precede{//优先级判断
 	else{'<';return;}
 }
 Operate1{//函数运算
-	_a=_argv[0]+0.0
-	_b=_argv[1]+0.0
+	_a=TOREAL(_argv[0])
+	_b=TOREAL(_argv[1])
 	_theta=_argv[2]
 	_result=0
 	case _theta{
@@ -1015,8 +1015,8 @@ Operate1{//函数运算
 	_result
 }
 Operate2{//二目运算
-	_a=_argv[0]+0.0
-	_b=_argv[1]+0.0
+	_a=TOREAL(_argv[0])
+	_b=TOREAL(_argv[1])
 	_theta=_argv[2]
 	_result=0
 	case _theta{
@@ -1103,13 +1103,13 @@ evaluate{//表达式求值主函数
 		_weight=carry
 		if IsNumber(SUBSTR(_expression,_i,1))&&SUBSTR(_expression,_i+1,1)!='n'{
 			while IsNumber(SUBSTR(_expression,_i,1)){
-				_operand=_operand*_weight+STRSTR(hexnum,SUBSTR(_expression,_i,1),0)+0.0
+				_operand=_operand*_weight+TOREAL(STRSTR(hexnum,SUBSTR(_expression,_i,1),0))
 				_i++
 			}
 			if SUBSTR(_expression,_i,2)=='\.'{
 				_i+=2
 				while IsNumber(SUBSTR(_expression,_i,1)){
-					_operand+=(STRSTR(hexnum,SUBSTR(_expression,_i,1),0)+0.0)/_weight
+					_operand+=(STRSTR(hexnum,TOREAL(SUBSTR(_expression,_i,1),0)))/_weight
 					_weight*=carry
 					_i++
 				}
@@ -1126,7 +1126,7 @@ evaluate{//表达式求值主函数
 			if SUBSTR(_expression,_i,2)=='\.'{
 				_i+=2
 				while IsNumber(SUBSTR(_expression,_i,1)){
-					_operand+=(STRSTR(hexnum,SUBSTR(_expression,_i,1),0)+0.0)/_weight
+					_operand+=(STRSTR(hexnum,TOREAL(SUBSTR(_expression,_i,1),0)))/_weight
 					_weight*=carry
 					_i++
 				}
@@ -1387,7 +1387,7 @@ DEG{//度分秒转换小数点
 			if SUBSTR(_expression,_i,2)=='\.'{
 				_i+=2
 				while IsNumber(SUBSTR(_expression,_i,1)){
-					_operand+=(STRSTR(hexnum,SUBSTR(_expression,_i,1),0)+0.0)/_weight
+					_operand+=(STRSTR(hexnum,TOREAL(SUBSTR(_expression,_i,1),0)))/_weight
 					_weight*=carry
 					_i++
 				}
@@ -1435,8 +1435,8 @@ factorial{//阶乘
 	_b
 }
 sigma{//求和
-	_a=_argv[0]+0.0//下界
-	_b=_argv[1]+0.0//上界
+	_a=TOREAL(_argv[0])//下界
+	_b=TOREAL(_argv[1])//上界
 	_s=0
 	if _b+1>_a
 		_s=(_a+_b)*(_b+1-_a)/2
@@ -1450,8 +1450,8 @@ sigma{//求和
 	_s
 }
 arrange{
-	_a=_argv[0]+0.0
-	_b=_argv[1]+0.0
+	_a=TOREAL(_argv[0])
+	_b=TOREAL(_argv[1])
 	_s=1.0
 	for _i=_b;_i>0;_i--{
 		_s*=_a
@@ -1460,8 +1460,8 @@ arrange{
 	_s
 }
 combine{
-	_a=_argv[0]+0.0
-	_b=_argv[1]+0.0
+	_a=TOREAL(_argv[0])
+	_b=TOREAL(_argv[1])
 	if _b*2>_a
 		_b=_a-_b
 	_s=1.0

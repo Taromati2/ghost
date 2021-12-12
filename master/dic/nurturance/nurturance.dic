@@ -23,7 +23,7 @@ KikkaVar{
 	//依赖度=500
 	//亲密度=500
 	//幸福度=500
-	_能量=亲密度+依赖度+萌度+幸福度+腹黑度+0.0
+	_能量=TOREAL(亲密度+依赖度+萌度+幸福度+腹黑度)
 	_能量指数=TOINT(_能量)
 	力量=5*TOREAL(幸福度)*腹黑度*腹黑度/_能量/萌度-敏捷*(萌度/_能量)
 	智力=5*TOREAL(腹黑度)*亲密度*亲密度/_能量/幸福度-幸运*(幸福度/_能量)
@@ -282,7 +282,7 @@ KikkaStatusMain{
 	_txt += ColorText("\n\_l[0,-]魅力：%(kikkachm)/%(kikkachmmax) \_l[240]\q[◇礼物,Ongiftbox]","bold,color=%(ColorIdx(5))") + ColorBar(5,130,kikkachm,kikkachmmax)
 	_txt += ColorText("\n\_l[0,-]体力：%(kikkastm)/%(kikkastmmax) \_l[240]\q[◇说明,OnRPGintro]","bold,color=%(ColorIdx(1))") + ColorBar(1,130,kikkastm,kikkastmmax)
 	_txt += ColorText("\n\_l[0,-]心情：%(kikkamood)/%(kikkamoodmax)","bold,color=%(ColorIdx(8))") + ColorBar(8,130,kikkamood,kikkamoodmax)
-	_能量=亲密度+依赖度+萌度+幸福度+腹黑度+0.0
+	_能量=TOREAL(亲密度+依赖度+萌度+幸福度+腹黑度)
 	_txt += '\n[half]'
 	_txt += ColorText("\n\_l[0,-]物理攻击：%(str0)	\_l[130,-]武器：%(weapon0)","bold,color=%(ColorIdx(3))")
 	_txt += ColorText("\n\_l[0,-]物理防御：%(def0)	\_l[130,-]防具（体）：%(armor0)","bold,color=%(ColorIdx(3))")
