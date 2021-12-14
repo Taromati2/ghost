@@ -1006,7 +1006,7 @@ AILoad.Think{
 		_name=_name[1,'name=']
 		_name=REPLACE(_name,'"','')
 		_value=_set[1,'>']
-		EVAL("%(_name)=%(CHR(34))%(_value)%(CHR(34))")
+		LETTONAME(_name,CHR(34)+_value+CHR(34))
 		_i++
 	}
 	/*
@@ -1015,7 +1015,7 @@ AILoad.Think{
 	_name=REPLACE(_name,'"','')
 	_value=_think[0,'</set>']
 	_value=_value[1,'>']
-	EVAL("%(_name)=%(CHR(34))%(_value)%(CHR(34))")
+	LETTONAME(_name,CHR(34)+_value+CHR(34))
 	*/
 
 }

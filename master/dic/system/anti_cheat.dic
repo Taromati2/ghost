@@ -6,12 +6,15 @@ AntiCheatWatcher{
 	_CanaryValue=EVAL(_CanaryValueName)+72
 	if _CanaryValue!=_var{
 		if ISVAR(_CanaryValueName){
-			void EVAL(_varname+'='+_CanaryValue)//触发OnValueCheatted
-			EVAL(_CanaryValueName)+72
+			if !EVAL('CheattedTrigging.'+_varname){
+				EVAL('CheattedTrigging.'+_varname+'=1')
+				SHIORI_FW.PushNotifyResult("\![raise,OnValueCheatted,%(_varname),%(_CanaryValue),%(_var)]")
+			}
+			_CanaryValue
 			return
 		}
 		else{
-			void EVAL(_CanaryValueName+'='+(_var-72))
+			LETTONAME(_CanaryValueName,(_var-72))
 			_var
 			return
 		}
@@ -30,11 +33,11 @@ AntiCheatSetter{
 				EVAL('CheattedTrigging.'+_varname+'=1')
 				SHIORI_FW.PushNotifyResult("\![raise,OnValueCheatted,%(_varname),%(_CanaryValue),%(_var_before)]")
 			}
-			EVAL(_CanaryValueName)+72//恢复值内容
+			_CanaryValue//恢复值内容
 			return
 		}
 	}
-	void EVAL(_CanaryValueName+'='+(_var-72))
+	LETTONAME(_CanaryValueName,(_var-72))
 	_var
 }
 AntiCheat{
@@ -49,7 +52,6 @@ OnValueCheatted{
 	_varname=reference0
 	_var_should_have=reference1
 	_var_cheatting_to=reference2
-	ERASEVAR('CheattedTrigging.'+_varname)
 	case _varname{
 		when 'money'{
 			if _var_cheatting_to>_var_should_have{
@@ -121,4 +123,5 @@ OnValueCheatted{
 			}
 		}
 	}
+	ERASEVAR('CheattedTrigging.'+_varname)
 }

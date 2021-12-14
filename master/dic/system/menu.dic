@@ -603,7 +603,7 @@ DayofWeek_w{
 //---------- 人格设定 ----------------------------------------------------
 TheDefaultValue:void{
 	if !ISVAR(_argv[0])
-		EVAL(_argv[0]+'='+_argv[1])
+		LETTONAME(_argv[0],_argv[1])
 }
 OnOptionSet:void{
 	Select.Option
@@ -616,92 +616,92 @@ Select.Option{
 	if SHIORI_FW.DebugMode{
 		'\n■开发机能设定■\n'
 		--
-		TheDefaultValue('setting.OnNoMatchingEventAlarm','0')
+		TheDefaultValue('setting.OnNoMatchingEventAlarm',0)
 		"未定义事件警告		\_l[120]\q[%(_t[TOINT(setting.OnNoMatchingEventAlarm)]) ON,Onusage,setting.OnNoMatchingEventAlarm,1]  ・  \_l[180]\q[%(_t[1 - TOINT(setting.OnNoMatchingEventAlarm)]) OFF,Onusage,setting.OnNoMatchingEventAlarm,0]\n"
 
-		TheDefaultValue('setting.OnErrorLogAlarm','1')
+		TheDefaultValue('setting.OnErrorLogAlarm',1)
 		"错误记录警告		\_l[120]\q[%(_t[TOINT(setting.OnErrorLogAlarm)]) ON,Onusage,setting.OnErrorLogAlarm,1]  ・  \_l[180]\q[%(_t[1 - TOINT(setting.OnErrorLogAlarm)]) OFF,Onusage,setting.OnErrorLogAlarm,0]\n"
 	}
 	--
 	'\n■随机对话设定■\n'
 	--
-	TheDefaultValue('talkSwitch.story','1')
+	TheDefaultValue('talkSwitch.story',1)
 	"允许讲笑话		\_l[120]\q[%(_t[TOINT(talkSwitch.story)]) ON,Onusage,talkSwitch.story,1]  ・  \_l[180]\q[%(_t[1 - TOINT(talkSwitch.story)]) OFF,Onusage,talkSwitch.story,0]\n"
 	--
-	TheDefaultValue('talkSwitch.poesy','1')
+	TheDefaultValue('talkSwitch.poesy',1)
 	"允许对诗句		\_l[120]\q[%(_t[TOINT(talkSwitch.poesy)]) ON,Onusage,talkSwitch.poesy,1]  ・  \_l[180]\q[%(_t[1 - TOINT(talkSwitch.poesy)]) OFF,Onusage,talkSwitch.poesy,0]\n"
 	--
 	'\n■提醒设定■\n'
 	--
-	TheDefaultValue('autoweather','1')
+	TheDefaultValue('autoweather',1)
 	"天气提醒		\_l[120]\q[%(_t[1 - TOINT(autoweather)]) ON,Onusage,autoweather,0]  ・  \_l[180]\q[%(_t[TOINT(autoweather)]) OFF,Onusage,autoweather,1]\n"
 	--
-	TheDefaultValue('rmswitch','1')
+	TheDefaultValue('rmswitch',1)
 	"节日提醒		\_l[120]\q[%(_t[1 - TOINT(rmswitch)]) ON,Onusage,rmswitch,0]  ・  \_l[180]\q[%(_t[TOINT(rmswitch)]) OFF,Onusage,rmswitch,1]\n"
 	--
-	TheDefaultValue('friendbirthdaymode','1')
+	TheDefaultValue('friendbirthdaymode',1)
 	"好友生日提醒	\_l[120]\q[%(_t[1 - TOINT(friendbirthdaymode)]) ON,Onusage,friendbirthdaymode,0]  ・  \_l[180]\q[%(_t[TOINT(friendbirthdaymode)]) OFF,Onusage,friendbirthdaymode,1]\n"
 	--
 	"\q[◇任务繁忙提醒,OnMemoryBusySet]	\_l[120]\q[%(_t[1 - TOINT(memorybusyrm[0])]) ON,Onusage,memorybusyrm[0\],0]  ・  \_l[180]\q[%(_t[TOINT(memorybusyrm[0])]) OFF,Onusage,memorybusyrm[0\],1]\n"
 	--
-	TheDefaultValue('autoastro','1')
+	TheDefaultValue('autoastro',1)
 	"星座运势提醒	\_l[120]\q[%(_t[1 - TOINT(autoastro)]) ON,Onusage,autoastro,0]  ・  \q[%(_t[TOINT(autoastro)]) OFF,Onusage,autoastro,1]\n"
 	--
-	TheDefaultValue('autobackupclosealert','1')
+	TheDefaultValue('autobackupclosealert',1)
 	"自动备份关闭时提醒	\_l[120]\q[%(_t[TOINT(autobackupclosealert)]) ON,Onusage,autobackupclosealert,1]  ・  \_l[180]\q[%(_t[1 - TOINT(autobackupclosealert)]) OFF,Onusage,autobackupclosealert,0]\n"
 	--
 	'\n■其他设定■\n'
 	--
-	TheDefaultValue('AllowInternetIPShowing','0')
+	TheDefaultValue('AllowInternetIPShowing',0)
 	"显示外网IP		\_l[120]\q[%(_t[TOINT(AllowInternetIPShowing)]) ON,Onusage,AllowInternetIPShowing,1]  ・  \_l[180]\q[%(_t[1 - TOINT(AllowInternetIPShowing)]) OFF,Onusage,AllowInternetIPShowing,0]\n"
 	--
-	TheDefaultValue('kikkacareonherself','0')
+	TheDefaultValue('kikkacareonherself',0)
 	"自我照顾		\_l[120]\q[%(_t[TOINT(kikkacareonherself)]) ON,Onusage,kikkacareonherself,1]  ・  \_l[180]\q[%(_t[1 - TOINT(kikkacareonherself)]) OFF,Onusage,kikkacareonherself,0]\n"
 	--
-	TheDefaultValue('lowpowerautoshutoff','1')
+	TheDefaultValue('lowpowerautoshutoff',1)
 	"低电量自动关闭	\_l[120]\q[%(_t[TOINT(lowpowerautoshutoff)]) ON,Onusage,lowpowerautoshutoff,1]  ・  \_l[180]\q[%(_t[1 - TOINT(lowpowerautoshutoff)]) OFF,Onusage,lowpowerautoshutoff,0]\n"
 	--
-	TheDefaultValue('vanishbutton.visible','1')
+	TheDefaultValue('vanishbutton.visible',1)
 	"消灭指示表示	\_l[120]\q[%(_t[TOINT(vanishbutton.visible)]) ON,Onusage,vanishbutton.visible,1]  ・  \_l[180]\q[%(_t[1 - TOINT(vanishbutton.visible)]) OFF,Onusage,vanishbutton.visible,0]\n"
 	--
-	TheDefaultValue('DeviceChangeAlert','0')
+	TheDefaultValue('DeviceChangeAlert',0)
 	"硬件变动提醒	\_l[120]\q[%(_t[TOINT(DeviceChangeAlert)]) ON,Onusage,DeviceChangeAlert,1]  ・  \_l[180]\q[%(_t[1 - TOINT(DeviceChangeAlert)]) OFF,Onusage,DeviceChangeAlert,0]\n"
 	--
-	TheDefaultValue('mikireswitch','1')
+	TheDefaultValue('mikireswitch',1)
 	"见切反应		\_l[120]\q[%(_t[TOINT(mikireswitch)]) ON,Onusage,mikireswitch,1]  ・  \_l[180]\q[%(_t[1 - TOINT(mikireswitch)]) OFF,Onusage,mikireswitch,0]\n"
 	--
-	TheDefaultValue('AutoUpdate','1')
+	TheDefaultValue('AutoUpdate',1)
 	"自动更新		\_l[120]\q[%(_t[TOINT(AutoUpdate)]) ON,Onusage,AutoUpdate,1]  ・  \_l[180]\q[%(_t[1 - TOINT(AutoUpdate)]) OFF,Onusage,AutoUpdate,0]\n"
 	--
-	TheDefaultValue('kasanariswitch','1')
+	TheDefaultValue('kasanariswitch',1)
 	"重叠反应		\_l[120]\q[%(_t[TOINT(kasanariswitch)]) ON,Onusage,kasanariswitch,1]  ・  \_l[180]\q[%(_t[1 - TOINT(kasanariswitch)]) OFF,Onusage,kasanariswitch,0]\n"
 	--
-	TheDefaultValue('silent','0')
+	TheDefaultValue('silent',0)
 	"效果音			\_l[120]\q[%(_t[1 - TOINT(silent)]) ON,Onusage,silent,0]  ・  \_l[180]\q[%(_t[TOINT(silent)]) OFF,Onusage,silent,1]\n"
 	--
-	TheDefaultValue('timerm','1')
+	TheDefaultValue('timerm',1)
 	"整点报时		\_l[120]\q[%(_t[1 - TOINT(timerm)]) ON,Onusage,timerm,0]  ・  \_l[180]\q[%(_t[TOINT(timerm)]) OFF,Onusage,timerm,1]\n"
 	--
-	TheDefaultValue('acjeachday','1')
+	TheDefaultValue('acjeachday',1)
 	"动漫日语		\_l[120]\q[%(_t[TOINT(acjeachday)]) ON,Onusage,acjeachday,1]  ・  \_l[180]\q[%(_t[1 - TOINT(acjeachday)]) OFF,Onusage,acjeachday,0]\n"
 	--
-	TheDefaultValue('japwordeachday','0')
+	TheDefaultValue('japwordeachday',0)
 	"单词每天记		\_l[120]\q[%(_t[TOINT(japwordeachday)]) ON,Onusage,japwordeachday,1]  ・  \_l[180]\q[%(_t[1 - TOINT(japwordeachday)]) OFF,Onusage,japwordeachday,0]\n"
 	--
 	"\q[◇时间24小时制,OnTimeHour]	\_l[120]\q[%(_t[1 - TOINT(timehour[0])]) ON,Onusage,timehour[0\],0]  ・  \_l[180]\q[%(_t[TOINT(timehour[0])]) OFF,Onusage,timehour[0\],1]\n"
 	--
-	TheDefaultValue('autobackup','0')
+	TheDefaultValue('autobackup',0)
 	"自动备份		\_l[120]\q[%(_t[TOINT(autobackup)]) ON,Onusage,autobackup,1]  ・  \_l[180]\q[%(_t[1 - TOINT(autobackup)]) OFF,Onusage,autobackup,0]\n"
 	--
-	TheDefaultValue('voice','0')
+	TheDefaultValue('voice',0)
 	"\q[◇语音朗读,OnVoiceName]		\_l[120]\q[%(_t[TOINT(voice)]) ON,Onusage,voice,1]  ・  \_l[180]\q[%(_t[1 - TOINT(voice)]) OFF,Onusage,voice,0]\n"
 	--
 	"\q[◇自动换装,OnAutoShellChange]		\_l[120]\q[%(_t[TOINT(AutoShellChange[0])]) ON,Onusage,AutoShellChange[0\],1]  ・  \_l[180]\q[%(_t[1 - TOINT(AutoShellChange[0])]) OFF,Onusage,AutoShellChange[0\],0]\n"
 	--
-	TheDefaultValue('eventinfo','1')
+	TheDefaultValue('eventinfo',1)
 	"日程倒计时资讯	\_l[120]\q[%(_t[1-TOINT(eventinfo)]) ON,Onusage,eventinfo,0]  ・  \_l[180]\q[%(_t[TOINT(eventinfo)]) OFF,Onusage,eventinfo,1]\n"
 	--
-	TheDefaultValue('infofresh','1')
+	TheDefaultValue('infofresh',1)
 	"动态系统资讯	\_l[120]\q[%(_t[TOINT(infofresh)]) ON,Onusage,infofresh,1]  ・  \_l[180]\q[%(_t[1-TOINT(infofresh)]) OFF,Onusage,infofresh,0]\n"
 	--
 	"使用图灵API搜索\_l[120]\q[%(_t[1 - TOINT(Tulingapi[0])]) ON,Onusage,Tulingapi[0\],0]  ・  \_l[180]\q[%(_t[TOINT(Tulingapi[0])]) OFF,Onusage,Tulingapi[0\],1]\n"
@@ -810,18 +810,18 @@ OnAutoComm{
 	_txt
 }
 Onset{
-	void EVAL("%(reference0)=%(reference1)")
+	LETTONAME(reference0,reference1)
 	'完成了'
 }
 Onusage{
 	if reference0=='voicename'{
-		EVAL("%(reference0)=%(CHR(34))%(reference1)%(CHR(34))")
+		LETTONAME(reference0,CHR(34)+reference1+CHR(34))
 		TxtToVoice(reference1,reference1)
 		--
 		OnVoiceName
 	}
 	elseif reference0=='voice.rate'{
-		EVAL("%(reference0)=%(reference1)")
+		LETTONAME(reference0,reference1)
 		TxtToVoice(reference2,reference2)
 		--
 		OnVoiceName
@@ -833,11 +833,11 @@ Onusage{
 		}
 	}
 	elseif reference0=='communicate[1]'{
-		EVAL("%(reference0)=%(reference1)")
+		LETTONAME(reference0,reference1)
 		OnAutoComm
 	}
 	else{
-		EVAL("%(reference0)=%(reference1)")
+		LETTONAME(reference0,reference1)
 		Select.Option
 	}
 }

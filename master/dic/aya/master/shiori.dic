@@ -844,7 +844,7 @@ SHIORI_FW.MakeReferenceAndPassThruInsVariable : void {
 
 			if !SHIORI_FW.REF_ACCEL {//1にすると高速化
 				_varname = 'reference'+_refnum
-				EVAL(_varname+' = _value')
+				LETTONAME(_varname, _value)
 				SHIORI_FW.ReferenceList ,= _varname
 			}
 		}
@@ -853,7 +853,7 @@ SHIORI_FW.MakeReferenceAndPassThruInsVariable : void {
 			_value = var.req.value[_i]
 
 			_varname = 'PassThru_Ins.'+_PassThru_Ins_Name
-			EVAL(_varname+' = _value')
+			LETTONAME(_varname, _value)
 			SHIORI_FW.PassThru_Ins_List ,= _varname
 		}
 	}
@@ -1277,13 +1277,13 @@ SHIORI_FW.RequestLib {
 //引数　：_argv[0] SAORIファイル名
 //　　　　_argv[1] リクエスト文字列
 //------------------------------------------------------------------------------
-SHIORI_FW.MakeValueexVariable {
+SHIORI_FW.MakeValueexVariable:void {
 	SHIORI_FW.ValueexList	= IARRAY
 	_sz						= ARRAYSIZE(var.lib.key)
 	for _i = 0; _i < _sz; _i++ {
 		if SUBSTR(_keyname = var.lib.key[_i], 0, 5) == 'Value' {
 			_varname = "valueex%(SUBSTR(_keyname, 5, 3))"
-			void EVAL("%(_varname) = var.lib.value[_i]")
+			LETTONAME(_varname, var.lib.value[_i])
 			SHIORI_FW.ValueexList ,= _varname
 			valueex[TOINT(SUBSTR(_keyname, 5, 3))] = var.lib.value[_i]
 		}
@@ -1716,13 +1716,13 @@ InNotify{
 }
 RENAME_VAR:void{
 	if ISVAR(_argv[0])
-		EVAL(_argv[1]+'='+_argv[0])
+		LETTONAME(_argv[1],EVAL(_argv[0]))
 	ERASEVAR(_argv[0])
 }
 SWAP_VAR:void{
 	_t=EVAL(_argv[1])
-	EVAL(_argv[1]+'='+_argv[0])
-	EVAL(_argv[0]+'=_t')
+	LETTONAME(_argv[1],EVAL(_argv[0]))
+	LETTONAME(_argv[0],_t)
 }
 ABS{
 	if _argv[0] < 0

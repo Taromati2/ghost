@@ -1926,7 +1926,7 @@ OnClickOption{
 	if _exp=='0'&&_varname=='rename_pos'
 		_exp=1
 	if _exp!=''
-		EVAL("%(_varname)=%(_exp)")
+		LETTONAME(_varname,_exp)
 	for _i=0;_i<10;_i++{
 		_num=_hexnum[_i]
 		_w+="\q[%(_num),OnClickOption,%(_submenu),%(_varname),%(_exp+_num)]"
@@ -1950,7 +1950,7 @@ OnFilesRenameSet{
 	elseif reference1=='delall'
 		renamecondition=IARRAY
 	elseif reference1=='assign'
-		EVAL("%(reference2)=%(reference3)")
+		LETTONAME(reference2,reference3)
 	elseif reference1=='clearfile'
 		filerenamelist=IARRAY
 	elseif reference1=='rename_fix'
@@ -2062,7 +2062,7 @@ OnRenameText{
 		"\![open,inputbox,OnRenameText,-1,%(EVAL(rename_var))]"
 		return
 	}
-	EVAL("%(rename_var)=%(CHR(34))%(reference0)%(CHR(34))")
+	LETTONAME(rename_var,CHR(34)+reference0+CHR(34))
 	OnFilesRename(submenu)
 	submenu=NULL
 	rename_var=NULL
@@ -2136,7 +2136,7 @@ ClearFileRenameVar:void{
 }
 OnRenameGloble{
 	_submenu=reference0
-	EVAL("%(reference1)=%(reference2)")
+	LETTONAME(reference1,reference2)
 	_txt=''
 	_t='文件名大写,文件名小写,扩展名大写,扩展名小写'
 	_w+="\![*]\q[%(_t[1]),OnRenameGloble,%(_submenu),rename_globle,1]\n"
@@ -2843,7 +2843,7 @@ OnReadBookOption{
 	_txt
 }
 OnReadBookUsage{
-	EVAL("%(reference0)=%(reference1)")
+	LETTONAME(reference0,reference1)
 	if reference0=='booklength'{
 		_t=OnReadBookLoad(book_file,book_dexid,0,'fresh')
 		_t=OnReadBookLoad(book_file,book_dexid,0,'recover')
