@@ -599,6 +599,7 @@ SHIORI_FW.AssembleReferenceHeader {
 		ERASEVAR('res_reference')
 	}
 	else {
+		_value = ''
 		for _i = 0; _i < SHIORI_FW.RES_REF_MAX; _i++ {
 			_before = _value
 
@@ -648,6 +649,7 @@ SHIORI_FW.RaiseIDEvent {
 	if SHIORI_FW.Eventid == 'OnSecondChange' {
 		//OnSecondChangeならランダムトーク関連処理
 		_event = SHIORI_FW.ControlAITalk(_event)
+		_event = SHIORI_FW.TranslateEvent(_event)
 	}
 
 	if _event != 'OnSecondChange' {
@@ -697,7 +699,7 @@ SHIORI_FW.RaiseIDEvent {
 		for _i = 0 ; _i < _n ; _i += 1 {
 			if _delim[_i] == EVAL_DELIM {
 				//遅延EVAL
-				_trash = EVAL(_talk[_i + 1])
+				void EVAL(_talk[_i + 1])
 			}
 			elseif _delim[_i] == CHAIN_DELIM {
 				//チェイン処理
