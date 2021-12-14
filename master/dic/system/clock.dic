@@ -55,10 +55,10 @@ OnMinuteChange{
 	if RAND(20160)==0{
 		if UsualUserName.InPush!=username
 			UsualUserName.InPush=username
-		else{ //连续一个月使用同一个用户名
+		else{//连续一个月使用同一个用户名
 			UsualUserName,=UsualUserName.InPush
 			ERASEVAR('UsualUserName.InPush')
-			if ARRAYSIZE(UsualUserName) > 960 //记录近80年内的常用用户名
+			if ARRAYSIZE(UsualUserName) > 960//记录近80年内的常用用户名
 				UsualUserName[TOINT(SQRT(1.0/RAND(990))*990-30)] = IARRAY//[1,960]，数值越低出现概率越大
 		}
 	}
@@ -394,8 +394,8 @@ Hourlychime.Special{
 		when 1-4{
 			"%(hour)点了.%(username)"
 			--
-			"还不睡吗？"
-			"不睡吗.熬夜会变笨的喔？"
+			'还不睡吗？'
+			'不睡吗.熬夜会变笨的喔？'
 		}
 		when 5-6{
 			"%(hour)点了..要去看日出吗？"
@@ -423,7 +423,7 @@ Hourlychime.Special{
 			"%(hour)点了.."
 			"晚上%(hour12)点了呢.."
 			--
-			"接下來该做什么事呢？"
+			'接下來该做什么事呢？'
 			"%(username)在做什么呢？"
 			"这个时间%(username)应该都在电脑前吧？"
 		}

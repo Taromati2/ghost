@@ -138,7 +138,7 @@ ClearAyaTempVar {
 //機能　：ロード時の処理
 //------------------------------------------------------------------------------
 load {
-	// 文字/文字列定数
+	//文字/文字列定数
 	C_LF = CHR(0xa)			/*lin换行*/
 	C_CR = CHR(0xd)			/*mac换行*/
 	C_CRLF = CHR(0xd,0xa)	/*win换行*/
@@ -309,7 +309,7 @@ request {
 
 	status = ''
 	SHIORI_FW.Eventid=''
-	SHIORI_FW.SecurityLevel='Internal' //互換性のためデフォルトはInternal
+	SHIORI_FW.SecurityLevel='Internal'//互換性のためデフォルトはInternal
 
 	while _lineend > _linestart {
 		//行分割

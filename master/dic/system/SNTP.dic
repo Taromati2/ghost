@@ -113,7 +113,6 @@ OnSNTPFailure{
 }
 
 //
-
 TimeErrorCheck{
 	if GETSECCOUNT
 		year < 2021 || (GETSECCOUNT - CloseTime) < 0

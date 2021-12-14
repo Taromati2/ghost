@@ -77,7 +77,7 @@ OnUserNameInput{
 		_month=_size-_index
 		_year=_month/12
 		//if _longest > 13{
-			
+
 		//}
 		if _name==UsualUserName[_size-1]
 			"\0\s[0]%(_name).\w9.\w9.\w9\n/
@@ -229,7 +229,7 @@ OnUserName.SpecialCheck.base{
 			\1\s[11]你有母性吗？\w9\w9\w9\n/
 			\0就算这样说\w9.\w9.\w9.'
 		//when '菊花'
-		//	''
+			//''
 		when '用户名','username'
 			'\1\s[12]上一次听到这样的名字还是在上一次\w9\0\s[8]？'
 		when '索娜·马萨卡','马萨卡','nani','娜妮'

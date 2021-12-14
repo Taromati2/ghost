@@ -938,7 +938,7 @@ Select.birthdaykikka{
 	}
 	elseif _argv[0]=='wrong'{
 		intimacy--
-		"\0\s[1]不是这样的呢\w9\w9\n"
+		'\0\s[1]不是这样的呢\w9\w9\n'
 	}
 	--
 	if _argv[0]=='N'||_argv[0]=='wrong'{
@@ -1579,7 +1579,7 @@ Select.OK{
 }
 Select.forget{
 	forgetflag = 1
-		"\1\s[-1]\0\s[7]是这样啊，\w9\w9虽然很可惜，\w9但%(username)的学习工作才是最重要的呢。\x"
+	"\1\s[-1]\0\s[7]是这样啊，\w9\w9虽然很可惜，\w9但%(username)的学习工作才是最重要的呢。\x"
 }
 Select.daijobu{
 	"\1\s[-1]\0\s[8]%(username)很邪恶呢，\w9如果那样的话，\w9橘花也没办法啦，\w9\w9请您，请您一定要暴力的对待橘花哦。\w9\w9\n\n\q[◇不，我会很温柔的,gentle]\x"

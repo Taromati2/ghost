@@ -55,7 +55,7 @@ OnTranslate{
 	if _txt && !playingtetris && !playRetroSnaker{
 		if _temp{
 			_t=SakuraToTxt(_txt)
-			if running!='chatroom'&&'引擎 (' !_in_ _t&&!CheckProcess('wscript.exe') //&&running!='readbook'&&read!='stop'
+			if running!='chatroom'&&'引擎 (' !_in_ _t&&!CheckProcess('wscript.exe')//&&running!='readbook'&&read!='stop'
 				_txt=TxtToVoice(_t,voicename)+_txt
 		}
 		if musicplayer == 1 && reference2 != 'OnMusicPlayer' && reference2 != 'OnSurfaceRestore.Music' && mode=='0'{
