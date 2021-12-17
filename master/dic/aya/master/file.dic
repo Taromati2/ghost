@@ -66,28 +66,32 @@ FWRITE_WITH_CR{
 GET_ENDLINE.file_was_opened{
 	_file=_argv[0]
 	void FSEEK(_file,0,'start')
-	void FREAD(_file)
-	void FSEEK(_file,-2,'current')
-	_endline=FREADBIN(_file,2)
-	if _endline == C_CRLF{
-		C_CRLF
+	if FREAD(_file) > 0{
+		void FSEEK(_file,-2,'current')
+		_endline=FREADBIN(_file,2)
+		if _endline == C_CRLF{
+			C_CRLF
+		}
+		elseif C_LF _in_ _endline{
+			C_LF
+		}
+		elseif C_CR _in_ _endline{
+			C_CR
+		}
+		else{
+			''
+		}
 	}
-	elseif C_LF _in_ _endline{
-		C_LF
-	}
-	elseif C_CR _in_ _endline{
-		C_CR
-	}
-	else{
-		0
-	}
+	else
+		''
 	void FSEEK(_file,0,'start')
 }
 GET_ENDLINE{
 	_file=_argv[0]
-	void FOPEN(_file,'rb')
-	GET_ENDLINE.file_was_opened(_file)
-	void FCLOSE(_file)
+	if FOPEN(_file,'rb'){
+		GET_ENDLINE.file_was_opened(_file)
+		void FCLOSE(_file)
+	}
 }
 DELDIR{
 	_attrib=FATTRIB(_argv[0])

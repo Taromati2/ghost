@@ -500,6 +500,7 @@ AILoad.InfFile{//AILoad.InfFile('PSEUDO_AI_PATH\common.ai','你好')
 			void FOPEN(_inf,'w')
 			_buff2='md5='+_md5
 			void FWRITE(_inf,_buff2)
+			FCLOSE(_inf)
 		}
 		elseif Tflag==2{
 			_dexori,=_Ttemp
@@ -520,15 +521,17 @@ AILoad.InfFile{//AILoad.InfFile('PSEUDO_AI_PATH\common.ai','你好')
 			void FOPEN(_inf,'w')
 			_buff2='md5='+_md5
 			void FWRITE(_inf,_buff2)
+			FCLOSE(_inf)
 		}
 	}
 	elseif _filename!='USER'{
 		infmode=1
-		void FOPEN(_inf,'w')
-		_buff2='md5='+_md5
-		void FWRITE(_inf,_buff2)
+		if FOPEN(_inf,'w'){
+			_buff2='md5='+_md5
+			void FWRITE(_inf,_buff2)
+			FCLOSE(_inf)
+		}
 	}
-	FCLOSE(_inf)
 	FCHARSET.default
 	e=_E
 	_dexori
@@ -1620,8 +1623,8 @@ AITalkAdd{//('PSEUDO_AI_PATH\user.ai','你好*你也好','write')
 	FCLOSE(_file)
 	if _mode=='write'{
 		void FOPEN(_file,'w')
+		FCLOSE(_file)
 	}
-	FCLOSE(_file)
 	_temp=''
 	_table=0
 	FCHARSET(1)

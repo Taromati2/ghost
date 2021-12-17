@@ -29,7 +29,7 @@ TextBetween2{
 }
 */
 TextToEnd{//TextToEnd('a=b=1234','=',0)=='b=1234'得到字符串'a=b=1234'中从第1个'='到字符串结束的文本'b=1234'
-	_s=_argv[0]
+	_s=TOSTR(_argv[0])
 	_begin=_argv[1]
 	_idx = 0
 	if _argc > 2 {

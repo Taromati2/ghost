@@ -304,15 +304,17 @@ Talksearchleng{
 					_g[0]=_d
 				}
 			}
-			if _f[_y] _in_ _a && STRLEN(_f[_y])==_e && _lastm==0 {
-				_o=ARRAYSIZE(_g)
-				_g[_o]=_d
-			}
-			elseif _f[_y] _in_ _a && STRLEN(_f[_y])>_e {//当上次最大长度匹配＞这次,不管是何种保留都放弃
-				_lastm=0
-				_e=STRLEN(_f[_y])
-				_g=IARRAY
-				_g[0]=_d
+			if _f[_y] _in_ _a {
+				if STRLEN(_f[_y])==_e && _lastm==0 {
+					_o=ARRAYSIZE(_g)
+					_g[_o]=_d
+				}
+				elseif STRLEN(_f[_y])>_e {//当上次最大长度匹配＞这次,不管是何种保留都放弃
+					_lastm=0
+					_e=STRLEN(_f[_y])
+					_g=IARRAY
+					_g[0]=_d
+				}
 			}
 			_y++
 		}
