@@ -7,7 +7,7 @@ AntiCheatWatcher{
 	if _CanaryValue!=_var{
 		if ISVAR(_CanaryValueName){
 			if !EVAL('CheattedTrigging.'+_varname){
-				EVAL('CheattedTrigging.'+_varname+'=1')
+				LETTONAME('CheattedTrigging.'+_varname,1)
 				SHIORI_FW.PushNotifyResult("\![raise,OnValueCheatted,%(_varname),%(_CanaryValue),%(_var)]")
 			}
 			_CanaryValue
@@ -30,7 +30,7 @@ AntiCheatSetter{
 	if _CanaryValue!=_var_before{
 		if ISVAR(_CanaryValueName){
 			if !EVAL('CheattedTrigging.'+_varname){
-				EVAL('CheattedTrigging.'+_varname+'=1')
+				LETTONAME('CheattedTrigging.'+_varname,1)
 				SHIORI_FW.PushNotifyResult("\![raise,OnValueCheatted,%(_varname),%(_CanaryValue),%(_var_before)]")
 			}
 			_CanaryValue//恢复值内容
