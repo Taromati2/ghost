@@ -159,10 +159,27 @@ On_ShioriEcho {
 			ShioriEcho.Result=GETERRORLOG
 		}
 		others{
-			if RE_GREP(reference0,'^\s*help\s+'){
-				ShioriEcho.Special=Get_AYA_Function_Info(RE_REPLACE(reference0,'^\s*help\s+',''))
-				if !ShioriEcho.Special
-					ShioriEcho.Special='不是系统函数'
+			if RE_GREP(reference0,'^\s*(help|openfunc)\s+'){
+				if RE_GREP(reference0,'^\s*help\s+'){
+					ShioriEcho.Special=Get_AYA_Function_Info(RE_REPLACE(reference0,'^\s*help\s+',''))
+					if !ShioriEcho.Special
+						ShioriEcho.Special='不是系统函数'
+				}
+				elseif RE_GREP(reference0,'^\s*openfunc\s+'){
+					_fnucname=RE_REPLACE(reference0,'^\s*openfunc\s+','')
+					_info=GETFUNCINFO(_fnucname)
+					_path=SPLITPATH(_info[0])
+					if _path
+						_path=_path[2]+_path[3]
+					else
+						_path=_info[0]
+					if _info!=-1{
+						OnOpenDicWithLineNum(_info[0],_info[1])
+						ShioriEcho.Special="打开%(_path)第%(_info[1])行"
+					}
+					else
+						ShioriEcho.Special='不是用户函数'
+				}
 			}
 			else{
 				OnCalculateVar
@@ -174,7 +191,15 @@ On_ShioriEcho {
 }
 On_ShioriEcho.TabPress{
 	_lastname=RE_REPLACE(reference0,'^[\s\S]*[\[\]\(\)\+\-\*\/\=\'+"'"+'\" ]','')
-	_possible_names=(GETVARLIST(_lastname),GETFUNCLIST(_lastname),GETSYSTEMFUNCLIST(_lastname),ARRAY.BeginAs(_lastname,'reload','errorlog'))
+	_possible_names=IARRAY
+	if !reference0[1,' ']
+		_possible_names,=ARRAY.BeginAs(_lastname,'reload','errorlog','openfunc','help')
+	if reference0[0,' '] == 'help'
+		_possible_names=GETSYSTEMFUNCLIST(_lastname)
+	elseif reference0[0,' '] == 'openfunc'
+		_possible_names=GETFUNCLIST(_lastname)
+	else
+		_possible_names,=(GETVARLIST(_lastname),GETFUNCLIST(_lastname),GETSYSTEMFUNCLIST(_lastname))
 	if ARRAYSIZE(_possible_names){
 		_name_after_tab=_possible_names[reference1%ARRAYSIZE(_possible_names)]
 		SHIORI_FW.Make_X_SSTP_PassThru('Command',RE_REPLACE(reference0,_lastname+'$',_name_after_tab))
