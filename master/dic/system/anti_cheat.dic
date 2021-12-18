@@ -2,7 +2,7 @@
 AntiCheatWatcher{
 	_varname=_argv[0]
 	_var=_argv[1]
-	_CanaryValueName='CanaryValue.'+_varname
+	_CanaryValueName='CanaryValue.'+STRDIGEST(_varname)
 	_CanaryValue=EVAL(_CanaryValueName)+72
 	if _CanaryValue!=_var{
 		if ISVAR(_CanaryValueName){
@@ -25,7 +25,7 @@ AntiCheatSetter{
 	_varname=_argv[0]
 	_var=_argv[1]
 	_var_before=_argv[2]
-	_CanaryValueName='CanaryValue.'+_varname
+	_CanaryValueName='CanaryValue.'+STRDIGEST(_varname)
 	_CanaryValue=EVAL(_CanaryValueName)+72
 	if _CanaryValue!=_var_before{
 		if ISVAR(_CanaryValueName){
@@ -41,8 +41,13 @@ AntiCheatSetter{
 	_var
 }
 AntiCheat{
-	FUNCDECL_READ(_argv[0],'AntiCheatWatcher')
-	FUNCDECL_WRITE(_argv[0],'AntiCheatSetter')
+	_varname=_argv[0]
+	FUNCDECL_READ(_varname,'AntiCheatWatcher')
+	FUNCDECL_WRITE(_varname,'AntiCheatSetter')
+	if ISVAR('CanaryValue.'+_varname){
+		LETTONAME('CanaryValue.'+STRDIGEST(_varname),EVAL('CanaryValue.'+_varname))
+		ERASEVAR('CanaryValue.'+_varname)
+	}
 }
 Init.AntiCheatIniter{
 	AntiCheat('money')

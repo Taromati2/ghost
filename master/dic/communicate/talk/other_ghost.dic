@@ -16,9 +16,16 @@ StartCommunicate{
 			//---- 与さくら（樱花）的对话
 			'\0\s[0]どもー。'
 		}
-		{
-			"\0\s[0]你好、%(res_reference0)。"
-			REPLACE(OnOtherGreetings,"%(username)","%(res_reference0)")
+		_varname_NumOfTry='OtherGhostTalk.'+STRDIGEST(res_reference0)+'.NumOfTry'
+		if EVAL(_varname_NumOfTry)<4 {
+			if EVAL(_varname_NumOfTry)==3
+				'\0\s[0]...'
+			else
+				"\0\s[0]你好、%(res_reference0)。"
+			EVAL(_varname_NumOfTry+'++')
+		}
+		else{
+			RandomTalk
 		}
 	}
 	else{
@@ -49,6 +56,10 @@ OnVanished{
 }
 //---- 与其他人格对话 -----------------------------------------------------------------------
 ReplyToGhost{
+	if ghostname _in_ reference1 || selfname _in_ reference1 || keroname _in_ reference1{
+		_varname_NumOfTry='OtherGhostTalk.'+STRDIGEST(reference0)+'.NumOfTry'
+		ERASEVAR(_varname_NumOfTry)
+	}
 	_t=1
 	if reference0 == '凉璃'{
 		_t=0
@@ -91,49 +102,6 @@ ReplyToGhost{
 	if _t{
 		//'\0\s[0]嗯、是啊～。'
 		REPLACE(OnAIGhostReply,username,'你')
-	}
-}
-OnOtherGreetings{
-	Greetings
-	case hour{
-		when 4-6{
-			"\0\s[36]今天%(username)好早呢。"
-			'\0\s[0]早上好。'
-		}
-		//---- 早上
-		when 7-8{
-			'\0\s[0]早上好。'
-			"\0\s[35]早安、\w9%(username)\w9\w9\w9\w9\s[0]\n今天一天也好好加油吧。。"
-		}
-		//---- 上午
-		when 9-10{
-			'\0\s[0]早上好。'
-			"\0\s[5]早上好啊，\w9\w9\%(username)，\w9\w9\现在是学习工作的黄金时间呢，\w9\w9\w9要好好努力哦。"
-			"\0\s[35]早安、\w9%(username)\w9\w9\w9\w9\s[0]\n今天一天也好好加油吧。。"
-		}
-		//---- 中午
-		when 11-13{
-			'\0\s[26]午安。'
-		}
-		//---- 下午
-		when 14-18{
-			"\0\s[26]下午好啊，%(username)，今天有好好努力吗？"
-			'\0\s[5]下午好。'
-		}
-		//---- 晚上
-		when 19-23{
-			'\0\s[5]晚安。'
-			"\0\s[5]晚上好，%(username)"
-		}
-		//---- 深夜
-		others{
-			if weekday == '0'{
-				"\0\s[2]啊、已经这么晚了，%(username)还不休息吗"
-			}
-			else{
-				'\0\s[26]这么晚了要注意休息喔。'
-			}
-		}
 	}
 }
 OnAIGhostReply{
