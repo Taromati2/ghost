@@ -1714,6 +1714,15 @@ INEVENT{
 InNotify{
 	REQ.COMMAND == 'NOTIFY'
 }
+ROUNDEX{
+	_num=_argv[0]
+	_to=_argv[1]
+	if !_to
+		_to=1
+	_num*=(1.0/_to)
+	_num=ROUND(_num)*_to
+	_num
+}
 RENAME_VAR:void{
 	if ISVAR(_argv[0])
 		LETTONAME(_argv[1],EVAL(_argv[0]))
