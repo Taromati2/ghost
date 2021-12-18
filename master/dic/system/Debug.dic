@@ -162,7 +162,15 @@ On_ShioriEcho {
 			if RE_GREP(reference0,'^\s*(help|openfunc)\s+'){
 				if RE_GREP(reference0,'^\s*help\s+'){
 					ShioriEcho.Special=Get_AYA_Function_Info(RE_REPLACE(reference0,'^\s*help\s+',''))
-					if !ShioriEcho.Special
+					if ShioriEcho.Special{
+						'aya自带底层函数\n'+ShioriEcho.Special+'\n/
+						\q[◇打开在线文档,OnUrlOpen,'+Get_AYA_Function_Doc(_t)+']\n/
+						\q[◇无用,Cancel]\n/
+						'
+						--
+						IgnoreChoiceTimeout
+					}
+					else
 						ShioriEcho.Special='不是系统函数'
 				}
 				elseif RE_GREP(reference0,'^\s*openfunc\s+'){
