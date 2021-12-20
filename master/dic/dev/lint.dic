@@ -14,7 +14,7 @@ LINT.GetFUNClistThatUsing{
 	GETFUNCLIST('TalkKero')/
 	)
 
-	_maped_list=_list
+	_maped_list=IARRAY
 	_mapping_list=IARRAY
 	while ARRAYSIZE(_list){
 		foreach _list;_i{
