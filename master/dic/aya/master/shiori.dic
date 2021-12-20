@@ -23,6 +23,15 @@ CALLALLFUNCTIONBEGINAS {
 		EVAL(_V)
 	}
 }
+GETFUNCLISTINRE {
+	_L= GETFUNCLIST
+	_R=IARRAY
+	foreach _L;_V {
+		if RE_GREP(_V,_argv[0])
+			_R,=_V
+	}
+	_R
+}
 CALLALLFUNCTIONINRE {
 	_L= GETFUNCLIST
 	foreach _L;_V {
