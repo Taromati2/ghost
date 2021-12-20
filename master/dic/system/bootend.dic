@@ -559,7 +559,6 @@ ClearVar{
 	ERASEVAR('id')
 	ERASEVAR('res')
 	ERASEVAR('calendar')
-	ERASEVAR('poker')
 	ERASEVAR('i')
 	ERASEVAR('ix')
 	ERASEVAR('jd')

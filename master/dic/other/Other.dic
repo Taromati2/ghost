@@ -1839,11 +1839,6 @@ OnJapWordAnswer{
 	_wordnum++
 	OnJapWordQuestion(_wordnum)
 }
-CheckRepeatHardword{
-	_newword=_argv[0]
-	_result=-1
-	INARRAY(japhardword,_newword)
-}
 OnJapHardWord{
 	_booknum=reference0
 	if _argc>0

@@ -1476,67 +1476,6 @@ AILoad.AnswerTxt{
 	}
 	_txt
 }
-AISearch{//暂时无用
-	_str=_argv[1]
-	_Q=_argv[2]
-	_Qnum=1//_Q=TextBetween(_session,'<pattern>','</pattern>')
-	_template=TextBetween(_session,'<template>','</template>')
-	_A=_template
-	_Anum=1
-	if '<li>' _in_ _template{
-		_A=''
-		while  _template[_Anum,'<li>']!=''{
-			_Anum++
-		}
-	}
-	for _k=0;_k<_Anum-1;_k++{
-		_A+=TextBetween(_template,'<li>','</li>',_k)+'|'
-	}
-	_m=0
-	if '*' _in_ _Q{
-		_Qs=_Q
-		SETDELIM(_Qs,'*')
-		_n=ARRAYSIZE(_Qs)
-		_k=0
-		for _l=0,_m=1;_l<_n && _m==1;_l++{
-			_m=(_Qs[_l] _in_ _str)
-			_k+=STRLEN(_Qs[_l])
-		}
-		if _m==1 && _k==_E && _lastm==1{
-			_o=ARRAYSIZE(_g)
-			_g[_o]=_i
-			_txt+=_A
-			anum+=_Anum-1
-		}
-		elseif _m==1 && _k>_E{
-			_lastm=1
-			_E=_k
-			_g=IARRAY
-			_g[0]=_i
-			_txt=''
-			_txt+=_A
-			anum=_Anum-1
-		}
-	}
-	if _Q _in_ _str && STRLEN(_Q)==_E && _lastm==0{
-		_txt+=_A
-		anum+=_Anum-1
-	}
-	elseif _Q _in_ _str && STRLEN(_Q)>_E{//当上次最大长度匹配＞这次,不管是何种保留都放弃
-		_lastm=0
-		_E=STRLEN(_Q)
-		_g=IARRAY
-		_g[0]=_i
-		_ex=SUBSTR(_str,STRLEN(_Q),STRLEN(_str))
-		if (_t=ExFunction(_Q,_ex))!=''{
-			_txt=_t
-			break
-		}
-		_txt=''
-		_txt+=_A
-		anum=_Anum-1
-	}
-}
 //ReplaceStarTxt('什么是腹黑','什么是*','<thatstar/>是萌的一种','thatstar')
 //ReplaceStarTxt('a是b','.*是.*','<star/>是另一个<star index='2'/>')
 ReplaceStarTxt{
@@ -1706,38 +1645,6 @@ AITalkAdd{//('PSEUDO_AI_PATH\user.ai','你好*你也好','write')
 	}
 	FCLOSE(_file)
 	FCHARSET.default
-}
-ExFunction{
-	_str=reference0
-	_ex=reference1
-	_found=''
-	if _argc>0{
-		_str=_argv[0]
-		_ex=_argv[1]
-	}
-	if (_t=TOREAL(_ex)) {
-		_ex=_t
-		if '我的身高是' _in_ _str
-			_found=WeightRange(_ex)
-	}
-	_found
-}
-WeightRange{//体重指数(BMI)=体重(千克)/身高(米)^2
-	_height=TOINT(reference0)
-	if _argc>0
-		_height=TOINT(_argv[0])
-	_bmilow=18.5
-	_bmihigh=24
-	_weightlow=_bmilow*(_height/100.0)*(_height/100.0)
-	_weighthigh=_bmihigh*(_height/100.0)*(_height/100.0)
-	_pointidx=STRSTR(_weightlow,'.',0)
-	_weightlow=SUBSTR(_weightlow,0,_pointidx)+SUBSTR(_weightlow,_pointidx,3)
-	_pointidx=STRSTR(_weighthigh,'.',0)
-	_weighthigh=SUBSTR(_weighthigh,0,_pointidx)+SUBSTR(_weighthigh,_pointidx,3)
-	if _height<175
-		"%(username)，你的健康体重范围是:%(_weightlow)公斤～%(_weighthigh)公斤。你是哪里的？"
-	else
-		"%(username)，你的健康体重范围是:%(_weightlow)公斤～%(_weighthigh)公斤。你今天心情怎么样？"
 }
 LogicEvaluate{//逻辑表达式解析器
 	//LogicEvaluate('(喜欢|爱)&(美女|野兽)&(看|见)|((美女|野兽)&(看|见))')
@@ -2120,57 +2027,6 @@ RandAITalk{
 	"%(username)今天也要好好加油啊"
 	'输入“/teach”指令可以进入教学模式、输入“/talk”指令返回对话模式'
 	Greetings
-}
-MealJudge{
-	if hour >= 7 && hour < 11
-		'breakfast'
-	elseif hour >= 11 && hour < 17
-		'lunch'
-	elseif hour >= 17 && hour < 22
-		'supper'
-}
-Meal{
-	talkmemo=MealJudge
-	if talkmemo==''{
-		'没有'
-		'你吃了啊'
-	}
-	else{
-		'吃了'
-		"吃了,%(username)呢"
-	}
-}
-EatWhat{
-	talkmemo=MealJudge
-	if talkmemo=='breakfast'
-		'花式蛋糕'
-	elseif talkmemo=='lunch'
-		'龙虾大餐'
-	elseif talkmemo=='supper'
-		'鸡腿汉堡'
-}
-Breakfast{
-	talkmemo=MealJudge
-	if hour >= 7
-		'早餐吃了'
-	else
-		'还没吃早餐呢'
-}
-Lunch{
-	talkmemo=MealJudge
-	if hour >= 11
-		'午餐已经吃过了'
-	else{
-		'还没呢'
-		'早餐已经吃过了，午餐还没呢'
-	}
-}
-Supper{
-	talkmemo=MealJudge
-	if hour >= 17&&hour<22
-		'吃完了'
-	else
-		'还没有啊，你吃了啊'
 }
 Greetings{
 	case hour{
@@ -2736,12 +2592,4 @@ GetStarCha{//GetStarCha('a是b的','*是*')
 			_d,=_c[_i]
 	}
 	_d
-}
-ClearFile{
-	_file='PROFILE_PATH\\VoiceName.vbs'
-	void FDEL(_file)
-	_file='PROFILE_PATH\\voice.vbs'
-	void FDEL(_file)
-	_file='PROFILE_PATH\\stop.vbs'
-	void FDEL(_file)
 }

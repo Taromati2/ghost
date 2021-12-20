@@ -476,14 +476,6 @@ KikkaItemTalk{
 	'\0\s[28]\b[2]好漂亮……\w9那个…\w9谢谢你……\w9',/
 	)[_tmp]
 }
-POP{
-	array=_argv[0]
-	_s=ARRAYSIZE(_argv[0])
-	for _i=0;_i<_s-1;_i++{
-		array=(_argv[0][_i],_array)
-	}
-	array
-}
 OnKikkaItem{
 	if TOINT(reference1) + money < 0 {
 		reference0 = 1

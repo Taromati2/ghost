@@ -344,9 +344,6 @@ Poker.Show{
 	}
 	_txt
 }
-Poker.Clear{
-	ERASEVAR('poker')
-}
 OnBlackjack0{
 	'规则都知道吧'
 	'这个游戏不押赌注就不好玩了，\w9每一局￥50怎样？\w9拿到BlackJack2倍，五龙3倍喔！\w9'

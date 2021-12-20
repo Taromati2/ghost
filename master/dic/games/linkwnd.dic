@@ -332,7 +332,6 @@ OnDrawLinkWnd{//绘图
 			}
 		}
 	}
-	//_txt+=DrawFoot
 	_txt+=LinkWndMenu
 	if !linkwndmusic {
 		_txt+=BGMusic
@@ -1646,14 +1645,6 @@ OnReputLinkWnd{
 	_txt+=OnDrawLinkWnd
 	_txt
 }
-Search{
-	for  _i=1; _i<m_nRow-1; _i++{
-		for _j=1; _j<m_nCol-1; _j++{
-			if m_map[_i*m_nCol+_j]==m_map[_k*m_nCol+_l]&&IsLink(_j,_i,_l,_k) && !(_i==_k&&_j==_l) && m_map[_k*m_nCol+_l]!=BLANK_STATE{hint[1]=_i;hint[0]=_j;hint[3]=_k;hint[2]=_l;1;return;}
-		}
-	}
-	0;return
-}
 //
 //判断选中的两个方块是否可以消除
 //
@@ -1679,33 +1670,6 @@ IsLink{
 		1;return
 	}
 	0;return
-}
-DrawFoot{
-	_foot='PATH\foot.png'
-	_txt=''
-	_k=0
-	for _i=1; _i<m_nRow-1; _i++{
-		for _j=1; _j<m_nCol-1; _j++{
-			_x = _j*(LinkWndWIDTH-1)
-			_y = _i*(LinkWndHigh-1)
-			_X=LinkWndWIDTH/2
-			_Y=LinkWndHigh/2
-			_a=0
-			if _i==_k
-				_a=LinkWndHigh/2-2
-			if map[_i*m_nCol+_j]=='X'
-				_txt+="\_l[%(_x+LinkWnd_LEFT),%(LinkWnd_TOP+_y+_Y)]\_b[%(_foot),inline,--option=opaque,--clipping=0 %(LinkWndHigh-1) %(LinkWndWIDTH) %(LinkWndHigh+1)]"//画横线
-			if map[_i*m_nCol+_j]=='Y'
-				_txt+="\_l[%(_x+LinkWnd_LEFT+_X),%(LinkWnd_TOP+_y)]\_b[%(_foot),inline,--option=opaque,--clipping=%(LinkWndWIDTH-1) 0 %(LinkWndWIDTH+1) %(LinkWndHigh)]"//画竖线
-			if map[_i*m_nCol+_j]=='XY'{
-				_txt+="\_l[%(_x+LinkWnd_LEFT),%(LinkWnd_TOP+_y+_Y)]\_b[%(_foot),inline,--option=opaque,--clipping=0 %(LinkWndHigh-1) %(LinkWndWIDTH+_X) %(LinkWndHigh+1)]"//画直角
-				_k=_i
-			}
-			if map[_i*m_nCol+_j]=='YX'
-				_txt+="\_l[%(_x+LinkWnd_LEFT+_X),%(LinkWnd_TOP+_y)]\_b[%(_foot),inline,--option=opaque,--clipping=%(LinkWndWIDTH-1) %(_a) %(LinkWndWIDTH+1) %(LinkWndHigh)]"//画直角
-		}
-	}
-	_txt
 }
 //
 //X直接连通

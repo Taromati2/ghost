@@ -661,16 +661,6 @@ AreaTxt{
 	}
 	_w
 }
-GETCASENUM{
-	_txt=_argv[0]
-	_n=STRLEN(_txt)
-	_j=0
-	for _i=0;_i<_n;_i++{
-		_a=SUBSTR(_txt,_i,1)
-		_j+=CASECHECK(_a)
-	}
-	_j
-}
 GETPOSNUM{
 	_txt=_argv[0]
 	_POS=TOINT(_argv[1])

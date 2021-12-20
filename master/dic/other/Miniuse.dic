@@ -1614,15 +1614,6 @@ OnCopyDat{
 	--
 	CalculatorShow
 }
-lastIndexOf{
-	_String=_argv[0]
-	_Regex=_argv[1]
-	if RE_GREP(_String,_Regex){
-		_l=ARRAYSIZE(RE_GETPOS)
-		RE_GETPOS[_l-1];return
-	}
-	-1;return
-}
 OnReadyToEat{
 	eatfile=1
 	'把不要的东西通通塞给橘花吧，让橘花把它吃掉，拖拽文件（夹）到橘花上面'
@@ -2234,9 +2225,6 @@ DialogFilesRenameSaveCon:void{
 	}
 	FCLOSE(_rncfg)
 	FCHARSET.default
-}
-FileRenameLoadFile{
-	filerenamelist ,= REPLACE(_argv[0],'/','\')
 }
 OnFileRenameDrop{
 	if _argc>0
@@ -3034,13 +3022,6 @@ GetTxtCharset{
 	else
 		_txt='Default'
 	_txt
-}
-CharsetToId{
-	_cha=_argv[0]
-	_id=127
-	if TOLOWER(_cha)=='utf-8'
-		_id=1
-	_id
 }
 OnFileRead{
 	_file='a.txt'
