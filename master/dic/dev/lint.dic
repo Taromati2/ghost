@@ -1,0 +1,41 @@
+//辞书分析辞书
+//是啊，为什么呢，我现在也才在找原因呢
+
+LINT.GetFUNClistThatUsing{
+	_list=('load','unload','request',/
+	GETFUNCLIST('On'),GETFUNCLIST('Select.'),/
+	GETFUNCLIST('Init.'),GETFUNCLIST('Fin.'),/
+	GETFUNCLIST('SHIORI_EV.'),/
+	GETFUNCLISTINRE('^Clear\S*Var$'),/
+	GETFUNCLISTINRE('^Chain\d*$'),/
+	GETFUNCLIST('VERSION_UPGRADE_'),/
+	GETFUNCLIST('shiori.'),/
+	GETFUNCLIST('TalkSakura'),/
+	GETFUNCLIST('TalkKero')/
+	)
+
+	_maped_list=_list
+	_mapping_list=IARRAY
+	while ARRAYSIZE(_list){
+		foreach _list;_i{
+			_mapping_list=ARRAYDEDUP(_mapping_list,LINT.GetUserDefFuncUsedBy(_i))
+		}
+		_maped_list=ARRAYDEDUP(_maped_list,_list)
+		_list=IARRAY
+		foreach _mapping_list;_i{
+			if !INARRAY(_maped_list,_i)
+				_list,=_i
+		}
+	}
+	_maped_list
+}
+LINT.GetFUNClistThatNotUsing{
+	_list=GETFUNCLIST
+	_using_list=LINT.GetFUNClistThatUsing
+	_ret=IARRAY
+	foreach _list;_i{
+		if !INARRAY(_using_list,_i)
+			_ret,=_i
+	}
+	_ret
+}
