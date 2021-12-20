@@ -149,6 +149,7 @@ On_ShioriEcho.GetName:void {
 }
 On_ShioriEcho {
 	ClearShioriEchoVar
+	reference0 = TOSTR(reference0)
 	case CUTSPACE(reference0){
 		when 'reload'{
 			ReloadFromTerminal=1
