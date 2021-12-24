@@ -161,10 +161,11 @@ On_ShioriEcho {
 		others{
 			if RE_GREP(reference0,'^\s*(help|openfunc)\s+'){
 				if RE_GREP(reference0,'^\s*help\s+'){
-					ShioriEcho.Special=Get_AYA_Function_Info(RE_REPLACE(reference0,'^\s*help\s+',''))
+					_funcname=RE_REPLACE(reference0,'^\s*help\s+','')
+					ShioriEcho.Special=Get_AYA_Function_Info(_funcname)
 					if ShioriEcho.Special{
 						'aya自带底层函数\n'+ShioriEcho.Special+'\n/
-						\q[◇打开在线文档,OnUrlOpen,'+Get_AYA_Function_Doc(_t)+']\n/
+						\q[◇打开在线文档,OnUrlOpen,'+Get_AYA_Function_Doc(_funcname)+']\n/
 						\q[◇无用,Cancel]\n/
 						'
 						--
