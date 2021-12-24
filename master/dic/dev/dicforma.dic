@@ -80,7 +80,7 @@ dicforma.main:void{//dicforma.main('aya/cmd.dic')
 		if RE_GREP(dicforma.line.now,'\"[^\"]*\"') + RE_GREP(dicforma.line.now,"\'[^\']*\'") == 1
 			dicforma.line.now=RE_REPLACEEX(dicforma.line.now,'\"([^'+"\'"+'%"]*)\"',"'$1'")
 		//while RE_GREP(dicforma.line.now,'\\n((\\w(\d|\[[^\]]+\]))+)/'+CHR(1)){
-		//	dicforma.line.now=RE_REPLACEEX(dicforma.line.now,'\\n((\\w(\d|\[[^\]]+\]))+)/'+CHR(1),'$1\\n/'+CHR(1))
+			//dicforma.line.now=RE_REPLACEEX(dicforma.line.now,'\\n((\\w(\d|\[[^\]]+\]))+)/'+CHR(1),'$1\\n/'+CHR(1))
 		//}
 		//dicforma.line.now=RE_REPLACE(dicforma.line.now,'(?!\\\!\[\*\])(|○|◎|◆)?\\q\[(?!◇|○|◎|◆|◥|■|◢|◄|●|►|▲|▼|%|<<|[\S(?!>|\])]*>>|[ABCD].)','\\q\[◇')
 		//dicforma.line.now=RE_REPLACEEX(dicforma.line.now,'\s*(=|+|-|*|/|!|(=|+|-|*|/|!)=)\s*',' $1 ')
@@ -141,11 +141,11 @@ dicforma.morpheme_extraction{
 	_t=RE_REPLACE(_t,'/\*'+dicforma.RE.everychar+'*?\*/',' morpheme ')
 	_t=RE_REPLACE(_t,'\"'+dicforma.RE.everychar+'*?\"',' morpheme ')
 	_t=RE_REPLACE(_t,"\'"+dicforma.RE.everychar+"*?\'",' morpheme ')
-	while RE_GREP(_t,'\{'+dicforma.RE.everychar+'*?\}'){
-		_t=RE_REPLACE(_t,'\{'+dicforma.RE.everychar+'*?\}',' blockmorpheme ')
+	while RE_GREP(_t,'\{[^\{]*?\}'){
+		_t=RE_REPLACE(_t,'\{[^\{]*?\}',' blockmorpheme ')
 	}
-	while RE_GREP(_t,'\('+dicforma.RE.everychar+'*?\)'){
-		_t=RE_REPLACE(_t,'\('+dicforma.RE.everychar+'*?\)',' morpheme ')
+	while RE_GREP(_t,'\([^\(]*?\)'){
+		_t=RE_REPLACE(_t,'\([^\(]*?\)',' morpheme ')
 	}
 	_t=RE_REPLACE(_t,'//'+dicforma.RE.everychar+'*?$','')
 	_t=RE_REPLACE(_t,'^\s+','')
