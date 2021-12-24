@@ -102,7 +102,6 @@ OnSakuraScript{
 		reference.raw[0] = _argv[0]
 	if _argv[1]
 		reference1 = _argv[1]
-	//for test:'%username，\\!VAR_PATH'
 	if reference1 != 'no_defineprocess'{
 		if reference1 != 'no_convert'{
 			if reference1 != 'force_run'{
@@ -175,8 +174,8 @@ On_ShioriEcho {
 						ShioriEcho.Special='不是系统函数'
 				}
 				elseif RE_GREP(reference0,'^\s*openfunc\s+'){
-					_fnucname=RE_REPLACE(reference0,'^\s*openfunc\s+','')
-					_info=GETFUNCINFO(_fnucname)
+					_funcname=RE_REPLACE(reference0,'^\s*openfunc\s+','')
+					_info=GETFUNCINFO(_funcname)
 					_path=SPLITPATH(_info[0])
 					if _path
 						_path=_path[2]+_path[3]
@@ -252,7 +251,6 @@ OnCalculateVar{
 			'\![open,inputbox,OnCalculateVar,0,1000-7]'//玩梗
 		return
 	}
-	//for test:'Reset，VAR_PATH'
 	_var = RE_REPLACE(reference0,'\s*[\[,\+=\*\-/%][\s\S]*$','')
 	_func = RE_REPLACE(reference0,'\s*[\(\[][\s\S]*$','')
 	if reference1 != 'warning_func_run'{
@@ -557,11 +555,11 @@ Get_AYA_Function_Info{
 	else{
 		_data_file='DATA_PATH/debug/aya_func_info.txt'
 		_result=''
-		_fnucname=_argv[0]
+		_funcname=_argv[0]
 		FCHARSET(1)
 		if FOPEN(_data_file,'r'){
 			while ISNOTFILEEND(_data_file){
-				if _fnucname==FREAD(_data_file){
+				if _funcname==FREAD(_data_file){
 					_result=FREAD(_data_file)
 					while RE_GREP(_result,'/$'){
 						_result=SUBSTR(0,STRLEN(_result)-1)
