@@ -559,7 +559,7 @@ OnBackup{
 			_temp = 1
 			foreach _DIC_DIRS_; _dir{
 				_temp = _temp&& MKDIR("SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)\"+_dir)
-				_temp = _temp&& DIRSync('dic',"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)\"+_dir)
+				_temp = _temp&& DIRSync(_dir,"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)\"+_dir)
 			}
 			FCOPY('SHIORI_NAME.txt',"SHIORI_BACKUP_PATH\%(year)-%(month)-%(day)")
 			--
