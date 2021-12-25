@@ -472,8 +472,6 @@ SHIORI_FW.MakeResponse{
 			if SHIORI_FW.DebugMode && _result{
 				"SHIORI/3.0 200 OK%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
 				ValueForDebug: %(_result)%(C_CRLF)"
-				--
-				SHIORI_FW.AssembleReferenceHeader
 			}else{
 				"SHIORI/3.0 204 No Content%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)"
 			}

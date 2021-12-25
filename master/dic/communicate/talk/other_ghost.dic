@@ -25,6 +25,7 @@ StartCommunicate{
 			EVAL(_varname_NumOfTry+'++')
 		}
 		else{
+			ERASEVAR('res_reference0')
 			RandomTalk
 		}
 	}
