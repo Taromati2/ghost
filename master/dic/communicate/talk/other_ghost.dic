@@ -62,6 +62,7 @@ ReplyToGhost{
 		ERASEVAR(_varname_NumOfTry)
 	}
 	_t=1
+	res_reference0 = reference0
 	if reference0 == '凉璃'{
 		_t=0
 		if '好' _in_ reference1{
