@@ -1370,8 +1370,8 @@ ForcedTalk1{
 //**** 人格被动对话 *******************************************************************************
 //---- OnCommunicate事件 ----------------------------------------------------------------
 OnCommunicate{
-	reference1=TOSIMPLIFIED(reference1)
 	txt=''
+	reference1=TOSIMPLIFIED(reference.raw[1])
 	if reference0 == 'user' || reference0 == 'User'{
 		//与user对话
 		lastTalk = ReplyToUser
