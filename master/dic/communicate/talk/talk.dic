@@ -1370,7 +1370,6 @@ ForcedTalk1{
 //**** 人格被动对话 *******************************************************************************
 //---- OnCommunicate事件 ----------------------------------------------------------------
 OnCommunicate{
-	txt=''
 	reference1=TOSIMPLIFIED(reference.raw[1])
 	if reference0 == 'user' || reference0 == 'User'{
 		//与user对话

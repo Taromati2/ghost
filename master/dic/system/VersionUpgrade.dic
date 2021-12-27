@@ -75,6 +75,7 @@ VERSION_UPGRADE_0:void{
 	ERASEVAR('ans.Points')
 	ERASEVAR('d')
 	ERASEVAR('fjswitch')
+	ERASEVAR('txt')
 	ERASEVAR('G')
 	RENAME_VAR('kikkamoney','money')
 	RENAME_VAR('autobakeup','autobackup')

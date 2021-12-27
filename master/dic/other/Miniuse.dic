@@ -2248,7 +2248,6 @@ OnFileRenameDrop{
 				rename_folder=1
 				_temp=POSREPLACE(_ref,STRLEN(_ref),1,'')
 				filerenamelist,= REPLACE(_temp,'/','\')
-				txt=REPLACE(_ref,'/','\')
 				FileRenameLoadFolder(_ref,'no')
 			}
 			elseif reference0=='allyes'{
@@ -2259,7 +2258,6 @@ OnFileRenameDrop{
 				rename_folder=1
 				_temp=POSREPLACE(_ref,STRLEN(_ref),1,'')
 				filerenamelist,= REPLACE(_temp,'/','\')
-				txt=REPLACE(_ref,'/','\')
 				FileRenameLoadFolder(_ref,'no')
 			}
 			else{

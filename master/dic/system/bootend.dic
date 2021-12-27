@@ -598,7 +598,6 @@ ClearVar{
 	ERASEVAR('newcarry')
 	ERASEVAR('a')
 	ERASEVAR('l')
-	ERASEVAR('txt')
 	ERASEVAR('t6')
 	ERASEVAR('t2')
 	ERASEVAR('operand')
