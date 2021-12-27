@@ -35,9 +35,6 @@ StartCommunicate{
 	}
 }
 //**** 人格被動對話 *******************************************************************************
-OnOtherGhostTalk{
-	ReplyToGhost
-}
 //其他人格销毁
 OnOtherGhostVanished{
 	"\0\s[3]再见\w9\w9，%(reference0)\w9.\w9.\w9.\w9.\w9.\w9.\n"
