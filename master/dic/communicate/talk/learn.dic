@@ -230,7 +230,7 @@ KikkaTalkToUser{
 			_b=SQLite('-j',"SELECT 回答 FROM KikkaAIdb WHERE ID='%(_g)'")
 			SETDELIM(_b,'|')
 			_b=ANY(_b)
-			_b=REPLACE(_b,'英文逗号',',')
+			_b=REPLACE(_b,'<英文逗号>',',')
 			"\0%(_b)\e"
 			talkfound=1
 		}
