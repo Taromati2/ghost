@@ -43,7 +43,7 @@
 <SESSION>
 <Q>我错了&</Q>
 <A><闭眼>%username哪里有错，错的是%selfname。</A>
-<A><if name="腹黑度" greatername="依赖度"></if><电锯>%username还是试试这个声音吧\!<sound<英文逗号>play<英文逗号>saori\Electricsaw.wav></A>
+<A><if name="腹黑度" greatername="依赖度"></if><电锯>%username还是试试这个声音吧\!<sound<英文逗号>play<英文逗号>sound\Electricsaw.wav></A>
 </SESSION>
 
 <SESSION>
