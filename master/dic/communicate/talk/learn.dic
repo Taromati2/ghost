@@ -458,6 +458,7 @@ Onsp{//选页
 }
 OnAIdbUpdate{
 	_a=1
+	reference0 = reference.raw[0]
 	if temp01=='删除该词条' {
 		_a=SQLite("UPDATE KikkaAIdb SET scope=-1 WHERE ID=%(reference0)")
 		if !_a
