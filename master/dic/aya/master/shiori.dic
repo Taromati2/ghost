@@ -1,61 +1,3 @@
-//******************************************************************************
-/*
-SHIORI/3.0制御スクリプト for AYA
-original written by umeici.
-履歴
-ver. date		note
-1.0  ?			aya向けに書き換え by C.Ponapalt
-1.1  20070428	config分離、READFMOを使ったルーチン追加
-1.2  20080323	構造変更（shiori3,config,compatible,optional)
-jb	 20210201	steve02081504整合自emily4
-
-使用可能な変数
-
-SHIORI_FW.Status
-　初期起動ステータス Runで初期化済み
-
-SHIORI_FW.Eventid
-　イベントID
-
-SHIORI_FW.LastTalk
-　直前のトーク（すべて）
-
-SHIORI_FW.LastAITalk
-　直前のランダムトーク
-
-SHIORI_FW.LastSurface
-　直前に表示していたサーフィス SHIORI_FW.LastSurface[0] がさくら側
-
-SHIORI_FW.IsVisible
-　現在サーフィスが表示されているかどうか(1/0) SHIORI_FW.IsVisible[0] がさくら側
-
-SHIORI_FW.HWnd
-SHIORI_FW.BalloonHWnd
-　キャラウインドウ・バルーンのHWND。 SHIORI_FW.HWnd[0] がさくら側
-
-SHIORI_FW.UniqueID
-　Auth.SSTPに使用するID
-
-SHIORI_FW.GhostName
-　ゴースト名★
-
-SHIORI_FW.ShellName
-SHIORI_FW.ShellPath
-　シェル名とパス★
-
-SHIORI_FW.BalloonName
-SHIORI_FW.BalloonPath
-　バルーン名とパス★
-
-使用可能な疑似イベント
-
-SHIORI_FW.OnChangeSelfInfo
-　上記★マークがついた変数が更新されたときに呼び出される
-
-*/
-//******************************************************************************
-
-
 //------------------------------------------------------------------------------
 //以下のdefineは基本的に弄らないで下さい
 //------------------------------------------------------------------------------
@@ -80,6 +22,15 @@ CALLALLFUNCTIONBEGINAS {
 	foreach _L;_V {
 		EVAL(_V)
 	}
+}
+GETFUNCLISTINRE {
+	_L= GETFUNCLIST
+	_R=IARRAY
+	foreach _L;_V {
+		if RE_GREP(_V,_argv[0])
+			_R,=_V
+	}
+	_R
 }
 CALLALLFUNCTIONINRE {
 	_L= GETFUNCLIST
@@ -144,9 +95,7 @@ ClearAyaTempVar {
 	ERASEVAR('ghostboottime')
 	ERASEVAR('ghostbootmin')
 	ERASEVAR('status')
-	ERASEVAR('res_securitylevel')
 	ERASEVAR('res_reference')
-	ERASEVAR('res_marker')
 	ERASEVAR('sakurahwnd')
 	ERASEVAR('kerohwnd')
 	ERASEVAR('sakurablnhwnd')
@@ -174,6 +123,8 @@ ClearAyaTempVar {
 	ERASEVAR('SHIORI_FW.GhostName')
 	ERASEVAR('SHIORI_FW.ShellNameOld')
 	ERASEVAR('SHIORI_FW.BalloonNameOld')
+	ERASEVAR('SHIORI_FW.LastBootInEmergencyMode')
+	ERASEVAR('SHIORI_FW.InVarFileMiss')
 
 	_n = ARRAYSIZE(tempvarname)
 	for _i = 0 ; _i < _n ; _i++ {
@@ -196,14 +147,14 @@ ClearAyaTempVar {
 //機能　：ロード時の処理
 //------------------------------------------------------------------------------
 load {
-	// 文字/文字列定数
+	//文字/文字列定数
 	C_LF = CHR(0xa)			/*lin换行*/
 	C_CR = CHR(0xd)			/*mac换行*/
 	C_CRLF = CHR(0xd,0xa)	/*win换行*/
 	C_CRLF2 = C_CRLF+C_CRLF
 	C_BYTE1 = CHR(0x1)
 
-	_LastBootInEmergencyMode = SHIORI_FW.EmergencyMode
+	SHIORI_FW.LastBootInEmergencyMode = SHIORI_FW.EmergencyMode
 	SHIORI_FW.EmergencyMode = GETSETTING('coreinfo.mode') == 'emergency'
 
 	REQ.COMMAND		= 'LOAD'
@@ -271,6 +222,8 @@ load {
 			}
 		}
 		SAVEVAR
+		if !username
+			SHIORI_FW.InVarFileMiss=1
 	}
 
 	SHIORI_FW.InitChain
@@ -280,14 +233,18 @@ load {
 	CALLALLFUNCTIONBEGINAS('Init.')
 
 	if SHIORI_FW.EmergencyMode
-		SHIORI_FW.PushNotifyResult(OnEmergencyMode)
+		SHIORI_FW.PushNotifyResult('\![raise,OnEmergencyMode]')
 	elseif FILEEXIST('SHIORI_PATH\SHIORI_NAME_emerg.txt'){
 		foreach _DIC_DIRS_; _dir{
 			void DIRSync(_dir,'EMERGENCYMODEDICDIR'+'\'+_dir)
 		}
-		if _LastBootInEmergencyMode
-			SHIORI_FW.PushNotifyResult(OnEmergencyModeEnd)
+		if SHIORI_FW.LastBootInEmergencyMode
+			SHIORI_FW.PushNotifyResult('\![raise,OnEmergencyModeEnd]')
 	}
+
+	if ShioriReloading
+		SHIORI_FW.PushNotifyResult('\![raise,OnShioriReloaded]')
+	ERASEVAR('ShioriReloading')
 }
 
 //******************************************************************************
@@ -306,6 +263,10 @@ unload {
 	var.req.rawvalue = IARRAY
 
 	ghostupmin_last = MAX(ghostupmin_total,elapsedtimetotal)
+
+	if !OnCloseCalled && !BasewareUpdating
+		ShioriReloading=1
+	ERASEVAR('OnCloseCalled')
 
 	CALLALLFUNCTIONBEGINAS('Fin.')
 
@@ -357,6 +318,7 @@ request {
 
 	status = ''
 	SHIORI_FW.Eventid=''
+	SHIORI_FW.SecurityLevel='Internal'//互換性のためデフォルトはInternal
 
 	while _lineend > _linestart {
 		//行分割
@@ -411,7 +373,7 @@ request {
 			}
 			_idparsed = 1
 		}
-		//セキュリティレベル='External'なら即返る
+		//セキュリティレベル
 		elseif _key == 'SecurityLevel' {
 			SHIORI_FW.SecurityLevel = _value
 		}
@@ -509,11 +471,9 @@ SHIORI_FW.MakeResponse{
 				SHIORI_FW.DelayNotifyResults,=_result//Notify返回值积压
 			if SHIORI_FW.DebugMode && _result{
 				"SHIORI/3.0 200 OK%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
-				Value: %(_result)%(C_CRLF)"
-				--
-				SHIORI_FW.AssembleReferenceHeader
+				ValueForDebug: %(_result)%(C_CRLF)"
 			}else{
-				"SHIORI/3.0 200 OK%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)"
+				"SHIORI/3.0 204 No Content%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)"
 			}
 		}
 		when 'GET' {
@@ -578,6 +538,14 @@ SHIORI_FW.MakeAdditionalReturn:void{
 	SHIORI_FW.AdditionalReturn.String += _key+TOSTR(_argv)+C_CRLF
 }
 //------------------------------------------------------------------------------
+//関数名：SHIORI_FW.MakeValueNotify
+//機能　：ヘッダをValueNotify追加します (設定はリクエストごとにリセットされます)
+//引数　：_argv[0~inf] 値
+//------------------------------------------------------------------------------
+SHIORI_FW.MakeValueNotify:void{
+	SHIORI_FW.MakeAdditionalReturn('ValueNotify',_argv)
+}
+//------------------------------------------------------------------------------
 //関数名：SHIORI_FW.ClearAdditionalReturnVariable
 //機能　：追加ヘッダ用変数を削除します
 //------------------------------------------------------------------------------
@@ -638,6 +606,7 @@ SHIORI_FW.AssembleReferenceHeader {
 		ERASEVAR('res_reference')
 	}
 	else {
+		_value = ''
 		for _i = 0; _i < SHIORI_FW.RES_REF_MAX; _i++ {
 			_before = _value
 
@@ -651,10 +620,6 @@ SHIORI_FW.AssembleReferenceHeader {
 				if _before == ''; break
 			}
 		}
-	}
-	if marker != '' {
-		_result += "Marker: %(marker)%(C_CRLF)"
-		ERASEVAR('marker')
 	}
 
 	_result
@@ -691,6 +656,7 @@ SHIORI_FW.RaiseIDEvent {
 	if SHIORI_FW.Eventid == 'OnSecondChange' {
 		//OnSecondChangeならランダムトーク関連処理
 		_event = SHIORI_FW.ControlAITalk(_event)
+		_event = SHIORI_FW.TranslateEvent(_event)
 	}
 
 	if _event != 'OnSecondChange' {
@@ -740,7 +706,7 @@ SHIORI_FW.RaiseIDEvent {
 		for _i = 0 ; _i < _n ; _i += 1 {
 			if _delim[_i] == EVAL_DELIM {
 				//遅延EVAL
-				_trash = EVAL(_talk[_i + 1])
+				void EVAL(_talk[_i + 1])
 			}
 			elseif _delim[_i] == CHAIN_DELIM {
 				//チェイン処理
@@ -885,7 +851,7 @@ SHIORI_FW.MakeReferenceAndPassThruInsVariable : void {
 
 			if !SHIORI_FW.REF_ACCEL {//1にすると高速化
 				_varname = 'reference'+_refnum
-				EVAL(_varname+' = _value')
+				LETTONAME(_varname, _value)
 				SHIORI_FW.ReferenceList ,= _varname
 			}
 		}
@@ -894,7 +860,7 @@ SHIORI_FW.MakeReferenceAndPassThruInsVariable : void {
 			_value = var.req.value[_i]
 
 			_varname = 'PassThru_Ins.'+_PassThru_Ins_Name
-			EVAL(_varname+' = _value')
+			LETTONAME(_varname, _value)
 			SHIORI_FW.PassThru_Ins_List ,= _varname
 		}
 	}
@@ -1318,13 +1284,13 @@ SHIORI_FW.RequestLib {
 //引数　：_argv[0] SAORIファイル名
 //　　　　_argv[1] リクエスト文字列
 //------------------------------------------------------------------------------
-SHIORI_FW.MakeValueexVariable {
+SHIORI_FW.MakeValueexVariable:void {
 	SHIORI_FW.ValueexList	= IARRAY
 	_sz						= ARRAYSIZE(var.lib.key)
 	for _i = 0; _i < _sz; _i++ {
 		if SUBSTR(_keyname = var.lib.key[_i], 0, 5) == 'Value' {
 			_varname = "valueex%(SUBSTR(_keyname, 5, 3))"
-			void EVAL("%(_varname) = var.lib.value[_i]")
+			LETTONAME(_varname, var.lib.value[_i])
 			SHIORI_FW.ValueexList ,= _varname
 			valueex[TOINT(SUBSTR(_keyname, 5, 3))] = var.lib.value[_i]
 		}
@@ -1427,23 +1393,6 @@ REVERSE {
 	}
 	_a
 }
-
-UNIQUE {
-	_v = _argv
-	_n = ARRAYSIZE(_v)
-
-	for _i = 0 ; _i < _n ; _i++ {
-		for _j = _i+1 ; _j < _n ; _j++ {
-			if _v[_i] == _v[_j] {
-				_v[_j] = IARRAY
-				_n -= 1
-				_j -= 1
-			}
-		}
-	}
-	_v
-}
-
 SPLITEX {
 	_a = SPLIT(_argv)
 	_n = ARRAYSIZE(_a)
@@ -1676,6 +1625,16 @@ SHIORI_EV.On_enable_debug : void {
 	}
 }
 
+shiori.OnLoopLimit:void{
+	SHIORI_FW.PushNotifyResult(OnshioriLimit('loop',_argv))
+}
+shiori.OnCallLimit:void{
+	SHIORI_FW.PushNotifyResult(OnshioriLimit('call',_argv))
+}
+shiori.OnMemoryLimit:void{
+	SHIORI_FW.PushNotifyResult(OnshioriLimit('memory',_argv))
+}
+
 //******************************************************************************
 //時刻系変数
 //******************************************************************************
@@ -1737,18 +1696,36 @@ On_getaistateex{
 	On_GetAIStateEX
 }
 ISSTR{
-	GETTYPE(_argv[0])==3
+	GETTYPE(_argv[0])==3&&_argc==1
 }
 INEVENT{
 	_argv[0]==SHIORI_FW.Eventid
 }
+InNotify{
+	REQ.COMMAND == 'NOTIFY'
+}
+ROUNDEX{
+	_num=_argv[0]
+	_to=_argv[1]
+	if !_to
+		_to=1
+	_num*=(1.0/_to)
+	_num=ROUND(_num)*_to
+	_num
+}
 RENAME_VAR:void{
 	if ISVAR(_argv[0])
-		EVAL(_argv[1]+'='+_argv[0])
+		LETTONAME(_argv[1],EVAL(_argv[0]))
 	ERASEVAR(_argv[0])
 }
 SWAP_VAR:void{
 	_t=EVAL(_argv[1])
-	EVAL(_argv[1]+'='+_argv[0])
-	EVAL(_argv[0]+'=_t')
+	LETTONAME(_argv[1],EVAL(_argv[0]))
+	LETTONAME(_argv[0],_t)
+}
+ABS{
+	if _argv[0] < 0
+		-_argv[0]
+	else
+		_argv[0]
 }

@@ -52,6 +52,17 @@ OnSecondChange{
 OnHourChange{
 }
 OnMinuteChange{
+	if RAND(20160)==0{
+		if UsualUserName.InPush!=username
+			UsualUserName.InPush=username
+		else{//连续一个月使用同一个用户名
+			UsualUserName,=UsualUserName.InPush
+			ERASEVAR('UsualUserName.InPush')
+			if ARRAYSIZE(UsualUserName) > 960//记录近80年内的常用用户名
+				UsualUserName[TOINT(SQRT(1.0/RAND(990))*990-30)] = IARRAY//[1,960]，数值越低出现概率越大
+		}
+	}
+	--
 	elapsedtimetotal += 1//计算人格起动总时间/单位分
 	elapsedtime = elapsedtimetotal * 60
 	KikkaGrow
@@ -67,10 +78,16 @@ OnMinuteChange{
 		return
 	}
 	--
-	if REQ.COMMAND!='GET'
+	if InNotify
 		return
+	if SHIORI_FW.DebugMode && !SHIORI_FW.EmergencyMode{
+		if GETERRORLOG{
+			OnErrorLog
+			return
+		}
+	}
 	if mode == '0'{
-		if specialmode == ''{
+		if !specialmode{
 			_boottime = ghostuptime
 			if minute == 0{
 				if timerm == 0{
@@ -103,10 +120,10 @@ OnMinuteChange{
 			elseif (memoryload>=80&&TOINT(memorybusyrm[1])==0||memoryload>=TOINT(memorybusyrm[1])&&TOINT(memorybusyrm[1])!=0)&&TOINT(memorybusyrm[0])==0{
 				'\0\v\s[33]电脑卡死了，\w9\w9少开点窗口。\n\q[◇打开任务管理器,OnOpenTaskmgr]\![set,trayballoon,--icon=info,--timeout=10,--title=任务繁忙,--text=电脑卡死了，少开点窗口。]'
 			}
-		}
-		elseif minute == 13 && !InAutoUpdate && AutoUpdate == 1{//电脑不卡的情况下每时13分四分之一概率自动更新//选13是因为13不吉利:)
-			if !RAND(4)
-				OnSilentUpdate
+			elseif minute == 13 && !InUpdate && AutoUpdate == 1{//电脑不卡的情况下每时13分四分之一概率自动更新//选13是因为13不吉利:)
+				if !RAND(4)
+					OnSilentUpdate
+			}
 		}
 		elseif specialmode == 'smoking' && _boottime%3600/60 > 4{//最短4
 			if !RAND(4) || _boottime%3600/60 > 20//最多20分
@@ -154,9 +171,15 @@ OnMinuteChange{
 ClassMonitor{
 	_classrm=OnClassDetailTimeCheck
 	if _classrm{
-		if REQ.COMMAND!='GET'
+		if InNotify
 			OnPlayAlarm
-		_classrm+"\![set,trayballoon,--icon=info,--timeout=10,--title=课程提醒,--text=%(_classrm),--text=（点击气泡关闭提醒）]"
+		_classrm
+		--
+		_trayballoon="\![set,trayballoon,--icon=info,--timeout=10,--title=课程提醒,--text=%(_classrm),--text=（点击气泡关闭提醒）]"
+		if InNotify
+			SHIORI_FW.MakeValueNotify(_trayballoon)
+		else
+			_trayballoon
 	}
 }
 AlarmMonitor{
@@ -177,14 +200,16 @@ AlarmMonitor{
 			"\c\f[bold,true]闹钟提醒\f[bold,default]\n[150]现在是%(hour)点%(minute)分\n%(_tmp)！\n（点击对话框关闭提醒）"
 		}
 		elseif alarmset[2] == '气泡' {
-			if REQ.COMMAND!='GET'
-				OnPlayAlarm
 			_tmp = "%(username)设定的时间到了"
 			if alarmstart > 1 {
 				_tmp = "已经超过%(username)设定的时间%(alarmstart - 1)分钟了"
 			}
 			alarmstart ++
-			"\![set,trayballoon,--icon=info,--timeout=10,--title=闹钟提醒,--text=现在是%(hour)点%(minute)分,--text=%(_tmp)！,--text=（点击气泡关闭提醒）]"
+			_trayballoon="\![set,trayballoon,--icon=info,--timeout=10,--title=闹钟提醒,--text=现在是%(hour)点%(minute)分,--text=%(_tmp)！,--text=（点击气泡关闭提醒）]"
+			if InNotify
+				SHIORI_FW.MakeValueNotify(_trayballoon)
+			else
+				_trayballoon
 		}
 	}
 }
@@ -192,12 +217,7 @@ OnBalloonClose{
 	if alarmstart && '闹钟提醒' _in_ reference0 {
 		alarmstart = 0
 		'\![sound,stop]'
-	}elseif '重新讀取SHIORI' _in_ reference0
-		OnShioriReloadedbyself
-}
-OnBalloonTimeout{
-	if '重新讀取SHIORI' _in_ reference0
-		OnShioriReloadedbyself
+	}
 }
 OnTrayBalloonClick{
 	if reference0 == '闹钟提醒' {
@@ -320,7 +340,13 @@ OnAlarmSetConfirmed{
 }
 //------ 整点报时\[2008-09_by KikkaAIdb] ---------------------------------------------------------------------
 Hourlychime{
-	"\0\s[0]\![raise,OnPlayBell]%(Hourlychime.Text)\![set,trayballoon,--timeout=0,--title=整点报时,--text=%(Hourlychime.Text)]"
+	'\0\s[0]'
+	--
+	_trayballoon="\![raise,OnPlayBell]%(Hourlychime.Text)\![set,trayballoon,--timeout=0,--title=整点报时,--text=%(Hourlychime.Text)]"
+	if InNotify
+		SHIORI_FW.MakeValueNotify(_trayballoon)
+	else
+		_trayballoon
 }
 OnTrayBalloonTimeout{
 	"%(username)不理橘花呢？"
@@ -368,8 +394,8 @@ Hourlychime.Special{
 		when 1-4{
 			"%(hour)点了.%(username)"
 			--
-			"还不睡吗？"
-			"不睡吗.熬夜会变笨的喔？"
+			'还不睡吗？'
+			'不睡吗.熬夜会变笨的喔？'
 		}
 		when 5-6{
 			"%(hour)点了..要去看日出吗？"
@@ -397,7 +423,7 @@ Hourlychime.Special{
 			"%(hour)点了.."
 			"晚上%(hour12)点了呢.."
 			--
-			"接下來该做什么事呢？"
+			'接下來该做什么事呢？'
 			"%(username)在做什么呢？"
 			"这个时间%(username)应该都在电脑前吧？"
 		}
@@ -428,7 +454,7 @@ Seasonjud{
 		_argv[0] = month
 	case _argv[0] {
 		when 1-2	{ '冬天';}
-		when 3-5	{ '春天'; }
+		when 3-5	{ '春天';}
 		when 6-8	{ '夏天';}
 		when 9-11	{ '秋天';}
 		when 12		{ '冬天';}
@@ -741,10 +767,13 @@ ShutdownMonitor{
 	}
 	--
 	if shutdownstart > 0{
-		"/
-		即将自动关机，请%(username)保存资料/
-		\![set,trayballoon,--icon=info,--timeout=10,--title=关机提醒,--text=现在是%(hour)点%(minute)分,--text=%(_txt)！,--text=（点击气泡关闭提醒）]/
-		"
+		"即将自动关机，请%(username)保存资料"
+		--
+		_trayballoon="\![set,trayballoon,--icon=info,--timeout=10,--title=关机提醒,--text=现在是%(hour)点%(minute)分,--text=%(_txt)！,--text=（点击气泡关闭提醒）]"
+		if InNotify
+			SHIORI_FW.MakeValueNotify(_trayballoon)
+		else
+			_trayballoon
 		--
 		'\w9\w9\w9\w9\w9'+OnClose
 		--

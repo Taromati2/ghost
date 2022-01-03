@@ -5,13 +5,12 @@ BaseGhostStart{//改动于2020 by steve02081504
 	VERSION_UPGRADE
 	OnOptionSet
 	--
-	Lunar
-	Lunartime
 	FCHARSET(1)
 	lastTalk = '\0\s[20]咦？分明才刚启动的說…\1\s[10]喵，刚才什么都没说'
-	_laststart = CloseTime
-	CloseTime = GETSECCOUNT
-	elapsetime = CloseTime - _laststart
+	if TimeErrorCheck
+		InTimeError = 1
+	if !InTimeError
+		BaseGhostStart.aboutTime
 	playingmusic = 0
 	OnSQLLoad
 	OnAILoad
@@ -29,6 +28,29 @@ BaseGhostStart{//改动于2020 by steve02081504
 			OpenDocForRuntime('ghost_in_temp_dir')
 	}
 }
+BaseGhostStart.aboutTime{
+	Lunar
+	Lunartime
+	elapsetime = GETSECCOUNT - CloseTime
+	CloseTime = GETSECCOUNT
+}
+UpdateFirstBootCount:void{
+	_save_dir=GETENV('USERPROFILE')
+	if _save_dir{
+		_save_dir+='\AppData\Local\Taromati'
+		_save_file=_save_dir+'\FirstBootCount'
+		MKDIR(_save_dir)
+		if FOPEN(_save_file,'r'){
+			_tFirstBootCount=TOINT(FREAD(_save_file))
+			FCLOSE(_save_file)
+		}
+		FirstBootCount=MAX(_tFirstBootCount,FirstBootCount)
+		if FOPEN(_save_file,'w'){
+			FWRITE(_save_file,TOSTR(FirstBootCount))
+			FCLOSE(_save_file)
+		}
+	}
+}
 //**** 初回起动 *******************************************************************************************************
 OnFirstBoot{//改动于2020 by steve02081504
 	MAGICLOCK
@@ -40,7 +62,9 @@ OnFirstBoot{//改动于2020 by steve02081504
 		aitalkinterval = 180
 		if !username
 			username = 'お兄さん'
-		firstboottime = "%(year),%(month),%(day),%(hour),%(minute)"
+		mirror_url=default_mirror_url
+		if !InTimeError
+			firstboottime = "%(year),%(month),%(day),%(hour),%(minute)"
 		elapsedtime = 0
 		Goodevening = ''
 		intimacy = 0
@@ -56,8 +80,11 @@ OnFirstBoot{//改动于2020 by steve02081504
 		--
 		if ISINTEGER(reference0)
 			FirstBootCount = reference0
+		elseif ISINTEGER(_argv[0])
+			FirstBootCount = _argv[0]
 		else
 			FirstBootCount = 0
+		UpdateFirstBootCount
 		if FirstBootCount == 0{
 			'\1\s[10]\0\s[26]啊、\w9\w9那个…\w9\w9\w9'
 		}else{
@@ -67,9 +94,14 @@ OnFirstBoot{//改动于2020 by steve02081504
 		--
 		'\n\n[half]暂时、\w9要在此处打扰您了。'
 		--
+		SHIORI_FW.PushNotifyResult(DiscordCustomSet.CustomDetail('初次见面'))
+		--
 		SHIORI_FW.PushNotifyResult(GetUsernameFirst)
 		SHIORI_FW.PushNotifyResult(GetPasswordFirst)
 		SHIORI_FW.PushNotifyResult(UpdateFirst)
+		--
+		if InTimeError
+			SHIORI_FW.PushNotifyResult(OnTimeError)
 	}else{
 		OnBoot('FromFirstBoot')
 	}
@@ -102,23 +134,19 @@ UpdateFirst{
 }
 //**** 时间帯判定 *****************************************************************************************************
 GetTimeSlot{
-	if hour >= 4 && hour <= 6{
-		'Earlymorning'
-	}
-	elseif hour >= 7 && hour <= 10{
-		'Morning'
-	}
-	elseif hour >= 11 && hour <= 16{
-		'Day'
-	}
-	elseif hour >= 17 && hour <= 18{
-		'Evening'
-	}
-	elseif hour >= 19 && hour <= 23{
-		'Night'
-	}
-	else{
-		'Midnight'
+	case hour{
+		when 4-6
+			'Earlymorning'
+		when 7-10
+			'Morning'
+		when 11-16
+			'Day'
+		when 17-18
+			'Evening'
+		when 19-23
+			'Night'
+		others
+			'Midnight'
 	}
 }
 Select.stoprm{
@@ -130,17 +158,14 @@ OnBoot{
 	MAGICLOCK
 	BaseGhostStart
 	--
-	if !ISVAR('FirstBootCount'){
-		OnFirstBoot
+	if mode == '1'{
+		if specialmode == 'mealtime'
+			mealendtime=60
+		"\0\s[-1]\1\s[%(specialmode != 'mealtime')10]呦。"
 		return
 	}
 	if elapsetime > 300 && specialmode == 'mealtime'{
 		void Onmealfin
-	}
-	if mode == '1'{
-		mealendtime=60
-		"\0\s[-1]\1\s[%(specialmode != 'mealtime')10]呦。"
-		return
 	}
 	if uninstall || (_argv[0]=='FromFirstBoot' && elapsetime > 172800){
 		SilentShellChange=1
@@ -152,6 +177,7 @@ OnBoot{
 			intimacy -= 3
 		if elapsetime > 172800{//卸载时长超过两天：有效卸载
 			FirstBootCount++
+			UpdateFirstBootCount
 			if FirstBootCount >= 4{//三次有效卸载后惩罚
 				{//自我销毁
 					void DELDIR('PROFILE_PATH')//清除用户数据
@@ -180,15 +206,50 @@ OnBoot{
 			"\0\s[26]再次见面，%(username)。\s[8]\w9\1\s[10]\什么啊，虚惊一场么\w9\w9\w9\n\x"
 		}
 	}
+	elseif SHIORI_FW.InVarFileMiss{//完全失忆
+		OnFirstBoot(1)
+		return
+	}
 	elseif LOADED_FROM_MAGIC{//数据来自MAGICSAVE
 		intimacy -= 1
 		'\0\s[35]\w9.\w9.\w9.\w9\w9\w9\n\s[0]啊\w9\w9\s[6]，很抱歉\n\w9\w9\w9我做了个恶梦\w9\w9\w9\n\x'
 		return
 	}
 	--
+	if !ISVAR('FirstBootCount'){
+		OnFirstBoot(1)
+		return
+	}
+	--
+	if InTimeError
+		OnTimeError
+	else
+		OnBoot.aboutTime
+	--
+	if !TOINT(autobackup) && autobackupclosealert{
+		_t = '○,●'
+		"\C\_q\1\s[10]\0\s[40]■橘花提醒■\n为避免人格失忆，请设自动备份开关为On，当前自动备份功能关闭，请定期手动备份。\n/
+		自动备份　　　\q[%(_t[TOINT(autobackup)]) ON,Onusage,autobackup,1]  ・  \q[%(_t[1 - TOINT(autobackup)]) OFF,Onusage,autobackup,0]\n/
+		\q[◇不再提醒,Onusage,autobackupclosealert,0]\n/
+		\x"
+	}
+	--
+	/*
+	if TOINT(autoastro)==0
+		temp='autoastro'
+	if TOINT(autoweather)==0
+		OnWeatherFoundAuto
+	elseif TOINT(autoastro)==0
+		OnAstroFoundAuto
+	*/
+	--
+	if AutoUpdate
+		OnSilentUpdate
+}
+OnBoot.aboutTime{
 	_phase = GetPhase
 	_laststart=0
-	_timeslot=GetTimeSlot
+	_timeslot = GetTimeSlot
 	if reference0!='return'{
 		if AutoShellChange[0]
 			OnAutoChangeShell
@@ -394,86 +455,82 @@ OnBoot{
 			"\0\s[3]%(username)\w8，%(_years)年未见\n\1\s[10]过得还好吗？\w6\n小公主可是一直都在等你哦？\x"
 		}
 	}
-	//---- 早朝 -----------------------------------------------------------------------------------------------------------
-	elseif _timeslot == 'Earlymorning'{
-		if _phase >= 2{
-			talkmemo = 'b_0'
-			"\1\s[10]\0\s[0]啊…\w9\w9\s[40]早安、\w9%(username)。\w9\w9\1\s[10]…\w9…\w9…\w9\w9\w9\0\s[0]\n\n[half]这么早是怎么了呢？\x"
-			"\1\s[10]\0\s[0]啊…\w9\w9\s[40]早安、\w9%(username)。\w9\w9\1\s[10]…\w9…\w9…\w9\w9\w9\0\s[26]\n\n[half]今天很早呢。\x"
-		}
-		else{
-			talkmemo = 'b_0'
-			"\1\s[10]\0\s[0]早安、\w9%(username)。\w9\w9\1\s[10]…\w9…\w9…\w9\w9\w9"
-			--
-			'\0\s[0]\n\n[half]这么早是怎么了呢？\x'
-			'\0\s[26]\n\n[half]今天很早呢。\x'
-		}
-	}
-	//---- 朝 -------------------------------------------------------------------------------------------------------------
-	elseif _timeslot == 'Morning'{
-		if _phase >= 2{
-			"\1\s[10]\0\s[26]早安、\w9%(username)。\x"
-			"\1\s[10]\0\s[40]早安、\w9%(username)。\w9\w9\w9\w9\s[26]\n今天一天也好好加油吧。\x"
-			"\1\s[10]\0\s[26]%(username)、\w9早安。\w9\w9\1\s[10]哟。\x"
-			'\1\s[10]\0\s[40]早安。\w9\w9\1\s[10]哟。\x'
-		}
-		else{
-			"\1\s[10]\0\s[26]早安、\w9%(username)。\x"
-			"\1\s[10]\0\s[0]早安、\w9%(username)。\w9\w9\w9\w9\s[26]\n今天一天也好好加油吧。\x"
-			"\1\s[10]\0\s[26]%(username)、\w9早安。\w9\w9\1\s[10]哟。\x"
-			'\1\s[10]\0\s[26]早安。\w9\w9\1\s[10]哟。\x'
-		}
-	}
-	//---- 昼 -------------------------------------------------------------------------------------------------------------
-	elseif _timeslot == 'Day'{
-		if _phase >= 2{
-			if weekday == '0'
-				'\0\s[26]早安。\w9\w9\n…\w9嗯、\w9\s[8]已經中午了喔。\w9\w9\1\s[10]反正是禮拜天嘛。\w9\w9\n有好好休息嗎？\x'
-			else{
-				"\1\s[10]\0\s[2]啊。\w9\w9\s[40]\n午安、\w9%(username)。\x"
-				"\1\s[10]\0\s[40]午安、\w9%(username)。\1\s[10]哟。\x"
-				"\1\s[10]\0\s[26]%(username)、\w9午安。\x"
-				'\1\s[10]\0\s[26]午安。\1\s[10]哟。\x'
-			}
-		}
-		else{
-			"\1\s[10]\0\s[0]午安、\w9%(username)。\x"
-			"\1\s[10]\0\s[0]午安、\w9%(username)。\1\s[10]哟。\x"
-			"\1\s[10]\0\s[26]%(username)、\w9午安。\x"
-			'\1\s[10]\0\s[26]午安。\1\s[10]哟。\x'
-		}
-	}
-	//---- 夕方 -----------------------------------------------------------------------------------------------------------
-	elseif _timeslot == 'Evening'{
-		if Goodevening == ''{
-			"\1\s[10]\0\s[26]啊、\w9%(username)…\w9\w9\w9\s[0]\n\n[half]嗯…\w9\w9\w9在这个时间带问安、\w9\n应该用『午安』还是用『晚安』呢？\n\n[half]/
-			\q[◇午安,Goodevening_0]\n/
-			\q[◇晚安,Goodevening_1]\n/
-			\q[◇傍晚好,Goodevening_2]\n/
-			\q[◇都可以,Goodevening_3]\x"
-		}
-		else{
-			"\1\s[10]\0\s[26]%(Goodevening)、\w9\w9%(username)。\x"
-			"\1\s[10]\0\s[26]%(Goodevening)、\w9\w9%(username)。\w9\w9\n没有被跟踪吧？\w9\w9\1\s[10]…\w9…\w9…\x"
-		}
-	}
-	//---- 夜 -------------------------------------------------------------------------------------------------------------
-	elseif _timeslot == 'Night'{
-		"\1\s[10]\0\s[26]晚安、\w9%(username)。\x"
-		"\1\s[10]\0\s[0]晚安、\w9%(username)。\x"
-		'\1\s[10]\0\s[26]晚安。\x'
-		'\1\s[10]\0\s[0]晚安。\x'
-		"\1\s[10]\0\s[26]%(username)、\w9\w9\w9晚安。\x"
-	}
-	//---- 深夜 -----------------------------------------------------------------------------------------------------------
 	else{
-		if weekday == '0'{
-			"\1\s[10]\0\s[0]啊、\w9\w9\w9\s[26]晚安、\w9%(username)。\w9\w9\w9\w9\n就算是假日、\w9\n也不要太晚睡喔。\x"
-		}
-		else{
-			talkmemo = 'b_1'
-			"\1\s[10]\0\s[0]晚安、\w9%(username)。\w9\w9\w9\w9\s[26]\n这么晚是怎么了呢？\x"
-			"\1\s[10]\0\s[0]晚安、\w9%(username)。\w9\w9\w9\w9\n半夜了呢。\x"
+		case _timeslot{
+			when 'Earlymorning'{
+				talkmemo = 'b_0'
+				'\1\s[10]\0\s[0]'
+				--
+				if _phase >= 2
+					'啊…\w9\w9\s[40]'
+				--
+				"早安、\w9%(username)。\w9\w9\1\s[10]…\w9…\w9…\w9\w9\w9"
+				--
+				'\0\s[0]\n\n[half]这么早是怎么了呢？\x'
+				'\0\s[26]\n\n[half]今天很早呢。\x'
+			}
+			when 'Morning'{
+				if _phase >= 2{
+					"\1\s[10]\0\s[26]早安、\w9%(username)。\x"
+					"\1\s[10]\0\s[40]早安、\w9%(username)。\w9\w9\w9\w9\s[26]\n今天一天也好好加油吧。\x"
+					"\1\s[10]\0\s[26]%(username)、\w9早安。\w9\w9\1\s[10]哟。\x"
+					'\1\s[10]\0\s[40]早安。\w9\w9\1\s[10]哟。\x'
+				}
+				else{
+					"\1\s[10]\0\s[26]早安、\w9%(username)。\x"
+					"\1\s[10]\0\s[0]早安、\w9%(username)。\w9\w9\w9\w9\s[26]\n今天一天也好好加油吧。\x"
+					"\1\s[10]\0\s[26]%(username)、\w9早安。\w9\w9\1\s[10]哟。\x"
+					'\1\s[10]\0\s[26]早安。\w9\w9\1\s[10]哟。\x'
+				}
+			}
+			when 'Day'{
+				if _phase >= 2{
+					if weekday == '0'
+						'\0\s[26]早安。\w9\w9\n…\w9嗯、\w9\s[8]已經中午了喔。\w9\w9\1\s[10]反正是禮拜天嘛。\w9\w9\n有好好休息嗎？\x'
+					else{
+						"\1\s[10]\0\s[2]啊。\w9\w9\s[40]\n午安、\w9%(username)。\x"
+						"\1\s[10]\0\s[40]午安、\w9%(username)。\1\s[10]哟。\x"
+						"\1\s[10]\0\s[26]%(username)、\w9午安。\x"
+						'\1\s[10]\0\s[26]午安。\1\s[10]哟。\x'
+					}
+				}
+				else{
+					"\1\s[10]\0\s[0]午安、\w9%(username)。\x"
+					"\1\s[10]\0\s[0]午安、\w9%(username)。\1\s[10]哟。\x"
+					"\1\s[10]\0\s[26]%(username)、\w9午安。\x"
+					'\1\s[10]\0\s[26]午安。\1\s[10]哟。\x'
+				}
+			}
+			when 'Evening'{
+				if Goodevening == ''{
+					"\1\s[10]\0\s[26]啊、\w9%(username)…\w9\w9\w9\s[0]\n\n[half]嗯…\w9\w9\w9在这个时间带问安、\w9\n应该用『午安』还是用『晚安』呢？\n\n[half]/
+					\q[◇午安,Goodevening_0]\n/
+					\q[◇晚安,Goodevening_1]\n/
+					\q[◇傍晚好,Goodevening_2]\n/
+					\q[◇都可以,Goodevening_3]\x"
+				}
+				else{
+					"\1\s[10]\0\s[26]%(Goodevening)、\w9\w9%(username)。\x"
+					"\1\s[10]\0\s[26]%(Goodevening)、\w9\w9%(username)。\w9\w9\n没有被跟踪吧？\w9\w9\1\s[10]…\w9…\w9…\x"
+				}
+			}
+			when 'Night'{
+				"\1\s[10]\0\s[26]晚安、\w9%(username)。\x"
+				"\1\s[10]\0\s[0]晚安、\w9%(username)。\x"
+				'\1\s[10]\0\s[26]晚安。\x'
+				'\1\s[10]\0\s[0]晚安。\x'
+				"\1\s[10]\0\s[26]%(username)、\w9\w9\w9晚安。\x"
+			}
+			when 'Midnight'{
+				if weekday == '0'{
+					"\1\s[10]\0\s[0]啊、\w9\w9\w9\s[26]晚安、\w9%(username)。\w9\w9\w9\w9\n就算是假日、\w9\n也不要太晚睡喔。\x"
+				}
+				else{
+					talkmemo = 'b_1'
+					"\1\s[10]\0\s[0]晚安、\w9%(username)。\w9\w9\w9\w9\s[26]\n这么晚是怎么了呢？\x"
+					"\1\s[10]\0\s[0]晚安、\w9%(username)。\w9\w9\w9\w9\n半夜了呢。\x"
+				}
+			}
 		}
 	}
 	--
@@ -481,26 +538,6 @@ OnBoot{
 		"\1\s[10]\0\s[40]\![raise,OnPlaySound,tinkle.wav]今天是%(lunartime[9]) %(lunartime[10])\n/
 		\q[◇10小时内不再提醒,stoprm]\n\x"
 	}
-	--
-	if !TOINT(autobackup) && autobackupclosealert{
-		_t = '○,●'
-		"\C\_q\1\s[10]\0\s[40]■橘花提醒■\n为避免人格失忆，请设自动备份开关为On，当前自动备份功能关闭，请定期手动备份。\n/
-		自动备份　　　\q[%(_t[TOINT(autobackup)]) ON,Onusage,autobackup,1]  ・  \q[%(_t[1 - TOINT(autobackup)]) OFF,Onusage,autobackup,0]\n/
-		\q[◇不再提醒,Onusage,autobackupclosealert,0]\n/
-		\x"
-	}
-	--
-	/*
-	if TOINT(autoastro)==0
-		temp='autoastro'
-	if TOINT(autoweather)==0
-		OnWeatherFoundAuto
-	elseif TOINT(autoastro)==0
-		OnAstroFoundAuto
-	*/
-	--
-	if AutoUpdate
-		OnSilentUpdate
 }
 Select.Goodevening_0{
 	Goodevening = '午安'
@@ -522,7 +559,6 @@ ClearVar{
 	ERASEVAR('id')
 	ERASEVAR('res')
 	ERASEVAR('calendar')
-	ERASEVAR('poker')
 	ERASEVAR('i')
 	ERASEVAR('ix')
 	ERASEVAR('jd')
@@ -555,8 +591,6 @@ ClearVar{
 	ERASEVAR('SecondWatch.m')
 	ERASEVAR('SecondWatch.ss')
 	ERASEVAR('SecondWatch.s')
-	ERASEVAR('fjswitch')
-	ERASEVAR('G')
 	ERASEVAR('sss')
 	ERASEVAR('drg')
 	ERASEVAR('radio')
@@ -564,7 +598,6 @@ ClearVar{
 	ERASEVAR('newcarry')
 	ERASEVAR('a')
 	ERASEVAR('l')
-	ERASEVAR('txt')
 	ERASEVAR('t6')
 	ERASEVAR('t2')
 	ERASEVAR('operand')
@@ -695,9 +728,11 @@ ClearTempVar:void{
 	S_CHARSET = GETSETTING('charset.output')
 }
 OnClose.base:void{
+	OnCloseCalled=1
 	if reference0 == 'system'
 		inshutdown=1
-	CloseTime = GETSECCOUNT
+	if !TimeErrorCheck
+		CloseTime = GETSECCOUNT
 	--
 	ClearTempVar
 	--
@@ -733,26 +768,24 @@ OnClose0{
 		--
 		'\w9\w9\1\s[10]要干嘛啊…'
 	}
-	//---- 早朝 -----------------------------------------------------------------------------------------------------------
-	if _timeslot == 'Earlymorning'{
-	}
-	//---- 朝 -------------------------------------------------------------------------------------------------------------
-	elseif _timeslot == 'Morning'{
-	}
-	//---- 昼 -------------------------------------------------------------------------------------------------------------
-	elseif _timeslot == 'Day'{
-	}
-	//---- 夕方 -----------------------------------------------------------------------------------------------------------
-	elseif _timeslot == 'Evening'{
-		'\1\s[10]\0\s[0]因为是被称为逢魔之刻的时间、\w9\n如果要出门的话请小心喔。\w9\w9\n那么再见了。\1\s[10]再见啦。'
-		'\1\s[117]早点回来，\w9人家等着呢。\w9\w9\0\s[26]这么晚了，路上小心啊'
-	}
-	//---- 夜 -------------------------------------------------------------------------------------------------------------
-	elseif _timeslot == 'Night'{
-	}
-	//---- 深夜 -----------------------------------------------------------------------------------------------------------
-	else{
-		"\1\s[10]\0\s[0]啊…\w9\w9已经这么晚了。\w9\w9\n那么%(username)、\w9\w9祝您有个好梦。"
+	if !InTimeError{
+		case _timeslot{
+			when 'Earlymorning'{
+			}
+			when 'Morning'{
+			}
+			when 'Day'{
+			}
+			when 'Evening'{
+				'\1\s[10]\0\s[0]因为是被称为逢魔之刻的时间、\w9\n如果要出门的话请小心喔。\w9\w9\n那么再见了。\1\s[10]再见啦。'
+				'\1\s[117]早点回来，\w9人家等着呢。\w9\w9\0\s[26]这么晚了，路上小心啊'
+			}
+			when 'Night'{
+			}
+			when 'Midnight'{
+				"\1\s[10]\0\s[0]啊…\w9\w9已经这么晚了。\w9\w9\n那么%(username)、\w9\w9祝您有个好梦。"
+			}
+		}
 	}
 	--
 	'\w9\w9\-'
@@ -762,7 +795,7 @@ GetPhase{
 	if intimacy >= 3600 && elapsedtime >= 691200{//彻底信任
 		5
 	}
-	elseif intimacy >= 800  && elapsedtime >= 345600{//可h
+	elseif intimacy >= 800 && elapsedtime >= 345600{//可h
 		4
 	}
 	elseif intimacy >= 200 && elapsedtime >= 172800{//好感
@@ -771,15 +804,25 @@ GetPhase{
 	elseif intimacy >= 50 && elapsedtime >= 86400{//些微好感
 		2
 	}
-	elseif intimacy <= -10{//厌恶
+	elseif intimacy >= -10{//普通
+		1
+	}
+	elseif intimacy >= -100{//厌恶
 		0
 	}
-	else{//普通
-		1
+	else{
+		-1
 	}
 }
 //**** 最小化 *********************************************************************************************************
 OnWindowStateMinimize{
+	DiscordCustomSet.LargeImageKey('kikka_eye_close')
+	--
+	DiscordCustomSet.CustomDetail('最小化中')
+	--
+	if playingmusic
+		DiscordCustomSet.CustomState('但是放着歌')
+	--
 	minimizestarttime = systemuptime
 	if mode != '1'{
 		'\0\s[3]……'
@@ -791,6 +834,10 @@ OnWindowStateMinimize{
 }
 //**** 最小化から复帰 *************************************************************************************************
 OnWindowStateRestore{
+	DiscordCustomSet.LargeImageKey('kikka_eye_open')
+	--
+	DiscordCustomSet.CustomDetail('从最小化中回来')
+	--
 	OnSurfaceRestore.base
 	--
 	if topmode/2
@@ -802,9 +849,13 @@ OnWindowStateRestore{
 	}
 	else{
 		if MinimizeTime >= 60*60*24{
+			DiscordCustomSet.CustomDetail('让人等了'+TOINT(MinimizeTime/(60*60*24))+'天的屑')
+			--
 			"\0\s[9]\w9.\w9.\w9.\w9\w9\w9我可是等了你整整%(TOINT(MinimizeTime/(60*60*24)))天哦？"
 		}
 		if MinimizeTime >= 60*60*5{
+			DiscordCustomSet.CustomDetail('让人等了'+TOINT(MinimizeTime/(60*60))+'天的屑')
+			--
 			'\0\s[9]\w9.\w9.\w9.\w9\w9\w9\s[6]\n把我忘掉了吧?\w9\w9\w9\w9\n\s[35]绝对\w9.\w9.\w9.'
 			"\0\s[9]\w9.\w9.\w9.\w9\w9\w9我可是等了你整整%(TOINT(MinimizeTime/(60*60)))小时哦？"
 		}
@@ -841,18 +892,15 @@ OnGhostChanging{
 }
 OnGhostChanging0{
 	if reference1 == 'manual'{
-		if GetPhase == 0{
+		//---- Taromati -------------------------------------------------------------------------------------------------------
+		if reference0 == '橘花'{
 			if reference3 && !GHOST.IsSelfPath(reference3){
 				'\0\s[8]...那是谁啊？'
 			}
 			else{
-				'\0\s[6]好的。\w9\s[0]\n那么再见了。\w9\w9\1\s[10]再见啦。'
+				'\0\s[0]那么、\w9\w9请稍微等一会喔。'
+				'\0\s[0]那么、\w9\w9我稍微离开一下喔。'
 			}
-		}
-		//---- Taromati -------------------------------------------------------------------------------------------------------
-		elseif reference0 == '橘花'{
-			'\0\s[0]那么、\w9\w9请稍微等一会喔。'
-			'\0\s[0]那么、\w9\w9我稍微离开一下喔。'
 		}
 		//---- #　由加＋ダオにゅう　# -----------------------------------------------------------------------------------------
 		elseif reference0 == '由加'{

@@ -72,32 +72,21 @@ SubMenu{
 			'
 		}
 		when 1 {
-			case _submenuex{
-				when 0{
-					_heart='\f[color,238,50,95]\&[hearts]\f[default]'
-					"\q[◇话题,ForcedTalk]			\_l[100,-]\q[◇自我介绍,Introduction]			\_l[200,-]\q[◇说笑话,Story]\n/
-					\q[◇与橘花说话,Communicate]		\_l[100,-]\q[◇教学,Teaching]					\_l[200,-]\q[◇刚才说了什么,OnLastTalk]\n/
-					\q[◇五十音,Onjap_v]				\_l[100,-]\q[◇秘密服务,SecretService]%(_heart)	\_l[200,-]\q[◇外语学习,japanesestudy]\n/
-					\q[◇花语,OnFlowers]				\_l[100,-]\q[◇诞生花,OnBirthdayFlowerList]		\_l[200,-]\q[◇塔罗占卜,OnFUT]\n/
-					\q[◇趣味测试,Ontestmenu]		\_l[100,-]\q[◇橘花题库,OnExamTest]				\_l[200,-]\q[◇和橘花谈心,talktoheart]\n/
-					\q[◇查找诗歌,OnResearchPoesy]	\_l[100,-]\q[◇唐诗默写♪,OnPoesywrite]			\_l[200,-]\q[◇剧情故事,Opera]\n/
-					\q[◇动漫列表,OnDHs]				\_l[100,-]\q[◇咖啡厅,get_some_tea]			\_l[200,-]%(Onmeal)\n/
-					"
-					--
-					if towaflag != '0'
-						'\q[◇吸烟室,SmokingPlace]\_l[100,-]'
-					--
-					"\q[◇试衣间,OnFittingRoom]		\_l[200,-]\q[◇进寝室,Bedroom]\n/
-					\q[◇其它服务,otherserv]			\_l[100,-]\q[◇橘花知识库,OnKikkaKnowl]			\_l[200,-]%(Onclosetouch)\n"
-				}
-				when 1{
-					'/
-					\q[◇准备晚餐,Cookingtonight]\n/
-					'
-				}
-			}
+			_heart='\f[color,238,50,95]\&[hearts]\f[default]'
+			"\q[◇话题,ForcedTalk]			\_l[100,-]\q[◇自我介绍,Introduction]			\_l[200,-]\q[◇说笑话,Story]\n/
+			\q[◇与橘花说话,Communicate]		\_l[100,-]\q[◇教学,Teaching]					\_l[200,-]\q[◇刚才说了什么,OnLastTalk]\n/
+			\q[◇五十音,Onjap_v]				\_l[100,-]\q[◇秘密服务,SecretService]%(_heart)	\_l[200,-]\q[◇外语学习,japanesestudy]\n/
+			\q[◇花语,OnFlowers]				\_l[100,-]\q[◇诞生花,OnBirthdayFlowerList]		\_l[200,-]\q[◇塔罗占卜,OnFUT]\n/
+			\q[◇趣味测试,Ontestmenu]		\_l[100,-]\q[◇橘花题库,OnExamTest]				\_l[200,-]\q[◇和橘花谈心,talktoheart]\n/
+			\q[◇查找诗歌,OnResearchPoesy]	\_l[100,-]\q[◇唐诗默写♪,OnPoesywrite]			\_l[200,-]\q[◇准备晚餐,Cookingtonight]\n/
+			\q[◇动漫列表,OnDHs]				\_l[100,-]\q[◇咖啡厅,get_some_tea]			\_l[200,-]%(Onmeal)\n/
+			"
 			--
-			"\_l[90,180]\q[%(_sub[_submenuex])1,OnSubMenu,%(_submenu),0]    \q[%(_sub[_submenuex + 4])2,OnSubMenu,%(_submenu),1]"
+			if towaflag != '0'
+				'\q[◇吸烟室,SmokingPlace]\_l[100,-]'
+			--
+			"\q[◇试衣间,OnFittingRoom]		\_l[200,-]\q[◇进寝室,Bedroom]\n/
+			\q[◇其它服务,otherserv]			\_l[100,-]\q[◇橘花知识库,OnKikkaKnowl]			\_l[200,-]%(Onclosetouch)\n"
 		}
 		when 2 {
 			'\q[◇猜拳,OnHandGame]			\_l[80,-]扑克游戏：						\_l[168,-]\q[◇外出冒险,OnRpgGame] \n/
@@ -115,7 +104,7 @@ SubMenu{
 					'\q[◇软件快捷,OnShortcutMenu]			\_l[138,-]\q[◇计算器,OnCalculator] \n/
 					\q[◇倒数计时,count]						\_l[138,-]\q[◇秒表,OnSecondWatch,inter]\n/
 					\q[◇C盘垃圾文件清理,ClearC]				\_l[138,-]\q[◇股票,OnKikkaStockMenu]\n/
-					\q[◇简繁转换,OnChangeChineseCode]		\_l[138,-]\q[◇校准时间,SNTPTIME]\n/
+					\q[◇简繁转换,OnChangeChineseCode]		\_l[138,-]\q[◇校准时间,OnSNTPmenu]\n/
 					\q[◇收取邮件,ALLMAIL]					\_l[138,-]\q[◇开启邮箱,OPENMAILER]\n/
 					\q[◇RSS盒子,HEADLINE]					\_l[138,-]\q[◇数据备份,OnGhostBackup]\n/
 					\q[◇自动关机,OnSetShutdownMenu]			\_l[138,-]\q[◇吃货,OnReadyToEat]\n/
@@ -144,8 +133,12 @@ SubMenu{
 			\q[◇选择语言,OnLanguage]			\_l[138,-]\q[◇帮肋,help]\n/
 			\q[◇总在最前,AlwaysOnTop] ｜ \q[◇恢复默认,NotOnTop] | \q[◇最小化,Trayicon]\n/
 			\q[◇GhostExplorer,GhostExplorer]	\_l[138,-]\q[◇ShellExplorer,ShellExplorer]\n/
-			\q[◇BalloonExplorer,BalloonExplorer]\_l[138,-]\q[◇更新检查,OnUpdateCheck]\n/
-			"
+			\q[◇BalloonExplorer,BalloonExplorer]\_l[138,-]"
+			--
+			if AutoUpdate==0 && SHIORI_FW.DebugMode
+				"\q[◇更新%(Baseware),"+'"script:\![update,platform]"'+']\n'
+			else
+				'\q[◇更新检查,OnUpdateCheck]\n'
 		}
 	}
 }
@@ -181,6 +174,13 @@ OpenMenuTalk{
 		'\0\s[7]\b[2]什么事。'
 		'\0\s[25]\b[2]有何贵干。'
 	}
+	elseif _phase < 0 {
+		'\0\s[0]\b[2]？'
+		'\0\s[6]\b[2]干嘛'
+		'\0\s[7]\b[2]什么事。'
+		--
+		'\e'
+	}
 	else {
 		'\0\s[26]\b[2]好的、什么事呢？'
 		"\0\s[26]\b[2]什么事呢、%(username)？"
@@ -194,24 +194,6 @@ Select.otherserv{
 	\q[◇我身体不舒服,notsogood]\n/
 	\q[◇返回上一层,OnOpenMenu,1]\n/
 	\q[◇退出,OptionEnd]'
-}
-Select.Opera{
-	if QuickStartVersion{
-		NeedUpdate
-		return
-	}
-	'■橘花的情景剧■(欢迎提供剧本)\n[150]/
-	\q[◇来到此城市,city]\n/
-	\q[◇去海边,OnSummer]\n/
-	\q[◇去野餐,OnPicnic]\n/
-	'
-	--
-	OnOperaSelect
-	--
-	'/
-	\q[◇去游乐园,OnDoor]\n/
-	\q[◇游乐园剧情开发,开发确认]\n/
-	\n[half]\q[◇返回上一层,OnOpenMenu,1]       \q[◇退出,OptionEnd]'
 }
 Select.help{
 	"\0\s0啊、\w9有需要帮忙吗?\s[40]\n[150]/
@@ -260,7 +242,7 @@ Select.MenuCancel{
 	--
 	infomode=0
 	_phase = GetPhase
-	if _phase == 0{
+	if _phase <= 0{
 		'\0\s[0]嗯。'
 	}
 	elseif _phase >= 2{
@@ -621,7 +603,7 @@ DayofWeek_w{
 //---------- 人格设定 ----------------------------------------------------
 TheDefaultValue:void{
 	if !ISVAR(_argv[0])
-		EVAL(_argv[0]+'='+_argv[1])
+		LETTONAME(_argv[0],_argv[1])
 }
 OnOptionSet:void{
 	Select.Option
@@ -634,89 +616,92 @@ Select.Option{
 	if SHIORI_FW.DebugMode{
 		'\n■开发机能设定■\n'
 		--
-		TheDefaultValue('setting.OnNoMatchingEventAlarm','0')
+		TheDefaultValue('setting.OnNoMatchingEventAlarm',0)
 		"未定义事件警告		\_l[120]\q[%(_t[TOINT(setting.OnNoMatchingEventAlarm)]) ON,Onusage,setting.OnNoMatchingEventAlarm,1]  ・  \_l[180]\q[%(_t[1 - TOINT(setting.OnNoMatchingEventAlarm)]) OFF,Onusage,setting.OnNoMatchingEventAlarm,0]\n"
+
+		TheDefaultValue('setting.OnErrorLogAlarm',1)
+		"错误记录警告		\_l[120]\q[%(_t[TOINT(setting.OnErrorLogAlarm)]) ON,Onusage,setting.OnErrorLogAlarm,1]  ・  \_l[180]\q[%(_t[1 - TOINT(setting.OnErrorLogAlarm)]) OFF,Onusage,setting.OnErrorLogAlarm,0]\n"
 	}
 	--
 	'\n■随机对话设定■\n'
 	--
-	TheDefaultValue('talkSwitch.story','1')
+	TheDefaultValue('talkSwitch.story',1)
 	"允许讲笑话		\_l[120]\q[%(_t[TOINT(talkSwitch.story)]) ON,Onusage,talkSwitch.story,1]  ・  \_l[180]\q[%(_t[1 - TOINT(talkSwitch.story)]) OFF,Onusage,talkSwitch.story,0]\n"
 	--
-	TheDefaultValue('talkSwitch.poesy','1')
+	TheDefaultValue('talkSwitch.poesy',1)
 	"允许对诗句		\_l[120]\q[%(_t[TOINT(talkSwitch.poesy)]) ON,Onusage,talkSwitch.poesy,1]  ・  \_l[180]\q[%(_t[1 - TOINT(talkSwitch.poesy)]) OFF,Onusage,talkSwitch.poesy,0]\n"
 	--
 	'\n■提醒设定■\n'
 	--
-	TheDefaultValue('autoweather','1')
+	TheDefaultValue('autoweather',1)
 	"天气提醒		\_l[120]\q[%(_t[1 - TOINT(autoweather)]) ON,Onusage,autoweather,0]  ・  \_l[180]\q[%(_t[TOINT(autoweather)]) OFF,Onusage,autoweather,1]\n"
 	--
-	TheDefaultValue('rmswitch','1')
+	TheDefaultValue('rmswitch',1)
 	"节日提醒		\_l[120]\q[%(_t[1 - TOINT(rmswitch)]) ON,Onusage,rmswitch,0]  ・  \_l[180]\q[%(_t[TOINT(rmswitch)]) OFF,Onusage,rmswitch,1]\n"
 	--
-	TheDefaultValue('friendbirthdaymode','1')
+	TheDefaultValue('friendbirthdaymode',1)
 	"好友生日提醒	\_l[120]\q[%(_t[1 - TOINT(friendbirthdaymode)]) ON,Onusage,friendbirthdaymode,0]  ・  \_l[180]\q[%(_t[TOINT(friendbirthdaymode)]) OFF,Onusage,friendbirthdaymode,1]\n"
 	--
 	"\q[◇任务繁忙提醒,OnMemoryBusySet]	\_l[120]\q[%(_t[1 - TOINT(memorybusyrm[0])]) ON,Onusage,memorybusyrm[0\],0]  ・  \_l[180]\q[%(_t[TOINT(memorybusyrm[0])]) OFF,Onusage,memorybusyrm[0\],1]\n"
 	--
-	TheDefaultValue('autoastro','1')
+	TheDefaultValue('autoastro',1)
 	"星座运势提醒	\_l[120]\q[%(_t[1 - TOINT(autoastro)]) ON,Onusage,autoastro,0]  ・  \q[%(_t[TOINT(autoastro)]) OFF,Onusage,autoastro,1]\n"
 	--
-	TheDefaultValue('autobackupclosealert','1')
+	TheDefaultValue('autobackupclosealert',1)
 	"自动备份关闭时提醒	\_l[120]\q[%(_t[TOINT(autobackupclosealert)]) ON,Onusage,autobackupclosealert,1]  ・  \_l[180]\q[%(_t[1 - TOINT(autobackupclosealert)]) OFF,Onusage,autobackupclosealert,0]\n"
 	--
 	'\n■其他设定■\n'
 	--
-	TheDefaultValue('AllowInternetIPShowing','0')
+	TheDefaultValue('AllowInternetIPShowing',0)
 	"显示外网IP		\_l[120]\q[%(_t[TOINT(AllowInternetIPShowing)]) ON,Onusage,AllowInternetIPShowing,1]  ・  \_l[180]\q[%(_t[1 - TOINT(AllowInternetIPShowing)]) OFF,Onusage,AllowInternetIPShowing,0]\n"
 	--
-	TheDefaultValue('kikkacareonherself','0')
+	TheDefaultValue('kikkacareonherself',0)
 	"自我照顾		\_l[120]\q[%(_t[TOINT(kikkacareonherself)]) ON,Onusage,kikkacareonherself,1]  ・  \_l[180]\q[%(_t[1 - TOINT(kikkacareonherself)]) OFF,Onusage,kikkacareonherself,0]\n"
 	--
-	TheDefaultValue('lowpowerautoshutoff','1')
+	TheDefaultValue('lowpowerautoshutoff',1)
 	"低电量自动关闭	\_l[120]\q[%(_t[TOINT(lowpowerautoshutoff)]) ON,Onusage,lowpowerautoshutoff,1]  ・  \_l[180]\q[%(_t[1 - TOINT(lowpowerautoshutoff)]) OFF,Onusage,lowpowerautoshutoff,0]\n"
 	--
-	TheDefaultValue('vanishbutton.visible','1')
+	TheDefaultValue('vanishbutton.visible',1)
 	"消灭指示表示	\_l[120]\q[%(_t[TOINT(vanishbutton.visible)]) ON,Onusage,vanishbutton.visible,1]  ・  \_l[180]\q[%(_t[1 - TOINT(vanishbutton.visible)]) OFF,Onusage,vanishbutton.visible,0]\n"
 	--
-	TheDefaultValue('DeviceChangeAlert','0')
+	TheDefaultValue('DeviceChangeAlert',0)
 	"硬件变动提醒	\_l[120]\q[%(_t[TOINT(DeviceChangeAlert)]) ON,Onusage,DeviceChangeAlert,1]  ・  \_l[180]\q[%(_t[1 - TOINT(DeviceChangeAlert)]) OFF,Onusage,DeviceChangeAlert,0]\n"
 	--
-	TheDefaultValue('mikireswitch','1')
+	TheDefaultValue('mikireswitch',1)
 	"见切反应		\_l[120]\q[%(_t[TOINT(mikireswitch)]) ON,Onusage,mikireswitch,1]  ・  \_l[180]\q[%(_t[1 - TOINT(mikireswitch)]) OFF,Onusage,mikireswitch,0]\n"
 	--
-	TheDefaultValue('AutoUpdate','1')
+	TheDefaultValue('AutoUpdate',1)
 	"自动更新		\_l[120]\q[%(_t[TOINT(AutoUpdate)]) ON,Onusage,AutoUpdate,1]  ・  \_l[180]\q[%(_t[1 - TOINT(AutoUpdate)]) OFF,Onusage,AutoUpdate,0]\n"
 	--
-	TheDefaultValue('kasanariswitch','1')
+	TheDefaultValue('kasanariswitch',1)
 	"重叠反应		\_l[120]\q[%(_t[TOINT(kasanariswitch)]) ON,Onusage,kasanariswitch,1]  ・  \_l[180]\q[%(_t[1 - TOINT(kasanariswitch)]) OFF,Onusage,kasanariswitch,0]\n"
 	--
-	TheDefaultValue('silent','0')
+	TheDefaultValue('silent',0)
 	"效果音			\_l[120]\q[%(_t[1 - TOINT(silent)]) ON,Onusage,silent,0]  ・  \_l[180]\q[%(_t[TOINT(silent)]) OFF,Onusage,silent,1]\n"
 	--
-	TheDefaultValue('timerm','1')
+	TheDefaultValue('timerm',1)
 	"整点报时		\_l[120]\q[%(_t[1 - TOINT(timerm)]) ON,Onusage,timerm,0]  ・  \_l[180]\q[%(_t[TOINT(timerm)]) OFF,Onusage,timerm,1]\n"
 	--
-	TheDefaultValue('acjeachday','1')
+	TheDefaultValue('acjeachday',1)
 	"动漫日语		\_l[120]\q[%(_t[TOINT(acjeachday)]) ON,Onusage,acjeachday,1]  ・  \_l[180]\q[%(_t[1 - TOINT(acjeachday)]) OFF,Onusage,acjeachday,0]\n"
 	--
-	TheDefaultValue('japwordeachday','0')
+	TheDefaultValue('japwordeachday',0)
 	"单词每天记		\_l[120]\q[%(_t[TOINT(japwordeachday)]) ON,Onusage,japwordeachday,1]  ・  \_l[180]\q[%(_t[1 - TOINT(japwordeachday)]) OFF,Onusage,japwordeachday,0]\n"
 	--
 	"\q[◇时间24小时制,OnTimeHour]	\_l[120]\q[%(_t[1 - TOINT(timehour[0])]) ON,Onusage,timehour[0\],0]  ・  \_l[180]\q[%(_t[TOINT(timehour[0])]) OFF,Onusage,timehour[0\],1]\n"
 	--
-	TheDefaultValue('autobackup','0')
+	TheDefaultValue('autobackup',0)
 	"自动备份		\_l[120]\q[%(_t[TOINT(autobackup)]) ON,Onusage,autobackup,1]  ・  \_l[180]\q[%(_t[1 - TOINT(autobackup)]) OFF,Onusage,autobackup,0]\n"
 	--
-	TheDefaultValue('voice','0')
+	TheDefaultValue('voice',0)
 	"\q[◇语音朗读,OnVoiceName]		\_l[120]\q[%(_t[TOINT(voice)]) ON,Onusage,voice,1]  ・  \_l[180]\q[%(_t[1 - TOINT(voice)]) OFF,Onusage,voice,0]\n"
 	--
 	"\q[◇自动换装,OnAutoShellChange]		\_l[120]\q[%(_t[TOINT(AutoShellChange[0])]) ON,Onusage,AutoShellChange[0\],1]  ・  \_l[180]\q[%(_t[1 - TOINT(AutoShellChange[0])]) OFF,Onusage,AutoShellChange[0\],0]\n"
 	--
-	TheDefaultValue('eventinfo','1')
+	TheDefaultValue('eventinfo',1)
 	"日程倒计时资讯	\_l[120]\q[%(_t[1-TOINT(eventinfo)]) ON,Onusage,eventinfo,0]  ・  \_l[180]\q[%(_t[TOINT(eventinfo)]) OFF,Onusage,eventinfo,1]\n"
 	--
-	TheDefaultValue('infofresh','1')
+	TheDefaultValue('infofresh',1)
 	"动态系统资讯	\_l[120]\q[%(_t[TOINT(infofresh)]) ON,Onusage,infofresh,1]  ・  \_l[180]\q[%(_t[1-TOINT(infofresh)]) OFF,Onusage,infofresh,0]\n"
 	--
 	"使用图灵API搜索\_l[120]\q[%(_t[1 - TOINT(Tulingapi[0])]) ON,Onusage,Tulingapi[0\],0]  ・  \_l[180]\q[%(_t[TOINT(Tulingapi[0])]) OFF,Onusage,Tulingapi[0\],1]\n"
@@ -825,18 +810,18 @@ OnAutoComm{
 	_txt
 }
 Onset{
-	void EVAL("%(reference0)=%(reference1)")
+	LETTONAME(reference0,reference1)
 	'完成了'
 }
 Onusage{
 	if reference0=='voicename'{
-		EVAL("%(reference0)=%(CHR(34))%(reference1)%(CHR(34))")
+		LETTONAME(reference0,CHR(34)+reference1+CHR(34))
 		TxtToVoice(reference1,reference1)
 		--
 		OnVoiceName
 	}
 	elseif reference0=='voice.rate'{
-		EVAL("%(reference0)=%(reference1)")
+		LETTONAME(reference0,reference1)
 		TxtToVoice(reference2,reference2)
 		--
 		OnVoiceName
@@ -848,16 +833,13 @@ Onusage{
 		}
 	}
 	elseif reference0=='communicate[1]'{
-		EVAL("%(reference0)=%(reference1)")
+		LETTONAME(reference0,reference1)
 		OnAutoComm
 	}
 	else{
-		EVAL("%(reference0)=%(reference1)")
+		LETTONAME(reference0,reference1)
 		Select.Option
 	}
-}
-Select.ReturnMenu{
-	OpenMenu
 }
 OnLanguage{
 	_txt="\_q请%(username)选择语言\n[150]"
@@ -932,8 +914,8 @@ Select.OptionEnd{
 //---- 呼び方 ---------------------------------------------------------------------------------------------------------
 Select.ChangeUserName{
 	"\0\s[0]称作『%(username)』\w9不行吗？\n\n/
-	\q[◇改变,OnUserNameChange,1]\n/
-	\q[◇不改变,OnUserNameChange,0]"
+	\q[◇改变,OnUserNameChange]\n/
+	\q[◇不改变,OnUserNameCancel]"
 }
 //--- 选择“橘花的生日” ----
 Select.birthdaykikka{
@@ -956,7 +938,7 @@ Select.birthdaykikka{
 	}
 	elseif _argv[0]=='wrong'{
 		intimacy--
-		"\0\s[1]不是这样的呢\w9\w9\n"
+		'\0\s[1]不是这样的呢\w9\w9\n'
 	}
 	--
 	if _argv[0]=='N'||_argv[0]=='wrong'{
@@ -1040,6 +1022,8 @@ Select.shortcutkey{
 	'
 }
 OnOpenMasterMenu{
+	DiscordCustomSet.CustomDetail('拆个人看看构造')
+	--
 	MAGICUNLOCK
 	if mode=='0'
 		'\0\s[5]打开master目录'
@@ -1051,6 +1035,8 @@ Select.TrashClean{
 	OnTrashClean
 }
 OnTrashClean{
+	DiscordCustomSet.CustomDetail('打扫卫生')
+	--
 	_gomicheck = CALLSAORI('gomi', '-n')
 	if _gomicheck == 0{
 		if 萌度>200||腹黑度>200||萌度>腹黑度{
@@ -1141,20 +1127,25 @@ ClearWallpaperVar{
 }
 //---------- 沟通 ------------------------------------------------------
 Select.Communicate{
-	'\![open,communicatebox]\0'
+	'\0'
 	--
 	if GetPhase == 0 {
 		'\s[0]想说什么？'
+	}
+	elseif GetPhase < 0{
+		'\s[0]？\e'
 	}
 	else {
 		"\s[26]嗯？\w9想聊点什么呢，%(username)？"
 		"\s[26]%(username)想要和橘花说什么呢？"
 	}
 	--
-	'\n\q[◇聊天室,OnChatRoomClear]'
+	'\n\q[◇聊天室,OnChatRoomClear]\![open,communicatebox]'
 }
 //---------- 吸烟室 ----------------------------------------------------
 Select.SmokingPlace{
+	DiscordCustomSet.CustomDetail('陪猫抽烟')
+	--
 	mode = '1'
 	if specialmode == 'smoking'{
 		{
@@ -1189,13 +1180,6 @@ OnDHs{
 	"\0\s[40]%(username)是动漫爱好者啊~~\w6进入动漫列表么？\w9\n\q[◇看动画列表,OnDH]\n\q[◇不看了,OnOpenMenu,1]"
 }
 OnDH{
-	//_keyword=REPLACE(DH,']',']\_a[OnUrl,https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&dsp=baidubrowser&tn=baidu&bar=bd_collection&wd=')
-	//_keyword=REPLACE(DH,'：',']\_a：OnAnc("https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&dsp=baidubrowser&tn=baidu&bar=bd_collection&wd=')
-	_anc=OnAnc('https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&dsp=baidubrowser&tn=baidu&bar=bd_collection&wd=')
-	//_keyword=REPLACE(DH,'、',"]\_a、%(_anc)")
-	//_keyword=REPLACE(_keyword,'、、',']\_a、')
-	//_keyword=REPLACE(_keyword,'. ',']\_a.')
-	//_keyword
 	OnAncList(DH)
 	--
 	'\n\n[half]\q[◇下一类型,OnDH]\n\q[◇不看了,OnOpenMenu,1]\![set,choicetimeout,0]'
@@ -1208,7 +1192,7 @@ OnAncList{
 	_tbuff=SPLIT(_tbuff,'、')
 	_n=ARRAYSIZE(_tbuff)
 	_Tbuff=''
-	_anc='https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&dsp=baidubrowser&tn=baidu&bar=bd_collection&wd='
+	_anc='https://www.baidu.com/s?ie=utf-8&wd='
 	for _i=0;_i<_n;_i++{
 		_Tbuff+=OnAnc(_anc+_tbuff[_i])+"%(_tbuff[_i])\_a、"
 	}
@@ -1277,7 +1261,7 @@ Tea{
 Coffee{
 	'拿铁'
 	'卡布奇诺'
-	'义式拿铁'
+	'意式拿铁'
 	'蓝山咖啡'
 	'土耳其咖啡'
 	'巴西咖啡'
@@ -1298,7 +1282,7 @@ Juice{
 Ohpos{
 	'辣椒芥末茶'
 	'韭菜芥末茶'
-	'义式酸牛奶'
+	'意式酸牛奶'
 	'永和酸豆浆'
 	'鱼露芹菜茶'
 	'奶烙泡菜汁'
@@ -1405,7 +1389,7 @@ Select.Cookbymyself{
 	"\0\s[0]%(username)真是固执...\w9\w9\s[26]谢谢。\w9\w9\n\n\q[◇别谢了，想吃什么？,Eatwhat]"
 }
 Select.Eatwhat{
-	"\0\s[6]嗯...\w9\w9\s[0]不知道耶...\w9\w9\n给%(username)决定吧。\w9\w9\n\1\s[10]不要做奇怪的东西。\w9\w9\0\n\q[◇蛋包饭,Omuraisu]\n\q[◇可乐饼,Korokke]\n\q[◇蕃茄义大利面,Pasuta]"
+	"\0\s[6]嗯...\w9\w9\s[0]不知道耶...\w9\w9\n给%(username)决定吧。\w9\w9\n\1\s[10]不要做奇怪的东西。\w9\w9\0\n\q[◇蛋包饭,Omuraisu]\n\q[◇可乐饼,Korokke]\n\q[◇蕃茄意大利面,Pasuta]"
 }
 Select.Omuraisu{
 	"\0\s[0]是吗？\w9\s[26]只要是%(username)做的我都喜欢吃喔...\w9\w9\n\1\s[10]如果哪天%(username)作炖猫肉怎么办？\w9你也会吃吗？\w9\w9\n\0\s[30]...\w9...\w9...\w9\n可以换菜色吗？\w9\w9\1\s[11]不要当真啊！"
@@ -1435,7 +1419,10 @@ Select.Bedroom{
 }
 Select.Comemyroom{
 	_phase = GetPhase
-	if _phase == 0{
+	if _phase < 0{
+		'\0\s[8]。\w9\w9\n\s[6]你哪来的自信？\x'
+	}
+	elseif _phase == 0{
 		"\1\s[10]\0\s[25]橘花才不要呢，\w9\w9%(username)是个大坏蛋！！\1\s[12]%(username)啊，橘花对你的好感太低了\x"
 	}
 	elseif _phase == 1{
@@ -1592,7 +1579,7 @@ Select.OK{
 }
 Select.forget{
 	forgetflag = 1
-		"\1\s[-1]\0\s[7]是这样啊，\w9\w9虽然很可惜，\w9但%(username)的学习工作才是最重要的呢。\x"
+	"\1\s[-1]\0\s[7]是这样啊，\w9\w9虽然很可惜，\w9但%(username)的学习工作才是最重要的呢。\x"
 }
 Select.daijobu{
 	"\1\s[-1]\0\s[8]%(username)很邪恶呢，\w9如果那样的话，\w9橘花也没办法啦，\w9\w9请您，请您一定要暴力的对待橘花哦。\w9\w9\n\n\q[◇不，我会很温柔的,gentle]\x"
@@ -1660,7 +1647,6 @@ Select.whatisthis{
 }
 Select.openit{
 	money += 3000000
-	anti_cheat('money')
 	openmode = 1
 	"\1\s[-1]\0\s[40]￥3000000到达%(username)的帐户。\x"
 }

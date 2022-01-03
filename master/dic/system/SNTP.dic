@@ -1,0 +1,138 @@
+OnSNTPmenu{
+	if SNTPserver
+		"\1\b[2]\s[10]\n现在的校准伺服器是\n\_q%(REPLACE(SNTPserver,'\','\\'))\_q\n要更换伺服器吗？\n\n/
+		\![*]\q[更改伺服器,OnSNTPServerChange]\n/
+		\![*]\q[校准开始,OnSNTPexecute]\n"
+	else
+		OnSNTPServerChange
+}
+OnSNTPServerChange{
+	'\1\s[11]请输入'
+	--
+	if SNTPserver
+		'新的'
+	--
+	'同步伺服器地址。\![open,inputbox,OnSNTPServerChange.input,-1,pool.ntp.org]'
+}
+OnSNTPServerChange.input{
+	if !reference0
+		'\0\s[8]请输入伺服器地址呢？\![open,inputbox,OnSNTPServerChange.input,-1,pool.ntp.org]'
+	else{
+		SNTPserver=reference0
+		OnSNTPexecute
+	}
+}
+OnSNTPexecute{
+	"\![executesntp,%(SNTPserver)]"
+}
+OnSNTPBegin{
+	DiscordCustomSet.CustomDetail('调制人生')
+	--
+	"\0\s[5]连线到\_q%(REPLACE(reference0,'\','\\'))\_q伺服器了哦，时间同步开始。"
+}
+OnSNTPCompare{
+	'\0\s[6]'
+	--
+	if reference3 == 0{
+		DiscordCustomSet.CustomDetail('精确、精细、精致')
+		--
+		_nowtime = SPLIT(reference1,',')
+		"没有误差。\n现在时刻：%(_nowtime[0])年%(_nowtime[1])月%(_nowtime[2])日 %(_nowtime[3]):%(_nowtime[4])"
+	}
+	else{
+		if reference3<60{
+			DiscordCustomSet.CustomDetail('有点偏差')
+			--
+			"误差%(reference3)秒。"
+		}
+		elseif reference3<60*60{
+			DiscordCustomSet.CustomDetail('有点偏差')
+			--
+			"误差%(reference3/60)分钟。"
+		}
+		elseif reference3<60*60*24{
+			DiscordCustomSet.CustomDetail('不上班不上课')
+			--
+			"误差%(reference3/(60*60))小时。"
+		}
+		elseif reference3<60*60*24*30{
+			DiscordCustomSet.CustomDetail('从不过节')
+			--
+			"误差%(reference3/(60*60*24))天。"
+		}
+		elseif reference3<60*60*24*365{
+			DiscordCustomSet.CustomDetail('错过一个季节')
+			--
+			"误差%(reference3/(60*60*24*30))个月。"
+		}
+		else{
+			DiscordCustomSet.CustomDetail('超时空救兵')
+			--
+			"误差%(reference3/(60*60*24*365))年。\n/
+			\1\s[10].\w9.\w9.\w9.\n/
+			\s[13]就你妈离谱。\w9\0\s[8]\w9/
+			"
+		}
+		--
+		if InTimeError
+			'\6'
+		else
+			'\n/
+			\q[◇校准,"script:\6"]\n/
+			\q[◇无用,Cancel]\n/
+			'
+	}
+}
+OnSNTPCorrect{
+	if reference3<60*60
+		DiscordCustomSet.CustomDetail('做了些小调整')
+	elseif reference3<60*60*24
+		DiscordCustomSet.CustomDetail('洗心革面')
+	elseif reference3<60*60*24*30
+		DiscordCustomSet.CustomDetail('打算过节')
+	elseif reference3<60*60*24*365
+		DiscordCustomSet.CustomDetail('从冬眠中苏醒')
+	else
+		DiscordCustomSet.CustomDetail('穿越成功')
+	--
+	_nowtime = SPLIT(reference1,',')
+	"\0\s[5]同步完成了，很顺利呢。\n现在时刻：%(_nowtime[0])年%(_nowtime[1])月%(_nowtime[2])日%(_nowtime[3])：%(_nowtime[4])\n"
+	--
+	if InTimeError{
+		ERASEVAR('InTimeError')
+		OnTimeErrorFixed
+	}
+}
+OnSNTPFailure{
+	DiscordCustomSet.CustomDetail('被时间抛弃')
+	--
+	'\0\s[3]……失败了？？呜……\n/
+	\q[◇重试,OnSNTPexecute]\n/
+	\q[◇无用,Cancel]\n/
+	'
+}
+
+//
+TimeErrorCheck{
+	if GETSECCOUNT
+		year < 2021 || (GETSECCOUNT - CloseTime) < 0
+}
+OnTimeError{
+	'\0\s[20]时间出错了哦？\n/
+	\q[◇校准,OnSNTPexecute]\n/
+	\q[◇无用,Cancel]\n/
+	'
+}
+OnTimeErrorFixed{
+	'\0\s[0]那么，再一次：\x'
+	--
+	if !firstboottime
+		firstboottime = "%(year),%(month),%(day),%(hour),%(minute)"
+	--
+	BaseGhostStart.aboutTime
+	--
+	OnBoot.aboutTime
+	--
+	if AutoUpdate
+		OnSilentUpdate
+}

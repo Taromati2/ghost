@@ -3,6 +3,8 @@ OnRpgGame{
 		NeedUpdate
 		return
 	}
+	DiscordCustomSet.CustomDetail('玩RPG')
+	--
 	rpggame=1
 	STRADD=1
 	DEFADD=1
@@ -68,14 +70,18 @@ SubRpgGameMenu{
 		when 1 {
 			装备
 		}
-		when 2 {魔法
-			}
-		when 3 {道具
-			}
-		when 4 {kikkashopMenu
-			}
-		when 5 {mission
-			}
+		when 2 {
+			魔法
+		}
+		when 3 {
+			道具
+		}
+		when 4 {
+			kikkashopMenu
+		}
+		when 5 {
+			mission
+		}
 	}
 }
 RpgGameVar{
@@ -129,7 +135,7 @@ RpgGameVar{
 		cp0=cpmax0
 	if cp1 > cpmax1
 		cp1=cpmax1
-	_能量=亲密度+依赖度+萌度+幸福度+腹黑度+0.0
+	_能量=TOREAL(亲密度+依赖度+萌度+幸福度+腹黑度)
 	_能量指数=TOINT(_能量)
 	str0_=TOINT(2*0.05*B0 + 20) + '+' + TOINT(weaponequip_str0 + armorequip_str0)+'+'+TOINT(力量)+'+'+TOINT(_circleinfo0[3])+'+'+TOINT(kikkapow/10)
 	def0_=TOINT(0.8*0.05*B0) + '+' + TOINT(armorequip_def0 + bootsequip_def0)+'+'+TOINT(0.5*敏捷)+'+'+TOINT(_circleinfo0[4])+'+'+TOINT(kikkapow/10)
@@ -1835,7 +1841,6 @@ Onyeslodging{
 		hp1=hpmax1
 		ep1=epmax1
 		money-=100+5*(lvl0-1)
-		anti_cheat('money')
 	}
 	else
 		'金额不足，不能住宿\x'
@@ -1971,7 +1976,6 @@ OnCircleConfirm{
 		'转生失败，金钱不足，不能转生，转生一次花费的金钱为10000，请酌情考虑是否转生。\x'
 	}
 	--
-	anti_cheat('money')
 	OpenRpgGameMenu(4)
 }
 OnCircleCancel{
@@ -2116,7 +2120,6 @@ Onbuy{
 			'金钱不足，购买失败\x'
 		}
 		--
-		anti_cheat('money')
 		--
 		OpenRpgGameMenu(4)
 	}
@@ -2237,7 +2240,6 @@ Onsell{
 				}
 			}
 			--
-			anti_cheat('money')
 			--
 			OpenRpgGameMenu(4)
 		}
@@ -2281,7 +2283,6 @@ Onitembuy{
 				'金钱不足，购买失败\x'
 			}
 			--
-			anti_cheat('money')
 			--
 			OpenRpgGameMenu(4)
 		}
@@ -2437,7 +2438,6 @@ Onaward{
 		'\0\s[8]未达到奖励条件，领取失败\x'
 	}
 	--
-	anti_cheat('money')
 	--
 	OpenRpgGameMenu(5)
 }
@@ -2515,7 +2515,6 @@ Onbattle{
 		\q[◇休息一下,On休息]\n/
 		\q[◇回去吧,back]"
 		money+=5*mlv
-		anti_cheat('money')
 	}
 	elseif f>50{
 		if mnum==9{
@@ -4170,7 +4169,6 @@ Onmspattack{
 	mnum+=1
 	_reward=bosslevel*level*mlv*bata
 	money+=TOINT(4*_reward)
-	anti_cheat('money')
 	exp0+=TOINT(2*_reward)
 	exptotal0+=TOINT(2*_reward)
 	exp1+=TOINT(2*_reward)

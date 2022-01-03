@@ -2,3 +2,12 @@
 LOADVAR{
 	RESTOREVAR(_argv)
 }
+ISVARFILE{
+	_t=0
+	if FOPEN(_argv[0],'rb'){
+		_t=FREAD(_argv[0])
+		_t=(SUBSTR(_t,0,10)=='//savefile')
+		FCLOSE(_argv[0])
+	}
+	_t
+}

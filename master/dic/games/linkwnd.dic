@@ -332,7 +332,6 @@ OnDrawLinkWnd{//绘图
 			}
 		}
 	}
-	//_txt+=DrawFoot
 	_txt+=LinkWndMenu
 	if !linkwndmusic {
 		_txt+=BGMusic
@@ -489,7 +488,6 @@ OnBuyLinkSeed{//种子购买
 	if reference0=='buy'{
 		if money>=TOINT(reference1){
 			money-=TOINT(reference1)
-			anti_cheat('money')
 			LinkWndSeed+=TOINT(reference2)
 			_txt+="购买%(reference2)粒种子，花费%(reference1)金钱。\n"
 		}
@@ -992,12 +990,12 @@ DrawHint{
 			_m = 0
 			_n = 4
 		}
-		pDC->BitBlt(_rc[0]+_m, _rc[1], LinkBallWIDTH-_m-1, LinkBallHigh-1,LinkBallWIDTH+1+m, (abs(m_map[_pt1.i*m_nCol+_pt1.j])-1)*48+1)
-		pDC->BitBlt(_rc2[0]+_n, _rc2[1], LinkBallWIDTH-_n-1, LinkBallHigh-1,LinkBallWIDTH +1+_n, (abs(m_map[_pt2.i*m_nCol+_pt2.j])-1)*48+1)
+		pDC->BitBlt(_rc[0]+_m, _rc[1], LinkBallWIDTH-_m-1, LinkBallHigh-1,LinkBallWIDTH+1+m, (ABS(m_map[_pt1.i*m_nCol+_pt1.j])-1)*48+1)
+		pDC->BitBlt(_rc2[0]+_n, _rc2[1], LinkBallWIDTH-_n-1, LinkBallHigh-1,LinkBallWIDTH +1+_n, (ABS(m_map[_pt2.i*m_nCol+_pt2.j])-1)*48+1)
 		pWnd->DrawFocus(pDC, pWnd->m_fi, pWnd->m_fj)
 		//::Sleep(150)
-		//pDC->BitBlt(rc.left+m, rc.top, 41-m, 47, &crydc, 1+m, (abs(pWnd->m_map[pWnd->pt1.i][pWnd->pt1.j])-1)*48+1, SRCCOPY)
-		//pDC->BitBlt(rc2.left+n, rc2.top, 41-n, 47, &crydc, 1+n, (abs(pWnd->m_map[pWnd->pt2.i][pWnd->pt2.j])-1)*48+1, SRCCOPY)
+		//pDC->BitBlt(rc.left+m, rc.top, 41-m, 47, &crydc, 1+m, (ABS(pWnd->m_map[pWnd->pt1.i][pWnd->pt1.j])-1)*48+1, SRCCOPY)
+		//pDC->BitBlt(rc2.left+n, rc2.top, 41-n, 47, &crydc, 1+n, (ABS(pWnd->m_map[pWnd->pt2.i][pWnd->pt2.j])-1)*48+1, SRCCOPY)
 		//pWnd->DrawFocus(pDC, pWnd->m_fi, pWnd->m_fj)
 		//::Sleep(150)
 		m = 0
@@ -1054,7 +1052,6 @@ WinCheck{//胜利检查
 		if levelname==0{
 			playLinkWnd=4
 			money+=TOINT(linkwndmoney)
-			anti_cheat('money')
 			_txt+="\c\0\s[5]恭喜%(username)胜利闯关,获得金钱%(linkwndmoney)。即将开始新局\x"
 			if LinkWndnd<2
 				LinkWndnd++
@@ -1139,7 +1136,6 @@ WinCheck{//胜利检查
 			_txt+="\c恭喜%(username)完成闯关次数10次，获得额外%(_linkballname)×100，额外金钱1000\x"
 			mylinkball[0]=TOINT(mylinkball[0])+100
 			money+=1000
-			anti_cheat('money')
 		}
 		_txt+=OnInitLinkWnd
 	}
@@ -1328,7 +1324,7 @@ StackEmpty{
 SetDirect{
 	_ci=_argv[0]
 	_cj=_argv[1]
-	if (abs(_ci) > abs(_cj) && _cj != 0) || _ci == 0{
+	if (ABS(_ci) > ABS(_cj) && _cj != 0) || _ci == 0{
 		if _cj<0{
 			m_dir[0] = 4
 			m_dir[2] = 2
@@ -1385,7 +1381,7 @@ Pass{
 	}
 	else if (pt.i  == pts.i && pt.j == pts.j){
 		if (map[pt.i][pt.j] > 0){
-			map[pt.i][pt.j] = 0 - abs(map[pt.i][pt.j])
+			map[pt.i][pt.j] = 0 - ABS(map[pt.i][pt.j])
 			return 1
 		}
 	}
@@ -1649,14 +1645,6 @@ OnReputLinkWnd{
 	_txt+=OnDrawLinkWnd
 	_txt
 }
-Search{
-	for  _i=1; _i<m_nRow-1; _i++{
-		for _j=1; _j<m_nCol-1; _j++{
-			if m_map[_i*m_nCol+_j]==m_map[_k*m_nCol+_l]&&IsLink(_j,_i,_l,_k) && !(_i==_k&&_j==_l) && m_map[_k*m_nCol+_l]!=BLANK_STATE{hint[1]=_i;hint[0]=_j;hint[3]=_k;hint[2]=_l;1;return;}
-		}
-	}
-	0;return
-}
 //
 //判断选中的两个方块是否可以消除
 //
@@ -1682,33 +1670,6 @@ IsLink{
 		1;return
 	}
 	0;return
-}
-DrawFoot{
-	_foot='PATH\foot.png'
-	_txt=''
-	_k=0
-	for _i=1; _i<m_nRow-1; _i++{
-		for _j=1; _j<m_nCol-1; _j++{
-			_x = _j*(LinkWndWIDTH-1)
-			_y = _i*(LinkWndHigh-1)
-			_X=LinkWndWIDTH/2
-			_Y=LinkWndHigh/2
-			_a=0
-			if _i==_k
-				_a=LinkWndHigh/2-2
-			if map[_i*m_nCol+_j]=='X'
-				_txt+="\_l[%(_x+LinkWnd_LEFT),%(LinkWnd_TOP+_y+_Y)]\_b[%(_foot),inline,--option=opaque,--clipping=0 %(LinkWndHigh-1) %(LinkWndWIDTH) %(LinkWndHigh+1)]"//画横线
-			if map[_i*m_nCol+_j]=='Y'
-				_txt+="\_l[%(_x+LinkWnd_LEFT+_X),%(LinkWnd_TOP+_y)]\_b[%(_foot),inline,--option=opaque,--clipping=%(LinkWndWIDTH-1) 0 %(LinkWndWIDTH+1) %(LinkWndHigh)]"//画竖线
-			if map[_i*m_nCol+_j]=='XY'{
-				_txt+="\_l[%(_x+LinkWnd_LEFT),%(LinkWnd_TOP+_y+_Y)]\_b[%(_foot),inline,--option=opaque,--clipping=0 %(LinkWndHigh-1) %(LinkWndWIDTH+_X) %(LinkWndHigh+1)]"//画直角
-				_k=_i
-			}
-			if map[_i*m_nCol+_j]=='YX'
-				_txt+="\_l[%(_x+LinkWnd_LEFT+_X),%(LinkWnd_TOP+_y)]\_b[%(_foot),inline,--option=opaque,--clipping=%(LinkWndWIDTH-1) %(_a) %(LinkWndWIDTH+1) %(LinkWndHigh)]"//画直角
-		}
-	}
-	_txt
 }
 //
 //X直接连通

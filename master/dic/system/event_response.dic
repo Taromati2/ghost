@@ -3,6 +3,7 @@
 /////////written by umeici.
 //平台更新反应by steve02081504
 OnBasewareUpdating{
+	BasewareUpdating=1
 	'\1\s[10]\0\s[6]嗯…\w9\w9\s[0]\n'
 	--
 	"/
@@ -14,6 +15,8 @@ OnBasewareUpdating{
 	'\s[6]\w9\w9\w9'
 }
 OnBasewareUpdated{
+	ERASEVAR('BasewareUpdating')
+	OnSQLLoad.Fixer
 	BaseGhostStart
 	--
 	'\0\s[5]我回来了\n\w9\w9'
@@ -43,8 +46,9 @@ OnNotifySelfInfo:void{
 //缺省信息补全&同步信息更新 by steve02081504
 OnNotifyUserInfo.WhenEmpty.username:void{
 	if _argv[0]{
-		case _argv[0]{
-			when 'Administrator','User','Guest','SYSTEM','admin','管理员','root'{
+		_simplified_name = TOLOWER(TOSIMPLIFIED(_argv[0]))
+		case _simplified_name{
+			when 'administrator','user','guest','system','admin','管理员','root','autobvt','microsoft','test'{
 				do_nothing
 			}
 			others{
@@ -237,13 +241,23 @@ OnTextDrop{
 	_t=CUTSPACE(temp)
 	if SHIORI_FW.DebugMode && RE_GREP(_t,'^[\w.]+$'){
 		if __t=Get_AYA_Function_Info(_t)
-			'aya自带底层函数\n'+__t+'\n'
+			'aya自带底层函数\n'+__t+'\n/
+			\q[◇打开在线文档,OnUrlOpen,'+Get_AYA_Function_Doc(_t)+']\n/
+			'
 		elseif ISVAR(_t)
 			"变量“%(_t)”\n/
 			值：%(GetVarValue.SakuraScript(_t))\n/
 			类型：%(GETTYPE.string((GetVarValue(_t))))\n/
 			"
-		elseif ISFUNC(_t)||Is_Defened_Event(_t){
+		elseif ISGLOBALDEFINE(_t)
+			"全局定义“%(_t)”\n/
+			内容：%(GetGlobalDefine.SakuraScript(_t))\n/
+			\q[◇复制定义内容,OnCopy,"+GetGlobalDefine.SakuraArg(_t)+']\n/
+			'
+		elseif Is_Defened_Event(_t)||Is_Defened_Event(_t+'Ex'){
+			_EXfunc=!Is_Defened_Event(_t)
+			if _EXfunc
+				_t=_t+'Ex'
 			_t=Get_Full_Defened_Event_Name(_t)
 			_info=GETFUNCINFO(_t)
 			_path=SPLITPATH(_info[0])
@@ -251,8 +265,12 @@ OnTextDrop{
 				_path=_path[2]+_path[3]
 			else
 				_path=_info[0]
-			"函数“%(_t)”\n/
-			起始于\q[◇%(_path) 第%(_info[1])行,OnOpenDicWithLineNum,%(SakuraScriptArgConverter(_info[0])),%(_info[1])]\n/
+			"函数“%(_t)”\n"
+			--
+			if _EXfunc
+				'（Ex版本事件）\n'
+			--
+			"起始于\q[◇%(_path) 第%(_info[1])行,OnOpenDicWithLineNum,%(SakuraScriptArgConverter(_info[0])),%(_info[1])]\n/
 			"
 		}
 		elseif SUBSTR(_t,0,2) == 'On'
@@ -284,10 +302,10 @@ OnTextDrop{
 		if SUBSTR(CUTSPACE(temp),0,2) == 'On'
 			"\q[◇查看事件文档,OnUrlOpen,%(Get_UKADOC_ofEvent(CUTSPACE(temp)))]\n"
 		--
-		'/
-		\q[◇Sakura Script執行,OnTextDrop.SakuraScript]\n/
-		\q[◇表达式求值,OnTextDrop.EVAL]\n/
-		'
+		'\q[◇Sakura Script執行,OnTextDrop.SakuraScript]\n'
+		--
+		if ISEVALUABLE(temp)
+			'\q[◇表达式求值,OnTextDrop.EVAL]\n'
 	}
 	--
 	'/
@@ -352,6 +370,8 @@ OnInstallBegin{
 }
 //---- インストール完了メッセージ -------------------------------------------------------
 OnInstallComplete{
+	DiscordCustomSet.CustomDetail('搞了些新东西')
+	--
 	if mode == '0'
 		'\0\s[0]'
 	elseif mode == '1'
@@ -416,6 +436,8 @@ OnInstallComplete{
 }
 //---- インストール失败 -----------------------------------------------------------------------------------------------
 OnInstallFailure{
+	DiscordCustomSet.CustomDetail('拆弹失败')
+	--
 	if reference0 == 'artificial'{
 		'\0\s[3]好的。\w9\w9\n已取消安装。'
 		return
@@ -463,7 +485,14 @@ OnInstallFailure{
 	else
 		"\1\s[10]原因是：%(reference0)。"
 }
-OnShioriReloadedbyself{
+OnShioriReloaded{
+	OnSQLLoad.Fixer//非中文环境编码问题再修复
+	if ReloadFromTerminal{
+		ShioriEcho.Special='重载完成'
+		ERASEVAR('ReloadFromTerminal')
+	}
+	if SHIORI_FW.LastBootInEmergencyMode
+		return
 	if mode == '1'{
 		"\1\s[%(specialmode != 'mealtime')10]唔…\n重载完了。"
 		return
@@ -486,6 +515,8 @@ SelfRecoveryFailed{
 	\q[◇再试一次,OnSelfRecovery]\n/
 	\q[◇无用,Cancel]\n/
 	'
+	--
+	//OpenDocForRuntime('SelfRecoveryFailed')
 }
 OnEmergencyMode{
 	EmergencyBoot++
@@ -495,18 +526,19 @@ OnEmergencyMode{
 		'\0\s[3]辞书出错了哦？'
 	--
 	if SHIORI_FW.DebugMode{
+		DiscordCustomSet.CustomDetail('正在解决'+ARRAYSIZE(GETERRORLOG)+'个错误')
+		--
 		'\n/
 		\q[◇错误日志,OnErrorLog]\n/
 		\q[◇无用,Cancel]'
 	}
 	else{
+		DiscordCustomSet.CustomDetail('一脸茫然')
+		--
 		if EmergencyBoot == 1{
-			if mode == '1'
-				"\1\s[%(specialmode != 'mealtime')10]唔…\n辞书出错了啊。"
-			else
-				'\0\s[3]辞书出错了哦？'
-			--
 			OnSelfRecovery
+			--
+			OpenDocForRuntime('Emergency_mode_but_Debug_mode_not_open')
 		}
 		elseif InSelfRecovery{
 			SelfRecoveryFailed
@@ -517,13 +549,13 @@ OnEmergencyMode{
 			\q[◇无用,Cancel]\n/
 			'
 		}
-		--
-		OpenDocForRuntime('Emergency_mode_but_Debug_mode_not_open')
 	}
 }
 OnEmergencyModeEnd{
 	ERASEVAR('EmergencyBoot')
 	if SHIORI_FW.DebugMode{
+		DiscordCustomSet.CustomDetail('为劫后余生而庆祝')
+		--
 		if mode == '1'
 			"\1\s[%(specialmode != 'mealtime')10]嗯，\n问题修好了。"
 		else
@@ -550,6 +582,8 @@ OnEmergencyModeEnd{
 	}
 }
 OnInstallRefuse{
+	DiscordCustomSet.CustomDetail('认错人了')
+	--
 	"\0\s[20]这是…\w9\w9\n『%(reference0)收』。\w9\s[0]\n请直接交给本人。"
 	--
 	if IsGhostExist(reference0) || IsSakuraExist(reference0)
@@ -562,14 +596,20 @@ OnInstallRefuse{
 }
 //**** 消灭 ***********************************************************************************************************
 OnVanishSelecting{
+	DiscordCustomSet.CustomDetail('考虑要不要结束这一切')
+	--
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')11]"
-	else
+	else{
+		kikkamood/=2
 		'\0\s[3]'
+	}
 	--
 	'…\w9…\w9…'
 }
 OnVanishSelected{
+	DiscordCustomSet.CustomDetail('说再见')
+	--
 	if !SilentVanish{
 		uninstall=1
 		MAGICSAVE
@@ -592,6 +632,8 @@ OnVanishSelected{
 	}
 }
 OnVanishCancel{
+	DiscordCustomSet.CustomDetail('心软了')
+	--
 	talkmemo = 'e_0'
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]…\w9…\w9…"
@@ -599,6 +641,8 @@ OnVanishCancel{
 		'\0\s[3]…\w9请不要吓我…'
 }
 OnVanishButtonHold{
+	DiscordCustomSet.CustomDetail('突然想拉屎')
+	--
 	if FirstBootCount >= 4
 		'\![vanishbymyself]'
 	else{
@@ -639,18 +683,39 @@ OnBIFFFailure{
 }
 //**** ネットワーク更新 *****************************************************************
 OnUpdate{
-	'\![updatebymyself]'
+	DiscordCustomSet.CustomDetail('和网速作斗争')
+	--
+	'\![update,ghost+shell+balloon]'
 }
 OnSilentUpdate{
+	DiscordCustomSet.CustomDetail('眼睛在脉动')
+	--
 	InSilentUpdate=1
-	'\![updatebymyself]'
+	'\![update,ghost+shell+balloon]'
+}
+OnSilentUpdate.shell{
+	InSilentUpdate=1
+	'\![update,shell]'
 }
 OnSelfRecovery{
+	DiscordCustomSet.CustomDetail('试图通过虚空找回自我')
+	--
 	InSelfRecovery=1
 	InSilentUpdate=1
 	'\'+mode+'开始自我修复'
 	--
-	'\![updatebymyself,recovery]'
+	'\![update,ghost+shell+balloon,recovery]'
+}
+OnRecoveryUpdate.Silent{
+	InSilentUpdate=1
+	'\![update,ghost+shell+balloon,recovery]'
+}
+
+//更新检查
+OnUpdateCheck{
+	DiscordCustomSet.CustomDetail('做检查')
+	--
+	'\0\s[6]开始检查更新\n\![update,ghost+shell+balloon,checkonly]'
 }
 GetUpdateFailureReason{
 	case reference0{
@@ -682,13 +747,15 @@ OnUpdateCheckFailure{
 	if reference0 == 'readonly'
 		return
 	elseif reference0 == '403' || reference0 == '400'{
-		'\![updatebymyself,checkonly]'
+		'\![update,ghost+shell+balloon,checkonly]'
 		return
 	}
 	'\0\s[3]'
 	--
 	if reference0 == 'artificial'
 		'已人为停止检查。\e'
+	elseif reference0 == 'executing'
+		'已在更新中。\e'
 	else
 		GetUpdateFailureReason
 	--
@@ -714,12 +781,14 @@ OnUpdateCheckFailure{
 	'
 }
 OnUpdateCheckComplete{
-	'\0\s[0]检查终了\w9\w9\n'
+	"\0\s[0]%(reference3)的检查终了\w9\w9\n"
 	--
 	if reference0 == 'none'{
 		'\s[100]没有更新的必要\n'
 	}
 	else{
+		DiscordCustomSet.CustomDetail('发现新大陆')
+		--
 		_size = ARRAYSIZE(reference1)
 		if _size < 100{
 			'需更新以下文件：\n\_q'
@@ -740,13 +809,16 @@ OnUpdateCheckComplete{
 		\q[◇了解了,Cancel]\n/
 		'
 	}
+	--
+	'\x'
 }
 //---- ネットワーク更新开始 -------------------------------------------------------------
 OnUpdateBegin{
+	DiscordCustomSet.CustomDetail('启航')
+	--
+	InUpdate=1
 	if !InSilentUpdate
-		'\0\s[0]更新开始。'
-	else
-		'\![leave,onlinemode]\b[-1]'
+		"\0\s[72]%(reference3)的更新开始。"
 }
 //---- ネットワーク更新准备完了 ---------------------------------------------------------
 OnUpdateReady{
@@ -758,10 +830,17 @@ OnUpdateReady{
 			"有%(reference0)个更新。"
 		else
 			'开始更新'
-	}else
-		'\![leave,onlinemode]\b[-1]'
+		--
+		if reference0 > 100{
+			InSilentUpdate=1
+			'已进入静默更新'
+		}
+	}
 }
 OnUpdateComplete{
+	DiscordCustomSet.CustomDetail('如同洗了个澡一般舒爽')
+	--
+	ERASEVAR('InUpdate')
 	if HasUpdate
 		HasUpdate++
 	if HasUpdate >= 7
@@ -772,28 +851,39 @@ OnUpdateComplete{
 			if HasUpdate
 				'\0\s[3]因服务器回传虚假更新档\n\w9重新开始更新'
 			else
-				'\0\s[0]好像没有更新。'
+				"\0\s[0]好像没有%(reference3)的更新。\n/
+				\q[◇更新%(Baseware),"+'"script:\![update,platform]"'+"]\n/
+				\q[◇查看更新日志,OnUrlOpen,https://github.com/Taromati2/Update-log]\n/
+				\q[◇无用,Cancel]\n/
+				\x"
 		}
 		else{
-			'\0\s[0]更新结束。'
+			"\0\s[0]%(reference3)的更新结束。\n/
+			\q[◇顺便更新%(Baseware),"+'"script:\![update,platform]"'+"]\n/
+			\q[◇查看更新日志,OnUrlOpen,https://github.com/Taromati2/Update-log]\n/
+			\q[◇无用,Cancel]\n/
+			\x"
 		}
-	}else{
-		ERASEVAR('InSilentUpdate')
 	}
 	--
 	if HasUpdate && reference0 == 'none'
-		'\w9\w9\![updatebymyself]'
-	else
+		'\w9\w9\![update,ghost+shell+balloon]'
+	else{
 		ERASEVAR('HasUpdate')
+		ERASEVAR('InSilentUpdate')
+	}
 }
 OnUpdateFailure{
+	DiscordCustomSet.CustomDetail('落入海中')
+	--
+	ERASEVAR('InUpdate')
 	if reference0 == 'readonly'
 		return
 	elseif reference0 == '403' || reference0 == '400'{
 		if !InSilentUpdate
 			"\0\s[3]因服务器回传%reference0\n\w9重新开始更新\w9\w9"
 		--
-		'\![updatebymyself]'
+		'\![update,ghost+shell+balloon]'
 		return
 	}
 	elseif reference0 == 'executing'&&InSilentUpdate{
@@ -805,6 +895,8 @@ OnUpdateFailure{
 		--
 		if reference0 == 'artificial'
 			'已人为停止更新。\e'
+		elseif reference0 == 'executing'
+			'已在更新中。\e'
 		else
 			GetUpdateFailureReason
 		--
@@ -857,17 +949,17 @@ OnURLDropped{
 //---- ネットワーク更新 ダウンロード开始 ------------------------------------------------
 OnUpdate.OnDownloadBegin{
 	if !InSilentUpdate
-		"\0\s[0]\_q“%(reference0)”下载中\_q"
+		"\0\s[72]\_q“%(reference0)”下载中\_q"
 }
 //---- ネットワーク更新 MD5値照合开始 ---------------------------------------------------
 OnUpdate.OnMD5CompareBegin{
 	if !InSilentUpdate
-		'\0\s[0]MD5确认中。'
+		'\0\s[72]MD5确认中。'
 }
 //---- ネットワーク更新 MD5値一致 -------------------------------------------------------
 OnUpdate.OnMD5CompareComplete{
 	if !InSilentUpdate
-		"\0\s[0]\_qMD5:%(reference1)\n\_q\n\n[half]一致。"
+		"\0\s[72]\_qMD5:%(reference1)\n\_q\n\n[half]一致。"
 }
 //---- ネットワーク更新 MD5値不一致 -----------------------------------------------------
 OnUpdate.OnMD5CompareFailure{
@@ -883,6 +975,8 @@ Select.HEADLINECANCEL{
 	'\0\s[0]好的。'
 }
 OnHeadlinesenseBegin{
+	DiscordCustomSet.CustomDetail('看报')
+	--
 	"\0\s[0]『%(reference0)』 的Headline确认…"
 }
 //---- ヘッドライン読み上げ -------------------------------------------------------------
@@ -938,6 +1032,8 @@ OnHeadlinesenseFailure{
 //**** ファイル作成関连 *****************************************************************
 //---- updates2.dau作成开始 -------------------------------------------------------------
 OnUpdatedataCreating{
+	DiscordCustomSet.CustomDetail('打算搞个大新闻')
+	--
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]唔…\n"
 	else
@@ -945,6 +1041,8 @@ OnUpdatedataCreating{
 }
 //---- updates2.dau作成完了 -------------------------------------------------------------
 OnUpdatedataCreated{
+	DiscordCustomSet.CustomDetail('搞了个大新闻')
+	--
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]完成了。\n"
 	else
@@ -952,6 +1050,8 @@ OnUpdatedataCreated{
 }
 //---- NAR作成开始 ----------------------------------------------------------------------
 OnNarCreating{
+	DiscordCustomSet.CustomDetail('制作包裹')
+	--
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]唔…\n"
 	else
@@ -959,6 +1059,7 @@ OnNarCreating{
 }
 //---- NAR作成完了 ----------------------------------------------------------------------
 OnNarCreated{
+	DiscordCustomSet.CustomDetail('做了一个包裹')
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]"
 	else
@@ -968,43 +1069,6 @@ OnNarCreated{
 	\_q「%(reference1)」\_q"
 	--
 	'\w9\n完成了。'
-}
-//**** 时间同步处理 *******************************************************************************
-//**** みか (http://homepage2.nifty.com/ko-ki/) の辞书を参考にしました。感谢＞こーき氏
-Select.SNTPTIME{
-	"\1\b[2]\s[15]\n现在的校准伺服器是\n\_q%(SNTPserver)\_q\n要更换伺服器吗？\n\n/
-	\![*]\q[更改伺服器,SNTPChange]\n/
-	\![*]\q[校准开始,SNTPStart]\n"
-}
-Select.SNTPChange{
-	'\1\s[11]请输入新的伺服器地址。\![open,inputbox,sntpserver,-1,stdtime.gov.hk]'
-}
-Select.SNTPStart{
-	'\![executesntp]'
-}
-//---- 时间同步处理开始 -----------------------------------------------------------------
-OnSNTPBegin{
-	reference0 = SNTPserver
-	"\0\s[5]连线到\_q%(reference0)\_q伺服器了哦，时间同步开始。"
-}
-//---- 时刻取得成功、比较开始 -----------------------------------------------------------
-OnSNTPCompare{
-	'\0\s[6]'
-	if reference3 == 0{
-		_nowtime = SPLIT(reference1,',')
-		"没有误差。\n现在时刻：%(_nowtime[0])年%(_nowtime[1])月%(_nowtime[2])日 %(_nowtime[3]):%(_nowtime[4])"
-	}
-	else{
-		"误差%(reference3)秒。\n\n\n校准中......"
-	}
-}
-OnSNTPCorrect{
-	_nowtime = SPLIT(reference1,',')
-	"\0\s[5]同步完成了，很顺利呢。\n现在时刻：%(_nowtime[0])年%(_nowtime[1])月%(_nowtime[2])日%(_nowtime[3])：%(_nowtime[4])"
-}
-//---- 时间同步处理失败 -----------------------------------------------------------------
-OnSNTPFailure{
-	'\0\s[3]……失败了？？呜……'
 }
 //**** そのほか *************************************************************************
 //---- ディスプレイ解像度変更 -----------------------------------------------------------
@@ -1144,6 +1208,8 @@ ClearBatteryVar{
 	ERASEVAR('BatteryLevel')
 }
 OnBatteryLow{
+	DiscordCustomSet.CustomDetail('有点着急')
+	--
 	if reference0 < 80{
 		if mode == '1'
 			"\1\s[%(specialmode != 'mealtime')10]%(username)，\w9电池快要没有电了。\w9不想丢东西就快点保存吧。"
@@ -1240,6 +1306,10 @@ OnSysSuspend{
 }
 //待机中恢复
 OnSysResume.base{
+	DiscordCustomSet.LargeImageKey('kikka_eye_open')
+	--
+	DiscordCustomSet.CustomDetail('从待机中恢复')
+	--
 	'\![set,balloontimeout,180000]'
 	--
 	case reference0{
@@ -1264,6 +1334,7 @@ OnSysResourceLow{
 }
 //网卡
 OnNetworkHeavy{
+	DiscordCustomSet.CustomDetail('打发时间')
+	--
 	'\0\s[8]\w9…\w9…\n\w9\w9请耐心等候呢？'
 }
-

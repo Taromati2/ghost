@@ -1257,7 +1257,7 @@ Written by the Spice Girls, Richard Stannard, Matt Rowe<等待>5
 
 <SESSION>
 <Q>播放电锯进行曲</Q>
-<A><电锯>这样如何呢。\!<sound<英文逗号>play<英文逗号>saori\Electricsaw.wav></A>
+<A><电锯>这样如何呢。\!<sound<英文逗号>play<英文逗号>sound\Electricsaw.wav></A>
 </SESSION>
 
 
@@ -1712,7 +1712,7 @@ Project ACES
 
 <SESSION>
 <Q>醒酒汤</Q>
-<A><前屈>好啊，%selfname这就去做……………………<端茶>\!<sound<英文逗号>play<英文逗号>saori\倒茶.mp3>做好了，%username请慢用</A>
+<A><前屈>好啊，%selfname这就去做……………………<端茶>\!<sound<英文逗号>play<英文逗号>sound\tea.mp3>做好了，%username请慢用</A>
 </SESSION>
 
 
@@ -2664,7 +2664,7 @@ AiLoad.ThatMatch("<A><that>劳逸结合</that>真乖啊，%selfname赏你颗糖�
 
 <SESSION>
 <Q>姜枣红糖水</Q>
-<A><topic name="姜枣红糖水"><正常2>那么，好的，请稍等一下……………………<端茶>\!<sound<英文逗号>play<英文逗号>saori\倒茶.mp3>做好了，%username请慢用</topic><think><set name="topic"></set></think></A>
+<A><topic name="姜枣红糖水"><正常2>那么，好的，请稍等一下……………………<端茶>\!<sound<英文逗号>play<英文逗号>sound\tea.mp3>做好了，%username请慢用</topic><think><set name="topic"></set></think></A>
 <A>姜枣红糖水 　　
 干姜、大枣、红糖各30克。
 将前两味洗净，干姜切片，大枣去核，加红糖煎。喝汤，吃大枣。 　　

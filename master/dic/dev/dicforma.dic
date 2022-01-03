@@ -1,7 +1,5 @@
 //辞书优化辞书
 //by steve02081504 for Taromati2
-//《关于我写的女儿可以改写自己这件事》
-//警告：此辞书未完工，使用此辞书可能有未知风险
 //
 //CHR 1:换行
 Select.self_tuning{
@@ -76,12 +74,12 @@ dicforma.main:void{//dicforma.main('aya/cmd.dic')
 		dicforma.line.now=RE_REPLACE(dicforma.line.now,'\s+//','//')
 		dicforma.line.now=RE_REPLACE(dicforma.line.now,';$','')
 		dicforma.line.now=REPLACE(dicforma.line.now,';'+'//','//')
-		dicforma.line.now=RE_REPLACE(dicforma.line.now,'//\s+','//')
+		//dicforma.line.now=RE_REPLACE(dicforma.line.now,'//\s+','//')
 		if RE_GREP(dicforma.line.now,'\"[^\"]*\"') + RE_GREP(dicforma.line.now,"\'[^\']*\'") == 1
 			dicforma.line.now=RE_REPLACEEX(dicforma.line.now,'\"([^'+"\'"+'%"]*)\"',"'$1'")
-		while RE_GREP(dicforma.line.now,'\\n((\\w(\d|\[[^\]]+\]))+)/'+CHR(1)){
-			dicforma.line.now=RE_REPLACEEX(dicforma.line.now,'\\n((\\w(\d|\[[^\]]+\]))+)/'+CHR(1),'$1\\n/'+CHR(1))
-		}
+		//while RE_GREP(dicforma.line.now,'\\n((\\w(\d|\[[^\]]+\]))+)/'+CHR(1)){
+			//dicforma.line.now=RE_REPLACEEX(dicforma.line.now,'\\n((\\w(\d|\[[^\]]+\]))+)/'+CHR(1),'$1\\n/'+CHR(1))
+		//}
 		//dicforma.line.now=RE_REPLACE(dicforma.line.now,'(?!\\\!\[\*\])(|○|◎|◆)?\\q\[(?!◇|○|◎|◆|◥|■|◢|◄|●|►|▲|▼|%|<<|[\S(?!>|\])]*>>|[ABCD].)','\\q\[◇')
 		//dicforma.line.now=RE_REPLACEEX(dicforma.line.now,'\s*(=|+|-|*|/|!|(=|+|-|*|/|!)=)\s*',' $1 ')
 		//
@@ -141,11 +139,11 @@ dicforma.morpheme_extraction{
 	_t=RE_REPLACE(_t,'/\*'+dicforma.RE.everychar+'*?\*/',' morpheme ')
 	_t=RE_REPLACE(_t,'\"'+dicforma.RE.everychar+'*?\"',' morpheme ')
 	_t=RE_REPLACE(_t,"\'"+dicforma.RE.everychar+"*?\'",' morpheme ')
-	while RE_GREP(_t,'\{'+dicforma.RE.everychar+'*?\}'){
-		_t=RE_REPLACE(_t,'\{'+dicforma.RE.everychar+'*?\}',' blockmorpheme ')
+	while RE_GREP(_t,'\{[^\{]*?\}'){
+		_t=RE_REPLACE(_t,'\{[^\{]*?\}',' blockmorpheme ')
 	}
-	while RE_GREP(_t,'\('+dicforma.RE.everychar+'*?\)'){
-		_t=RE_REPLACE(_t,'\('+dicforma.RE.everychar+'*?\)',' morpheme ')
+	while RE_GREP(_t,'\([^\(]*?\)'){
+		_t=RE_REPLACE(_t,'\([^\(]*?\)',' morpheme ')
 	}
 	_t=RE_REPLACE(_t,'//'+dicforma.RE.everychar+'*?$','')
 	_t=RE_REPLACE(_t,'^\s+','')
@@ -187,6 +185,9 @@ dicforma.readline:void{
 		return
 	if RE_GREP(dicforma.now.morpheme_extraction,'^}*(if|for|while|else|elseif|case|when|others)[\s\(]') && (!RE_GREP(dicforma.now.morpheme_extraction,'\{ $')) && RE_GREP(dicforma.next.morpheme_extraction,'^\{'){
 		dicforma.line.now+='{'
+		dicforma.now.morpheme_extraction=dicforma.morpheme_extraction(dicforma.line.now)
+		if !RE_GREP(dicforma.now.morpheme_extraction,'\{ $')
+			dicforma.line.now=RE_REPLACEEX(dicforma.line.now,'(//[^//]*?)\{$','{ $1')
 		dicforma.line.next=RE_REPLACE(dicforma.line.next,'^\{\s*','')
 		if !dicforma.line.next
 			dicforma.line.next=dicforma.readline.base
@@ -207,7 +208,7 @@ dicforma.line.now.isayacommit{
 	dicforma.line.now.iscommit&&!dicforma.line.now.iscodecommit
 }
 dicforma.writeline:void{
-	if _argv[0]=='dicforma.beginflag'
+	if _argv[0]=='dicforma.beginflag' || _argv[0]=='dicforma.endflag'
 		return
 	if _argv[0]==''{
 		FWRITE2(dicforma.tfname,C_LF)

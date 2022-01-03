@@ -8,6 +8,8 @@ OnGobangInIt{
 		NeedUpdate
 		return
 	}
+	DiscordCustomSet.CustomDetail('下棋')
+	--
 	if !wzq.Model
 		wzq.Model=0//0人->机 1机->人 2对翌
 	player.gamenum=0
@@ -397,7 +399,9 @@ OnuserAd{//黑色下子
 			player.baseparam.mark+=TOINT(mark*0.04)
 		elseif Powerofcomputer==4
 			player.baseparam.mark+=TOINT(mark*0.05)
+		DiscordCustomSet.CustomDetail('下棋：血虐别人')
 	}
+	--
 	_txt+=OnGobangShow
 	_txt
 }
@@ -424,7 +428,9 @@ OnuserBd{//白色下子
 	if !Whowincheck {
 		player.losenum++
 		player.playnum++
+		DiscordCustomSet.CustomDetail('下棋：被血虐')
 	}
+	--
 	_txt+=OnGobangShow
 	_txt
 }

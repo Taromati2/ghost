@@ -6,7 +6,9 @@ charset.file, UTF-8
 charset.extension, default
 
 iolog.filter.keyword,ID: OnSecondChange	//OnSecondChange無視
-iolog.filter.keyword,ID: OnMouse			//OnMouse系無視
+iolog.filter.keyword,ID: OnMouse		//OnMouse系無視
 
-fncdepth,3000
+fncdepth,0
+maxlognum,256
+looplimit,16384
 messagetxt, simplified-chinese.txt

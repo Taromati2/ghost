@@ -23,7 +23,7 @@ KikkaVar{
 	//依赖度=500
 	//亲密度=500
 	//幸福度=500
-	_能量=亲密度+依赖度+萌度+幸福度+腹黑度+0.0
+	_能量=TOREAL(亲密度+依赖度+萌度+幸福度+腹黑度)
 	_能量指数=TOINT(_能量)
 	力量=5*TOREAL(幸福度)*腹黑度*腹黑度/_能量/萌度-敏捷*(萌度/_能量)
 	智力=5*TOREAL(腹黑度)*亲密度*亲密度/_能量/幸福度-幸运*(幸福度/_能量)
@@ -35,11 +35,11 @@ KikkaVar{
 	//意志*=智力/力量
 	//敏捷*=意志/智力
 	//幸运*=敏捷/意志
-	//力量=abs(幸运*(力量)/敏捷)-敏捷*(萌度/_能量)
-	//智力=abs(力量*(智力)/幸运)-幸运*(幸福度/_能量)
-	//意志=abs(智力*(意志)/力量)-力量*(腹黑度/_能量)
-	//敏捷=abs(意志*(敏捷)/智力)-智力*(亲密度/_能量)
-	//幸运=abs(敏捷*(幸运)/意志)-意志*(依赖度/_能量)
+	//力量=ABS(幸运*(力量)/敏捷)-敏捷*(萌度/_能量)
+	//智力=ABS(力量*(智力)/幸运)-幸运*(幸福度/_能量)
+	//意志=ABS(智力*(意志)/力量)-力量*(腹黑度/_能量)
+	//敏捷=ABS(意志*(敏捷)/智力)-智力*(亲密度/_能量)
+	//幸运=ABS(敏捷*(幸运)/意志)-意志*(依赖度/_能量)
 	力量=TOINT(力量)
 	智力=TOINT(智力)
 	意志=TOINT(意志)
@@ -56,6 +56,8 @@ KikkaVar{
 	popUseritem
 }
 KikkaVar.ToMax{
+	SHIORI_FW.PushNotifyResult(DiscordCustomSet.CustomDetail('可耻的作弊者'))
+	--
 	kikkamood = kikkamoodmax
 	KikkaVar
 	kikkapow = kikkapowmax
@@ -178,7 +180,6 @@ KikkaStatusChange{
 	if 'money=' _in_ _ref {
 		_tmp = _ref[1,'money=']
 		money += EVAL(_tmp[0])
-		anti_cheat('money')
 	}
 	if 'love=' _in_ _ref {
 		_tmp = _ref[1,'love=']
@@ -225,7 +226,8 @@ KikkaInfo{
 	InternetIPShowing
 }
 Cpuusage{
-	if _t=CALLSAORI('cpuusage','get')
+	_t=CALLSAORI('cpuusage','get')
+	if _t >= 0
 		"CPU使用：%(_t)%"
 }
 KikkaStatus{
@@ -243,7 +245,6 @@ KikkaStatus{
 		_txt += ColorText("\n\_l[120,-]体力：\_l[0,-]幸福度：%(幸福度)","bold,color=%(ColorIdx(1))") + ColorBar(1,175,kikkastm,kikkastmmax,,'colortxt=178')
 		_txt += ColorText("\n\_l[0,-]心情：%(kikkamood)","bold,color=%(ColorIdx(8))") + ColorBar(8,175,kikkamood,kikkamoodmax)
 		_txt += ColorText("\n好感度：%(intimacy)","bold,color=%(ColorIdx(6))")
-		anti_cheat('intimacy')
 		_heart = '\_l[103]'
 		for _i = TOINT(log(1.584893,intimacy)) / 3; _i > 0; _i -- {//POW(intimacy,0.39208)
 			_heart += '\_b[RPGPATH\heart2.gif,inline]'
@@ -281,7 +282,7 @@ KikkaStatusMain{
 	_txt += ColorText("\n\_l[0,-]魅力：%(kikkachm)/%(kikkachmmax) \_l[240]\q[◇礼物,Ongiftbox]","bold,color=%(ColorIdx(5))") + ColorBar(5,130,kikkachm,kikkachmmax)
 	_txt += ColorText("\n\_l[0,-]体力：%(kikkastm)/%(kikkastmmax) \_l[240]\q[◇说明,OnRPGintro]","bold,color=%(ColorIdx(1))") + ColorBar(1,130,kikkastm,kikkastmmax)
 	_txt += ColorText("\n\_l[0,-]心情：%(kikkamood)/%(kikkamoodmax)","bold,color=%(ColorIdx(8))") + ColorBar(8,130,kikkamood,kikkamoodmax)
-	_能量=亲密度+依赖度+萌度+幸福度+腹黑度+0.0
+	_能量=TOREAL(亲密度+依赖度+萌度+幸福度+腹黑度)
 	_txt += '\n[half]'
 	_txt += ColorText("\n\_l[0,-]物理攻击：%(str0)	\_l[130,-]武器：%(weapon0)","bold,color=%(ColorIdx(3))")
 	_txt += ColorText("\n\_l[0,-]物理防御：%(def0)	\_l[130,-]防具（体）：%(armor0)","bold,color=%(ColorIdx(3))")
@@ -294,7 +295,6 @@ KikkaStatusMain{
 	_txt += ColorText("\n\_l[0,-]土能量指数：%(SUBSTR(100*幸福度/_能量,0,5))%  \_l[134]幸福度：%(幸福度)  \_l[220]幸运：%(幸运)","bold,color=%(ColorIdx(9))")
 	_txt += ColorText("\n[half]\n\_l[0,-]金钱：%(money)       服装装量：%(HaveShellCount)","bold,color=%(ColorIdx(2))")
 	_txt += ColorText("\n\_l[0,-]好感度：%(intimacy)      \q[◇对话装量,OnGetTalkCount]：%(talkcount)","bold,color=%(ColorIdx(6))")
-	anti_cheat('intimacy')
 	_txt
 }
 OnGetTalkCount{
@@ -385,7 +385,6 @@ KikkaGrow{
 				}
 			}else{
 				money -= 600
-				anti_cheat('money')
 				KikkaStatusChange('stm=300')
 				KikkaStatusChange('exp=30')
 			}
@@ -425,6 +424,8 @@ KikkaGrow{
 	}
 }
 OnKikkaReset:void{
+	SHIORI_FW.PushNotifyResult(DiscordCustomSet.CustomDetail('这能带来什么？'))
+	--
 	kikkalvl =1
 	kikkaexp = 0
 	kikkapow = 0
@@ -475,14 +476,6 @@ KikkaItemTalk{
 	'\0\s[28]\b[2]好漂亮……\w9那个…\w9谢谢你……\w9',/
 	)[_tmp]
 }
-POP{
-	array=_argv[0]
-	_s=ARRAYSIZE(_argv[0])
-	for _i=0;_i<_s-1;_i++{
-		array=(_argv[0][_i],_array)
-	}
-	array
-}
 OnKikkaItem{
 	if TOINT(reference1) + money < 0 {
 		reference0 = 1
@@ -494,7 +487,6 @@ OnKikkaItem{
 			KikkaIteminfo=("%(year)年%(month)月%(day)日%(hour)时%(minute)分收到%(KikkaItem[reference5][1])。" , KikkaIteminfo)
 		}
 		KikkaStatusChange("money=%(reference1),%(reference2),%(reference3),%(reference4)")
-		anti_cheat('money')
 	}
 	--
 	reference0=TOINT(reference0)

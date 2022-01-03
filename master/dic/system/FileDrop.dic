@@ -9,7 +9,12 @@ OnFileDrop{
 	elseif shortcut==1
 		OnShortcutFileDrop
 	elseif SHIORI_FW.DebugMode &&(_filename == 'aya.dll' || _filename == 'yaya.dll'){
-		'\0\s[0]更新aya？\n/
+		if mode=='0'
+			'\0\s[0]'
+		else
+			'\1'
+		--
+		'更新aya？\n/
 		\q[◇确定,OnUpdateSHIORICore,'+SakuraScriptArgConverter(reference0)+']\n/
 		\q[◇无用,Cancel]'
 	}
@@ -72,7 +77,7 @@ OnFileDrop{
 }
 GetSHIORInameFromDicExt{
 	case _argv[0]{
-		when '.dic','.ayc'
+		when '.dic','.ayc','.aym'
 			'文'//aya
 		when '.sat'
 			'里々'//satoriya
@@ -88,7 +93,7 @@ GetDicEncodedFromDicExt{
 	case _argv[0]{
 		when '.ayc','.sat','.__1','.kiw'
 			1
-		when '.dic','.kis','.txt'
+		when '.dic','.kis','.txt','.aym'
 			0
 	}
 }

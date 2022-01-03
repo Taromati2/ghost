@@ -1,0 +1,77 @@
+OnDiscordPluginCustom{
+	InDiscordPluginCustom=1
+	'\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomALL,'
+	--
+	'902362898960117830,'//Appid
+	--
+	','//CustomDetail
+	--
+	','//CustomState
+	--
+	'kikka_eye_open,'//LargeImageKey
+	--
+	'github.com/Taromati2,'//LargeImageText
+	--
+	/*
+	'simple_hollow_red_heart,'//SmallImageKey
+	--
+	'Developer'//SmallImageText
+	--
+	*/
+	']'
+	--
+	DiscordCustom.DeveloperSet
+	--
+	DiscordCustom.LoggingSet
+	--
+	'\0\s[0]好的，Discord个人资料已经更新了\n'
+}
+OnDiscordPluginCustomEnd{
+	InDiscordPluginCustom=0
+}
+DiscordCustomSet.base{
+	if InDiscordPluginCustom
+		'\![raiseplugin,Discord Rich Presence,'+_argv[0]+','+SakuraScriptArgConverter(_argv[1])+']'
+}
+DiscordCustomSet.LargeImageKey{
+	DiscordCustomSet.base('OnDiscordPluginCustomLargeImageKey',_argv[0])
+}
+DiscordCustomSet.LargeImageText{
+	DiscordCustomSet.base('OnDiscordPluginCustomLargeImageText',_argv[0])
+}
+DiscordCustomSet.SmallImageKey{
+	DiscordCustomSet.base('OnDiscordPluginCustomSmallImageKey',_argv[0])
+}
+DiscordCustomSet.SmallImageText{
+	DiscordCustomSet.base('OnDiscordPluginCustomSmallImageText',_argv[0])
+}
+DiscordCustomSet.CustomDetail{
+	DiscordCustomSet.base('OnDiscordPluginCustomDetail',_argv[0])
+}
+DiscordCustomSet.CustomState{
+	DiscordCustomSet.base('OnDiscordPluginCustomState',_argv[0])
+}
+DiscordCustom.DeveloperSet{
+	if !InDiscordPluginCustom
+		return
+	if SHIORI_FW.DebugMode{
+		DiscordCustomSet.SmallImageKey('simple_hollow_red_heart')
+		--
+		DiscordCustomSet.SmallImageText('Developer')
+	}
+	else{
+		DiscordCustomSet.SmallImageKey(' ')
+		--
+		DiscordCustomSet.SmallImageText(' ')
+	}
+}
+DiscordCustom.LoggingSet{
+	if !InDiscordPluginCustom
+		return
+	if SHIORI_FW.LogMode{
+		DiscordCustomSet.CustomDetail('寻找蛛丝马迹')
+	}
+	else{
+		DiscordCustomSet.CustomDetail('发呆。')
+	}
+}

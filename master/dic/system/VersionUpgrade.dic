@@ -7,28 +7,41 @@ VERSION_INIT:void{
 }
 //向后不兼容内容升级用
 VERSION_UPGRADE{
+	if SHIORI_FW.InVarFileMiss{
+		VERSION_INIT
+		return
+	}
 	if !ISVAR('VERSION'){
-		VERSION = 0
-		VERSION_UPGRADE_0
 		if !ISVAR('FirstBootCount'){
 			'\1\s[10]\0\s[26]啊、\w9\w9那个…\w9\w9\w9暂时、\w9要在此处打扰您了。\n\w[3000]\s[5]开玩笑的啦\x'
 		}
+		--
+		VERSION = 0
+		VERSION_UPGRADE_0
 	}
 	--
 	while VERSION_NOW > VERSION {
 		VERSION++
 		void EVAL('VERSION_UPGRADE_'+VERSION)
 	}
+	--
+	if VERSION_UPGRADE.NeedRec{
+		ERASEVAR('VERSION_UPGRADE.NeedRec')
+		OnRecoveryUpdate.Silent
+	}
 }
 VERSION_UPGRADE_0:void{
+	void Select.Option
 	FirstBootCount = 1
-
+	mirror_url=default_mirror_url
 	DELDIR('PROFILE_PATH')
 
 	ERASEALLVARBEGINAS('SHIORI3FW')
 	ERASEALLVARBEGINAS('ninni')
 	ERASEALLVARBEGINAS('minihouse')
 	ERASEALLVARBEGINAS('nanika')
+	ERASEVAR('BombGoldFlowerBoot')
+	ERASEVAR('message')
 	ERASEVAR('ascii')
 	ERASEVAR('is_translate')
 	ERASEVAR('e')
@@ -61,6 +74,9 @@ VERSION_UPGRADE_0:void{
 	ERASEVAR('ans.bExist')
 	ERASEVAR('ans.Points')
 	ERASEVAR('d')
+	ERASEVAR('fjswitch')
+	ERASEVAR('txt')
+	ERASEVAR('G')
 	RENAME_VAR('kikkamoney','money')
 	RENAME_VAR('autobakeup','autobackup')
 	RENAME_VAR('yuyinshibie','Speech_Recognition')
@@ -72,10 +88,13 @@ VERSION_UPGRADE_0:void{
 	}
 	ClearTempVar
 	MAGICSAVE
+	VERSION_UPGRADE.NeedRec=1
 }
 VERSION_UPGRADE_1:void{
-	DELDIR('pseudoAI')
-	SHIORI_FW.PushNotifyResult(OnUpdate)
+	if !QuickStartVersion{
+		DELDIR('pseudoAI')
+		VERSION_UPGRADE.NeedRec=1
+	}
 
 	RENAME_VAR('rmmode','HolidayRemindFlag')
 	RENAME_VAR('Birthdayrmmode','BirthdayMode')

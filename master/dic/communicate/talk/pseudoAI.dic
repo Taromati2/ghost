@@ -187,35 +187,20 @@ AILoad{//AILoad('你好','aiml')  AILoad('你好，喜欢什么')
 			_file = _path +'/'+ _file
 			_fileext = TOLOWER(SPLITPATH(_file)[3])
 			case _fileext{
-				when '.ai'{
+				when '.ai'
 					_t=AILoad.AIFile(_file,_str,e,_txt)
-					if aimode=='break'{
-						_txt=''
-						break
-					}
-					elseif aimode=='return'{
-						_found=''
-						_txt=_t
-						break
-					}
-					elseif _t!=-1
-						_txt=_t
-				}
-				when '.aiml','.aiml8'{
-					_t=AILoad.AImlFile(_file,_str,e,_txt)
-					if aimode=='break'{
-						_txt=''
-						break
-					}
-					elseif aimode=='return'{
-						_found=''
-						_txt=_t
-						break
-					}
-					elseif _t!=-1
-						_txt+=_t
-				}
 			}
+			if aimode=='break'{
+				_txt=''
+				break
+			}
+			elseif aimode=='return'{
+				_found=''
+				_txt=_t
+				break
+			}
+			elseif _t!=-1
+				_txt+=_t
 		}
 		if ('logiclearn' _in_ _files||'logic' _in_ _files)&&KikkaAILogic!=2{
 			_file='PSEUDO_AI_PATH\logic.ai'
@@ -515,6 +500,7 @@ AILoad.InfFile{//AILoad.InfFile('PSEUDO_AI_PATH\common.ai','你好')
 			void FOPEN(_inf,'w')
 			_buff2='md5='+_md5
 			void FWRITE(_inf,_buff2)
+			FCLOSE(_inf)
 		}
 		elseif Tflag==2{
 			_dexori,=_Ttemp
@@ -535,15 +521,17 @@ AILoad.InfFile{//AILoad.InfFile('PSEUDO_AI_PATH\common.ai','你好')
 			void FOPEN(_inf,'w')
 			_buff2='md5='+_md5
 			void FWRITE(_inf,_buff2)
+			FCLOSE(_inf)
 		}
 	}
 	elseif _filename!='USER'{
 		infmode=1
-		void FOPEN(_inf,'w')
-		_buff2='md5='+_md5
-		void FWRITE(_inf,_buff2)
+		if FOPEN(_inf,'w'){
+			_buff2='md5='+_md5
+			void FWRITE(_inf,_buff2)
+			FCLOSE(_inf)
+		}
 	}
-	FCLOSE(_inf)
 	FCHARSET.default
 	e=_E
 	_dexori
@@ -578,7 +566,6 @@ AILoad.AIFile{
 		_Lastm=0
 		_laststar=0
 		_ql=0
-		_foodnum=0
 		while _buff!=-1{
 			if aimode=='return'
 				break
@@ -940,7 +927,6 @@ AILoad.AnswerMatch{//AILoad.AnswerMatch('爸爸的爸爸','B是C的爸爸',_E)
 	}
 	e=_E
 	_match
-
 }
 AILoad.TopicMatch{
 	_t=_argv[0]
@@ -967,20 +953,6 @@ AILoad.ThatMatch{
 			_Atemp=_t
 			_startxt=_i
 		}
-	}
-	if '<thatstar/>' _in_ _Atemp
-		_Atemp=ReplaceStarTxt(_startxt,_that,_Atemp,'thatstar')
-	_Atemp
-}
-AILoad.ThatLastMatch{
-	_t=_argv[0]
-	_Atemp=''
-	_that=TextBetween(_t,'<that>','</that>')
-	_startxt=''
-	if AILoad.KeyMatch(lastTalkHistory[0],_that){
-		_t=_t[1,'</that>']
-		_Atemp=_t
-		_startxt=_i
 	}
 	if '<thatstar/>' _in_ _Atemp
 		_Atemp=ReplaceStarTxt(_startxt,_that,_Atemp,'thatstar')
@@ -1037,7 +1009,7 @@ AILoad.Think{
 		_name=_name[1,'name=']
 		_name=REPLACE(_name,'"','')
 		_value=_set[1,'>']
-		EVAL("%(_name)=%(CHR(34))%(_value)%(CHR(34))")
+		LETTONAME(_name,CHR(34)+_value+CHR(34))
 		_i++
 	}
 	/*
@@ -1046,7 +1018,7 @@ AILoad.Think{
 	_name=REPLACE(_name,'"','')
 	_value=_think[0,'</set>']
 	_value=_value[1,'>']
-	EVAL("%(_name)=%(CHR(34))%(_value)%(CHR(34))")
+	LETTONAME(_name,CHR(34)+_value+CHR(34))
 	*/
 
 }
@@ -1054,262 +1026,6 @@ AILoad.Learn{
 	_txt=_argv[0]
 	_learn=TextBetween(_txt,'<learn>','</learn>')
 	AILoad.AddLearn(_learn)
-}
-AILoad.IsRepeat{
-	_temp=_argv[0]
-	_buff=_argv[1]
-	_mode=0
-	SETDELIM(_temp,'#')
-	foreach _temp;_i{
-		if _i==_buff&&_i!=''{
-			1
-			return
-		}
-	}
-	_mode
-}
-AILoad.AImlInfFile{
-	_file=_argv[0]
-	_str=_argv[1]
-	_E=TOINT(_argv[2])
-	_path=SPLITPATH(_file)[1]
-	_filename=TOUPPER(SPLITPATH(_file)[2])
-	_dexori=IARRAY
-	_md5=FDIGEST(_file,'MD5')
-	_inf=_path + TOLOWER(_filename)+'.infml'
-	if FOPEN(_inf,'r'){
-		_buff2=FREAD(_inf)
-		_newmd5=_buff2[1,'md5=']
-		_buff2=FREAD(_inf)
-		if !_buff2
-			_newmd5=''
-		_strcha=_str
-		while _buff2!=-1{
-			_Q=_buff2[0,'|']
-			if _Q!=''{
-				_open++
-				if !TOINT(_buff2[1,'|'])
-					_newmd5=''
-			}
-			else
-				coutinue
-			{
-				if '|' _in_ _buff2
-					qnum++
-				_m=0
-				_Q=REPLACE(_Q,'_','*')
-				if '*' _in_ _Q{
-					_Qs=_Q
-					SETDELIM(_Qs,'*')
-					_n=ARRAYSIZE(_Qs)
-					_k=0
-					for _l=0,_m=1;_l<_n && _m==1;_l++{
-						_Qs[_l]=CUTSPACE(_Qs[_l])
-						_m=(_Qs[_l] _in_ _str)
-						_k+=STRLEN(_Qs[_l])
-					}
-					if _m==1 && _k==_E && _lastm==1{
-						_dexori,=_buff2[1,'|']
-						dexnum++
-						anum+=_Anum-1
-					}
-					elseif _m==1 && _k>_E{
-						_lastm=1
-						_E=_k
-						dexnum=1
-						_dexori=IARRAY
-						_dexori=_buff2[1,'|']
-						anum=_Anum-1
-					}
-				}
-				if _Q _in_ _str && STRLEN(_Q)==_E && _Lastm==0{
-					_dexori,=_buff2[1,'|']
-					dexnum++
-					anum+=_Anum-1
-				}
-				elseif _Q _in_ _str && STRLEN(_Q)>=_E{//当上次最大长度匹配＞这次,不管是何种保留都放弃
-					_Lastm=0
-					_E=STRLEN(_Q)
-					dexnum=1
-					_dexori=IARRAY
-					_dexori=_buff2[1,'|']
-				}
-			}
-			_buff2=FREAD(_inf)
-		}
-		FCLOSE(_inf)
-		if _md5!=_newmd5{
-			dexnum=0
-			infmode=1
-			void FOPEN(_inf,'w')
-			_buff2='md5='+_md5
-			void FWRITE(_inf,_buff2)
-		}
-		elseif dexnum==0
-			_dexori=-1
-	}
-	else{
-		infmode=1
-		void FOPEN(_inf,'w')
-		_buff2='md5='+_md5
-		void FWRITE(_inf,_buff2)
-	}
-	FCLOSE(_inf)
-	FCHARSET.default
-	e=_E
-	_dexori
-}
-AILoad.AImlFile{
-	_file=_argv[0]
-	_str=_argv[1]
-	_E=TOINT(_argv[2])
-	_txt=_argv[3]
-	_path=SPLITPATH(_file)[1]
-	_filename=TOUPPER(SPLITPATH(_file)[2])
-	_inf=_path + TOLOWER(_filename)+'.infml'
-	_txt=''
-	_str=TOUPPER(_str)
-	_found=0
-	/*
-	if SUBSTR(_filename,0,1)!=SUBSTR(CUTSPACE(_str),0,1){
-		-1
-		return
-	}
-	*/
-	if !RE_GREP(_str,'[A-Z/^(\d)*$/ ]') {
-		-1
-		return
-	}
-	_str=''
-	foreach RE_GETSTR;_i{
-		_str+=_i
-	}
-	while '  ' _in_ _str{
-		_str=RE_REPLACE(_str,'  ',' ')
-	}
-	infmode=0
-	dexnum=0
-	_dexori=AILoad.AImlInfFile(_file,_str,_E)
-	if _dexori==-1{
-		_dexori
-		return
-	}
-	if _fileext=='.aiml8'
-		FCHARSET(1)
-	else
-		FCHARSET(127)
-	if FOPEN(_file,'rb'){
-		_table=0
-		_buff=''
-		dexid=0
-		_dexre=STRLEN('<category>'+GET_ENDLINE.file_was_opened(_file))
-		_strtxt=''
-		FCHARSET(1)
-		void FOPEN(_inf,'a')
-		_E=0
-		_N=0
-		_Lastm=0
-		while _buff!=-1{
-			/*
-			if dexnum>0&&dexid<dexnum{
-				void FSEEK(_file,TOINT(_dexori[dexid]-_dexre),'start')
-				_buff=FREAD(_file)
-				dexid++
-				_dexmode=1
-			}
-			elseif dexnum>0&&dexid==dexnum
-				_buff=-1
-			else
-				*/
-				_buff=FREAD(_file)
-			while '<category>' !_in_ _buff&&_buff!=-1{
-				_buff=FREAD(_file)
-			}
-			_dex=''
-			if '<category>' _in_ _buff{
-				_table++
-				_dex=FTELL(_file)
-			}
-			_session=_buff
-			//_session+=_buff+'\n'
-			if infmode{
-				_Q=TextBetween(_buff,'<pattern>','</pattern>')
-				if _Q!=''{
-					_cha=_Q
-					_buff2=_cha+'|'+_dex
-					void FWRITE(_inf,_buff2)
-				}
-			}
-			//_buff;return
-			_Q=TextBetween(_session,'<pattern>','</pattern>')
-			_template=TextBetween(_session,'<template>','</template>')
-			_A=_template+'|'
-			_Anum=1
-			if '<li>' _in_ _template{
-				_A=''
-				while  _template[_Anum,'<li>']!=''{
-					_Anum++
-				}
-				for _k=0;_k<_Anum-1;_k++{
-					_A+=TextBetween(_template,'<li>','</li>',_k)+'|'
-				}
-			}
-			_m=0
-			_r=0
-			if _A=='|'
-				continue
-			_Q=REPLACE(_Q,'_','*')
-			if '*' _in_ _Q{
-				/*
-				_Q=REPLACE(_Q,'*','.*')
-				_A=REPLACE(_A,'<star/>','%(_star)')
-				if '%' _in_ _A
-					_A=GETRETXT(_str,_Q,_A)
-				_t=CHAREPLACE(_Q)
-				_t=RE_GREP(_str,_t)
-				if _t{
-					_ori=RE_GETSTR
-					_ori=RE_CHAREPLACE(_ori)
-					_Q=_ori
-				}
-				*/
-
-			}
-			if _Q _in_ _str && STRLEN(_Q)==_E && _Lastm==0{
-				_txt+=_A
-				anum+=_Anum-1
-				_r=1
-			}
-			elseif _Q _in_ _str && STRLEN(_Q)>=_E{//当上次最大长度匹配＞这次,不管是何种保留都放弃
-				_Lastm=0
-				_E=STRLEN(_Q)
-				_txt=''
-				_txt+=_A
-				_r=1
-				anum=_Anum-1
-			}
-			if _r{
-				_found=_r
-				if '<think>' _in_ _session&&!_thinkmode{
-					AILoad.Think(_session)
-				}
-			}
-		}
-		//_A;return
-		snum+=_table
-		FCLOSE(_inf)
-	}
-	FCLOSE(_file)
-	FCHARSET.default
-	if _found{
-		if '<srai>' _in_ _txt{
-			string,=TextBetween(_txt,'<srai>','</srai>')
-			strnum=ARRAYSIZE(string)
-			aimode='break'
-			//_txt=''
-		}
-	}
-	_txt
 }
 AILoad.AddLearn{
 	_file='PSEUDO_AI_PATH\logiclearn.ai'
@@ -1760,67 +1476,6 @@ AILoad.AnswerTxt{
 	}
 	_txt
 }
-AISearch{//暂时无用
-	_str=_argv[1]
-	_Q=_argv[2]
-	_Qnum=1//_Q=TextBetween(_session,'<pattern>','</pattern>')
-	_template=TextBetween(_session,'<template>','</template>')
-	_A=_template
-	_Anum=1
-	if '<li>' _in_ _template{
-		_A=''
-		while  _template[_Anum,'<li>']!=''{
-			_Anum++
-		}
-	}
-	for _k=0;_k<_Anum-1;_k++{
-		_A+=TextBetween(_template,'<li>','</li>',_k)+'|'
-	}
-	_m=0
-	if '*' _in_ _Q{
-		_Qs=_Q
-		SETDELIM(_Qs,'*')
-		_n=ARRAYSIZE(_Qs)
-		_k=0
-		for _l=0,_m=1;_l<_n && _m==1;_l++{
-			_m=(_Qs[_l] _in_ _str)
-			_k+=STRLEN(_Qs[_l])
-		}
-		if _m==1 && _k==_E && _lastm==1{
-			_o=ARRAYSIZE(_g)
-			_g[_o]=_i
-			_txt+=_A
-			anum+=_Anum-1
-		}
-		elseif _m==1 && _k>_E{
-			_lastm=1
-			_E=_k
-			_g=IARRAY
-			_g[0]=_i
-			_txt=''
-			_txt+=_A
-			anum=_Anum-1
-		}
-	}
-	if _Q _in_ _str && STRLEN(_Q)==_E && _lastm==0{
-		_txt+=_A
-		anum+=_Anum-1
-	}
-	elseif _Q _in_ _str && STRLEN(_Q)>_E{//当上次最大长度匹配＞这次,不管是何种保留都放弃
-		_lastm=0
-		_E=STRLEN(_Q)
-		_g=IARRAY
-		_g[0]=_i
-		_ex=SUBSTR(_str,STRLEN(_Q),STRLEN(_str))
-		if (_t=ExFunction(_Q,_ex))!=''{
-			_txt=_t
-			break
-		}
-		_txt=''
-		_txt+=_A
-		anum=_Anum-1
-	}
-}
 //ReplaceStarTxt('什么是腹黑','什么是*','<thatstar/>是萌的一种','thatstar')
 //ReplaceStarTxt('a是b','.*是.*','<star/>是另一个<star index='2'/>')
 ReplaceStarTxt{
@@ -1854,67 +1509,6 @@ ReplaceStarTxt{
 		}
 	}
 	_txt
-}
-AImlSearch{
-	_str=_argv[1]
-	_Q=_argv[2]
-	_Qnum=1//_Q=TextBetween(_session,'<pattern>','</pattern>')
-	_template=TextBetween(_session,'<template>','</template>')
-	_A=_template
-	_Anum=1
-	if '<li>' _in_ _template{
-		_A=''
-		while  _template[_Anum,'<li>']!=''{
-			_Anum++
-		}
-	}
-	for _k=0;_k<_Anum-1;_k++{
-		_A+=TextBetween(_template,'<li>','</li>',_k)+'|'
-	}
-	_m=0
-	if '*' _in_ _Q{
-		_Qs=_Q
-		SETDELIM(_Qs,'*')
-		_n=ARRAYSIZE(_Qs)
-		_k=0
-		for _l=0,_m=1;_l<_n && _m==1;_l++{
-			_m=(_Qs[_l] _in_ _str)
-			_k+=STRLEN(_Qs[_l])
-		}
-		if _m==1 && _k==_E && _lastm==1{
-			_o=ARRAYSIZE(_g)
-			_g[_o]=_i
-			_txt+=_A
-			anum+=_Anum-1
-		}
-		elseif _m==1 && _k>_E{
-			_lastm=1
-			_E=_k
-			_g=IARRAY
-			_g[0]=_i
-			_txt=''
-			_txt+=_A
-			anum=_Anum-1
-		}
-	}
-	if _Q _in_ _str && STRLEN(_Q)==_E && _lastm==0{
-		_txt+=_A
-		anum+=_Anum-1
-	}
-	elseif _Q _in_ _str && STRLEN(_Q)>_E{//当上次最大长度匹配＞这次,不管是何种保留都放弃
-		_lastm=0
-		_E=STRLEN(_Q)
-		_g=IARRAY
-		_g[0]=_i
-		_ex=SUBSTR(_str,STRLEN(_Q),STRLEN(_str))
-		if (_t=ExFunction(_Q,_ex))!=''{
-			_txt=_t
-			break
-		}
-		_txt=''
-		_txt+=_A
-		anum=_Anum-1
-	}
 }
 ExcelTxtToAI{
 	if _argc=2{
@@ -1968,8 +1562,8 @@ AITalkAdd{//('PSEUDO_AI_PATH\user.ai','你好*你也好','write')
 	FCLOSE(_file)
 	if _mode=='write'{
 		void FOPEN(_file,'w')
+		FCLOSE(_file)
 	}
-	FCLOSE(_file)
 	_temp=''
 	_table=0
 	FCHARSET(1)
@@ -2051,50 +1645,6 @@ AITalkAdd{//('PSEUDO_AI_PATH\user.ai','你好*你也好','write')
 	}
 	FCLOSE(_file)
 	FCHARSET.default
-}
-ARRTOSTR{
-	_arr=_argv[0]
-	_s='|'
-	if _argv[1]!=''
-		_s=_argv[1]
-	_str=''
-	SETDELIM(_arr,',')
-	foreach _arr;_i{
-		_str+=_i+_s
-	}
-	_str
-}
-ExFunction{
-	_str=reference0
-	_ex=reference1
-	_found=''
-	if _argc>0{
-		_str=_argv[0]
-		_ex=_argv[1]
-	}
-	if (_t=TOREAL(_ex)) {
-		_ex=_t
-		if '我的身高是' _in_ _str
-			_found=WeightRange(_ex)
-	}
-	_found
-}
-WeightRange{//体重指数(BMI)=体重(千克)/身高(米)^2
-	_height=TOINT(reference0)
-	if _argc>0
-		_height=TOINT(_argv[0])
-	_bmilow=18.5
-	_bmihigh=24
-	_weightlow=_bmilow*(_height/100.0)*(_height/100.0)
-	_weighthigh=_bmihigh*(_height/100.0)*(_height/100.0)
-	_pointidx=STRSTR(_weightlow,'.',0)
-	_weightlow=SUBSTR(_weightlow,0,_pointidx)+SUBSTR(_weightlow,_pointidx,3)
-	_pointidx=STRSTR(_weighthigh,'.',0)
-	_weighthigh=SUBSTR(_weighthigh,0,_pointidx)+SUBSTR(_weighthigh,_pointidx,3)
-	if _height<175
-		"%(username)，你的健康体重范围是:%(_weightlow)公斤～%(_weighthigh)公斤。你是哪里的？"
-	else
-		"%(username)，你的健康体重范围是:%(_weightlow)公斤～%(_weighthigh)公斤。你今天心情怎么样？"
 }
 LogicEvaluate{//逻辑表达式解析器
 	//LogicEvaluate('(喜欢|爱)&(美女|野兽)&(看|见)|((美女|野兽)&(看|见))')
@@ -2477,57 +2027,6 @@ RandAITalk{
 	"%(username)今天也要好好加油啊"
 	'输入“/teach”指令可以进入教学模式、输入“/talk”指令返回对话模式'
 	Greetings
-}
-MealJudge{
-	if hour >= 7 && hour < 11
-		'breakfast'
-	elseif hour >= 11 && hour < 17
-		'lunch'
-	elseif hour >= 17 && hour < 22
-		'supper'
-}
-Meal{
-	talkmemo=MealJudge
-	if talkmemo==''{
-		'没有'
-		'你吃了啊'
-	}
-	else{
-		'吃了'
-		"吃了,%(username)呢"
-	}
-}
-EatWhat{
-	talkmemo=MealJudge
-	if talkmemo=='breakfast'
-		'花式蛋糕'
-	elseif talkmemo=='lunch'
-		'龙虾大餐'
-	elseif talkmemo=='supper'
-		'鸡腿汉堡'
-}
-Breakfast{
-	talkmemo=MealJudge
-	if hour >= 7
-		'早餐吃了'
-	else
-		'还没吃早餐呢'
-}
-Lunch{
-	talkmemo=MealJudge
-	if hour >= 11
-		'午餐已经吃过了'
-	else{
-		'还没呢'
-		'早餐已经吃过了，午餐还没呢'
-	}
-}
-Supper{
-	talkmemo=MealJudge
-	if hour >= 17&&hour<22
-		'吃完了'
-	else
-		'还没有啊，你吃了啊'
 }
 Greetings{
 	case hour{
@@ -3093,12 +2592,4 @@ GetStarCha{//GetStarCha('a是b的','*是*')
 			_d,=_c[_i]
 	}
 	_d
-}
-ClearFile{
-	_file='PROFILE_PATH\\VoiceName.vbs'
-	void FDEL(_file)
-	_file='PROFILE_PATH\\voice.vbs'
-	void FDEL(_file)
-	_file='PROFILE_PATH\\stop.vbs'
-	void FDEL(_file)
 }

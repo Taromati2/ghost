@@ -74,8 +74,8 @@ ReadLrc{
 				_t = IARRAY
 			}
 		}
+		FCLOSE(_file)
 	}
-	FCLOSE(_file)
 	FCHARSET.default
 	_txt
 }
@@ -100,8 +100,8 @@ ReadTxt{
 		for _buff = FREAD(_file); _buff != -1; _buff = FREAD(_file) {
 			lrctime[1]+=_buff+'\n\![set,choicetimeout,0]'
 		}
+		FCLOSE(_file)
 	}
-	FCLOSE(_file)
 	FCHARSET.default
 	_txt
 }
@@ -201,16 +201,22 @@ IsVideo{
 	_isvideo
 }
 OnPlayCmd{
-	if !FILEEXIST(reference1){
+	_cmd=reference0
+	_file=reference1
+	if _argv[0]
+		_cmd=_argv[0]
+	if _argv[1]
+		_file=_argv[1]
+	if !FILEEXIST(_file){
 		musicplayinfo='文件无效或不存在'
 	}
-	if IsVideo(reference1)&&rangevideojump&&musicplayerrange==1{
+	if IsVideo(_file)&&rangevideojump&&musicplayerrange==1{
 		OnNextMusic
 		return
 	}
-	"\0\C\![sound,%(SakuraScriptArgConverter(reference0)),%(SakuraScriptArgConverter(reference1))]"
+	"\![sound,%(SakuraScriptArgConverter(_cmd)),%(SakuraScriptArgConverter(_file))]"
 	--
-	_path = SPLITPATH(reference1)
+	_path = SPLITPATH(_file)
 	_filelrc = _path[0] + _path[1] + _path[2] + '.lrc'
 	_filetxt=_path[0] + _path[1] + _path[2] + '.txt'
 	if ReadLrc(_filelrc) != 'ok'{
@@ -225,11 +231,23 @@ OnPlayCmd{
 	if ReadTxt(_filetxt) != 'ok'{
 		_filetxt = lrcpath + _path[2] + '.txt'
 	}
-	if musicplaywithlrc == 1 && reference0 == 'play' && ReadLrc(_filelrc) == 'ok' {
+	if musicplaywithlrc == 1 && _cmd == 'play' && ReadLrc(_filelrc) == 'ok' {
 		ShowLrc(musicplaytime)
 	}
-	if musicplaywithlrc == 1 && reference0 == 'play' && ReadTxt(_filetxt) == 'ok' {
+	if musicplaywithlrc == 1 && _cmd == 'play' && ReadTxt(_filetxt) == 'ok' {
 		ShowLrc('txt')
+	}
+	--
+	if playingtetris
+		OnPaintBox1
+	elseif playRetroSnaker
+		PaintRetroSnaker
+	--
+	if musicplayer||shutdownstart{
+		'\0\c\b[-1]'
+		--
+		if musicplayer
+			OnMusicPlayer
 	}
 }
 PlayWithLyric{
@@ -243,6 +261,10 @@ PlayWithLyric{
 	}
 	_filemp3 = _argv[2]
 	if _cmd == 'play' || _cmd == 'loop' {
+		DiscordCustomSet.CustomDetail('听音乐')
+		--
+		DiscordCustomSet.CustomState(SPLITPATH(_filemp3)[2])
+		--
 		_txt += "\![raise,OnPlayCmd,%(_cmd),%(SakuraScriptArgConverter(_filemp3))]"
 		musicplaystart = GETTICKCOUNT
 		musicplaytime = 0
@@ -254,6 +276,10 @@ PlayWithLyric{
 		playingmusic = 2
 	}
 	elseif _cmd == 'resume' {
+		DiscordCustomSet.CustomDetail('听音乐')
+		--
+		DiscordCustomSet.CustomState(SPLITPATH(_filemp3)[2])
+		--
 		_txt += '\![sound,resume]'
 		musicplaystart = GETTICKCOUNT
 		playingmusic = 1
@@ -262,10 +288,14 @@ PlayWithLyric{
 		}
 	}
 	elseif _cmd == 'stop' {
+		DiscordCustomSet.CustomDetail('不听了')
+		--
+		DiscordCustomSet.CustomState(' ')
+		--
 		_txt += '\![sound,stop]'
 		playingmusic = 0
 	}
-	_sound = reference0
+	--
 	_txt
 }
 MusicHotKey{
@@ -810,7 +840,7 @@ DialogMusicAddList{
 }
 //打開列表操作
 //---------------------------------------------------
-DialogMusicOpenList{
+DialogMusicOpenList:void{
 	_m3u = M3UPATH
 	if _argc > 0 {
 		_m3u = _argv[0]
@@ -1099,6 +1129,8 @@ OnLastMusic{
 		musicfile[2] = musicrandlist[_tmp][0,'|']
 		if playingmusic==1
 			_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
+		else
+			playingmusic = 0
 	}
 	elseif musicplaymode == 0 || musicplaymode == 1 || musicplaymode == 2 || musicplaymode == 3 {
 		musicfile[1]=(musicfile[0] + musicfile[1] - 1)%musicfile[0]
@@ -1107,6 +1139,8 @@ OnLastMusic{
 		musicfile[2] = musicrandlist[_tmp]
 		if playingmusic==1
 			_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
+		else
+			playingmusic = 0
 	}
 	_txt+=OnMusicPlayer
 	_txt
@@ -1126,6 +1160,8 @@ OnNextMusic{
 		musicfile[2] = musicrandlist[_tmp][0,'|']
 		if playingmusic==1
 			_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
+		else
+			playingmusic = 0
 	}
 	elseif musicplaymode == 0 || musicplaymode == 1 || musicplaymode == 2 || musicplaymode == 3 {
 		musicfile[1]=(musicfile[0] + musicfile[1] + 1)%musicfile[0]
@@ -1134,6 +1170,8 @@ OnNextMusic{
 		musicfile[2] = musicrandlist[_tmp]
 		if playingmusic==1
 			_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
+		else
+			playingmusic = 0
 	}
 	_txt+=OnMusicPlayer
 	_txt
@@ -1141,26 +1179,29 @@ OnNextMusic{
 //當音樂結束時
 //---------------------------------------------------
 OnSoundStop{
-	_txt=''
 	if playLinkWnd&&!linkwndmusic&&freemode && linkmusicfile _in_ reference0 {
-		_txt = '\0\C'
+		'\0\C'
+		--
 		musicid++
 		musicid=musicid%12
 		linkmusicfile=playlinkmusic[musicid]
-		_txt+='\![sound,stop]\![sound,wait]'
-		_txt+=PlayWithLyric('play',musiclrcenable,linkmusicfile)
+		'\![sound,stop]\![sound,wait]'
+		--
+		PlayWithLyric('play',musiclrcenable,linkmusicfile)
 	}
 	elseif playingmusic && reference0 == musicfile[2]{
-		_txt = '\0\C'
+		'\0\C'
+		--
+		_stop=0
 		kikkamood+=10
 		if !ISVAR('musicrandlist') &&musicplayerrange || !ISVAR('musiclist') &&!musicplayerrange
 			DialogMusicOpenList
 		SETDELIM(musiclist,'*')
-		_txt+='\![sound,stop]\![sound,wait]'
+		'\![sound,stop]\![sound,wait]'
+		--
 		playingmusic = 0
 		ClearLrcVar
 		if musicplaymode == 1{
-			_stop=0
 			if musicplayerrange{
 				SETDELIM(musicrandlist,'*')
 				if musicfile[3]<ARRAYSIZE(musicrandlist)-2
@@ -1182,11 +1223,6 @@ OnSoundStop{
 				musicfile[2] = musicrandlist[_tmp]
 				//musicfile[4]=musiclistfile[1]
 			}
-			if _stop==0
-				_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
-		}
-		elseif musicplaymode == 2 {
-			_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
 		}
 		elseif musicplaymode == 3 {
 			if musicplayerrange{
@@ -1205,7 +1241,6 @@ OnSoundStop{
 				musicfile[2] = musicrandlist[_tmp]
 				//musicfile[4]=musiclistfile[1]
 			}
-			_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
 		}
 		elseif musicplaymode == 4 || musicplayerrange{
 			SETDELIM(musicrandlist,'*')
@@ -1216,14 +1251,13 @@ OnSoundStop{
 			musicfile[1]=TOINT(musicfile[1])
 			_tmp = musicfile[3]
 			musicfile[2] = musicrandlist[_tmp][0,'|']
-			_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
 		}
+		if _stop==0
+			PlayWithLyric('play',musiclrcenable,musicfile[2])
+		--
+		if InNotify
+			SHIORI_FW.MakeValueNotify(OnPlayCmd('play',musicfile[2]))
 	}
-	if musicplayer
-		_txt+='\0\c\b[-1]'+OnMusicPlayer
-	if shutdownstart==1
-		_txt+='\0\c\b[-1]'
-	_txt
 }
 //播放器面板的選項按鈕動作
 //---------------------------------------------------

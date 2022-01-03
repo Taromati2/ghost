@@ -344,9 +344,6 @@ Poker.Show{
 	}
 	_txt
 }
-Poker.Clear{
-	ERASEVAR('poker')
-}
 OnBlackjack0{
 	'规则都知道吧'
 	'这个游戏不押赌注就不好玩了，\w9每一局￥50怎样？\w9拿到BlackJack2倍，五龙3倍喔！\w9'
@@ -466,7 +463,6 @@ BlackjackJudge{
 			"\0\s[30]%(username)的点数比较大呢……"
 		}
 	}
-	anti_cheat('money')
 }
 BlackjackCal{
 	kikkascard[2] = 0
@@ -927,7 +923,6 @@ OnDeluxeBall{
 		if BallMode==1{
 			if money>=2*_p{
 				money-=2*_p
-				anti_cheat('money')
 			}
 			else{
 				_txt+='金钱不足，不能购买'
@@ -972,7 +967,6 @@ OnDeluxeBall{
 			_txt+="\n\s[8]很遗憾，%(username)没有中奖，当作是为人民作贡献吧\n"
 		if BallMode==1 &&  money>=2*_p{
 			money+=_reward
-			anti_cheat('money')
 		}
 	}
 	_txt+="\n\q[◇购买,OnDeluxeBall,购买,%(2*_p)]"
@@ -1070,7 +1064,7 @@ OnHanoiShow{
 	}
 	_time=0
 	if hanoi_timebegin>0
-		_time=(GETTICKCOUNT-hanoi_timebegin)/1000+'.'+(GETTICKCOUNT-hanoi_timebegin+0.0)/10%100
+		_time=(GETTICKCOUNT-hanoi_timebegin)/1000+'.'+(TOREAL(GETTICKCOUNT-hanoi_timebegin))/10%100
 	_txt+="\n\_l[132]第%(hanoi_level-2)关\n"
 	_txt+="\_l[115]第%(hanoi_step)步,第%(_time)秒\n"
 	_txt+=mess
@@ -1164,7 +1158,7 @@ OnHanoikey{
 		}
 	}
 	if _level[2]==hanoi_level&&hanoi_win==0&&hanoi_select[0]==-1{
-		_time=(GETTICKCOUNT-hanoi_timebegin)/1000+'.'+(GETTICKCOUNT-hanoi_timebegin+0.0)/10%100
+		_time=(GETTICKCOUNT-hanoi_timebegin)/1000+'.'+(TOREAL(GETTICKCOUNT-hanoi_timebegin))/10%100
 		mess="\0\s[5]好棒，%(username)胜利完成了。步骤：%(hanoi_step)步，用时%(_time)秒。"
 		hanoi_win=1
 		if TOINT(hanoi_step)<TOINT(hanoi_best[2*(hanoi_level-3)])||TOINT(hanoi_best[2*(hanoi_level-3)])==0{

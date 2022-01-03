@@ -1,8 +1,132 @@
 //by steve02081504
-//简单防作弊
-//本来想做作弊检测啥的，但涉及到金丝雀值啥的写起来太麻烦，就单纯无法作弊吧
-anti_cheat{//原理：地址变动
-	_t=EVAL(_argv[0])
-	ERASEVAR(_argv[0])
-	_t=EVAL(_argv[0]+'='+"%_t")
+AntiCheatWatcher{
+	_varname=_argv[0]
+	_var=_argv[1]
+	_CanaryValueName='CanaryValue.'+STRDIGEST(_varname)
+	_CanaryValue=EVAL(_CanaryValueName)+72
+	if _CanaryValue!=_var{
+		if ISVAR(_CanaryValueName){
+			if !EVAL('CheattedTrigging.'+_varname){
+				LETTONAME('CheattedTrigging.'+_varname,1)
+				SHIORI_FW.PushNotifyResult("\![raise,OnValueCheatted,%(_varname),%(_CanaryValue),%(_var)]")
+			}
+			_CanaryValue
+			return
+		}
+		else{
+			LETTONAME(_CanaryValueName,(_var-72))
+			_var
+			return
+		}
+	}
+	_CanaryValue
+}
+AntiCheatSetter{
+	_varname=_argv[0]
+	_var=_argv[1]
+	_var_before=_argv[2]
+	_CanaryValueName='CanaryValue.'+STRDIGEST(_varname)
+	_CanaryValue=EVAL(_CanaryValueName)+72
+	if _CanaryValue!=_var_before{
+		if ISVAR(_CanaryValueName){
+			if !EVAL('CheattedTrigging.'+_varname){
+				LETTONAME('CheattedTrigging.'+_varname,1)
+				SHIORI_FW.PushNotifyResult("\![raise,OnValueCheatted,%(_varname),%(_CanaryValue),%(_var_before)]")
+			}
+			_CanaryValue//恢复值内容
+			return
+		}
+	}
+	LETTONAME(_CanaryValueName,(_var-72))
+	_var
+}
+AntiCheat{
+	_varname=_argv[0]
+	FUNCDECL_READ(_varname,'AntiCheatWatcher')
+	FUNCDECL_WRITE(_varname,'AntiCheatSetter')
+	if ISVAR('CanaryValue.'+_varname){
+		LETTONAME('CanaryValue.'+STRDIGEST(_varname),EVAL('CanaryValue.'+_varname))
+		ERASEVAR('CanaryValue.'+_varname)
+	}
+}
+Init.AntiCheatIniter{
+	AntiCheat('money')
+	AntiCheat('intimacy')
+}
+OnValueCheatted{
+	_varname=reference0
+	_var_should_have=reference1
+	_var_cheatting_to=reference2
+	case _varname{
+		when 'money'{
+			if _var_cheatting_to>_var_should_have{
+				money-=MAX(_var_should_have/2,100)
+				"\0\s[0]嗯，\s[26]\w9如果缺钱的话，\w9橘花觉得%(username)还是好好去工作比较好哦\w9\n/
+				\s[22]作弊是要接受惩罚的哦？"
+				// 哎？%(username)缺钱了吗？
+				// 嗯…………如果是这样的话……
+				// 稍等一下哦，橘花去跑一趟。
+				// // 跑个外快什么的
+				// 等一下，你拿枪做什么？给我回来！
+			}
+			else{
+				'\0\s[8]把金钱改的更小\w9.\w9.\w9.\n/
+				这是什么新的惩罚项目吗？\n'
+				--
+				if _var_cheatting_to < -200000
+					'\1\s[10]也可能是改的数值过大结果溢出了啊，\w9\w9\s[12]对吧\w9\n/
+					\0\s[8]啊哈哈'
+			}
+		}
+		when 'intimacy'{
+			if _var_cheatting_to>_var_should_have{
+				intimacy=MIN(-10,-_var_should_have/2,_var_should_have*10)
+				"\![enter,passivemode]\0\s[30]斗和，问你一个问题。\w9\n/
+				\1\s[11]什么？\w9\n/
+				\0如果有人强行要把你和他的关系拉好\w9，而且不顾你的意愿的话要怎么办呢？\w9\w9\n/
+				\1这种人一般会被叫做渣男吧？\w9\n/
+				\0\s[6]说得也是呢。\w9\n/
+				\s[22]那就让%(username)成为渣男好了，物理意义上的。\w9\n/
+				\1啊，%(username)你最好快点道歉比较好哦。\w9\n/
+				\0\s[32]迟了。\w9\n\![raise,OntriggerBSOD,0xc000007F]"
+			}
+			else{
+				case GetPhase{
+					when 4-5
+						"\0\s[26]%(username)是不是讨厌我了呢?\w9\w9\n/
+						\s[3]可以的话直说就好\w9.\w9.\w9.\w9.\w9."
+					when 3-2{
+						'\0\s[20]唔\w9…\w9…\s[30]斗和，\w9人会在什么样的情况下要让一个关系本来不错的人关系变差呢？\w9\w9\n/
+						\1\s[10]你是在说想要分手却又不肯明说的人吗？\n'
+						--
+						if !RAND(4){
+							if intimacy >= 50
+								intimacy=0
+							else
+								intimacy=-10
+							'\0\s[2]啊\w9，原来是分手吗？\w9\n/
+							\s[0]原来如此，\s[5]橘花明白了，我听过一个词，\s[21]是分手炮来着？\w9\n/
+							\s[22]那么这是分手礼物，接下吧，橘花的炮，一定会很壮观呢。\w9'
+							--
+							'\1\s[11]'
+							--
+							'等一下\w9，这个词不是这么用的！'
+							'不对\w9，这个词你是从哪听来的！'
+							--
+							'\![raise,OntriggerBSOD,0xc000007F]'
+						}
+					}
+					when 1
+						'\0\s[26]啊，\w9那个\w9—\w9—\w9\n/
+						\s[8]把好感改低，\w9是什么意思呢？'
+					when 0
+						'\s[7]是抖m么?\w9\w9\n/
+						\s[6]真是没救的阳痿猪头男呢\w9'
+					when -1
+						bsod('0xc000007F')
+				}
+			}
+		}
+	}
+	ERASEVAR('CheattedTrigging.'+_varname)
 }

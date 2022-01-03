@@ -12,6 +12,8 @@ OnBoxGame{
 		NeedUpdate
 		return
 	}
+	DiscordCustomSet.CustomDetail('推箱子')
+	--
 	InitBox
 }
 //初始化推箱子
@@ -174,6 +176,8 @@ OnBoxGoBack{
 	}
 }
 OnBoxNewGame{
+	DiscordCustomSet.CustomDetail('推箱子')
+	--
 	'\0\s[40]要玩第几关呢？\![open,inputbox,OnBoxNewGameSuccess]'
 }
 OnBoxLastGame{

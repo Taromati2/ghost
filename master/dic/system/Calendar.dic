@@ -661,16 +661,6 @@ AreaTxt{
 	}
 	_w
 }
-GETCASENUM{
-	_txt=_argv[0]
-	_n=STRLEN(_txt)
-	_j=0
-	for _i=0;_i<_n;_i++{
-		_a=SUBSTR(_txt,_i,1)
-		_j+=CASECHECK(_a)
-	}
-	_j
-}
 GETPOSNUM{
 	_txt=_argv[0]
 	_POS=TOINT(_argv[1])
@@ -926,7 +916,7 @@ OnEventInputOver{
 	_i=TOINT(temp[6])
 	_k=TOINT(temp[7])
 	_l=TOINT(temp[8])//重复天数/周年数的列数
-	_name=abs(reference0)//重复天数/周年的值
+	_name=ABS(reference0)//重复天数/周年的值
 	if ISREAL(_name)
 		_name=TOINT(_name)
 	if TOINT(_year)%4==0

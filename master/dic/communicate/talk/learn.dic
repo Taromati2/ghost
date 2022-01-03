@@ -230,7 +230,7 @@ KikkaTalkToUser{
 			_b=SQLite('-j',"SELECT 回答 FROM KikkaAIdb WHERE ID='%(_g)'")
 			SETDELIM(_b,'|')
 			_b=ANY(_b)
-			_b=REPLACE(_b,'英文逗号',',')
+			_b=REPLACE(_b,'<英文逗号>',',')
 			"\0%(_b)\e"
 			talkfound=1
 		}
@@ -304,15 +304,17 @@ Talksearchleng{
 					_g[0]=_d
 				}
 			}
-			if _f[_y] _in_ _a && STRLEN(_f[_y])==_e && _lastm==0 {
-				_o=ARRAYSIZE(_g)
-				_g[_o]=_d
-			}
-			elseif _f[_y] _in_ _a && STRLEN(_f[_y])>_e {//当上次最大长度匹配＞这次,不管是何种保留都放弃
-				_lastm=0
-				_e=STRLEN(_f[_y])
-				_g=IARRAY
-				_g[0]=_d
+			if _f[_y] _in_ _a {
+				if STRLEN(_f[_y])==_e && _lastm==0 {
+					_o=ARRAYSIZE(_g)
+					_g[_o]=_d
+				}
+				elseif STRLEN(_f[_y])>_e {//当上次最大长度匹配＞这次,不管是何种保留都放弃
+					_lastm=0
+					_e=STRLEN(_f[_y])
+					_g=IARRAY
+					_g[0]=_d
+				}
 			}
 			_y++
 		}
@@ -456,6 +458,7 @@ Onsp{//选页
 }
 OnAIdbUpdate{
 	_a=1
+	reference0 = reference.raw[0]
 	if temp01=='删除该词条' {
 		_a=SQLite("UPDATE KikkaAIdb SET scope=-1 WHERE ID=%(reference0)")
 		if !_a
