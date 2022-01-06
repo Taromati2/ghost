@@ -37,7 +37,7 @@ OnReloadShiori{
 	'…\n\![reload,shiori]重新讀取SHIORI……'
 }
 SakuraScriptArgConverter{
-	'"'+REPLACE(TOSTR(_argv[0]),'"','""')+'"'
+	'"'+REPLACE(TOSTR(_argv),'"','""')+'"'
 }
 
 GETTYPE.to_string{
