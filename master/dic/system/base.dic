@@ -29,7 +29,7 @@ BaseSelect.base{
 			_argv[0]=IARRAY
 			_fname=_argv[0]
 			_argv[0]=IARRAY
-			EVAL("Select.%(_fname)(%_argv)")
+			EVAL("%(_fname)(%_argv)")
 		}
 	}
 }
