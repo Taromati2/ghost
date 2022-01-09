@@ -1324,8 +1324,10 @@ OnSysResume.base{
 	"\0\s[0]%(username)\w9\w9、欢迎回来。\n\x"
 }
 OnSysResume{
-	SHIORI_FW.PushNotifyResult(OnSysResume.base)
-	SHIORI_FW.PushNotifyResult(OnBoot)
+	if !minimizestarttime{
+		SHIORI_FW.PushNotifyResult(OnSysResume.base)
+		SHIORI_FW.PushNotifyResult(OnBoot)
+	}
 }
 //资源不足
 OnSysResourceLow{
