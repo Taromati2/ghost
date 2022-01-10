@@ -1302,7 +1302,8 @@ OnScreenSaverEnd{
 }
 //待机
 OnSysSuspend{
-	OnClose.base
+	if !TimeErrorCheck
+		CloseTime = GETSECCOUNT
 }
 //待机中恢复
 OnSysResume.base{
@@ -1324,9 +1325,10 @@ OnSysResume.base{
 	"\0\s[0]%(username)\w9\w9、欢迎回来。\n\x"
 }
 OnSysResume{
+	BaseGhostStart.aboutTime
 	if !minimizestarttime{
 		SHIORI_FW.PushNotifyResult(OnSysResume.base)
-		SHIORI_FW.PushNotifyResult(OnBoot)
+		SHIORI_FW.PushNotifyResult(OnBoot.aboutTime)
 	}
 }
 //资源不足
