@@ -1,12 +1,22 @@
-OnTesting
+//交换对象
+OnCharaterAssign
 {
-	_a = 12
-	_b = 1
-	_c = 13
-	_d = 1
-	_txt = ARRAYSIZE(Hnormal.Info[1])
-	_program = ''
-	_txt
+	EVAL("h.%(target).name = h.target.name")
+	EVAL("h.%(target).level = h.target.level")
+	EVAL("h.%(target).mark = h.target.mark")
+	EVAL("h.%(target).exp = h.target.exp")
+	EVAL("h.%(target).ball = h.target.ball")
+	EVAL("h.%(target).tallent = h.target.tallent")
+	target = reference0
+	--
+	EVAL("h.target.name = h.%(target).name")
+	EVAL("h.target.level = h.%(target).level")
+	EVAL("h.target.mark = h.%(target).mark")
+	EVAL("h.target.exp = h.%(target).exp")
+	EVAL("h.target.ball = h.%(target).ball")
+	EVAL("h.target.tallent = h.%(target).tallent")
+	OnInit("%(target)")
+	OnGoHmode
 }
 //框架部分
 OnGoHmode
@@ -14,16 +24,16 @@ OnGoHmode
 	if hexp == 0{
 		//初始化
 		//第一次h的日期
-		h.Hfirstday = (year,month,day)
+		h.target.Hfirstday = (year,month,day)
 		//19项，19项能力
 		//顺从，欲望，技巧，c感觉（clitoris），v感觉（vagina）
 		//a感觉（ass）b感觉（breast），m感觉（mouse），奉仕，露出
 		//m属性,s属性，百合属性，自慰技巧，精液上瘾
 		//屈服，射精快感，反感，抑郁
-		h.level = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+		h.target.level = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 		//七项，七种标记
 		//苦痛标记，快乐标记，屈服标记，恐怖标记，反感标记，排卵标记，怀孕标记
-		h.mark = (0,0,0,0,0)
+		h.target.mark = (0,0,0,0,0)
 		//32项，32种经验
 		//v经验，a经验，高潮经验，射精经验，精液经验
 		//喷乳经验，放尿经验，自慰经验，百合经验，男同经验
@@ -32,12 +42,12 @@ OnGoHmode
 		//歌唱经验，助手经验 ，调教排泄经验，饮精高潮经验，尿道扩张经验
 		//药物经验，乳腺开发经验，触手经验，失神经验，兽交经验
 		//料理经验，极致高潮经验
-		h.exp = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+		h.target.exp = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 		//14项，对应14个宝珠
 		//c快感，v快感，a快感，b快感，m快感
 		//欲望，恭顺，屈服，习惯，羞耻
 		//痛苦，恐惧，反感，主导
-		h.ball = (0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+		h.target.ball = (0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 		//21项,对应21个消耗品
 		//润滑液，媚药，利尿剂 ，录像带，迷迭香，
 		//避孕药，镇定剂，浴盐，茉莉香，薰衣草香，
@@ -54,46 +64,53 @@ OnGoHmode
 		//禁忌知识，触手操控术，入夜阳伞，避孕护符。
 		h.unlock = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 		//特殊属性
-		h.tellent = IARRAY
+		h.target.tellent = IARRAY
+		//角色
+		h.charater = ('橘花','斗和')
 		//结构上的参数，无实际意义
 		h.shoppricepass = ''
 		h.shoptextpass = ''
 		hexp = 1
 	}
-	{
-		//这是每次开始H都会重置的部分
-		//调教目标名，日后或许会有别的？
-		h.target.name='橘花'
-		//进入hmode的标记
-		h._hmode = 1
-		specialmode = 'h'
-		//获取基本参数，体力，气力，心情
-		h._KikkaHmpMax = GetKikkaHmpMaxCheck
-		h._kikkaHmp = h._KikkaHmpMax
-		h._kikkaHhp = kikkastm
-		h._kikkaHmood = kikkamood
-		//17项，17个相互冲突的项目
-		//眼部，口腔，乳房，阴道，尿道
-		//阴蒂，子宫，肠道，肛门，呼吸
-		//束缚，体位，身体,性别,上一指令
-		//主角性别,阴毛，乳头
-		h._place = ('无','无','无','无','无','无','无','无','无','无','无','无','无','无','无','无','无','无')
-		//不会相互冲突的标签项目
-		h._markd = IARRAY
-		//19项，19个数值
-		//c快感，v快感，a快感，b快感，m快感
-		//恭顺，欲望，屈服，v润滑，a润滑
-		//羞耻，习惯，痛苦，恐怖，性欲
-		//精液欲，射精欲,反感，抑郁
-		h._status = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
-		//场景的数值
-		//主角高潮值
-		h._cum = 0
-		//H氛围
-		h._atomosphere = 0
-	}
 	--
+	OnInit
 	OnDoing
+}
+OnInit
+{
+	//这是每次开始H都会重置的部分
+	//调教目标名，日后或许会有别的？
+	h.target.name= target
+	//进入hmode的标记
+	h._hmode = 1
+	specialmode = 'h'
+	//获取基本参数，体力，气力，心情
+	h.target._HmpMax = GetKikkaHmpMaxCheck
+	h.target._HhpMax = kikkastmmax
+	h.target._HmoodMax = kikkamood
+	h.target._Hmp = h._KikkaHmpMax
+	h.target._Hhp = kikkastm
+	h.target._Hmood = kikkamood
+	//17项，17个相互冲突的项目
+	//眼部，口腔，乳房，阴道，尿道
+	//阴蒂，子宫，肠道，肛门，呼吸
+	//束缚，体位，身体,性别,上一指令
+	//主角性别,阴毛，乳头
+	h.target._place = ('无','无','无','无','无','无','无','无','无','无','无','无','无','无','无','无','无','无')
+	//不会相互冲突的标签项目
+	h.target._markd = IARRAY
+	//19项，19个数值
+	//c快感，v快感，a快感，b快感，m快感
+	//恭顺，欲望，屈服，v润滑，a润滑
+	//羞耻，习惯，痛苦，恐怖，性欲
+	//精液欲，射精欲,反感，抑郁
+	h.target._status = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+	//场景的数值
+	//主角高潮值
+	h.target._cum = 0
+	h.master._cum = 0
+	//H氛围
+	h._atomosphere = 0
 }
 //初次h到现在的时间
 CheckDifferenceBetweenTheDayAndNow
@@ -143,10 +160,10 @@ OnDoing
 	_set = reference0
 	_differenceday = CheckDifferenceBetweenTheDayAndNow(h.Hfirstday[0],h.Hfirstday[1],h.Hfirstday[2])
 	"\_q\1\![set,autoscroll,disable]\![set,balloontimeout,-1]\f[color,white]%(year)年%(month)月%(day)日 已经过了%(_differenceday)天      \f[color,pink]好感度：%(intimacy) \n/
-	\f[color,red]体力：%(h._kikkaHhp) %(ColorBar(1,175,h._kikkaHhp,kikkastmmax,,'colortxt=180'))\n/
-	\f[color,0,230,255]气力：%(h._kikkaHmp) %(ColorBar(3,175,h._kikkaHmp,h._KikkaHmpMax,,'colortxt=180'))\n/
-	\f[color,yellow]心情：%(h._kikkaHmood) %(ColorBar(8,175,h._kikkaHmood,kikkamoodmax,,'colortxt=180'))\n/
-	\q[◇开始调教,OnDoing,0] \q[◇购买道具,OnDoing,1] \q[◇外出探索,OnDoing,2] \q[◇休息,OnEndHMode]\n"
+	\f[color,red]体力：%(h.target._Hhp) %(ColorBar(1,175,h.target._Hhp,h.target._HhpMax,,'colortxt=180'))\n/
+	\f[color,0,230,255]气力：%(h.target._Hmp) %(ColorBar(3,175,h.target._Hmp,h.target._HmpMax,,'colortxt=180'))\n/
+	\f[color,yellow]心情：%(h.target._Hmood) %(ColorBar(8,175,h.target._Hmood,h.target._HmoodMax,,'colortxt=180'))\n/
+	\q[◇开始调教,OnDoing,0] \q[◇购买道具,OnDoing,1] \q[◇外出探索,OnDoing,2] \q[◇休息,OnEndHMode] \q[◇切换对象,OnCharaterAssignMenu]\n"
 	--
 	case _set{
 		when 0{
@@ -169,6 +186,23 @@ OnDoing
 			OnExplore
 		}
 	}
+}
+//切换对象
+OnCharaterAssignMenu
+{
+	'\b[0]\![set,choicetimeout,-1]\_q\想要选择谁呢？\n'
+	--
+	GetTheCharaterMenu
+
+}
+GetTheCharaterMenu
+{
+
+	_txt = '\![set,autoscroll,disable]\_q'
+	for _i = 0 ; _i<ARRAYSIZE(h.charater) ; _i++{
+			_txt += "\q[%(h.charater[_i]),OnCharaterAssign,%(h.charater[_i])]\n"
+		}
+	_txt
 }
 //结束h
 OnEndHMode
@@ -359,7 +393,8 @@ OnHmodemenu
 	GetTheHMenu
 }
 GetTheHMenu
-{	_commandarray = IARRAY
+{
+	_commandarray = IARRAY
 	for _j = 0 ; _j < ARRAYSIZE(Hnormal.info);_j++{
 		if HCHECK(Hnormal.info[_j][1]) == NULL{
 			_commandarray[ARRAYSIZE(_commandarray)] = Hnormal.info[_j][HCHECK(_j)]
@@ -565,7 +600,7 @@ OnHnormalget
 			}
 			--
 			'\n/
-			f[color,green]\q[◇继续,OnDoing,0]'
+			\f[color,green]\q[◇继续,OnDoing,0]'
 		}
 		when '肛门爱抚'{
 			'\b[2]口口口肛门爱抚\n\x'
