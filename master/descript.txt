@@ -16,4 +16,4 @@ recommended.balloon,wiz
 mousecursor,./img/curs/common.ani
 mousecursor.text,./img/curs/text.ani
 mousecursor.wait,./img/curs/busy.ani
-homeurl,https://cdn.jsdelivr.net/gh/Taromati2/stable-mirror@master/Taromati2/
+homeurl,https://raw.githubusercontent.com/Taromati2/stable-mirror/master/Taromati2/
