@@ -749,6 +749,11 @@ OnClose.base:void{
 OnClose{
 	OnClose.base
 	--
+	OnClose.talk
+	--
+	'\-'
+}
+OnClose.talk{
 	if mode == '1'{
 		OnClose1
 	}
@@ -788,7 +793,7 @@ OnClose0{
 		}
 	}
 	--
-	'\w9\w9\-'
+	'\w9\w9'
 }
 //**** フェーズ *******************************************************************************************************
 GetPhase{
