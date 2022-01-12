@@ -632,6 +632,7 @@ OnErrorLog{
 		_i++
 	}
 	_txt+='\_q\n/
+	\q[◇清空错误日志,OnClearErrorLog]\n/
 	\q[◇重新载入SHIORI,OnReloadShiori]\n/
 	\q[◇结束,Cancel]\n/
 	'
@@ -639,6 +640,9 @@ OnErrorLog{
 		_txt='没有错误记录'
 	ClearErrorListVar
 	_txt
+}
+OnClearErrorLog{
+	CLEARERRORLOG
 }
 OnEventAdd{
 	"/
