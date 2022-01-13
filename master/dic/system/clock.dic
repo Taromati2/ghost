@@ -173,9 +173,12 @@ ClassMonitor{
 	if _classrm{
 		if InNotify
 			OnPlayAlarm
-		_classrm
+		_classrm+'\n/
+		\q[◇稍后提醒,Cancel]\n/
+		\q[◇我知道了,OnClassMonitorTempClose]\n/
+		'
 		--
-		_trayballoon="\![set,trayballoon,--icon=info,--timeout=10,--title=课程提醒,--text=%(_classrm),--text=（点击气泡关闭提醒）]"
+		_trayballoon="\![set,trayballoon,--icon=info,--timeout=10,--title=课程提醒,--text=%(_classrm),--text=（点击气泡稍后提醒）]"
 		if InNotify
 			SHIORI_FW.MakeValueNotify(_trayballoon)
 		else
@@ -216,7 +219,7 @@ AlarmMonitor{
 OnBalloonClose{
 	if alarmstart && '闹钟提醒' _in_ reference0 {
 		alarmstart = 0
-		'\![sound,stop]'
+		OnAlarmEnd
 	}
 }
 OnTrayBalloonClick{
@@ -232,7 +235,7 @@ OnTrayBalloonClick{
 		agendastart = 0
 		eventtemp=NULL
 	}
-	elseif reference0 == '整点报时'{
+	elseif reference0 == '整点报时' {
 		if minute>=5 {
 			username
 			--
@@ -248,8 +251,17 @@ OnTrayBalloonClick{
 			'好的～'
 		}
 	}
+	elseif reference0 == '课程提醒' {
+		OnAlarmEnd
+		'嗯嗯～'
+		'好的～'
+	}
 	elseif SHIORI_FW.DebugMode{
 		"未注册的气泡标题“%(reference0)”被触发了"
+	}
+	else{
+		'嗯嗯～'
+		'好的～'
 	}
 }
 OnAlarmMenu{
@@ -293,7 +305,7 @@ AlarmMenu{
 	--
 	"闹钟铃声：\__q[OnSetAlarmFile]%(SPLITPATH.roughly(alarmfile)[1])\__q"
 	--
-	'\n[150]\q[◇返回上一层,OnOpenMenu]    \q[◇终了,OnAlarmEnd]'
+	'\n[150]\q[◇返回上一层,OnOpenMenu]    \q[◇终了,Cancel]'
 }
 OnSetAlarmFile{
 	'\![open,dialog,open,--id=alarmfile,--title=请选择音乐文件,--dir=__system_mymusic__,--filter=音乐文件(mid;wav;mp3;au;ogg;wma)|*.mid;*.wav;*.mp3;*.au;*.ogg;*.wma]'
@@ -310,7 +322,8 @@ OnPlayAlarm:void{
 	CALLSAORI('mciaudior', 'load',_argv[0])
 	CALLSAORI('mciaudior', 'play')
 }
-OnAlarmEnd{
+OnAlarmEnd:void{
+	CALLSAORI('mciaudior', 'stop')
 }
 OnAlarmSet{
 	alarmset[reference0] = reference1
@@ -349,9 +362,14 @@ Hourlychime{
 		_trayballoon
 }
 OnTrayBalloonTimeout{
-	"%(username)不理橘花呢？"
-	"%(username)？"
-	"%(username)在做别的事吗？"
+	if reference0 == '课程提醒' {
+		do_nothing
+	}
+	else {
+		"%(username)不理橘花呢？"
+		"%(username)？"
+		"%(username)在做别的事吗？"
+	}
 }
 OnPlayBell:void{
 	CALLSAORI('mciaudior', 'stop')

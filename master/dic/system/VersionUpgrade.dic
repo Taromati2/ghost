@@ -141,4 +141,6 @@ VERSION_UPGRADE_4:void{
 }
 VERSION_UPGRADE_5:void{//building
 	RENAME_VAR('showkikka','MenuMode')
+	ERASEVAR('ct')
+	ERASEVAR('CT')
 }
