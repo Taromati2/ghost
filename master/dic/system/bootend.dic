@@ -845,6 +845,8 @@ OnWindowStateRestore{
 	--
 	OnSurfaceRestore.base
 	--
+	ClassMonitor
+	--
 	if topmode/2
 		topmode-=2
 	TopModeChanged
