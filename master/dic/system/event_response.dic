@@ -1326,7 +1326,7 @@ OnSysResume.base{
 }
 OnSysResume{
 	BaseGhostStart.aboutTime
-	if !minimizestarttime{
+	if !InMinimize{
 		SHIORI_FW.PushNotifyResult(OnSysResume.base)
 		SHIORI_FW.PushNotifyResult(OnBoot.aboutTime)
 	}

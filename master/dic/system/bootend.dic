@@ -829,6 +829,7 @@ OnWindowStateMinimize{
 		DiscordCustomSet.CustomState('但是放着歌')
 	--
 	minimizestarttime = systemuptime
+	InMinimize = 1
 	if mode != '1'{
 		'\0\s[3]……'
 		'\0\s[6]……知道了。'
@@ -882,6 +883,7 @@ OnWindowStateRestore{
 	"\_w[%(MAX(MIN(MinimizeTime/60*1000,9000),500))]"
 	--
 	ERASEVAR('minimizestarttime')
+	ERASEVAR('InMinimize')
 }
 MinimizeTime{
 	TOINT(systemuptime) - TOINT(minimizestarttime)
