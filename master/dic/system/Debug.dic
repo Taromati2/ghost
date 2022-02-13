@@ -667,13 +667,39 @@ OnEventAdd.ToDic{
 	FCHARSET.default
 	OnOpenDicWithLineNum(_file,_linenum+2)
 }
-On_yatamaOpen{
+On_tamaOpen{
 	SETTAMAHWND(reference0)
-	SHIORI_FW.Make_X_SSTP_PassThru('Tittle','yatame test: Taromati2')
-	//SHIORI_FW.Make_X_SSTP_PassThru('Icon',GetSelfIconFullPath)
-	'yatama打开了'
+	SHIORI_FW.Make_X_SSTP_PassThru('Tittle','tama test: Taromati2')
+	SHIORI_FW.Make_X_SSTP_PassThru('Icon','IMG_PATH/ico/tama.ico')
+	SHIORI_FW.Make_X_SSTP_PassThru('border.color','626262')
+	SHIORI_FW.Make_X_SSTP_PassThru('background.color','1e1e1e')
+	SHIORI_FW.Make_X_SSTP_PassThru('default.color','4ec9b0')
+	--
+	DiscordCustomSet.SmallImageKey('tama')
+	--
+	DiscordCustomSet.CustomDetail('查看日志')
+	--
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]唔…\w9\w9\n"
+	else
+		'\0\s[6]嗯…\w9\w9\s[0]\n'
+	--
+	'tama打开了\n'
 }
-On_yatamaExit{
-	'yatama结束了'
+On_tamaExit{
 	SETTAMAHWND(0)
+	--
+	if SHIORI_FW.DebugMode
+		DiscordCustomSet.SmallImageKey('simple_hollow_red_heart')
+	else
+		DiscordCustomSet.SmallImageKey(' ')
+	--
+	DiscordCustomSet.CustomDetail('累了')
+	--
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]唔…\w9\w9\n"
+	else
+		'\0\s[6]嗯…\w9\w9\s[0]\n'
+	--
+	'tama结束了\n'
 }
