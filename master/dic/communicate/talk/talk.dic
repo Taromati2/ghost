@@ -32,7 +32,7 @@ AITalk{
 	lastTalk
 }
 OnTranslate{
-	_txt = reference0
+	_txt = reference.raw[0]
 	_language=-1
 	if _argc>0{
 		_txt=_argv[0]
@@ -1486,7 +1486,7 @@ ONE{
 //**** TWO *************************************************
 TWO{
 	_t = ''
-	if _t = TWO.commnd
+	if _t = TWO.commnd && !InAIGhostReply
 		_t
 	elseif !KikkaAImode {
 		if _t = TWO.aitalk

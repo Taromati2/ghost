@@ -54,10 +54,9 @@ OnVanished{
 }
 //---- 与其他人格对话 -----------------------------------------------------------------------
 ReplyToGhost{
-	if ghostname _in_ reference1 || selfname _in_ reference1 || keroname _in_ reference1{
-		_varname_NumOfTry='OtherGhostTalk.'+STRDIGEST(reference0)+'.NumOfTry'
-		ERASEVAR(_varname_NumOfTry)
-	}
+	_varname_NumOfTry='OtherGhostTalk.'+STRDIGEST(reference0)+'.NumOfTry'
+	ERASEVAR(_varname_NumOfTry)
+
 	_t=1
 	res_reference0 = reference0
 	if reference0 == '凉璃'{
@@ -98,10 +97,8 @@ ReplyToGhost{
 			_t=1
 		}
 	}
-	if _t{
-		//'\0\s[0]嗯、是啊～。'
+	if _t
 		REPLACE(OnAIGhostReply,username,'你')
-	}
 }
 OnAIGhostReply{
 	InAIGhostReply = 1

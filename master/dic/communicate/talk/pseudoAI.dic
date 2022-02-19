@@ -15,7 +15,9 @@ AIGet{
 		_found=_temp[_i]
 		SETDELIM(_found,'|')
 		_count=ARRAYSIZE(_found)-1
-		_id=RAND(_count)
+		_id=_count
+		if _count
+			_id=RAND(_count)
 		_found=_found[_id]
 		if '<think>' _in_ _found{
 			AILoad.Think(_found)
@@ -30,8 +32,11 @@ AIGet{
 	}
 	SETDELIM(_txt,'|')
 	_count=ARRAYSIZE(_txt)-1
-	_id=RAND(_count)
-	_txt=_txt[_id]
+	_id=_count
+	if _count{
+		_id=RAND(_count)
+		_txt=_txt[_id]
+	}
 	_txt
 }
 AITextReplace{
@@ -554,7 +559,7 @@ AILoad.AIFile{
 	}
 	FCHARSET(1)
 	_looplimit = GETSETTING('looplimit')
-	SETSETTING('looplimit',MAX(FSIZE(_file),7))
+	void SETSETTING('looplimit',MAX(FSIZE(_file),7))
 	if FOPEN(_file,'rb'){
 		_table=0
 		_buff=''
@@ -882,7 +887,7 @@ AILoad.AIFile{
 	}
 	FCLOSE(_file)
 	FCHARSET.default
-	SETSETTING('looplimit',_looplimit)
+	void SETSETTING('looplimit',_looplimit)
 	if _found{
 		if '<srai>' _in_ _txt&&'记住' !_in_ _str{
 			if '<think>' _in_ _txt
