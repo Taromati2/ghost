@@ -122,6 +122,14 @@ OnKeyPress{
 	}
 	elseif reference0 == 'f9' {
 		if SHIORI_FW.DebugMode{
+			if FILEEXIST('SHIORI_PATH/tama.exe')
+				'\![open,file,SHIORI_PATH/tama.exe,-g Taromati2]'
+			else
+				'\0\s[0]未找到tama.exe，请前往github仓库补全开发文件'
+		}
+	}
+	elseif reference0 == 'f10' {
+		if SHIORI_FW.DebugMode{
 			'\![execute,createupdatedata]'
 		}
 	}
