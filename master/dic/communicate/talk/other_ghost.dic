@@ -24,6 +24,10 @@ StartCommunicate{
 				"\0\s[0]你好、%(res_reference0)。"
 			EVAL(_varname_NumOfTry+'++')
 		}
+		elseif RAND(MIN(EVAL(_varname_NumOfTry),100))==0{
+			"\0\s[0]你好、%(res_reference0)。"
+			EVAL(_varname_NumOfTry+'++')
+		}
 		else{
 			ERASEVAR('res_reference0')
 			RandomTalk
@@ -54,9 +58,16 @@ OnVanished{
 }
 //---- 与其他人格对话 -----------------------------------------------------------------------
 ReplyToGhost{
-	_varname_NumOfTry='OtherGhostTalk.'+STRDIGEST(reference0)+'.NumOfTry'
-	ERASEVAR(_varname_NumOfTry)
-
+	if ghostname _in_ reference1 || selfname _in_ reference1 || keroname _in_ reference1{
+		_varname_NumOfTry='OtherGhostTalk.'+STRDIGEST(reference0)+'.NumOfTry'
+		_varname_LastTalk='OtherGhostTalk.'+STRDIGEST(reference0)+'.LastTalk'
+		if EVAL(_varname_LastTalk)==reference1
+			EVAL(_varname_NumOfTry+'++')
+		else{
+			EVAL(_varname_LastTalk+'=reference1')
+			ERASEVAR(_varname_NumOfTry)
+		}
+	}
 	_t=1
 	res_reference0 = reference0
 	if reference0 == '凉璃'{
