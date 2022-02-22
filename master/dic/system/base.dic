@@ -69,3 +69,11 @@ OpenDocForRuntime.string{
 OpenDocForRuntime{
 	SHIORI_FW.PushNotifyResult(OpenDocForRuntime.string(_argv[0]))
 }
+OnEraseVar{
+	ERASEVAR(reference0)
+	'完成了'
+}
+OnSet{
+	LETTONAME(reference0,reference1)
+	'完成了'
+}

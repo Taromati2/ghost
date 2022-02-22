@@ -887,7 +887,11 @@ OnUpdateFailure{
 		return
 	}
 	elseif reference0 == 'executing'&&InSilentUpdate{
-		ERASEVAR('InSilentUpdate')
+		'\0\s[26]已在静默更新中。\n/
+		取消静默？\n/
+		\q[◇好的,OnEraseVar,InSilentUpdate]\n/
+		\q[◇不用了,Cancel]\n/
+		'
 		return
 	}
 	if !InSilentUpdate{

@@ -809,10 +809,6 @@ OnAutoComm{
 	_txt+='\n[half]\q[◇返回上一层,Option]      \q[◇终了,OptionEnd]\_q'
 	_txt
 }
-Onset{
-	LETTONAME(reference0,reference1)
-	'完成了'
-}
 Onusage{
 	if reference0=='voicename'{
 		LETTONAME(reference0,CHR(34)+reference1+CHR(34))

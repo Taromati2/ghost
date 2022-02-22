@@ -413,13 +413,13 @@ OnDebugModeChange{
 		void MKDIR('VAR_PATH')
 		if AutoUpdate
 			'/
-			\q[◇禁用自动更新,Onset,AutoUpdate,0]\n/
+			\q[◇禁用自动更新,OnSet,AutoUpdate,0]\n/
 			\q[◇无用,Cancel]\n/
 			'
 	}
 	if !SHIORI_FW.DebugMode && !AutoUpdate
 		'/
-		\q[◇开启自动更新,Onset,AutoUpdate,1]\n/
+		\q[◇开启自动更新,OnSet,AutoUpdate,1]\n/
 		\q[◇无用,Cancel]\n/
 		'
 }
