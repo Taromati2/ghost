@@ -10,7 +10,7 @@ icon.minimize,./img/ico/kikka_eye_close.ico
 shiori,shiori/aya.dll
 craftman,8 and other contributors
 craftmanw,8 and other contributors
-craftmanurl,https://github.com/Taromati2/Taromati2/blob/master/docs/contributors.md
+craftmanurl,https://github.com/Taromati2/Taromati2/blob/master/docs/CONTRIBUTORS.md
 shiori.logo.file,./img/AI_state.png
 recommended.balloon,wiz
 mousecursor,./img/curs/common.ani
