@@ -3,7 +3,7 @@
 #define		BGPFILE		PATH/BankGround.png
 #define		PATH		DATA_PATH/Game/Tetris
 
-OnNewGame{//游戏入口
+OnTetris.NewGame{//游戏入口
 	if QuickStartVersion{
 		NeedUpdate
 		return
@@ -36,15 +36,15 @@ OnNewGame{//游戏入口
 	if Tetris.speed>9
 		Tetris.speed=9
 	if !Tetris.timespeed
-		Tetris.timespeed=10
+		Tetris.timespeed=40
 	--
 	TetrisUnits
 	TBaseTetris
 	GenNewUnit
 	--
-	'\C\![quicksession,true]\c\0\s[26]\b[2]'+OnPaintBox1
+	'\C\![quicksession,true]\c\0\s[26]\b[2]'+OnTetris.PaintBox
 }
-OnTimer1Timer{//自动下降。
+OnTetris.Timer{//自动下降。
 	_txt=''
 	if !GameOver && Started && !Paused{
 		stroke++
@@ -52,17 +52,17 @@ OnTimer1Timer{//自动下降。
 			_txt+=Tetris.Move(btmDown)
 			stroke=0
 		}
-		_txt+=CheckGameStatus
+		_txt+=Tetris.CheckGameStatus
 	}
-	_txt+=OnPaintBox1
+	_txt+=OnTetris.PaintBox
 	_txt
 }
-FormKeyDown{//键盘输入
+OnTetris.KeyPress{//键盘输入
 	_txt =''
-	if reference0 == 'n'		{_txt+=OnNewGame;}
-	elseif reference0 == 'l'	{_txt+=OnShowHighScores;}
-	elseif reference0 == 'e'	{OntetrisgameOver;break}
-	elseif reference0 == 'o'	{Ontetrisgameoption;return}
+	if reference0 == 'n'		{_txt+=OnTetris.NewGame;}
+	elseif reference0 == 'l'	{_txt+=OnTetris.HighScores;}
+	elseif reference0 == 'e'	{OnTetris.GameOver;break}
+	elseif reference0 == 'o'	{OnTetris.Option;return}
 	elseif reference0 == 'p'	{Paused=!Paused;}
 	if !GameOver && Started && !Paused{
 		btm = 0
@@ -76,11 +76,11 @@ FormKeyDown{//键盘输入
 		}
 		if btm{
 			_txt+=Tetris.Move(btm)
-			_txt+=CheckGameStatus
+			_txt+=Tetris.CheckGameStatus
 		}
 	}
 	if playingtetris
-		_txt+=OnPaintBox1
+		_txt+=OnTetris.PaintBox
 	_txt
 }
 TetrisUnits{//方块数据
@@ -116,7 +116,7 @@ TetrisUnits{//方块数据
 	((0,0,0,0),(0,7,7,0),(0,7,7,0),(0,0,0,0)))),/
 	)
 }
-OnPaintBox1{//图形显示
+OnTetris.PaintBox{//图形显示
 	_txt='\C\![quicksession,true]\c\b[2]\![set,choicetimeout,0]'
 	if !GameOver && Started && !Paused
 		_txt='\C\![quicksession,true]\c\b[2]\![set,choicetimeout,17]'
@@ -126,7 +126,7 @@ OnPaintBox1{//图形显示
 		for _x=0; _x<MapXsize; _x++{
 			if DispBuffer[_y*MapXsize+_x]{
 				_n=DispBuffer[_y*MapXsize+_x]
-				_txt+=Drawtetris(0,_n,_x,_y)
+				_txt+=OnTetris.PaintBox.Base(0,_n,_x,_y)
 			}
 		}
 	}
@@ -134,17 +134,17 @@ OnPaintBox1{//图形显示
 		for _x=0; _x<4; _x++{
 			if IncmUnit[IncmUnit.r*16+_y*4+_x]>0{
 				_n=IncmUnit[IncmUnit.r*16+_y*4+_x]
-				_txt+=Drawtetris(1,_n,_x,_y)
+				_txt+=OnTetris.PaintBox.Base(1,_n,_x,_y)
 			}
 		}
 	}
 	_x=180
 	_txt+="\_l[%(_x),120]L:%(Lines)\n\_l[%(_x),-]S:%(Score)\n\_l[%(_x),-]H:%(Scores[0])"
 	_txt+="\n\n\_l[%(_x),-]友情提示:\n\_l[%(_x),-]\_l[%(_x),-]不玩游戏时一定要\n\_l[%(_x),-]退出游戏"
-	_txt+="\n\n\_l[%(_x),-]\q[◇设定,Ontetrisgameoption]\n\_l[%(_x),-]\q[◇终了,OntetrisgameOver]"
+	_txt+="\n\n\_l[%(_x),-]\q[◇设定,OnTetris.Option]\n\_l[%(_x),-]\q[◇终了,OnTetris.GameOver]"
 	_txt
 }
-Drawtetris{//绘图
+OnTetris.PaintBox.Base{//绘图
 	_txt=''
 	_x=0
 	_y=0
@@ -223,10 +223,10 @@ Tetris.Move{//方块移动
 	iMdir=_argv[0]
 	if Started{
 		if Removing{
-			_txt+=TryToRemove
+			_txt+=Tetris.TryToRemove
 			if !Removing{
 				_txt+=GenNewUnit
-				if CheckUnit(CurrUnit.x,CurrUnit.y,CurrUnit.r){
+				if Tetris.CheckUnit(CurrUnit.x,CurrUnit.y,CurrUnit.r){
 					GameOver = 1
 				}
 			}
@@ -240,20 +240,20 @@ Tetris.Move{//方块移动
 				elseif	iMdir==btmDown	{_y++;}
 				elseif	iMdir==btmCW	{_r++;_r=_r%4;}
 				elseif	iMdir==btmCCW	{
-					ck=CheckUnit(_x,_y-1,_r)
+					ck=Tetris.CheckUnit(_x,_y-1,_r)
 					while ck!=2&&ck!=1{
 						_y++
-						ck=CheckUnit(_x,_y,_r)
+						ck=Tetris.CheckUnit(_x,_y,_r)
 						CurrUnit.x=_x; CurrUnit.y=_y-1; CurrUnit.r=_r
 						_txt+=DispTetris
 					}
 				}
 			}
-			ck=CheckUnit(_x,_y,_r)
+			ck=Tetris.CheckUnit(_x,_y,_r)
 			if ck==2{
 				if iMdir==btmDown{
 					BlockBuffer = DispBuffer
-					_txt+=TryToRemove
+					_txt+=Tetris.TryToRemove
 				}
 				_txt
 				return
@@ -262,13 +262,13 @@ Tetris.Move{//方块移动
 			_txt+=DispTetris
 			if ck==1 && iMdir!=btmDown{
 				BlockBuffer = DispBuffer
-				_txt+=TryToRemove
+				_txt+=Tetris.TryToRemove
 			}
 		}
 	}
 	_txt
 }
-CheckUnit{//方块判定
+Tetris.CheckUnit{//方块判定
 	_x=_argv[0]
 	_y=_argv[1]
 	_r=_argv[2]
@@ -301,7 +301,7 @@ CheckUnit{//方块判定
 	}
 	_v
 }
-TryToRemove{//方块消除
+Tetris.TryToRemove{//方块消除
 	if Removing{
 		Removing--
 		if !Removing{
@@ -327,7 +327,7 @@ TryToRemove{//方块消除
 					_irmlines ++
 				}
 			}
-			AddScore(_irmlines)
+			Tetris.AddScore(_irmlines)
 		}
 	}
 	else{
@@ -350,7 +350,7 @@ TryToRemove{//方块消除
 	}
 	//Removing
 }
-AddScore{//加分
+Tetris.AddScore{//加分
 	iRmv=TOINT(_argv[0])
 	case iRmv{
 		if iRmv==0{ Score+=TOINT(Tetris.speed);}
@@ -363,7 +363,7 @@ AddScore{//加分
 	--
 	Lines+=iRmv
 }
-CheckGameStatus{//游戏状态
+Tetris.CheckGameStatus{//游戏状态
 	if GameOver{
 		ck=0
 		if Score>0
@@ -383,10 +383,10 @@ CheckGameStatus{//游戏状态
 		if _iChanged>=0{
 			Scores[_iChanged] = Score
 		}
-		//OnShowHighScores
+		//OnTetris.HighScores
 	}
 }
-OnShowHighScores{//显示排行榜
+OnTetris.HighScores{//显示排行榜
 	_s='\b[0]'
 	for _i=0; _i<NumScores; _i++{
 		if Scores[_i]{
@@ -394,7 +394,7 @@ OnShowHighScores{//显示排行榜
 		}
 		else{
 			break
-			OnPaintBox1
+			OnTetris.PaintBox
 		}
 	}
 	if _s==''{
@@ -403,7 +403,7 @@ OnShowHighScores{//显示排行榜
 	_s+='\x'
 	_s
 }
-OntetrisgameOver{//游戏结束
+OnTetris.GameOver{//游戏结束
 	playingtetris=0
 	CleartetrisVar
 	'\0\s[0]\b[0]不玩了吗。'
@@ -460,12 +460,12 @@ CleartetrisVar:void{//消除变量
 	ERASEVAR('Up')
 	ERASEVAR('Down')
 }
-Ontetrisgameoption{
+OnTetris.Option{
 	if reference0=='sp'{
 		Tetris.speed=reference1
 		Tetris.timespeed=reference2
 	}
 	"\![quicksession,true]\![set,choicetimeout,0]\b[2]/
-	游戏速度：当前为%(Tetris.speed)\n\q[◇1,Ontetrisgameoption,sp,1,40] \q[◇2,Ontetrisgameoption,sp,2,36] \q[◇3,Ontetrisgameoption,sp,3,32] \q[◇4,Ontetrisgameoption,sp,4,28] \q[◇5,Ontetrisgameoption,sp,5,24] \q[◇6,Ontetrisgameoption,sp,6,20] \q[◇7,Ontetrisgameoption,sp,7,16] \q[◇8,Ontetrisgameoption,sp,8,12] \q[◇9,Ontetrisgameoption,sp,9,8]/
-	\n\n\q[◇返回,OnTimer1Timer]\n\n\q[◇终了,OntetrisgameOver]"
+	游戏速度：当前为%(Tetris.speed)\n\q[◇1,OnTetris.Option,sp,1,40] \q[◇2,OnTetris.Option,sp,2,36] \q[◇3,OnTetris.Option,sp,3,32] \q[◇4,OnTetris.Option,sp,4,28] \q[◇5,OnTetris.Option,sp,5,24] \q[◇6,OnTetris.Option,sp,6,20] \q[◇7,OnTetris.Option,sp,7,16] \q[◇8,OnTetris.Option,sp,8,12] \q[◇9,OnTetris.Option,sp,9,8]/
+	\n\n\q[◇返回,OnTetris.Timer]\n\n\q[◇终了,OnTetris.GameOver]"
 }

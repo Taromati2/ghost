@@ -193,7 +193,7 @@ CheckRetroSnakerStatus{//游戏状态
 		if iChanged>=0{
 			RetroSnaker.Scores[iChanged] = Score
 		}
-		//OnShowHighScores
+		//OnHighScores
 	}
 }
 OnShowRetroSnakerHighScores{//显示排行榜
@@ -225,7 +225,7 @@ OnRetroSnakeroption{
 	if reference0
 		RetroSnaker.speed=reference0
 	RetroSnaker.timespeed=RetroSnakerspeed(RetroSnaker.speed)
-	_txt+='\n\n\q[◇返回,OnRetroSnakerTimer]\n\q[◇终了,OntetrisgameOver]'
+	_txt+='\n\n\q[◇返回,OnRetroSnakerTimer]\n\q[◇终了,OnRetroSnakerGameOver]'
 	_txt
 }
 RetroSnakerspeed{

@@ -44,7 +44,7 @@ OnKeyPress{
 	}
 	elseif playingtetris {
 		if ck!=2
-			FormKeyDown
+			OnTetris.KeyPress
 	}
 	elseif playingGobang {
 		OnGobangShow
@@ -253,7 +253,7 @@ OnRuntime{
 		_running=_argv[0]
 	case _running{
 		when 'playingtetris'
-			OnTimer1Timer
+			OnTetris.Timer
 		when 'playRetroSnaker'
 			OnRetroSnakerTimer
 	}
@@ -292,9 +292,9 @@ OnMultitask{
 		}
 		when 'playingtetris'{
 			if ck!=2
-				FormKeyDown
+				OnTetris.KeyPress
 			else
-				OnTimer1Timer
+				OnTetris.Timer
 		}
 		when 'playingGobang'{
 			OnGobangShow

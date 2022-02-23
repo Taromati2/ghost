@@ -239,7 +239,7 @@ OnPlayCmd{
 	}
 	--
 	if playingtetris
-		OnPaintBox1
+		OnTetris.PaintBox
 	elseif playRetroSnaker
 		PaintRetroSnaker
 	--
