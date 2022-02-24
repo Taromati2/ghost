@@ -2104,8 +2104,11 @@ Onnewjapanese{
 		}
 		if _str _in_ _buff {
 			_txt += _str + "的内容：\q[◇语音朗读,Onnewjapanese,%(_a),voice]\n\n"
-			_buff = FREAD(_file);  while _buff != -1 && _next !_in_ _buff {_txt += _buff + '\n';_buff = FREAD(_file);}
-			//REPLACE(_buff,_del,'')
+			_buff = FREAD(_file)
+			while _buff != -1 && _next !_in_ _buff {
+				_txt += _buff + '\n'
+				_buff = FREAD(_file)
+			}
 		}
 	}
 	if reference1=='voice'
@@ -2142,8 +2145,11 @@ Onoldjapanese{
 		}
 		if _str _in_ _buff {
 			_txt += _str + "的内容：\q[◇语音朗读,Onoldjapanese,%(_a),voice]\n\n"
-			_buff = FREAD(_file);  while _buff != -1 && _next !_in_ _buff {_txt += _buff + '\n';_buff = FREAD(_file);}
-			//REPLACE(_buff,_del,'')
+			_buff = FREAD(_file)
+			while _buff != -1 && _next !_in_ _buff {
+				_txt += _buff + '\n'
+				_buff = FREAD(_file)
+			}
 		}
 	}
 	if reference1=='voice'
@@ -2173,8 +2179,11 @@ autojeachday{
 		if _str _in_ _buff {
 			_txt +="动漫日语每天一句\n/
 			%(year)年第%(days)天、第%(_i)句\n\n"
-			_buff = FREAD(_file);  while _buff != -1 && _next !_in_ _buff {_txt += _buff + '\n';_buff = FREAD(_file);}
-			//REPLACE(_buff,_del,'')
+			_buff = FREAD(_file)
+			while _buff != -1 && _next !_in_ _buff {
+				_txt += _buff + '\n'
+				_buff = FREAD(_file)
+			}
 		}
 	}
 	FCLOSE(_file)
@@ -2204,8 +2213,11 @@ Onacjeachday{
 		}
 		if _str _in_ _buff {
 			_txt +="第%(_i)句的内容\n\n"
-			_buff = FREAD(_file);  while _buff != -1 && _next !_in_ _buff {_txt += _buff + '\n';_buff = FREAD(_file);}
-			//REPLACE(_buff,_del,'')
+			_buff = FREAD(_file)
+			while _buff != -1 && _next !_in_ _buff {
+				_txt += _buff + '\n'
+				_buff = FREAD(_file)
+			}
 		}
 	}
 	FCLOSE(_file)
@@ -2283,9 +2295,9 @@ On100SentencesInJapanese{
 				_buff = FREAD(_file);  while _buff != -1 && "%(_next)" !_in_ _buff{
 					if _b==_i
 						_buff = '\f[color,194,243,99]' + _buff + '\f[default]'
-					_w += _buff + '\n';_buff = FREAD(_file)
+					_w += _buff + '\n'
+					_buff = FREAD(_file)
 				}
-				//REPLACE(_buff,_del,'')
 			}
 		}
 	}

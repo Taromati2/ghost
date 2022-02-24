@@ -563,7 +563,6 @@ ClearVar{
 	ERASEVAR('ix')
 	ERASEVAR('jd')
 	ERASEVAR('jx')
-	ERASEVAR('ii')
 	ERASEVAR('jj')
 	ERASEVAR('ll')
 	ERASEVAR('kk')

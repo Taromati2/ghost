@@ -499,7 +499,7 @@ UnoCardComPare{//电脑思考
 			unocard.currentcolor=GetUnoCardColor(_unocard.current)
 		}
 		elseif ARRAYSIZE(unocard.user)<=3&&_comfollow==0&&_m<=30{
-			_unocard.current=unocard.com[_wild4id];ii='_m==1'
+			_unocard.current=unocard.com[_wild4id]
 			unocard.com[_wild4id]=IARRAY
 			unocard.currentcolor=GetUnoCardColor(_unocard.current)
 		}

@@ -1114,7 +1114,7 @@ evaluate{//表达式求值主函数
 					_i++
 				}
 			}
-			_opnd[_opnd_i]=_operand;ii=_operand
+			_opnd[_opnd_i]=_operand
 			_opnd_i++
 		}
 		elseif SUBSTR(_expression,_i,1)=='-'&&IsNumber(SUBSTR(_expression,_i+1,1))&&(_i==0||SUBSTR(_expression,_i-1,1)=='('){

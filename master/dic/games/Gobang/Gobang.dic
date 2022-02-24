@@ -519,7 +519,8 @@ Ondownzi{//外部调用此函数下子
 ComputerThink{
 	_txt = '\C\![quicksession,true]\c'
 	if Whowincheck==1{
-		OnGobangShow;return
+		OnGobangShow
+		return
 	}
 	for _i=0;_i<15;_i++{
 		for _j=0;_j<15;_j++{

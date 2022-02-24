@@ -840,7 +840,7 @@ OnDeluxeBall{
 	_bs=ARRAYSIZE(bball)
 	if reference0=='DR'{
 		for _i=0;_i<_rs;_i++{
-			if TOINT(ball[_i])==TOINT(reference1);{
+			if TOINT(ball[_i])==TOINT(reference1){
 				ball[_i]=IARRAY
 			}
 		}
@@ -2038,7 +2038,8 @@ OnKikka挑战反击{
 		}
 		elseif _t>=4 && _t<=7{
 			if SP[TURN]>=30 && SILENT[TURN]!=1{
-				"\![raise,OnKikkausespatkvs,1,10,%(_p)]";{
+				"\![raise,OnKikkausespatkvs,1,10,%(_p)]"
+				{
 					if ANG[TURN]!=2{
 						"\![raise,OnKikkausespatkvs,1,10,%(_p)]"
 						"\![raise,OnKikkausespatkvs,0,20,%(_p)]"
@@ -2339,7 +2340,8 @@ OnInner反击{
 		}
 		elseif _t>=4 && _t<=7{
 			if SP[1]>=30 && SILENT[1]!=1{
-				'\![raise,OnKikkausespatkvs,1,10]';{
+				'\![raise,OnKikkausespatkvs,1,10]'
+				{
 					if ANG[1]!=2{
 						'\![raise,OnKikkausespatkvs,1,10]'
 						'\![raise,OnKikkausespatkvs,0,20]'
@@ -2518,7 +2520,8 @@ OnInner观战{
 		}
 		elseif _t>=4 && _t<=7{
 			if SP[TURN]>=30 && SILENT[TURN]!=1{
-				"\![raise,OnKikkausespatkvs,1,10,%(_p)]";{
+				"\![raise,OnKikkausespatkvs,1,10,%(_p)]"
+				{
 					if ANG[TURN]!=2{
 						"\![raise,OnKikkausespatkvs,1,10,%(_p)]"
 						"\![raise,OnKikkausespatkvs,0,20,%(_p)]"
@@ -2655,7 +2658,8 @@ OnInner挑战反击{
 		}
 		elseif _t>=4 && _t<=7{
 			if SP[TURN]>=30 && SILENT[TURN]!=1{
-				"\![raise,OnKikkausespatkvs,1,10,%(_p)]";{
+				"\![raise,OnKikkausespatkvs,1,10,%(_p)]"
+				{
 					if ANG[TURN]!=2{
 						"\![raise,OnKikkausespatkvs,1,10,%(_p)]"
 						"\![raise,OnKikkausespatkvs,0,20,%(_p)]"
