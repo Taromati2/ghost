@@ -1797,7 +1797,7 @@ OnCircle{
 	_expcircletemp=expcircle1
 	_circle=0
 	_circle0=circle0
-	if _expcircle>0&&_exp>TOINT(_circle){
+	if _expcircle>0 && _exp>TOINT(_circle){
 		_expcircletemp+=_expcircle
 		_circle=GetExp(20+10*_circle0)
 		while _expcircletemp>_circle{

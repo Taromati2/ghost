@@ -455,7 +455,7 @@ OnGoogleCalInput{
 }
 OnGoogleCalFound{
 	_txt = '\_q'
-	_file = 'VAR_PATH\\googlecal.html'
+	_file = 'VAR_PATH/googlecal.html'
 	_buff = ''
 	_found = 0
 	FCHARSET(127)
@@ -471,8 +471,8 @@ OnGoogleCalFound{
 				break
 			}
 		}
+		FCLOSE(_file)
 	}
-	FCLOSE(_file)
 	FCHARSET.default
 	if !_found {
 		_txt += 'Google无法计算您给的表达式，请检查输入是否正确……'
@@ -838,7 +838,7 @@ OnExecuteHTTPComplete{
 			OnKikkaStockFound
 	}
 	else {
-		BUGNow
+		BUGNow('OnExecuteHTTPComplete的未定义async id: '+reference1)
 	}
 }
 OnExecuteHTTPFailure{
