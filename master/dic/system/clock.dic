@@ -68,6 +68,9 @@ OnMinuteChange{
 		UsualUserName.Time=GETSECCOUNT+1314871
 	}
 	--
+	if RAND(60)==0 || hitokoto==''
+		'\![execute,http-get,https://v1.hitokoto.cn/,encode=text,--file=hitokoto.txt,--async=hitokoto]'//更新一言
+	--
 	elapsedtimetotal += 1//计算人格起动总时间/单位分
 	elapsedtime = elapsedtimetotal * 60
 	KikkaGrow

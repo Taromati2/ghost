@@ -483,6 +483,25 @@ OnGoogleCalFound{
 OnGoogleCalEnd{
 	'\0\s[41]那个……橘花有帮到你吗？\w9'
 }
+OnHitokotoUpdate{
+	_file = 'VAR_PATH/hitokoto.txt'
+	FCHARSET(1)
+	if FOPEN(_file,'r') {
+		hitokoto=FREAD(_file)
+		FCLOSE(_file)
+	}
+	FCHARSET.default
+	--
+	DiscordCustomSet.CustomDetail('hitokoto')
+	--
+	DiscordCustomSet.CustomState(' ')
+}
+OnHitokotoUpdate.Failure{
+	//hitokoto=''
+}
+ClearHitokotoVar{
+	ERASEVAR('hitokoto')
+}
 //RSS读取
 //////////////////////////////////////////////////////////////////////
 /*
@@ -837,6 +856,9 @@ OnExecuteHTTPComplete{
 		elseif kikkastock==3
 			OnKikkaStockFound
 	}
+	elseif reference1 == 'hitokoto' {
+		OnHitokotoUpdate
+	}
 	else {
 		BUGNow('OnExecuteHTTPComplete的未定义async id: '+reference1)
 	}
@@ -856,6 +878,9 @@ OnExecuteHTTPFailure{
 			"\0\s[3]连线失败了……\nError：%(reference4)\n要查看本地信息吗？\n\q[◇确定,OnWeatherFound]"
 		elseif reference1 == 'tulingapi' {
 			OnTuLingFound.Failure
+		}
+		elseif reference1 == 'hitokoto' {
+			OnHitokotoUpdate.Failure
 		}
 		else{
 			"\0\s[3]连线失败了……\nError：%(reference4)"

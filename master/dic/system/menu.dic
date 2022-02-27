@@ -27,6 +27,7 @@ OpenMenu{
 		_submenuex=_argv[1]
 		menu=_submenu
 		menuex=_submenuex
+		_message=hitokoto
 	}
 	else {
 		_message=OpenMenuTalk
