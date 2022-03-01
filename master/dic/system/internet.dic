@@ -492,7 +492,7 @@ OnHitokotoUpdate{
 	}
 	FCHARSET.default
 	--
-	DiscordCustomSet.CustomDetail('hitokoto')
+	DiscordCustomSet.CustomDetail(hitokoto)
 	--
 	DiscordCustomSet.CustomState(' ')
 }
