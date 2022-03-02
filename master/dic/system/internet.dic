@@ -142,9 +142,6 @@ OnTuLingFound{
 				_txt+=TextBetween(_buff,'":"','"}',0)
 		}
 	}
-	else{
-		_txt=''
-	}
 	if _txt && tulingapi.in{
 		_txt=REPLACE(_txt,'\b[2]\_q','')
 		AITalkAdd('PSEUDO_AI_PATH\tuling.ai',tulingapi.in+'*'+_txt+'§')
