@@ -90,7 +90,7 @@ OnChangeCityComplete{
 OntulingApi{
 	callingtulingapi=1
 	tulingapi.in=_argv[0]
-	"\![excute,http-get,http://www.tuling123.com/openapi/api?key=5b56e59d852489bb6c40289223619a28&info=%(tulingapi.in),--param-charset=UTF-8,--file=tulingapi.html,--timeout=200,--async=tulingapi]"
+	"\![excute,http-get,http://www.tuling123.com/openapi/api?key=5b56e59d852489bb6c40289223619a28&info=%(tulingapi.in),--param-charset=UTF-8,--nofile,--timeout=200,--async=tulingapi]"
 }
 /*
 code  说明
@@ -119,13 +119,9 @@ OnTuLingFound.Failure{
 	_txt
 }
 OnTuLingFound{
-	_code=''
 	_txt='\b[2]\_q'
-	_file = 'VAR_PATH\\tulingapi.html'
-	_buff = ''
-	FCHARSET(1)
-	if FOPEN(_file,'r'){
-		_buff = FREAD(_file)
+	{
+		_buff = reference3
 		_code=TextBetween(_buff,':',',',0)
 		case _code{
 			when '100000'
@@ -149,8 +145,6 @@ OnTuLingFound{
 	else{
 		_txt=''
 	}
-	FCLOSE(_file)
-	FCHARSET.default
 	if _txt && tulingapi.in{
 		_txt=REPLACE(_txt,'\b[2]\_q','')
 		AITalkAdd('PSEUDO_AI_PATH\tuling.ai',tulingapi.in+'*'+_txt+'§')
