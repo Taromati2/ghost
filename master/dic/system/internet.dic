@@ -484,13 +484,7 @@ OnGoogleCalEnd{
 	'\0\s[41]那个……橘花有帮到你吗？\w9'
 }
 OnHitokotoUpdate{
-	_file = 'VAR_PATH/hitokoto.txt'
-	FCHARSET(1)
-	if FOPEN(_file,'r') {
-		hitokoto=FREAD(_file)
-		FCLOSE(_file)
-	}
-	FCHARSET.default
+	hitokoto=reference3
 	--
 	DiscordCustomSet.CustomDetail(hitokoto)
 	--
