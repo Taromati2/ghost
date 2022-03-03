@@ -487,6 +487,8 @@ OnInstallFailure{
 }
 OnShioriReloaded{
 	OnSQLLoad.Fixer//非中文环境编码问题再修复
+	if ISVAR('TamaHwnd')
+		SETTAMAHWND(TamaHwnd)
 	if ReloadFromTerminal{
 		ShioriEcho.Special='重载完成'
 		ERASEVAR('ReloadFromTerminal')

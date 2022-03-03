@@ -668,7 +668,8 @@ OnEventAdd.ToDic{
 	OnOpenDicWithLineNum(_file,_linenum+2)
 }
 On_tamaOpen{
-	SETTAMAHWND(reference0)
+	TamaHwnd=reference0
+	SETTAMAHWND(TamaHwnd)
 	SHIORI_FW.Make_X_SSTP_PassThru('Tittle','tama test: Taromati2')
 	SHIORI_FW.Make_X_SSTP_PassThru('Icon','IMG_PATH/ico/tama.ico')
 	SHIORI_FW.Make_X_SSTP_PassThru('border.color','626262')
@@ -702,4 +703,7 @@ On_tamaExit{
 		'\0\s[6]嗯…\w9\w9\s[0]\n'
 	--
 	'tama结束了\n'
+}
+ClearTamaVar{
+	ERASEVAR('TamaHwnd')
 }
