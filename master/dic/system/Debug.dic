@@ -688,6 +688,7 @@ On_tamaOpen{
 	'tama打开了\n'
 }
 On_tamaExit{
+	ClearTamaVar
 	SETTAMAHWND(0)
 	--
 	if SHIORI_FW.DebugMode
