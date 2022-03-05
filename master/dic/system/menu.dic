@@ -80,7 +80,7 @@ SubMenu{
 			\q[◇花语,OnFlowers]				\_l[100,-]\q[◇诞生花,OnBirthdayFlowerList]		\_l[200,-]\q[◇塔罗占卜,OnFUT]\n/
 			\q[◇趣味测试,Ontestmenu]		\_l[100,-]\q[◇橘花题库,OnExamTest]				\_l[200,-]\q[◇和橘花谈心,talktoheart]\n/
 			\q[◇查找诗歌,OnResearchPoesy]	\_l[100,-]\q[◇唐诗默写♪,OnPoesywrite]			\_l[200,-]\q[◇准备晚餐,Cookingtonight]\n/
-			\q[◇动漫列表,OnDHs]				\_l[100,-]\q[◇咖啡厅,get_some_tea]			\_l[200,-]%(Onmeal)\n/
+			\q[◇动漫列表,OnDHs]				\_l[100,-]\q[◇咖啡厅,get_some_tea]				\_l[200,-]%(Onmeal)\n/
 			"
 			--
 			if towaflag != '0'
@@ -95,7 +95,7 @@ SubMenu{
 			\q[◇开心问答,OnQuestBegin]		\_l[80,-]\q[◇扎金花,OnGoldenFlower]		\_l[168,-]\q[◇华容道,OnHuaRongDao]\n/
 			\q[◇井字棋,OnPlayOX]													\_l[168,-]\q[◇五子棋,OnGobangInIt]\n/
 			\q[◇拼图游戏,OnPuzzleList]												\_l[168,-]\q[◇连连看,OnLinkWnd] \n/
-			\q[◇俄罗斯方块,OnTetris.NewGame]												\_l[168,-]\q[◇数字汉诺塔,OnHanoi]\n/
+			\q[◇俄罗斯方块,OnTetris.NewGame]										\_l[168,-]\q[◇数字汉诺塔,OnHanoi]\n/
 			\q[◇贪食蛇,OnRetroSnaker]												\_l[168,-]\q[◇橘花大乱斗,OnKikkaBattle] \n/
 			\q[◇双色球,OnDoubleColorBall]											\_l[168,-]\q[◇推箱子,OnBoxGame]\n[150]'
 		}
