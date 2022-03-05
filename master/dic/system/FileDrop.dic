@@ -18,6 +18,16 @@ OnFileDrop{
 		\q[◇确定,OnUpdateSHIORICore,'+SakuraScriptArgConverter(reference0)+']\n/
 		\q[◇无用,Cancel]'
 	}
+	elseif SHIORI_FW.DebugMode && _filename == 'tama.exe'{
+		if mode=='0'
+			'\0\s[0]'
+		else
+			'\1'
+		--
+		'更新tama？\n/
+		\q[◇确定,OnUpdateTama,'+SakuraScriptArgConverter(reference0)+']\n/
+		\q[◇无用,Cancel]'
+	}
 	else{
 		case _fileext {
 			when '.m3u', '.m3u8', '.mid', '.wav', '.mp3', '.au', '.m4a', '.ogg', '.wma','.ape','.flac','.avi','.wmv','.rm','.rmvb','.mp4','.mkv','.flv','.mpg'{

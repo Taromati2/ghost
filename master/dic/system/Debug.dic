@@ -609,6 +609,18 @@ OnUpdateSHIORICore{
 		'\0\s[0]未找到update_aya.bat，请前往github仓库补全开发文件'
 	}
 }
+OnUpdateTama{
+	_tmpfile='SHIORI_PATH\tama.tmp'
+	_exefile='SHIORI_PATH\tama.exe'
+	void FRENAME(_exefile,_tmpfile)
+	if FMOVE(reference0,'SHIORI_PATH'){
+		void FDEL(_tmpfile)
+		'\0\s[0]成功了'
+	}else{
+		void FRENAME(_tmpfile,_exefile)
+		'\0\s[8]文件移动出错'
+	}
+}
 OnOpenDicWithLineNum{
 	if !_argv[0]
 		_argv[0] = reference0
