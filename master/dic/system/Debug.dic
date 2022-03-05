@@ -2,10 +2,20 @@
 OnAnchorSelect{
 	BUGNow("AnchorSelect\_q“%(REPLACE(reference0,'\','\\'))”\_q被触发了\w9\w9\n但是目前Taromati并不支持任何AnchorSelect")
 }
+shiori.OnMemoryError{
+	_stack=GETCALLSTACK
+	_func=_stack[ARRAYSIZE(_stack)-2]
+	_info=GETFUNCINFO(_func)
+	_errorinfo='内存错误\n调用堆栈：\n'+REPLACE(TOSTR(_stack),',','\n')
+	_errorinfo_for_copy=REPLACE(_errorinfo,'\n',CHR(1))
+	--
+	BUGNow(_errorinfo,_errorinfo_for_copy)
+}
 OnshioriLimit{
 	_stack=GETCALLSTACK
 	_type=_argv[0]
 	_type_txt=''
+	//_argv[1]&_argv[2]只在call或loop时存在
 	_file=_argv[1]
 	_linenum=_argv[2]
 	_errorinfo_for_copy=''
