@@ -464,7 +464,7 @@ OnLogModeChange{
 		'中'
 }
 DebugModeChanged{
-	if ISINTSTR(_argv[0]) || ISINTEGER(_argv[0]){
+	if ISINTSTR(TOSTR(_argv[0])) || ISINTEGER(_argv[0]){
 		'\![set,shioridebugmode,'
 		--
 		if TOINT(_argv[0])
