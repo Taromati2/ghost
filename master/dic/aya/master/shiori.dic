@@ -1625,6 +1625,9 @@ SHIORI_EV.On_enable_debug : void {
 	}
 }
 
+shiori.OnMemoryError:void{
+	SHIORI_FW.PushNotifyResult(OnShioriMemoryError)
+}
 shiori.OnLoopLimit:void{
 	SHIORI_FW.PushNotifyResult(OnshioriLimit('loop',_argv))
 }

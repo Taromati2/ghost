@@ -2,7 +2,7 @@
 OnAnchorSelect{
 	BUGNow("AnchorSelect\_q“%(REPLACE(reference0,'\','\\'))”\_q被触发了\w9\w9\n但是目前Taromati并不支持任何AnchorSelect")
 }
-shiori.OnMemoryError{
+OnShioriMemoryError{
 	_stack=GETCALLSTACK
 	_func=_stack[ARRAYSIZE(_stack)-2]
 	_info=GETFUNCINFO(_func)
