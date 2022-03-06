@@ -465,17 +465,14 @@ OnLogModeChange{
 }
 DebugModeChanged{
 	if ISINTSTR(_argv[0]) || ISINTEGER(_argv[0]){
-		/*
-		if TOINT(_argv[0])
-			'\![open,shioridebugmode]'
-		else
-			'\![close,shioridebugmode]'
-		*/
-		SHIORI_FW.DebugMode = TOINT(_argv[0])
-		'\0\s[100]注意：\w9\w9此功能的支持仅处于测试阶段，\w9切换效果持续到下次shiori载入为止\w9\w9\n/
-		如需永久打开调试模式，请按文档进行ssp设置\x'
+		'\![set,shioridebugmode,'
 		--
-		OnDebugModeChange
+		if TOINT(_argv[0])
+			'true'
+		else
+			'false'
+		--
+		']'
 	}
 }
 //调试：无对应事件反应by steve02081504
