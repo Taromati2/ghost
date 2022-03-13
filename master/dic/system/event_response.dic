@@ -1347,3 +1347,17 @@ OnNetworkHeavy{
 	--
 	'\0\s[8]\w9…\w9…\n\w9\w9请耐心等候呢？'
 }
+//使用条款
+OnGhostTermsAccept{
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]…\w9…\w9…\w9？"
+	else
+		'\0\s[8]…\w9已经同意过了啊？'
+}
+OnGhostTermsDecline{
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]…\w9…\w9…\w9？\n/
+		\s[%(specialmode != 'mealtime')11]要做什么的话\w9，\s[%(specialmode != 'mealtime')10]点击卸载按钮不就好了吗。"
+	else
+		'\0\s[3]…\w9如果需要的话\w9，可以把我卸载掉的。'
+}
