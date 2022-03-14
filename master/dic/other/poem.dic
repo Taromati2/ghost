@@ -98,7 +98,7 @@ OnPoesyShow{
 	_t = reference0
 	_B = reference1
 	_A = reference2
-	"\0\s[26]\b[2]\![set,autoscroll,disable]\![set,choicetimeout,0]\_q\f[bold,true]《%(reference0[0,'|'])》\f[bold,false]\n[120] 作者:%(ShowPoesySQL('作者'))\f[color,111,111,111]\_l[115,-]◇\__q[OnResP,%(_B),eras〓][%(_A)]\_l[180,-]\q[◇返回,OnResearchPoesy]\_l[235,-]\q[◇退出,OnverPoesy]\f[default]\n[140]%(ShowPoesySQL('正文'))\n%(ShowPoesySQL('注译'))"
+	"\0\s[26]\b[2]\![set,autoscroll,false]\![set,choicetimeout,0]\_q\f[bold,true]《%(reference0[0,'|'])》\f[bold,false]\n[120] 作者:%(ShowPoesySQL('作者'))\f[color,111,111,111]\_l[115,-]◇\__q[OnResP,%(_B),eras〓][%(_A)]\_l[180,-]\q[◇返回,OnResearchPoesy]\_l[235,-]\q[◇退出,OnverPoesy]\f[default]\n[140]%(ShowPoesySQL('正文'))\n%(ShowPoesySQL('注译'))"
 }
 ShowPoesySQL{
 	SQLite('-j',"SELECT %(_argv[0]) FROM Poesy WHERE 标题='%(reference0[0,'|'])'")
@@ -209,7 +209,7 @@ OnPoemMenu{
 	_txt
 }
 OnPoemList{
-	_txt = '\0\s[26]\_q\b2\![set,autoscroll,disable]'
+	_txt = '\0\s[26]\_q\b2\![set,autoscroll,false]'
 	_blank = '　　　　　　　　　　　　　　　'
 	_title = ''
 	_line = 0

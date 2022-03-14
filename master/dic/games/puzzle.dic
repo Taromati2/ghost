@@ -16,7 +16,7 @@ OnPuzzlePlay{//拼圖開始
 	PlayPuzzleShow
 }
 OnPuzzleList{
-	_txt = '\0\s[40]\b[2]\![set,autoscroll,disable]'
+	_txt = '\0\s[40]\b[2]\![set,autoscroll,false]'
 	_filelist = FENUM('FILE_PATH')
 	_txt += '选择图片和难度：\n[150]'
 	//_txt += _filelist
@@ -79,7 +79,7 @@ PlayPuzzleShow{//拼圖顯示
 		"\n[150]%(username)好厉害～\n"
 	}
 	else {
-		"\![set,choicetimeout,0]\![set,autoscroll,disable]\0\s[40]\b[2]第%(iPuzzleStep)步\n[150]%(_tempstr)"
+		"\![set,choicetimeout,0]\![set,autoscroll,false]\0\s[40]\b[2]第%(iPuzzleStep)步\n[150]%(_tempstr)"
 		--
 		if ShowPuzzleMap {
 			'\n\q[◇关闭原图,OnShowPuzzleMap,0]\n[50]'

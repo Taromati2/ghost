@@ -631,7 +631,7 @@ OnErrorLog{
 	if mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]"
 	--
-	_txt='\![set,autoscroll,disable]'
+	_txt='\![set,autoscroll,false]'
 	if mode == '1'
 		_txt+='\b[2]喏，\w9这些：'
 	else

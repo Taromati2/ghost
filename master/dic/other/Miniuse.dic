@@ -738,7 +738,7 @@ OnCalculator{
 	_txt+CalculatorShow
 }
 CalculatorShow{
-	_txt='\C\![quicksession,1]\c\b[2]\![set,choicetimeout,0]\![set,autoscroll,disable]'
+	_txt='\C\![quicksession,1]\c\b[2]\![set,choicetimeout,0]\![set,autoscroll,false]'
 	_txt+= "\_l[0,-]%(m_exp)		\_l[100,-]%(m_res)\n/
 	\_l[0,-]\q[◇输入表达式,OnInputExp]	\_l[100,-]\q[◇从剪贴板复制,OnPasteToExp]	\_l[200,-]\q[◇复制结果,OnCopyDat,%(m_res)]\n"
 	_carry=IARRAY

@@ -164,7 +164,7 @@ OnDownLoadWeather2{
 	"正在连接网站，请稍等……\![excute,http-get,http://www.google.cn/search?hl=UTF-8&q=天气+%(city),--file=weatherig.html,--timeout=200,--async=weatherig]"
 }
 OnWeatherFound{
-	_txt = "\![set,autoscroll,disable]\![set,choicetimeout,0]\_q\b[2]『\_a[OnChangeCity]%(city)\_a』天气预报：\n"
+	_txt = "\![set,autoscroll,false]\![set,choicetimeout,0]\_q\b[2]『\_a[OnChangeCity]%(city)\_a』天气预报：\n"
 	_file = 'VAR_PATH\\weather-sina.html'
 	_buff = ''
 	_today = ''

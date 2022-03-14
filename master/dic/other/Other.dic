@@ -610,9 +610,9 @@ OnShortcutAdd{
 	elseif _w=='' && reference0=='ShortcutNew'
 		_w="\n[200]\_q没有需要更新的软件快捷呢，\n[120]%(username)没有把要更新路径的软件打开吗？\1我看不是没运行软件，而是根本没有要更新的吧……"
 	if reference0=='ShortcutNew'
-		"\![set,choicetimeout,60000]\_q\b[2]\![set,autoscroll,disable]%(username)，橘花已经把下面的软件快捷更新了哦！\n[150]　\![*]\q[返回,OnShortcutMenu]　\![*]\q[退出,OnShortcutOver]\_n%(_w)"
+		"\![set,choicetimeout,60000]\_q\b[2]\![set,autoscroll,false]%(username)，橘花已经把下面的软件快捷更新了哦！\n[150]　\![*]\q[返回,OnShortcutMenu]　\![*]\q[退出,OnShortcutOver]\_n%(_w)"
 	else
-		"\![set,choicetimeout,60000]\_q\b[2]\![set,autoscroll,disable]请%(username)点击需要设置快捷的软件！没有的话，%(username)先运行要设置快捷的软件，再刷新一次看看！！也可以把要设快捷的文件直接拖给橘花哦！\n[130]　\![*]\q[刷新列表,OnShortcutAdd]　　\![*]\q[返回,OnShortcutMenu]　\![*]\q[退出,OnShortcutOver]\_n%(_w)"
+		"\![set,choicetimeout,60000]\_q\b[2]\![set,autoscroll,false]请%(username)点击需要设置快捷的软件！没有的话，%(username)先运行要设置快捷的软件，再刷新一次看看！！也可以把要设快捷的文件直接拖给橘花哦！\n[130]　\![*]\q[刷新列表,OnShortcutAdd]　　\![*]\q[返回,OnShortcutMenu]　\![*]\q[退出,OnShortcutOver]\_n%(_w)"
 }
 OnShortcutMenuDel{
 	if shortcutdata[0]==''
@@ -1426,7 +1426,7 @@ OnJapaneseWordLoad{
 		_l=_j+_wordnum
 	else
 		_l=_num
-	_txt = '\b[2]\![quicksession,true]\![set,choicetimeout,0]\![set,autoscroll,disable]'
+	_txt = '\b[2]\![quicksession,true]\![set,choicetimeout,0]\![set,autoscroll,false]'
 	_txt += "\q[◇返回,OnJapaneseWord,%(_booknum),%(_file)]     \q[◇终了,OnOpenMenu,1]\n"
 	_txt += _book+_str + '的内容：\n'
 	if FOPEN(_file, 'r') {
@@ -2096,7 +2096,7 @@ Onnewjapanese{
 	_next = '第'
 	_file = 'DATA_PATH\vocabulary\Japanese\新版标准日本语初级.txt'
 	_buff = ''
-	_txt = '\b[2]\![quicksession,true]\![set,choicetimeout,0]\![set,autoscroll,disable]'
+	_txt = '\b[2]\![quicksession,true]\![set,choicetimeout,0]\![set,autoscroll,false]'
 	if FOPEN(_file, 'r') {
 		_buff = FREAD(_file)
 		while _buff != -1 && _str !_in_ _buff {
@@ -2137,7 +2137,7 @@ Onoldjapanese{
 	_next = '标准日本语'
 	_file = 'DATA_PATH\vocabulary\Japanese\旧版标准日本语初级.txt'
 	_buff = ''
-	_txt = '\b[2]\![quicksession,true]\![set,choicetimeout,0]\![set,autoscroll,disable] '
+	_txt = '\b[2]\![quicksession,true]\![set,choicetimeout,0]\![set,autoscroll,false] '
 	if FOPEN(_file, 'r') {
 		_buff = FREAD(_file)
 		while _buff != -1 && _str !_in_ _buff {
@@ -2201,7 +2201,7 @@ Onacjeachday{
 	_next = _i + 1 + '.'
 	_file = 'DATA_PATH\vocabulary\Japanese\动漫日语每天一句.txt'
 	_buff = ''
-	_txt = '\C\_q\c\b[2]\![quicksession,true]\![set,choicetimeout,0]\![set,autoscroll,disable] '
+	_txt = '\C\_q\c\b[2]\![quicksession,true]\![set,choicetimeout,0]\![set,autoscroll,false] '
 	_txt+='\q[◇今天的句子,Ondaysentence]\n'
 	_txt+=Onautojeachday
 	_txt+='\n\n\n'
