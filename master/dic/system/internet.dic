@@ -479,7 +479,7 @@ OnHitokotoUpdate{
 	--
 	DiscordCustomSet.CustomDetail(hitokoto)
 	--
-	DiscordCustomSet.CustomState(' ')
+	DiscordCustomSet.CustomState('')
 }
 OnHitokotoUpdate.Failure{
 	//hitokoto=''

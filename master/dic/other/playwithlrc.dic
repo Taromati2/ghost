@@ -290,7 +290,7 @@ PlayWithLyric{
 	elseif _cmd == 'stop' {
 		DiscordCustomSet.CustomDetail('不听了')
 		--
-		DiscordCustomSet.CustomState(' ')
+		DiscordCustomSet.CustomState('')
 		--
 		_txt += '\![sound,stop]'
 		playingmusic = 0

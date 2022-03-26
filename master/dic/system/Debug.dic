@@ -723,7 +723,7 @@ On_tamaExit{
 	if SHIORI_FW.DebugMode
 		DiscordCustomSet.SmallImageKey('simple_hollow_red_heart')
 	else
-		DiscordCustomSet.SmallImageKey(' ')
+		DiscordCustomSet.SmallImageKey('')
 	--
 	DiscordCustomSet.CustomDetail('累了')
 	--
