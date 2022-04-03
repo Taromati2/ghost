@@ -99,7 +99,7 @@ RpgGameVar{
 		towashell=0
 	}
 	mlv =TOINT((lvl0 + lvl1 )/2 + mlvx)
-	lvl =TOINT((lvl0 + lvl1 )/2)
+	lvl =MAX(TOINT((lvl0 + lvl1 )/2),0.5)
 	mcircle=TOINT(circle0+circle1)/2
 	expmax0 = 10 * (lvl0 + 1)*(lvl0 + 1)
 	expmax1 = 10 * (lvl1 + 1)*(lvl1 + 1)
