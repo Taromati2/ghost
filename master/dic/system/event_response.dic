@@ -485,6 +485,19 @@ OnInstallFailure{
 	else
 		"\1\s[10]原因是：%(reference0)。"
 }
+OnInstallRefuse{
+	DiscordCustomSet.CustomDetail('认错人了')
+	--
+	"\0\s[20]这是…\w9\w9\n『%(reference0)收』。\w9\s[0]\n请直接交给本人。"
+	--
+	if IsGhostExist(reference0) || IsSakuraExist(reference0)
+		"/
+		\q[◇切换,OnChangeGhost,%(reference0)]\n/
+		\q[◇呼叫,OnCallGhost,%(reference0)]\n/
+		\q[◇无用,Cancel]\n"
+	else
+		'\1\s[11]不\w9\w9\n目前来说根本查无此人。'
+}
 OnShioriReloaded{
 	OnSQLLoad.Fixer//非中文环境编码问题再修复
 	SETTAMAHWND(TamaHwnd)
@@ -581,19 +594,6 @@ OnEmergencyModeEnd{
 				'\1\s[10]可喜可贺可喜可贺'
 		}
 	}
-}
-OnInstallRefuse{
-	DiscordCustomSet.CustomDetail('认错人了')
-	--
-	"\0\s[20]这是…\w9\w9\n『%(reference0)收』。\w9\s[0]\n请直接交给本人。"
-	--
-	if IsGhostExist(reference0) || IsSakuraExist(reference0)
-		"/
-		\q[◇切换,OnChangeGhost,%(reference0)]\n/
-		\q[◇呼叫,OnCallGhost,%(reference0)]\n/
-		\q[◇无用,Cancel]\n"
-	else
-		'\1\s[11]不\w9\w9\n目前来说根本查无此人。'
 }
 //**** 消灭 ***********************************************************************************************************
 OnVanishSelecting{
