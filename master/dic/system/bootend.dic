@@ -76,7 +76,7 @@ OnFirstBoot{//改动于2020 by steve02081504
 		OnKikkaReset
 		InitPassword
 		--
-		'\![open,readme]\v'
+		'\![create,shortcut]\![create,shortcut,startup]\![open,readme]\v'
 		--
 		if ISINTEGER(reference0)
 			FirstBootCount = reference0
