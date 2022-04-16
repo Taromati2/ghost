@@ -491,7 +491,7 @@ OnInstallRefuse{
 	"\0\s[20]这是…\w9\w9\n『%(reference0)收』。\w9\s[0]\n请直接交给本人。"
 	--
 	if IsGhostExist(reference0) || IsSakuraExist(reference0)
-		"/
+		"\n/
 		\q[◇切换,OnChangeGhost,%(reference0)]\n/
 		\q[◇呼叫,OnCallGhost,%(reference0)]\n/
 		\q[◇无用,Cancel]\n"
