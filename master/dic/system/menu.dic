@@ -83,7 +83,7 @@ SubMenu{
 			\q[◇动漫列表,OnDHs]				\_l[100,-]\q[◇咖啡厅,get_some_tea]				\_l[200,-]%(Onmeal)\n/
 			"
 			--
-			if towaflag != '0'
+			if specialmode == 'smoking' || ( smoker=='1' && towaflag )
 				'\q[◇吸烟室,SmokingPlace]\_l[100,-]'
 			--
 			"\q[◇试衣间,OnFittingRoom]		\_l[200,-]\q[◇进寝室,Bedroom]\n/
@@ -1146,6 +1146,7 @@ Select.SmokingPlace{
 	mode = '1'
 	if specialmode == 'smoking'{
 		{
+			towaflag = 1
 			'\0\s[30]那里、是在另一边喔…\w9\w9\w9\s[-1]\b[-1]\c\w9\w9\w9\w9\1\s[111]嗯？'
 			--
 			if smoker=='0'

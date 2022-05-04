@@ -155,6 +155,8 @@ OnTuLingFound{
 		OnChatRoom(j)+WriteChatroom
 		return
 	}
+	'\'+mode
+	--
 	_txt
 }
 OnDownLoadWeather{

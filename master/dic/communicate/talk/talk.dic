@@ -1278,7 +1278,7 @@ Select.ForcedTalk_r8_0{
 }
 Select.ForcedTalk_r8_1{
 	intimacy += 1
-	towaflag = '0'
+	towaflag = 0
 	'\1\s[12]…\w9…\w9…\w9\w9\s[13]\n\n[half]斗和事件标记(Flag)消失\w9…\w9\w9\0\s[8]咦？'
 }
 Select.ForcedTalk_r9_yes{
