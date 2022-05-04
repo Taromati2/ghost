@@ -56,6 +56,7 @@ OnFirstBoot{//改动于2020 by steve02081504
 	MAGICLOCK
 	VERSION_INIT
 	BaseGhostStart
+	CLEARERRORLOG//未进行变量值恢复错误忽略
 	--
 	if !ISVAR('FirstBootCount'){
 		mode = '0'
@@ -76,8 +77,6 @@ OnFirstBoot{//改动于2020 by steve02081504
 		OnKikkaReset
 		InitPassword
 		--
-		'\![create,shortcut]\![create,shortcut,startup]\![open,readme]\v'
-		--
 		if ISINTEGER(reference0)
 			FirstBootCount = reference0
 		elseif ISINTEGER(_argv[0])
@@ -85,6 +84,14 @@ OnFirstBoot{//改动于2020 by steve02081504
 		else
 			FirstBootCount = 0
 		UpdateFirstBootCount
+		--
+		if FirstBootCount >= 4{
+			OnDDLCend
+			return
+		}
+		--
+		'\![create,shortcut]\![create,shortcut,startup]\![open,readme]\v'
+		--
 		if FirstBootCount == 0{
 			'\1\s[10]\0\s[26]啊、\w9\w9那个…\w9\w9\w9'
 		}else{
@@ -186,13 +193,7 @@ OnBoot{
 					FirstBootCount=13//再也不见
 					MAGICSAVE//永久生效
 				}
-				'\1\s[-1]\0\s[-1]请不要玩弄我的心，我不会回来的'//致敬ddlc
-				--
-				SilentVanish = 1
-				topmode=1
-				TopModeChanged
-				--
-				'\![vanishbymyself]'
+				OnDDLCend
 				return
 			}elseif FirstBootCount == 3{//这是第三次重装警告
 				'\0\s[35]\w9.\w9.\w9.\w9\w9\w9\n\s[8]最后一次了。\w9\w9\w9\w9\n'

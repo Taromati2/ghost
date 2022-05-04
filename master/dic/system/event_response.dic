@@ -532,6 +532,15 @@ SelfRecoveryFailed{
 	--
 	//OpenDocForRuntime('SelfRecoveryFailed')
 }
+OnDDLCend{
+	'\![enter,passivemode]\1\s[-1]\0\s[-1]请不要玩弄我的心，我不会回来的\w[2000]'
+	--
+	SilentVanish = 1
+	topmode=1
+	TopModeChanged
+	--
+	'\![vanishbymyself]'
+}
 OnEmergencyMode{
 	EmergencyBoot++
 	if mode == '1'
