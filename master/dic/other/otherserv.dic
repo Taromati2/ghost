@@ -494,16 +494,16 @@ Onaccounting{
 	}
 }
 Select.accounting{
-	萌度=TOINT(headtouchnum/10+10*KikkaItemNum[1])
-	腹黑度=TOINT(facetouchnum/10+5*KikkaItemNum[0]+5*KikkaItemNum[2])
-	依赖度=TOINT(hugnum/10+10*KikkaItemNum[3])
+	nurturance.Moeness=TOINT(headtouchnum/10+10*KikkaItemNum[1])
+	nurturance.Darkness=TOINT(facetouchnum/10+5*KikkaItemNum[0]+5*KikkaItemNum[2])
+	nurturance.Dependency=TOINT(hugnum/10+10*KikkaItemNum[3])
 	H度=TOINT(kissnum/10+5*KikkaItemNum[4])
-	幸福度=TOINT(leadhandnum/10+10*KikkaItemNum[5])
-	"萌度：%(萌度)\n/
-	腹黑度：%(腹黑度)\n/
-	依赖度：%(依赖度)\n/
+	nurturance.Happiness=TOINT(leadhandnum/10+10*KikkaItemNum[5])
+	"萌度：%(nurturance.Moeness)\n/
+	腹黑度：%(nurturance.Darkness)\n/
+	依赖度：%(nurturance.Dependency)\n/
 	H度：%(H度) \n/
-	幸福度：%(幸福度)\n/
+	幸福度：%(nurturance.Happiness)\n/
 	\n\n\n\q[◇返回上一层,help]\![set,choicetimeout,0]"
 }
 */

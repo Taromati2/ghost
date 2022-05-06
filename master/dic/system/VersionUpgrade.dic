@@ -1,6 +1,6 @@
 //by steve
 
-#define VERSION_NOW 4
+#define VERSION_NOW 5
 
 VERSION_INIT:void{
 	VERSION = VERSION_NOW
@@ -24,6 +24,8 @@ VERSION_UPGRADE{
 		VERSION++
 		void EVAL('VERSION_UPGRADE_'+VERSION)
 	}
+	ClearTempVar
+	MAGICSAVE
 	--
 	if VERSION_UPGRADE.NeedRec{
 		ERASEVAR('VERSION_UPGRADE.NeedRec')
@@ -86,8 +88,6 @@ VERSION_UPGRADE_0:void{
 	for _i=0;_i!=250;_i++{
 		ERASEVAR('valueex'+_i)
 	}
-	ClearTempVar
-	MAGICSAVE
 	VERSION_UPGRADE.NeedRec=1
 }
 VERSION_UPGRADE_1:void{
@@ -139,8 +139,23 @@ VERSION_UPGRADE_4:void{
 	ERASEVAR('mon')
 	RENAME_VAR('SlowTime','CloseTime')
 }
-VERSION_UPGRADE_5:void{//building
+VERSION_UPGRADE_5:void{
 	RENAME_VAR('showkikka','MenuMode')
 	ERASEVAR('ct')
 	ERASEVAR('CT')
+	ERASEVAR('Onset')
+	_save_dir=GETENV('USERPROFILE')
+	DELDIR(GETENV('LOCALAPPDATA')+'Taromati')
+	DELDIR(_save_dir+'\K_I_K_K_A')
+	FDEL(_save_dir+'\K_confing.cfg')
+	RENAME_VAR('依赖度','nurturance.Dependency')
+	RENAME_VAR('腹黑度','nurturance.Darkness')
+	RENAME_VAR('萌度','nurturance.Moeness')
+	RENAME_VAR('亲密度','nurturance.Closeness')
+	RENAME_VAR('幸福度','nurturance.Happiness')
+	RENAME_VAR('力量','nurturance.subvar.Strength')
+	RENAME_VAR('智力','nurturance.subvar.Intelligence')
+	RENAME_VAR('意志','nurturance.subvar.Willpower')
+	RENAME_VAR('敏捷','nurturance.subvar.Agile')
+	RENAME_VAR('幸运','nurturance.subvar.Luck')
 }

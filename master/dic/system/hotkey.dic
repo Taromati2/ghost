@@ -137,7 +137,7 @@ OnKeyPress{
 		OnScreenShot
 	}
 	elseif reference0 == 'm' {
-		showkikka=1
+		MenuMode=1
 		'\![raise,OnOpenMenu]'
 	}
 	elseif reference0 == 'w' {

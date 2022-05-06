@@ -45,7 +45,7 @@ OpenMenu{
 	--
 	KikkaMenu
 	--
-	if _submenu == 0&&showkikka!=2{
+	if _submenu==0 && MenuMode!=2{
 		NotePadShow(178,44,4)//坐标x，坐标y，显示条数
 	}
 }
@@ -111,7 +111,7 @@ SubMenu{
 					\q[◇自动关机,OnSetShutdownMenu]			\_l[138,-]\q[◇吃货,OnReadyToEat]\n/
 					\q[◇批量文件重命名,OnInterFileRename]	\_l[138,-]\q[◇橘花阅读器,OnReadBook]\n'
 					--
-					if 腹黑度>=200//死机功能by steve02081504
+					if nurturance.Darkness>=200//死机功能by steve02081504
 						'\q[◇注销,OnLogOff]\_l[55,-]\q[◇重启,OnRebootComputer]\_l[110,-]\q[◇关机,OnShutdown]\_l[165,-]\q[◇死机,OnSystemHalte]\_l[220,-]\q[◇待机,OnStandby]\n'
 					else
 						'\q[◇注销,OnLogOff]\_l[73,-]\q[◇重启,OnRebootComputer]\_l[147,-]\q[◇关机,OnShutdown]\_l[220,-]\q[◇待机,OnStandby]\n'
@@ -155,17 +155,17 @@ OpenMenuTalk{
 		'\0\s[41]\b[2]啊…好的。'
 		'\0\s[5]\b[2]要做什么呢？\s[40]'
 		'\0\s[26]\b[2]啊…是的。'
-		if 腹黑度>=200
+		if nurturance.Darkness>=200
 			'\0\s[27]\b[2]需要帮忙吗。'
-		if 萌度>=200
+		if nurturance.Moeness>=200
 			'\0\s[22]\b[2]橘花待命。'
-		if 腹黑度>依赖度
+		if nurturance.Darkness>nurturance.Dependency
 			'\0\s[32]碍事的东西通通见鬼去吧……'
-		elseif 腹黑度>=250
+		elseif nurturance.Darkness>=250
 			"\0\s[27]%(username)要让橘花消灭谁呢"
 		if click>10{
 			"\0\s[21]讨厌，%(username)点这么快，当橘花是傻瓜吗\e:click=NULL"
-			if 腹黑度>依赖度
+			if nurturance.Darkness>nurturance.Dependency
 				"\0\s[27]讨厌，%(username)想被锯上一锯吗？\e:click=NULL"
 		}
 	}
@@ -255,13 +255,13 @@ Select.MenuCancel{
 		"\0\s[3]%(username)..？"
 		'\0\s[3]唔，是么？'
 		'\0\s[9]找到想找的东西了吗？'
-		if 依赖度>=200{
+		if nurturance.Dependency>=200{
 			'\0\s[26]帮上忙了吗？橘花一直陪着你哦'
 			'\0\s[6]好吧，有事再找我哦~'
 		}
-		if 萌度>腹黑度
+		if nurturance.Moeness>nurturance.Darkness
 			'\0\s[3]啊，原来是这样啊...没有帮上你吗？'
-		if 腹黑度>萌度
+		if nurturance.Darkness>nurturance.Moeness
 			"\0\s[3]%(username)是不是只是拿橘花寻开心呢……？"
 	}
 	else{
@@ -269,7 +269,7 @@ Select.MenuCancel{
 		'\0\s[0]好的。'
 		'\0\s[0]…\s[7]怎么了？'
 		'\0\s[7]………'
-		if 依赖度>=200
+		if nurturance.Dependency>=200
 			'\0\s[0]…\s[7]咦？有什么事吗？'
 	}
 	--
@@ -322,7 +322,7 @@ OnChoiceTimeout{
 		talkmemo = 'e_0'
 		'\0\s[7]…无视吗？'
 		'\0\s[0]…好的'
-		if 萌度>依赖度{
+		if nurturance.Moeness>nurturance.Dependency{
 			"\0\s[7]%(username)，你很忙吗，都没有听我说什么"
 			'\0\s[7]有在听我说吗？心不在焉的哦'
 			"\0\s[7]最讨厌%(username)这一点了，都不听人家说话"
@@ -1036,7 +1036,7 @@ OnTrashClean{
 	--
 	_gomicheck = CALLSAORI('gomi', '-n')
 	if _gomicheck == 0{
-		if 萌度>200||腹黑度>200||萌度>腹黑度{
+		if nurturance.Moeness>200||nurturance.Darkness>200||nurturance.Moeness>nurturance.Darkness{
 			'\0\s[0]接受任务！！\w9\s[-1]\b[-1]\w9\w9\w9\w9\w9\w9\s[0]\c嗯，啊勒，无法确定敌人？\w9\n好像敌人已经被歼灭了哦~'
 			'\0\s[0]嗯。\n那么，橘花去消灭敌人！！\w9\s[-1]\b[-1]\w9\w9\w9\w9\w9\w9\s[0]\c目标、无法确认。\w9\w9\s[3]\n有点可惜呢。\w9\1\s[10]………'
 		}
@@ -1062,16 +1062,16 @@ OnTrashClean{
 OnTrashClean_s{
 	_gomisute = CALLSAORI('gomi', '-ef')
 	if _gomisute {
-		kikkamood+=LOG(腹黑度*trashnum,2.718281)*kikkamood
+		kikkamood+=LOG(nurturance.Darkness*trashnum,2.718281)*kikkamood
 		kikkamood=MAX(MIN(kikkamoodmax,kikkamood),1)
-		if 萌度>200||腹黑度>200||萌度>腹黑度
+		if nurturance.Moeness>200||nurturance.Darkness>200||nurturance.Moeness>nurturance.Darkness
 			'\w9\w9\0\s[22]嗯，久等了，所有的敌人已清理完毕'
 		else{
 			'\w9\w9\0\s[22]好了、让您久等了'
 			'\w9\w9\0\s[34]…呼。\w9\w9\s[26]\n让您久等了'
 		}
 		--
-		if 萌度>200||腹黑度>200||萌度>腹黑度
+		if nurturance.Moeness>200||nurturance.Darkness>200||nurturance.Moeness>nurturance.Darkness
 			'，讨厌的垃圾都没有了哦~~'
 		else
 			'。'
@@ -1104,7 +1104,7 @@ DialogWallPaper{
 			\q[◇取消,Cancel]"
 		}
 		others {
-			if 萌度>200||萌度>腹黑度
+			if nurturance.Moeness>200||nurturance.Moeness>nurturance.Darkness
 				'格式好像不支持哟，确定没有错吗？要不，再看看？……'
 			else
 				'抱歉，不支持这样的文件格式……'

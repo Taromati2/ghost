@@ -6,46 +6,46 @@
 //------------------------------------------------------
 #define				RPGPATH		DATA_PATH\Nurturance
 KikkaVar{
-	萌度=TOINT(headtouchnum/10+5*KikkaItemNum[1])//火
-	腹黑度=TOINT(facetouchnum/10+2*KikkaItemNum[0]+2*KikkaItemNum[2])//金
-	依赖度=TOINT(hugnum/10+5*KikkaItemNum[3])//木
-	亲密度=TOINT(kissnum/10+2*KikkaItemNum[4])//水
-	幸福度=TOINT(leadhandnum/10+5*KikkaItemNum[5])//土
+	nurturance.Moeness=TOINT(headtouchnum/10+5*KikkaItemNum[1])//火
+	nurturance.Darkness=TOINT(facetouchnum/10+2*KikkaItemNum[0]+2*KikkaItemNum[2])//金
+	nurturance.Dependency=TOINT(hugnum/10+5*KikkaItemNum[3])//木
+	nurturance.Closeness=TOINT(kissnum/10+2*KikkaItemNum[4])//水
+	nurturance.Happiness=TOINT(leadhandnum/10+5*KikkaItemNum[5])//土
 	kikkamood=TOINT(kikkamood)
 	kikkaexpmax = kikkalvl * 20 + 20
-	kikkapowmax = kikkalvl * 5 + 5+腹黑度+kikkamood
+	kikkapowmax = kikkalvl * 5 + 5+nurturance.Darkness+kikkamood
 	kikkawizmax = kikkalvl * 5 + 5+TOINT(2*SQRT(talkcount))+100+kikkamood
-	kikkachmmax = kikkalvl * 5 + 5+HaveShellCount*5+TOINT(幸福度*0.5)+kikkamood
+	kikkachmmax = kikkalvl * 5 + 5+HaveShellCount*5+TOINT(nurturance.Happiness*0.5)+kikkamood
 	kikkastmmax = kikkalvl * 20 + 220
 	KikkaItem=("0,电锯,%(KikkaItemNum[0]),%(KikkaItemtime[0])","1,P90,%(KikkaItemNum[1]),%(KikkaItemtime[1])","0,派克笔,%(KikkaItemNum[2]),%(KikkaItemtime[2])","0,电脑,%(KikkaItemNum[3]),%(KikkaItemtime[3])","0,香水,%(KikkaItemNum[4]),%(KikkaItemtime[4])","0,钻戒,%(KikkaItemNum[5]),%(KikkaItemtime[5])")
-	//萌度=500
-	//腹黑度=500
-	//依赖度=500
-	//亲密度=500
-	//幸福度=500
-	_能量=TOREAL(亲密度+依赖度+萌度+幸福度+腹黑度)
-	_能量指数=TOINT(_能量)
-	力量=5*TOREAL(幸福度)*腹黑度*腹黑度/_能量/萌度-敏捷*(萌度/_能量)
-	智力=5*TOREAL(腹黑度)*亲密度*亲密度/_能量/幸福度-幸运*(幸福度/_能量)
-	意志=5*TOREAL(亲密度)*依赖度*依赖度/_能量/腹黑度-力量*(腹黑度/_能量)
-	敏捷=5*TOREAL(依赖度)*萌度*萌度/_能量/亲密度-智力*(亲密度/_能量)
-	幸运=5*TOREAL(萌度)*幸福度*幸福度/_能量/依赖度-意志*(依赖度/_能量)
-	//力量*=幸运/敏捷
-	//智力*=力量/幸运
-	//意志*=智力/力量
-	//敏捷*=意志/智力
-	//幸运*=敏捷/意志
-	//力量=ABS(幸运*(力量)/敏捷)-敏捷*(萌度/_能量)
-	//智力=ABS(力量*(智力)/幸运)-幸运*(幸福度/_能量)
-	//意志=ABS(智力*(意志)/力量)-力量*(腹黑度/_能量)
-	//敏捷=ABS(意志*(敏捷)/智力)-智力*(亲密度/_能量)
-	//幸运=ABS(敏捷*(幸运)/意志)-意志*(依赖度/_能量)
-	力量=TOINT(力量)
-	智力=TOINT(智力)
-	意志=TOINT(意志)
-	敏捷=TOINT(敏捷)
-	幸运=TOINT(幸运)
-	kikkamoodmax = TOINT((力量+智力+意志+敏捷+幸运)/5)+100
+	//nurturance.Moeness=500
+	//nurturance.Darkness=500
+	//nurturance.Dependency=500
+	//nurturance.Closeness=500
+	//nurturance.Happiness=500
+	_Energy=TOREAL(nurturance.Closeness+nurturance.Dependency+nurturance.Moeness+nurturance.Happiness+nurturance.Darkness)
+	_EnergyIndex=TOINT(_Energy)
+	nurturance.subvar.Strength=5*TOREAL(nurturance.Happiness)*nurturance.Darkness*nurturance.Darkness/_Energy/nurturance.Moeness-nurturance.subvar.Agile*(nurturance.Moeness/_Energy)
+	nurturance.subvar.Intelligence=5*TOREAL(nurturance.Darkness)*nurturance.Closeness*nurturance.Closeness/_Energy/nurturance.Happiness-nurturance.subvar.Luck*(nurturance.Happiness/_Energy)
+	nurturance.subvar.Willpower=5*TOREAL(nurturance.Closeness)*nurturance.Dependency*nurturance.Dependency/_Energy/nurturance.Darkness-nurturance.subvar.Strength*(nurturance.Darkness/_Energy)
+	nurturance.subvar.Agile=5*TOREAL(nurturance.Dependency)*nurturance.Moeness*nurturance.Moeness/_Energy/nurturance.Closeness-nurturance.subvar.Intelligence*(nurturance.Closeness/_Energy)
+	nurturance.subvar.Luck=5*TOREAL(nurturance.Moeness)*nurturance.Happiness*nurturance.Happiness/_Energy/nurturance.Dependency-nurturance.subvar.Willpower*(nurturance.Dependency/_Energy)
+	//nurturance.subvar.Strength*=nurturance.subvar.Luck/nurturance.subvar.Agile
+	//nurturance.subvar.Intelligence*=nurturance.subvar.Strength/nurturance.subvar.Luck
+	//nurturance.subvar.Willpower*=nurturance.subvar.Intelligence/nurturance.subvar.Strength
+	//nurturance.subvar.Agile*=nurturance.subvar.Willpower/nurturance.subvar.Intelligence
+	//nurturance.subvar.Luck*=nurturance.subvar.Agile/nurturance.subvar.Willpower
+	//nurturance.subvar.Strength=ABS(nurturance.subvar.Luck*(nurturance.subvar.Strength)/nurturance.subvar.Agile)-nurturance.subvar.Agile*(nurturance.Moeness/_Energy)
+	//nurturance.subvar.Intelligence=ABS(nurturance.subvar.Strength*(nurturance.subvar.Intelligence)/nurturance.subvar.Luck)-nurturance.subvar.Luck*(nurturance.Happiness/_Energy)
+	//nurturance.subvar.Willpower=ABS(nurturance.subvar.Intelligence*(nurturance.subvar.Willpower)/nurturance.subvar.Strength)-nurturance.subvar.Strength*(nurturance.Darkness/_Energy)
+	//nurturance.subvar.Agile=ABS(nurturance.subvar.Willpower*(nurturance.subvar.Agile)/nurturance.subvar.Intelligence)-nurturance.subvar.Intelligence*(nurturance.Closeness/_Energy)
+	//nurturance.subvar.Luck=ABS(nurturance.subvar.Agile*(nurturance.subvar.Luck)/nurturance.subvar.Willpower)-nurturance.subvar.Willpower*(nurturance.Dependency/_Energy)
+	nurturance.subvar.Strength=TOINT(nurturance.subvar.Strength)
+	nurturance.subvar.Intelligence=TOINT(nurturance.subvar.Intelligence)
+	nurturance.subvar.Willpower=TOINT(nurturance.subvar.Willpower)
+	nurturance.subvar.Agile=TOINT(nurturance.subvar.Agile)
+	nurturance.subvar.Luck=TOINT(nurturance.subvar.Luck)
+	kikkamoodmax = TOINT((nurturance.subvar.Strength+nurturance.subvar.Intelligence+nurturance.subvar.Willpower+nurturance.subvar.Agile+nurturance.subvar.Luck)/5)+100
 	if kikkamood > kikkamoodmax {
 		kikkamood = kikkamoodmax
 	}
@@ -92,7 +92,7 @@ popUseritem{
 	}
 }
 KikkaMenu{
-	if showkikka==1 {
+	if MenuMode==1 {
 		'\_l[0,200]' + ColorText('\__q[OnKikkaMenu,2]\f[cursorstyle,none]\f[cursorfontcolor,65,203,214]─────────橘花养成系统↓────────\f[cursorstyle,default]\f[cursorfontcolor,default]\__q\n[140]','color=160,160,200')
 		--
 		"\_l[82]\![*]\q[购买物品,OnKikkaItemList,0]  \![*]\q[日程安排,OnKikkaClass,%(weekday)]  \![*]\q[礼物盒子,Ongiftbox]\n"
@@ -103,7 +103,7 @@ KikkaMenu{
 		if SHIORI_FW.DebugMode
 			'\_l[176,341]\q[◇Reset,OnCalculateVar,OnKikkaReset]\_l[230]\q[◇ToMax,OnCalculateVar,KikkaVar.ToMax]'
 	}
-	elseif showkikka==2 {
+	elseif MenuMode==2 {
 		'\c\![set,choicetimeout,0]\_l[0,0]' + ColorText('\__q[OnKikkaMenu,0]\f[cursorstyle,none]\f[cursorfontcolor,65,203,214]─────────橘花养成系统↓────────\f[cursorstyle,default]\f[cursorfontcolor,default]\__q\n[140]','color=160,160,200')
 		--
 		infomode=0
@@ -120,7 +120,7 @@ KikkaMenu{
 	}
 }
 OnKikkaMenu{
-	showkikka = reference0
+	MenuMode = reference0
 	OpenMenu(menu,menuex)
 }
 KikkaStatusChange{
@@ -238,11 +238,11 @@ KikkaStatus{
 	if QuickStartVersion{
 		_txt += '\n[150]属性查看功能在线上更新后可用'
 	}else{
-		_txt += ColorText("\n[150]\_l[120,-]经验：\_l[0,-]萌度：%(萌度)","bold,color=%(ColorIdx(3))") + ColorBar(3,175,kikkaexp,kikkaexpmax,,'colortxt=178')
-		_txt += ColorText("\n\_l[120,-]身手：\_l[0,-]腹黑度：%(腹黑度)","bold,color=%(ColorIdx(9))") + ColorBar(9,175,kikkapow,kikkapowmax,,'colortxt=178')
-		_txt += ColorText("\n\_l[120,-]学识：\_l[0,-]依赖度：%(依赖度)","bold,color=%(ColorIdx(4))") + ColorBar(4,175,kikkawiz,kikkawizmax,,'colortxt=178')
-		_txt += ColorText("\n\_l[120,-]魅力：\_l[0,-]亲密度：%(亲密度)","bold,color=%(ColorIdx(5))") + ColorBar(5,175,kikkachm,kikkachmmax,,'colortxt=178')
-		_txt += ColorText("\n\_l[120,-]体力：\_l[0,-]幸福度：%(幸福度)","bold,color=%(ColorIdx(1))") + ColorBar(1,175,kikkastm,kikkastmmax,,'colortxt=178')
+		_txt += ColorText("\n[150]\_l[120,-]经验：\_l[0,-]萌度：%(nurturance.Moeness)","bold,color=%(ColorIdx(3))") + ColorBar(3,175,kikkaexp,kikkaexpmax,,'colortxt=178')
+		_txt += ColorText("\n\_l[120,-]身手：\_l[0,-]腹黑度：%(nurturance.Darkness)","bold,color=%(ColorIdx(9))") + ColorBar(9,175,kikkapow,kikkapowmax,,'colortxt=178')
+		_txt += ColorText("\n\_l[120,-]学识：\_l[0,-]依赖度：%(nurturance.Dependency)","bold,color=%(ColorIdx(4))") + ColorBar(4,175,kikkawiz,kikkawizmax,,'colortxt=178')
+		_txt += ColorText("\n\_l[120,-]魅力：\_l[0,-]亲密度：%(nurturance.Closeness)","bold,color=%(ColorIdx(5))") + ColorBar(5,175,kikkachm,kikkachmmax,,'colortxt=178')
+		_txt += ColorText("\n\_l[120,-]体力：\_l[0,-]幸福度：%(nurturance.Happiness)","bold,color=%(ColorIdx(1))") + ColorBar(1,175,kikkastm,kikkastmmax,,'colortxt=178')
 		_txt += ColorText("\n\_l[0,-]心情：%(kikkamood)","bold,color=%(ColorIdx(8))") + ColorBar(8,175,kikkamood,kikkamoodmax)
 		_txt += ColorText("\n好感度：%(intimacy)","bold,color=%(ColorIdx(6))")
 		_heart = '\_l[103]'
@@ -282,17 +282,17 @@ KikkaStatusMain{
 	_txt += ColorText("\n\_l[0,-]魅力：%(kikkachm)/%(kikkachmmax) \_l[240]\q[◇礼物,Ongiftbox]","bold,color=%(ColorIdx(5))") + ColorBar(5,130,kikkachm,kikkachmmax)
 	_txt += ColorText("\n\_l[0,-]体力：%(kikkastm)/%(kikkastmmax) \_l[240]\q[◇说明,OnRPGintro]","bold,color=%(ColorIdx(1))") + ColorBar(1,130,kikkastm,kikkastmmax)
 	_txt += ColorText("\n\_l[0,-]心情：%(kikkamood)/%(kikkamoodmax)","bold,color=%(ColorIdx(8))") + ColorBar(8,130,kikkamood,kikkamoodmax)
-	_能量=TOREAL(亲密度+依赖度+萌度+幸福度+腹黑度)
+	_Energy=TOREAL(nurturance.Closeness+nurturance.Dependency+nurturance.Moeness+nurturance.Happiness+nurturance.Darkness)
 	_txt += '\n[half]'
 	_txt += ColorText("\n\_l[0,-]物理攻击：%(str0)	\_l[130,-]武器：%(weapon0)","bold,color=%(ColorIdx(3))")
 	_txt += ColorText("\n\_l[0,-]物理防御：%(def0)	\_l[130,-]防具（体）：%(armor0)","bold,color=%(ColorIdx(3))")
 	_txt += ColorText("\n\_l[0,-]魔法攻击：%(ats0)	\_l[130,-]防具（脚）：%(boots0)","bold,color=%(ColorIdx(1))")
 	_txt += ColorText("\n\_l[0,-]魔法防御：%(adf0)	","bold,color=%(ColorIdx(1))")
-	_txt += ColorText("\n[half]\n\_l[0,-]金能量指数：%(SUBSTR(100*腹黑度/_能量,0,5))%  \_l[134]腹黑度：%(腹黑度)  \_l[220]力量：%(力量)","bold,color=%(ColorIdx(4))")
-	_txt += ColorText("\n\_l[0,-]木能量指数：%(SUBSTR(100*依赖度/_能量,0,5))%  \_l[134]依赖度：%(依赖度)  \_l[220]意志：%(意志)","bold,color=%(ColorIdx(1))")
-	_txt += ColorText("\n\_l[0,-]水能量指数：%(SUBSTR(100*亲密度/_能量,0,5))%  \_l[134]亲密度：%(亲密度)  \_l[220]智力：%(智力)","bold,color=%(ColorIdx(3))")
-	_txt += ColorText("\n\_l[0,-]火能量指数：%(SUBSTR(100*萌度/_能量,0,5))%  \_l[134]萌度：%(萌度)\_l[220]敏捷：%(敏捷)","bold,color=%(ColorIdx(6))")
-	_txt += ColorText("\n\_l[0,-]土能量指数：%(SUBSTR(100*幸福度/_能量,0,5))%  \_l[134]幸福度：%(幸福度)  \_l[220]幸运：%(幸运)","bold,color=%(ColorIdx(9))")
+	_txt += ColorText("\n[half]\n\_l[0,-]金能量指数：%(SUBSTR(100*nurturance.Darkness/_Energy,0,5))%  \_l[134]腹黑度：%(nurturance.Darkness)  \_l[220]力量：%(nurturance.subvar.Strength)","bold,color=%(ColorIdx(4))")
+	_txt += ColorText("\n\_l[0,-]木能量指数：%(SUBSTR(100*nurturance.Dependency/_Energy,0,5))%  \_l[134]依赖度：%(nurturance.Dependency)  \_l[220]意志：%(nurturance.subvar.Willpower)","bold,color=%(ColorIdx(1))")
+	_txt += ColorText("\n\_l[0,-]水能量指数：%(SUBSTR(100*nurturance.Closeness/_Energy,0,5))%  \_l[134]亲密度：%(nurturance.Closeness)  \_l[220]智力：%(nurturance.subvar.Intelligence)","bold,color=%(ColorIdx(3))")
+	_txt += ColorText("\n\_l[0,-]火能量指数：%(SUBSTR(100*nurturance.Moeness/_Energy,0,5))%  \_l[134]萌度：%(nurturance.Moeness)\_l[220]敏捷：%(nurturance.subvar.Agile)","bold,color=%(ColorIdx(6))")
+	_txt += ColorText("\n\_l[0,-]土能量指数：%(SUBSTR(100*nurturance.Happiness/_Energy,0,5))%  \_l[134]幸福度：%(nurturance.Happiness)  \_l[220]幸运：%(nurturance.subvar.Luck)","bold,color=%(ColorIdx(9))")
 	_txt += ColorText("\n[half]\n\_l[0,-]金钱：%(money)       服装装量：%(HaveShellCount)","bold,color=%(ColorIdx(2))")
 	_txt += ColorText("\n\_l[0,-]好感度：%(intimacy)      \q[◇对话装量,OnGetTalkCount]：%(talkcount)","bold,color=%(ColorIdx(6))")
 	_txt

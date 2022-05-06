@@ -2,7 +2,7 @@ OnH{
 	UnFinished
 }
 CanH{
-	GetPhase>=4 && 亲密度>=100
+	GetPhase>=4 && nurturance.Closeness>=100
 }
 IsHShell{
 	_shell=_argv[0]

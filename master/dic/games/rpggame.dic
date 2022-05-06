@@ -135,34 +135,34 @@ RpgGameVar{
 		cp0=cpmax0
 	if cp1 > cpmax1
 		cp1=cpmax1
-	_能量=TOREAL(亲密度+依赖度+萌度+幸福度+腹黑度)
-	_能量指数=TOINT(_能量)
-	str0_=TOINT(2*0.05*B0 + 20) + '+' + TOINT(weaponequip_str0 + armorequip_str0)+'+'+TOINT(力量)+'+'+TOINT(_circleinfo0[3])+'+'+TOINT(kikkapow/10)
-	def0_=TOINT(0.8*0.05*B0) + '+' + TOINT(armorequip_def0 + bootsequip_def0)+'+'+TOINT(0.5*敏捷)+'+'+TOINT(_circleinfo0[4])+'+'+TOINT(kikkapow/10)
-	ats0_=TOINT(0.05*B0) + '+' + TOINT(weaponequip_ats0 + armorequip_ats0 + bootsequip_ats0)+'+'+TOINT(0.5*智力)+'+'+TOINT(_circleinfo0[5])+'+'+TOINT(kikkawiz/10)
+	_Energy=TOREAL(nurturance.Closeness+nurturance.Dependency+nurturance.Moeness+nurturance.Happiness+nurturance.Darkness)
+	_EnergyIndex=TOINT(_Energy)
+	str0_=TOINT(2*0.05*B0 + 20) + '+' + TOINT(weaponequip_str0 + armorequip_str0)+'+'+TOINT(nurturance.subvar.Strength)+'+'+TOINT(_circleinfo0[3])+'+'+TOINT(kikkapow/10)
+	def0_=TOINT(0.8*0.05*B0) + '+' + TOINT(armorequip_def0 + bootsequip_def0)+'+'+TOINT(0.5*nurturance.subvar.Agile)+'+'+TOINT(_circleinfo0[4])+'+'+TOINT(kikkapow/10)
+	ats0_=TOINT(0.05*B0) + '+' + TOINT(weaponequip_ats0 + armorequip_ats0 + bootsequip_ats0)+'+'+TOINT(0.5*nurturance.subvar.Intelligence)+'+'+TOINT(_circleinfo0[5])+'+'+TOINT(kikkawiz/10)
 	if kikkamood!=kikkamoodmax
 		ats0_+='-'+TOINT((ats0_/2)*(TOREAL(kikkamoodmax-kikkamood)/kikkamoodmax))
-	adf0_ =15 + '+' + TOINT(armorequip_adf0 + bootsequip_adf0)+'+'+TOINT(0.125*意志)+'+'+TOINT(_circleinfo0[6])+'+'+TOINT(kikkawiz/20)+'+'+TOINT(kikkachm/20)
+	adf0_ =15 + '+' + TOINT(armorequip_adf0 + bootsequip_adf0)+'+'+TOINT(0.125*nurturance.subvar.Willpower)+'+'+TOINT(_circleinfo0[6])+'+'+TOINT(kikkawiz/20)+'+'+TOINT(kikkachm/20)
 	if kikkamood!=kikkamoodmax
 		adf0_+='-'+TOINT((adf0_/2)*(TOREAL(kikkamoodmax-kikkamood)/kikkamoodmax))
-	adf1_ =15 + '+' + TOINT(armorequip_adf1 + bootsequip_adf1)+'+'+TOINT(0.25*意志)+'+'+TOINT(_circleinfo1[6])
+	adf1_ =15 + '+' + TOINT(armorequip_adf1 + bootsequip_adf1)+'+'+TOINT(0.25*nurturance.subvar.Willpower)+'+'+TOINT(_circleinfo1[6])
 	if towashell ==0{
 		hpmax1 = TOINT(1.05*(A1+AC1))
-		str1_=TOINT(1.5*0.05*B1 + 20) + '+' + TOINT(weaponequip_str1 + armorequip_str1)+'+'+TOINT(0.5*力量)+'+'+TOINT(_circleinfo1[3])
-		def1_ = TOINT(0.78*0.05*B1) + '+' + TOINT(armorequip_def1 + bootsequip_def1)+'+'+TOINT(0.25*敏捷)+'+'+TOINT(_circleinfo1[4])
-		ats1_=TOINT(1.5*0.05*B1) + '+' + TOINT(weaponequip_ats1 + armorequip_ats1 + bootsequip_ats1)+'+'+TOINT(智力)+'+'+TOINT(_circleinfo1[5])
+		str1_=TOINT(1.5*0.05*B1 + 20) + '+' + TOINT(weaponequip_str1 + armorequip_str1)+'+'+TOINT(0.5*nurturance.subvar.Strength)+'+'+TOINT(_circleinfo1[3])
+		def1_ = TOINT(0.78*0.05*B1) + '+' + TOINT(armorequip_def1 + bootsequip_def1)+'+'+TOINT(0.25*nurturance.subvar.Agile)+'+'+TOINT(_circleinfo1[4])
+		ats1_=TOINT(1.5*0.05*B1) + '+' + TOINT(weaponequip_ats1 + armorequip_ats1 + bootsequip_ats1)+'+'+TOINT(nurturance.subvar.Intelligence)+'+'+TOINT(_circleinfo1[5])
 	}
 	elseif towashell ==1{
 		hpmax1 = TOINT(0.95*(A1+AC1))
-		str1_=TOINT(2*0.05*B1 + 20) + '+' + TOINT(weaponequip_str1 + armorequip_str1)+'+'+TOINT(0.5*力量)+'+'+TOINT(_circleinfo1[3])
-		def1_ = TOINT(0.9*0.05*B1) + '+' + TOINT(armorequip_def1 + bootsequip_def1)+'+'+TOINT(0.25*敏捷)+'+'+TOINT(_circleinfo1[4])
-		ats1_=TOINT(0.05*B1) + '+' + TOINT(weaponequip_ats1 + armorequip_ats1 + bootsequip_ats1)+'+'+TOINT(智力)+'+'+TOINT(_circleinfo1[5])
+		str1_=TOINT(2*0.05*B1 + 20) + '+' + TOINT(weaponequip_str1 + armorequip_str1)+'+'+TOINT(0.5*nurturance.subvar.Strength)+'+'+TOINT(_circleinfo1[3])
+		def1_ = TOINT(0.9*0.05*B1) + '+' + TOINT(armorequip_def1 + bootsequip_def1)+'+'+TOINT(0.25*nurturance.subvar.Agile)+'+'+TOINT(_circleinfo1[4])
+		ats1_=TOINT(0.05*B1) + '+' + TOINT(weaponequip_ats1 + armorequip_ats1 + bootsequip_ats1)+'+'+TOINT(nurturance.subvar.Intelligence)+'+'+TOINT(_circleinfo1[5])
 	}
 	elseif towashell ==2{
 		hpmax1 = TOINT(A1+AC1)
-		str1_=TOINT(1.8*0.05*B1 + 20) + '+' + TOINT(weaponequip_str1 + armorequip_str1)+'+'+TOINT(0.5*力量)+'+'+TOINT(_circleinfo1[3])
-		def1_ = TOINT(0.8*0.05*B1) + '+' + TOINT(armorequip_def1 + bootsequip_def1)+'+'+TOINT(0.25*敏捷)+'+'+TOINT(_circleinfo1[4])
-		ats1_=TOINT(1.2*0.05*B1) + '+' + TOINT(weaponequip_ats1 + armorequip_ats1 + bootsequip_ats1)+'+'+TOINT(智力)+'+'+TOINT(_circleinfo1[5])
+		str1_=TOINT(1.8*0.05*B1 + 20) + '+' + TOINT(weaponequip_str1 + armorequip_str1)+'+'+TOINT(0.5*nurturance.subvar.Strength)+'+'+TOINT(_circleinfo1[3])
+		def1_ = TOINT(0.8*0.05*B1) + '+' + TOINT(armorequip_def1 + bootsequip_def1)+'+'+TOINT(0.25*nurturance.subvar.Agile)+'+'+TOINT(_circleinfo1[4])
+		ats1_=TOINT(1.2*0.05*B1) + '+' + TOINT(weaponequip_ats1 + armorequip_ats1 + bootsequip_ats1)+'+'+TOINT(nurturance.subvar.Intelligence)+'+'+TOINT(_circleinfo1[5])
 	}
 	//
 	str0 = TOINT(STRADD*EVAL(str0_))
@@ -4173,7 +4173,7 @@ Onmspattack{
 	exptotal0+=TOINT(2*_reward)
 	exp1+=TOINT(2*_reward)
 	exptotal1+=TOINT(2*_reward)
-	_luck=幸运
+	_luck=nurturance.subvar.Luck
 	if level==4{
 		w=RAND(50)
 	}

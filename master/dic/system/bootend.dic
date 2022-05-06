@@ -35,21 +35,6 @@ BaseGhostStart.aboutTime{
 	CloseTime = GETSECCOUNT
 }
 UpdateFirstBootCount:void{
-	_save_dir=GETENV('USERPROFILE')
-	if _save_dir{
-		_save_dir+='\AppData\Local\Taromati'
-		_save_file=_save_dir+'\FirstBootCount'
-		MKDIR(_save_dir)
-		if FOPEN(_save_file,'r'){
-			_tFirstBootCount=TOINT(FREAD(_save_file))
-			FCLOSE(_save_file)
-		}
-		FirstBootCount=MAX(_tFirstBootCount,FirstBootCount)
-		if FOPEN(_save_file,'w'){
-			FWRITE(_save_file,TOSTR(FirstBootCount))
-			FCLOSE(_save_file)
-		}
-	}
 }
 //**** 初回起动 *******************************************************************************************************
 OnFirstBoot{//改动于2020 by steve02081504
@@ -833,7 +818,7 @@ OnWindowStateMinimize{
 	if mode != '1'{
 		'\0\s[3]……'
 		'\0\s[6]……知道了。'
-		if 依赖度 > 50
+		if nurturance.Dependency > 50
 			'\0\s[9]请不要把我忘了哦？'
 	}
 	'\1又要被隐藏了么？'

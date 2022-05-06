@@ -102,7 +102,7 @@ OnUserNameInput{
 		\q[◇终了,OptionEnd]'
 	}
 	elseif _t = OnUserName.SpecialCheck {
-		if OnUserName.IsTooClose && 亲密度<100
+		if OnUserName.IsTooClose && nurturance.Closeness<100
 			'\0\s[2]\w9欸\w9.\w9.\w9.\s[8]那样的称呼、\w8我做不到。\w9\w9\n/
 			如果可以的话、\w8请让我用其他的称呼方式吧。\n/
 			'
@@ -115,7 +115,7 @@ OnUserNameInput{
 		\q[◇终了,OptionEnd]'
 	}
 	elseif OnUserName.IsMazo {
-		if 亲密度>=100{
+		if nurturance.Closeness>=100{
 			"\0\s[2]\w9欸\w9.\w9.\w9.\s[8]真的想让我这样称呼你吗？\w9不是在开玩笑吗？\w9\w9\n/
 			…\w9\s[6]如果你想被这样称呼的话、\w8也不是不可以。\w9\n/
 			\s[0]但是、\w8\s[26]请不要讨厌我哦。\n/

@@ -1981,7 +1981,7 @@ TWO.dicpart{
 	}
 	elseif '亲亲' _in_ reference1{
 		if scope == '0'{
-			if 腹黑度>=亲密度{
+			if nurturance.Darkness>=nurturance.Closeness{
 				'\0\s[27]是要用咬的还是用吸的还是舔的？'
 			}
 			"\0\s[5]可以啊，\w9\w9不过%(username)得用刀子把嘴上的毛剃乾净才行。"
@@ -2011,7 +2011,7 @@ TWO.dicpart{
 			if scope == '0'{
 				'\0\s[21]做饭，\w9电玩，\w9整理房间，\w9寻找可疑人物后将其尸解，\w9看书，\w9睡觉'
 				'\0\s[5]喜欢做好玩的事情'
-				if 腹黑度>=依赖度||腹黑度>=100
+				if nurturance.Darkness>=nurturance.Dependency||nurturance.Darkness>=100
 					'\0\s[5]斩首，\w9放血，\w9开膛\，\w9破肚，\w9下油锅，\w9饮茶，\w9爆击，\w9然后是大清扫时间，\w9之后读完圣经睡觉。'
 			}
 			elseif scope=='1'{
@@ -2021,7 +2021,7 @@ TWO.dicpart{
 		elseif '喝' _in_ reference1{
 			if scope == '0'{
 				'\0\s[1]白开水就行'
-				if 腹黑度>=依赖度||腹黑度>=100
+				if nurturance.Darkness>=nurturance.Dependency||nurturance.Darkness>=100
 					'\0\s[5]红茶，\w9越像血一样红的越好喝'
 			}
 			elseif scope=='1'{
@@ -2071,7 +2071,7 @@ TWO.dicpart{
 		elseif '歌' _in_ reference1 || '的歌' _in_ reference1 || '听' _in_ reference1{
 			if scope == '0'{
 				'\0\s[21]诡异的音乐，\w9例如黑色星期天什么的'
-				if 腹黑度>=依赖度||腹黑度>=100{
+				if nurturance.Darkness>=nurturance.Dependency||nurturance.Darkness>=100{
 					'\0\s[21]电锯运转的声音'
 					'\0\s[21]枪声、\w9爆破声'
 				}
@@ -2360,9 +2360,9 @@ TWO.dicpart{
 		if scope == '0'{
 			'\0\s[0]没有安全感，\w9\w9是不自信的体现哦，\w9\w9相信自己，\w9\w9自己永远都是最好的'
 			'\0\s[0]别人的肯定与支持固然重要，\w9\w9但也不能过度依赖呀，\w9\w9独立做好一件事情，\w9\w9只要自己觉得OK，\w9\w9不也心安理得吗？'
-			if 腹黑度>=100
+			if nurturance.Darkness>=100
 				"\0\s[27]即使有橘花陪着，\w9\w9%(username)也觉得没有安全感吗？"
-			if 依赖度>=100
+			if nurturance.Dependency>=100
 				"\0\s[1]%(username)的存在感，\w9\w9就是橘花的安全感"
 		}
 		elseif scope == '1'{
@@ -2436,11 +2436,11 @@ TWO.dicpart{
 			"\0\s[1]有%(username)在的地方，\w9\w9就有家。"
 			'\0\s[29]家是让人感到温暖的地方。'
 			'\0\s[21]有了家，\w9\w9才会有力量干活啊。'
-			if 萌度>=100
+			if nurturance.Moeness>=100
 				'\0\s[22]橘花会努力捍卫家的完整'
-			if 腹黑度>=100
+			if nurturance.Darkness>=100
 				"\0\s[23]%(username)放心，家里的可疑人物已经被橘花尸解了"
-			if 幸福度>=100
+			if nurturance.Happiness>=100
 				"\0\s[27]有%(username)在的家，\w9\w9橘花会一直守护的。"
 		}
 		elseif scope == '1'{
