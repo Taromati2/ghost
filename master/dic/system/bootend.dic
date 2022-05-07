@@ -34,8 +34,6 @@ BaseGhostStart.aboutTime{
 	elapsetime = GETSECCOUNT - CloseTime
 	CloseTime = GETSECCOUNT
 }
-UpdateFirstBootCount:void{
-}
 //**** 初回起动 *******************************************************************************************************
 OnFirstBoot{//改动于2020 by steve02081504
 	MAGICLOCK
@@ -68,7 +66,6 @@ OnFirstBoot{//改动于2020 by steve02081504
 			FirstBootCount = _argv[0]
 		else
 			FirstBootCount = 0
-		UpdateFirstBootCount
 		--
 		if FirstBootCount >= 4{
 			OnDDLCend
@@ -169,7 +166,6 @@ OnBoot{
 			intimacy -= 3
 		if elapsetime > 172800{//卸载时长超过两天：有效卸载
 			FirstBootCount++
-			UpdateFirstBootCount
 			if FirstBootCount >= 4{//三次有效卸载后惩罚
 				{//自我销毁
 					void DELDIR('PROFILE_PATH')//清除用户数据
