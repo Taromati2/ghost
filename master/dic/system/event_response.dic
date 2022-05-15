@@ -1120,15 +1120,24 @@ OnNetworkStatusChange{
 	}else{
 		if reference0 == 'offline'
 			return
-		if mode == '1'
-			"\1\s[%(specialmode != 'mealtime')10]IP改变了\n"
-		else
-			'\0\s[6]IP已变动\n'
+		if setting.IP_ChangeReminder{
+			if mode == '1'
+				"\1\s[%(specialmode != 'mealtime')10]IP改变了\n"
+			else
+				'\0\s[6]IP已变动\n'
+		}
 	}
 	--
-	if reference.raw[1] && NetworkStatus.IP != reference.raw[1]
-		"当前ip：%(REPLACE(reference.raw[1],CHR(1),'以及\n'))"
-	--
+	if setting.IP_ChangeReminder{
+		if reference.raw[1] && NetworkStatus.IP != reference.raw[1]{
+			"当前ip：%(REPLACE(reference.raw[1],CHR(1),'以及\n'))\n"
+			--
+			'/
+			\q[◇关闭IP变动提醒,OnSet,setting.IP_ChangeReminder,0]\n/
+			\q[◇不了,Cancel]\n/
+			'
+		}
+	}
 	OnUpdateNetworkStatus
 	NetworkStatus = reference0
 }

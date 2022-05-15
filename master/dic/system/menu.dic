@@ -655,6 +655,9 @@ Select.Option{
 	--
 	'\n■其他设定■\n'
 	--
+	TheDefaultValue('setting.IP_ChangeReminder',1)
+	"IP变动提醒		\_l[120]\q[%(_t[TOINT(setting.IP_ChangeReminder)]) ON,Onusage,setting.IP_ChangeReminder,1]  ・  \_l[180]\q[%(_t[1 - TOINT(setting.IP_ChangeReminder)]) OFF,Onusage,setting.IP_ChangeReminder,0]\n"
+	--
 	TheDefaultValue('AllowInternetIPShowing',0)
 	"显示外网IP		\_l[120]\q[%(_t[TOINT(AllowInternetIPShowing)]) ON,Onusage,AllowInternetIPShowing,1]  ・  \_l[180]\q[%(_t[1 - TOINT(AllowInternetIPShowing)]) OFF,Onusage,AllowInternetIPShowing,0]\n"
 	--
