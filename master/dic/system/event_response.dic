@@ -1134,7 +1134,7 @@ OnNetworkStatusChange{
 			--
 			'/
 			\q[◇关闭IP变动提醒,OnSet,setting.IP_ChangeReminder,0]\n/
-			\q[◇不了,Cancel]\n/
+			\q[◇无用,Cancel]\n/
 			'
 		}
 	}
