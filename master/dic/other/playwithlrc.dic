@@ -214,7 +214,7 @@ OnPlayCmd{
 		OnNextMusic
 		return
 	}
-	"\![sound,%(SakuraScriptArgConverter(_cmd)),%(SakuraScriptArgConverter(_file))]"
+	"\![sound,%(SakuraScriptArgConverter(_cmd)),%(SakuraScriptArgConverter(_file)),--volume=%(musicvolume)]"
 	--
 	_path = SPLITPATH(_file)
 	_filelrc = _path[0] + _path[1] + _path[2] + '.lrc'
@@ -343,12 +343,15 @@ MusicHotKey{
 //=======================================================
 #define		M3UPATH		'PROFILE_PATH\\default.m3u8'
 #define		M3U8PATH	'PROFILE_PATH\\playlist\\'
-OnMusicPlayer{
+OnMusicPlayer:all{
 	if !ISVAR('musicplaymode') {
 		musicplaymode = 2
 	}
 	if !ISVAR('musiclrcenable') {
 		musiclrcenable = 1
+	}
+	if !ISVAR('musicvolume') {
+		musicvolume = 100
 	}
 	DialogMusicOpenList
 	musicplayer=1
@@ -362,7 +365,9 @@ OnMusicPlayer{
 	}
 	if !_name
 		_name=',无文件'
-	_txt = "\C\![quicksession,true]\![set,choicetimeout,0]\1\![set,autoscroll,false]\c\s[12]\f[bold,1]Mini音乐播放器\f[bold,default]\_l[145]\q[◇打开路径,OnMusicPathOpen]\_l[215]\q[◇关闭,OnMusicPlayerClose]\n%(_name[2] + _name[3])\n"
+	'\C\![quicksession,true]\![set,choicetimeout,0]\1\![set,autoscroll,false]\c\s[12]\f[bold,1]Mini音乐播放器\f[bold,default]\_l[145]\q[◇打开路径,OnMusicPathOpen]\_l[215]\q[◇关闭,OnMusicPlayerClose]\n'
+	_name[2]
+	'\n'
 	_now=TOINT(musicfile[1])+1+'/'
 	_totol=musicfile[0]
 	if musicplaymode==4||musicplayerrange{
@@ -374,19 +379,26 @@ OnMusicPlayer{
 		_now=''
 		_totol=''
 	}
-	_txt += "\_l[60,-]\f[color,93,188,91]\q[◄上一首,OnLastMusic]  \_l[120,-]\q[►下一首,OnNextMusic]\f[color,default]       %(_now)%(_totol)\n"
 	_status =('play]\f[color,108,129,182]◇播放','pause]\f[color,229,134,82]◇暂停','resume]\f[color,108,129,182]◇继续')[playingmusic]
-	_txt += "\__q[OnMusicPlayerCmd,%(_status)\f[color,default]\__q"
-	_txt += '    \f[color,238,50,95]\q[◇停止,OnMusicPlayerCmd,stop]\f[color,default]    /
+	"\_l[60,-]\f[color,93,188,91]\q[◄上一首,OnLastMusic]  \_l[120,-]\q[►下一首,OnNextMusic]\f[color,default]       %(_now)%(_totol)\n/
+	\__q[OnMusicPlayerCmd,%(_status)\f[color,default]\__q"
+	"    \f[color,238,50,95]\q[◇停止,OnMusicPlayerCmd,stop]\f[color,default]    /
 	\f[color,93,188,91]\q[◇播放列表,OnMusicPlayerList,openlist]\f[color,default]    /
-	\f[color,128,66,255]\q[◇音量,OnMusicPlayerVolume]\f[color,default]\n'
-	_txt += "\q[◇模式:%(_mode),OnMusicPlayMode]    \_l[110]\q[◇歌词卡:,OnMusicLrc]\q[%(_lrcenable),OnMusicSetLrc]\_l[195]\q[◇歌词目录,OnLrcfolder]\n"
-	_txt += '\s[10]\0'
+	\f[color,128,66,255]\q[◇音量,OnMusicPlayerVolume]  \q[△,OnMusicVolumeChange,1]\q[▲,OnMusicVolumeChange,10] %(musicvolume)\_l[255]\q[▼,OnMusicVolumeChange,-10]\q[▽,OnMusicVolumeChange,-1]\f[color,default]\n"
+	"\q[◇模式:%(_mode),OnMusicPlayMode]    \_l[110]\q[◇歌词卡:,OnMusicLrc]\q[%(_lrcenable),OnMusicSetLrc]\_l[195]\q[◇歌词目录,OnLrcfolder]\n"
+	'\s[10]\0'
 	if musicplayerlist
 		_txt+=OnMusicPlayerList
 	if reference0 != 'NoSurfaceRestore'
-		_txt+='\_w[1000]\![raise,OnSurfaceRestore.Music]'
-	_txt
+		'\_w[1000]\![raise,OnSurfaceRestore.Music]'
+}
+OnMusicVolumeChange{
+	musicvolume+=TOINT(reference0)
+	if musicvolume<0
+		musicvolume=0
+	elseif musicvolume>100
+		musicvolume=100
+	'\![sound,option,'+musicfile[2]+',--volume='+musicvolume+']'
 }
 OnMusicPathOpen{
 	_file=REPLACE(musicfile[2],'\','\\')
