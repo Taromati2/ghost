@@ -1336,7 +1336,7 @@ SHIORI_FW.RegisterTempVar {
 //------------------------------------------------------------------------------
 SHIORI_FW.RemoveAllTags
 {
-	_text = RE_REPLACE(_argv[0],'\\_{0,2}[a-zA-Z0-9*!&](\d|\[("([^"]|\\")+?"|([^\]]|\\\])+?)+?\])?','')
+	_text = RE_REPLACE(_argv[0],'\\_{0,2}[a-zA-Z0-9*!&\-+](\d|\[("([^"]|\\")+?"|([^\]]|\\\])+?)+?\])?','')
 	_text = REPLACE(_text,'\\','\')
 	_text
 }
@@ -1568,11 +1568,28 @@ SHIORI_EV.OnBalloonChange : void {
 Get_Full_Defened_Event_Name{
 	if ISFUNC(_argv[0])
 		_argv[0]
-	else
+	elseif ISFUNC('On_'+_argv[0])
 		'On_'+_argv[0]
+	elseif ISFUNC('SHIORI_FW.'+_argv[0])
+		'SHIORI_FW.'+_argv[0]
+	elseif ISFUNC('SHIORI_EV.'+_argv[0])
+		'SHIORI_EV.'+_argv[0]
+	elseif ISFUNC('SHIORI_EV.On_'+_argv[0])
+		'SHIORI_EV.On_'+_argv[0]
 }
 Is_Defened_Event{
-	ISFUNC(_argv[0])||ISFUNC('On_'+_argv[0])
+	if ISFUNC(_argv[0])
+		1
+	elseif ISFUNC('On_'+_argv[0])
+		1
+	elseif ISFUNC('SHIORI_FW.'+_argv[0])
+		1
+	elseif ISFUNC('SHIORI_EV.'+_argv[0])
+		1
+	elseif ISFUNC('SHIORI_EV.On_'+_argv[0])
+		1
+	else
+		0
 }
 SHIORI_EV.On_Has_Event : void {
 	SHIORI_FW.Make_X_SSTP_PassThru('Result',ISFUNC(reference0)||ISFUNC('On_'+reference0)||ISFUNC('SHIORI_EV.'+reference0)||ISFUNC('SHIORI_EV.On_'+reference0))
