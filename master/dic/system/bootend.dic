@@ -220,7 +220,7 @@ OnBoot{
 	if TOINT(autoastro)==0
 		temp='autoastro'
 	if TOINT(autoweather)==0
-		OnWeatherFoundAuto
+		OnWeatherUpdate
 	elseif TOINT(autoastro)==0
 		OnAstroFoundAuto
 	*/

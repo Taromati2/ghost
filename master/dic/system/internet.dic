@@ -137,239 +137,158 @@ OnTuLingFound{
 //天气查询
 ////////////////////////////////////////////////////////////////////////////////
 OnCheckWeather{
-	if ISVAR('city') {
-		"\b[1]要查询『\_a[OnChangeCity]%(city)\_a』的天气吗？/
-		\n[150]\_q\__q[OnDownLoadWeather]◇新浪天气查询\__q\n/
-		（未来3-5天天气状况，可查询国外城市）\n/
-		\_a[OnUrl,http://weather.news.sina.com.cn/]http://weather.news.sina.com.cn/\_a\n[150]/
-		\__q[OnDownLoadWeather2]◇Google天气查询\__q\n/
-		（未来3天天气状况）\n/
-		\_a[OnUrl,http://www.Google.cn/ig/]http://www.Google.cn/ig/\_a\n[150]"
+	if ISVAR('weather.lastcity') {
+		OnWeatherUpdate.menu
+		--
+		"\b[1]『\_a[OnChangeCity]◇%(weather.lastcity)\_a』的天气：\n/
+		今天的天气：\n/
+		白天 %(weather.day)  %(weather.daytemp)℃\n/
+		夜间 %(weather.night)  %(weather.nighttemp)℃\n/
+		\n/
+		明天的天气：\n/
+		白天 %(weather.tomorrow.day)  %(weather.tomorrow.daytemp)℃\n/
+		夜间 %(weather.tomorrow.night)  %(weather.tomorrow.nighttemp)℃\n/
+		\n/
+		"
 		--
 		'\q[◇返回,OnOpenMenu]    \q[◇取消,Cancel]\_q'
 	}
-	else {
+	elseif ISVAR('city'){
+		OnWeatherUpdate.menu
+	}
+	else{
 		OnChangeCity
 	}
 }
 OnChangeCity{
-	"请输入你要查询的城市名称：\![open,inputbox,OnChangeCityComplete,-1,%(city)]"
+	"请输入你要查询的城市名称（留空以自动推断）：\![open,inputbox,OnChangeCityComplete,-1,%(city)]"
 }
 OnChangeCityComplete{
 	city = reference0
-	OnCheckWeather
+	OnWeatherUpdate
 }
-OnDownLoadWeather{
-	"正在连接网站，请稍等……\![excute,http-post,http://php.weather.sina.com.cn/search.php,--param=city=%(city),--param-charset=UTF-8,--file=weather-sina.html,--timeout=200,--async=weathersina]"
-}
-OnDownLoadWeather2{
-	"正在连接网站，请稍等……\![excute,http-get,http://www.google.cn/search?hl=UTF-8&q=天气+%(city),--file=weatherig.html,--timeout=200,--async=weatherig]"
-}
-OnWeatherFound{
-	_txt = "\![set,autoscroll,false]\![set,choicetimeout,0]\_q\b[2]『\_a[OnChangeCity]%(city)\_a』天气预报：\n"
-	_file = 'VAR_PATH\\weather-sina.html'
-	_buff = ''
-	_today = ''
-	_found = 0
-	FCHARSET(127)
-	if FOPEN(_file,'r') {
-		for _buff = FREAD(_file); _buff != -1; _buff = FREAD(_file) {
-			if '<div class="tab_hd clearfix">' _in_ _buff {
-				_buff = FREAD(_file)
-				_updatetime = TextBetween(_buff,'<h3>','</h3>')
-				_updatetime = REPLACE(_updatetime,'<span style="font-size:12px;','')
-				_updatetime = REPLACE(_updatetime,'</span>','')
-				_updatetime = REPLACE(_updatetime,'">','')
-				_txt += _updatetime + '\n'
-			}
-			/*
-			if 'alt='当地时间'' _in_ _buff || 'alt='今天'' _in_ _buff {
-				_today = TextBetween(_buff,'年','</span>')
-				_today = TextBetween(_buff,'alt="','"') + '  ' + _today[1,' '] + '(' + _today[0,' '] + ')'
-			}
-			*/
-			if '<div class="mod_today clearfix">' _in_ _buff {
-				_found = 1
-				for _buff = FREAD(_file); '<div class="weather_list clearfix">' !_in_ _buff; _buff += FREAD(_file) {
-				}
-				//_txt += "\f[bold,1]%(_today)\f[bold,0]\n"
-				_txt += '气温：' + TextBetween(_buff,'<span class="fs_30 tpte">','</span>',0) + '  ' + TextBetween(_buff,'<span class="fs_14">','</span>',0) + TextBetween(_buff,'<span class="fs_24 tpte">','</span>',0) + '\_l[150]' + TextBetween(_buff,'<span class="fs_30 tpte">','</span>',1) + '\n'
-				_txt += '　　　' + TextBetween(_buff,'<h5>','</h5>',0) + '\_l[150]' + TextBetween(_buff,'<h5>','</h5>',1) + '\n'
-				_txt += '天气：' + TextBetween(_buff,'<li>','</li>',1) + '\_l[150]' + TextBetween(_buff,'<li>','</li>',4) + '\n'
-				_txt += '风力：' + TextBetween(_buff,'<li>','</li>',2) + '\_l[150]' + TextBetween(_buff,'<li>','</li>',5) + '\n'
-				//_txt += '天气：' + TextBetween(_buff,'天气：','风力') + '\n'
-				//_txt += '风力：' + TextBetween(_buff,'风力：','风向') + '\n'
-				//_txt += '风向：' + TextBetween(_buff,'风向：',')') + '\n'
-			}
-			if '<div class="weather_list clearfix">' _in_ _buff {
-				_days = 0
-				for _tmp = FREAD(_file); '<ul class="list_01">' !_in_ _tmp; _tmp = FREAD(_file) {
-					_buff += _tmp
-					if '<div class="mod_02">' _in_ _tmp {
-						_days ++
-					}
-				}
-				for _i = 0; _i < _days; _i ++ {
-					_table = TextBetween(_buff,'<div class="mod_02">','<div class="mod_02">',_i)
-					//_table = REPLACE(_table,'&nbsp;','暂无')
-					_txt += '气温：' + TextBetween(_table,'<li class="tpte">','</li>',0) + '\_l[150]' + TextBetween(_table,'<li class="tpte">','</li>',1) + '\n'
-					//_txt += '\f[bold,1]' + TextBetween(_buff,'scope='col'>','<',_i) + '\f[bold,0]\n'
-					_txt += '　　　' + TextBetween(_table,'<h4>','</h4>',0) + '\n'
-					_txt += '\_l[36]' + '白天' + '\_l[150]' + '夜间' + '\n'
-					_txt += '天气：' + TextBetween(_table,'<li>','</li>',0) + '\_l[150]' + TextBetween(_table,'<li>','</li>',3) + '\n'
-					_txt += '风向：' + TextBetween(_table,'<li>','</li>',1) + '\_l[150]' + TextBetween(_table,'<li>','</li>',4) + '\n'
-					_txt += '风力：' + TextBetween(_table,'<li>','</li>',2) + '\_l[150]' + TextBetween(_table,'<li>','</li>',5) + '\n'
-				}
-			}
+OnWeatherUpdate.DosntNeedCheck{
+	if weather.lasttime{
+		_ymd_str=weather.lasttime[0,' ']
+		_hms_str=weather.lasttime[0,' ']
+		_year=TOINT(_ymd_str[0,'-'])
+		_month=TOINT(_ymd_str[1,'-'])
+		_day=TOINT(_ymd_str[2,'-'][0,' '])
+		_hour=TOINT(_hms_str[0,':'])
+		_min=TOINT(_hms_str[1,':'])
+		_sec=TOINT(_hms_str[2,':'])
+		if (GETSECCOUNT-GETSECCOUNT(_year,_month,_day,_hour,_min,_sec))<10800{
+			1
+			return
 		}
 	}
-	if !_found {
-		_txt += '对不起，您搜索的城市天气信息不存在，请改变后重新尝试！\n'
-	}
-	FCLOSE(_file)
-	FCHARSET.default
-	_txt += '\n\q[◇返回,OnCheckWeather]    \q[◇终了,OnWeatherEnd]'
-	_txt
+	0
 }
-OnWeatherFoundAuto{
-	"\0\b[-1]\![excute,http-post,http://php.weather.sina.com.cn/search.php,--param=city=%(city),--param-charset=UTF-8,--file=weather-sina.html,--timeout=200,--async=weatherauto]\x"
+OnWeatherUpdate{
+	if !OnWeatherUpdate.DosntNeedCheck
+		"\![execute,http-get,https://query.asilu.com/weather/gaode,--param=city=%(city),--param-charset=UTF-8,--nofile,--async=weather]"
 }
-Weather{
-	_txt='\_q'
-	_weather=-1
-	_data=0
-	if _argc>0
-		_data=TOINT(_argv[0])
-	if weatherfoundauto==1{
-		for _i=0;_i<5;_i++{
-			if TOINT(month)==TOINT(weather[_i*6])&&TOINT(day+_data)==TOINT(weather[_i*6+1]){
-				for _j=0;_j<6;_j++{
-					_weather[_j]=weather[_i*6+_j]
-				}
-			}
+OnWeatherUpdate.menu{
+	FromWeatherUpdate.menu=1
+	OnWeatherUpdate
+}
+OnWeatherUpdate.boot{
+	FromWeatherUpdate.boot=1
+	OnWeatherUpdate
+}
+OnWeatherUpdate.Success{
+	//str for test
+	_str=reference3
+	//get city
+	_city=TextBetween(_str,'city":"','",',0)
+	if _city{
+		weather.lastcity=_city
+		if !ISVAR('city'){
+			city=weather.lastcity
+		}
+		//get last update time
+		weather.lasttime=TextBetween(_str,'reporttime":"','",',0)
+		//get weather
+		weather.day=TextBetween(_str,'dayweather":"','",',0)
+		weather.night=TextBetween(_str,'nightweather":"','",',0)
+		weather.daytemp=TextBetween(_str,'daytemp":"','",',0)
+		weather.nighttemp=TextBetween(_str,'nighttemp":"','",',0)
+		//get tomorrow weather
+		weather.tomorrow.day=TextBetween(_str,'dayweather":"','",',1)
+		weather.tomorrow.night=TextBetween(_str,'nightweather":"','",',1)
+		weather.tomorrow.daytemp=TextBetween(_str,'daytemp":"','",',1)
+		weather.tomorrow.nighttemp=TextBetween(_str,'nighttemp":"','",',1)
+
+		if FromWeatherUpdate.menu{
+			ERASEVAR('FromWeatherUpdate.menu')
+			OnCheckWeather
+		}
+		elseif FromWeatherUpdate.boot{
+			ERASEVAR('FromWeatherUpdate.boot')
+			Weather.Talks
 		}
 	}
-	_weather
+	else{
+		ERASEVAR('city')
+		OnWeatherUpdate
+	}
 }
-Weatherremind{
-	_txt='\_q'
-	_weather=Weather
-	if _weather!=-1{
-		_txt+="/
-		\s[40]今天是%(year)年%(month)月%(day)日,%(city)地区的天气状况如下：\n/
-		\_l[36]白天				\_l[150]晚上\n/
-		天气：%(_weather[2])	\_l[150]%(_weather[4])\n/
-		气温：%(_weather[3])℃	\_l[150]%(_weather[5])℃\n/
-		"
-		if hour>=8&&hour<18{
-			if '晴' _in_ _weather[2]
-				_txt+='天晴的话出去走走比较好哦。\n'
-			elseif '雨' _in_ _weather[2]
-				_txt+='今天下雨了吗？下雨出门记得带伞哦。\n'
-			elseif '雪' _in_ _weather[2]
-				_txt+="%(username)，外面下雪了吗？\n"
-			if TOINT(_weather[3])<16
-				_txt+='今天天气比较冷，要注意保重身体哦。\n'
-			elseif TOINT(_weather[3])>38
-				_txt+='天气太热了，还是少呆在外面比较好。\n'
-			elseif TOINT(_weather[3])>33
-				_txt+='今天天气比较热，要注意降温解暑哦。\n'
-		}
-		elseif hour>=18{
-			if '雨' _in_ _weather[4]
-				_txt+='晚上可能有雨，记得收衣服关好门窗哦。\n'
-			elseif '雪' _in_ _weather[4]
-				_txt+='外面应该很冷吧，还是呆在家里比较好。\n'
-			if TOINT(_weather[5])<10
-				_txt+='晚上睡觉要注意保暖哦，不要冻着身子。\n'
-		}
+OnWeatherUpdate.Failure{
+	if FromWeatherUpdate.menu{
+		ERASEVAR('FromWeatherUpdate.menu')
+		'\0\s[8]查询失败，\w9检查下网络连接吧？'
 	}
-	_weather=Weather(1)
-	if _weather!=-1{
-		_txt+="\n[half]\s[40]明日%(city)地区的天气状况如下：\n/
-		\_l[36]白天         \_l[150]晚上\n/
-		天气：%(_weather[2]) \_l[150]%(_weather[4])\n/
-		气温：%(_weather[3])℃  \_l[150]%(_weather[5])℃\n/
-		"
+	elseif FromWeatherUpdate.boot{
+		ERASEVAR('FromWeatherUpdate.boot')
 	}
-	_txt+='\_q\x'
-	if !TOINT(autoastro) &&temp=='autoastro'{
-		_txt+=OnAstroFoundAuto
-		temp=NULL
-	}
-	_txt
 }
-WeatherToday{
-	_weather=Weather
-	if _weather!=-1{
+Weather.Talks{
+	if hour>=8&&hour<18{
+		if '晴' _in_ weather.day{
+			'天晴的话出去走走比较好哦。'
+			'今天天气还好啦，因为是晴天呢。'
+		}
+		elseif '雨' _in_ weather.day{
+			'今天下雨了吗？下雨出门记得带伞哦。'
+			'今天是雨天，天气不好啊'
+		}
+		elseif '雪' _in_ weather.day{
+			"%(username)，外面下雪了吗？"
+			'今天下雪了吗，好好玩'
+		}
+		if TOINT(weather.daytemp)<16
+			'今天天气比较冷，要注意保重身体哦。'
+		elseif TOINT(weather.daytemp)>38
+			'天气太热了，还是少呆在外面比较好。'
+		elseif TOINT(weather.daytemp)>33
+			'今天天气比较热，要注意降温解暑哦。'
+	}
+	else{
+		if '雨' _in_ weather.night
+			'晚上可能有雨，记得收衣服关好门窗哦。'
+		elseif '雪' _in_ weather.night
+			'外面应该很冷吧，还是呆在家里比较好。'
+		if TOINT(weather.nighttemp)<10
+			'晚上睡觉要注意保暖哦，不要冻着身子。'
+	}
+}
+Weather.EmbeddingString1{
+	if weather.day{
 		if hour>=8&&hour<18
-			"天气：%(_weather[2])  温度：%(_weather[3])℃"
+			"天气：%(weather.day)  温度：%(weather.daytemp)℃"
 		else
-			"天气：%(_weather[4])  温度：%(_weather[5])℃"
+			"天气：%(weather.night)  温度：%(weather.nighttemp)℃"
 	}
 }
-WeatherToday2{
-	_weather=Weather
-	if _weather!=-1{
-		"%(city) %(_weather[2]) %(_weather[3])℃～%(_weather[5])℃"
+Weather.EmbeddingString2{
+	if weather.day{
+		if hour>=8&&hour<18
+			"%(weather.lastcity) %(weather.day) "
+		else
+			"%(weather.lastcity) %(weather.night) "
+		--
+		"%(weather.daytemp)℃～%(weather.nighttemp)℃"
 	}
-}
-WeatherFoundAuto{
-	_file = 'VAR_PATH\\weather-sina.html'
-	_buff = ''
-	_today = ''
-	_found = 0
-	_updatetime=''
-	weatherfoundauto=0
-	FCHARSET(127)
-	if FOPEN(_file,'r') {
-		for _buff = FREAD(_file); _buff != -1; _buff = FREAD(_file) {
-			if '<div class="tab_hd clearfix">' _in_ _buff {
-				_buff = FREAD(_file)
-				_updatetime = TextBetween(_buff,'<h3>','</h3>')
-				_updatetime = REPLACE(_updatetime,'<span style="font-size:12px;','')
-				_updatetime = REPLACE(_updatetime,'</span>','')
-				_updatetime = REPLACE(_updatetime,'">','')
-				_txt += _updatetime + '\n'
-			}
-			if '<div class="mod_today clearfix">' _in_ _buff {
-				_found = 1
-				weatherfoundauto=1
-				weather=IARRAY
-				weather[0]=TextBetween(_updatetime,'-','-',0)
-				weather[1]=TextBetween(_updatetime,'-',' ',1)
-				for _buff = FREAD(_file); '<div class="weather_list clearfix">' !_in_ _buff; _buff += FREAD(_file) {
-				}
-				weather[2]=TextBetween(_buff,'<li>','</li>',1)//白天天气
-				weather[3]=TextBetween(_buff,'<span class="fs_30 tpte">','</span>',0)[0,'℃']
-				weather[4]=TextBetween(_buff,'<li>','</li>',4)
-				weather[5]=TextBetween(_buff,'<span class="fs_30 tpte">','</span>',1)[0,'℃']
-			}
-			if '<div class="weather_list clearfix">' _in_ _buff {
-				_days = 0
-				for _tmp = FREAD(_file); '<ul class="list_01">' !_in_ _tmp; _tmp = FREAD(_file) {
-					_buff += _tmp
-					if '<div class="mod_02">' _in_ _tmp {
-						_days ++
-					}
-				}
-				for _i = 0; _i < _days; _i++ {
-					_table = TextBetween(_buff,'<div class="mod_02">','<div class="mod_02">',_i)
-					_text=TextBetween(_table,'<h4>','</h4>',0)
-					weather[_i*6+6]=TextBetween(_text,'(','月')
-					weather[_i*6+7]=TextBetween(_text,'月','日')
-					weather[_i*6+8]=TextBetween(_table,'<li>','</li>',0)
-					weather[_i*6+9]=TextBetween(_table,'<li class="tpte">','</li>',0)[0,'℃']
-					weather[_i*6+10]=TextBetween(_table,'<li>','</li>',3)
-					weather[_i*6+11]=TextBetween(_table,'<li class="tpte">','</li>',1)[0,'℃']
-				}
-			}
-		}
-	}
-	FCLOSE(_file)
-	FCHARSET.default
-	Weatherremind
-	//_found
 }
 //Hitokoto
 OnHitokotoUpdate{
@@ -716,14 +635,8 @@ OnExecuteHTTPComplete{
 		_tmp = reference1[1,'=']
 		//ReadXml("VAR_PATH\\%(_tmp)")
 	}
-	elseif reference1 == 'weathersina' {
-		OnWeatherFound
-	}
-	elseif reference1 == 'weatherauto' {
-		WeatherFoundAuto
-	}
-	elseif reference1 == 'weatherig' {
-		OnWeatherFound2
+	elseif reference1 == 'weather' {
+		OnWeatherUpdate.Success
 	}
 	elseif reference1 == 'checkip' {
 		OnIpFound
@@ -756,12 +669,9 @@ OnExecuteHTTPFailure{
 		'\n\n\q[◇返回,OnCheckWeather]    \q[◇终了,OnWeatherEnd]'
 	}
 	else {
-		if reference1=='weatherauto'{
-			if Weather!=-1
-				Weatherremind
+		if reference1=='weather'{
+			OnWeatherUpdate.Failure
 		}
-		elseif reference1=='weathersina'
-			"\0\s[3]连线失败了……\nError：%(reference4)\n要查看本地信息吗？\n\q[◇确定,OnWeatherFound]"
 		elseif reference1 == 'tulingapi' {
 			OnTuLingFound.Failure
 		}

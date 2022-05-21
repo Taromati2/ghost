@@ -2080,33 +2080,16 @@ Greetings{
 	}
 }
 WeatherState{
-	_txt='\s[0]'
-	_weather=Weather
-	if _weather!=-1{
-		_txt+="天气：%(_weather[2])～%(_weather[4])，气温：%(_weather[3])℃～%(_weather[5])℃\n"
-		if '晴' _in_ _weather[2]
-			_txt+='今天天气还好啦，因为是晴天呢。\n'
-		elseif '雨' _in_ _weather[2]
-			_txt+='今天是雨天，天气不好啊\n'
-		elseif '雪' _in_ _weather[2]
-			_txt+='今天下雪了吗，好好玩\n'
-		if TOINT(_weather[3])<16
-			_txt+='天气比较冷，要注意保重身体哦。\n'
-		elseif TOINT(_weather[3])>38
-			_txt+='天气太热了，还是少呆在外面比较好。\n'
-		elseif TOINT(_weather[3])>33
-			_txt+='今天天气比较热，要注意降温解暑哦。\n'
-		if '雨' _in_ _weather[4]
-			_txt+='晚上可能有雨，记得收衣服关好门窗哦。\n'
-		elseif '雪' _in_ _weather[4]
-			_txt+='外面应该很冷吧，还是呆在家里比较好。\n'
-		if TOINT(_weather[5])<10
-			_txt+='晚上睡觉要注意保暖哦，不要冻着身子。\n'
+	'\s[0]'
+	--
+	if weather.lastcity{
+		"天气：%(weather.day)～%(weather.night)，气温：%(weather.daytemp)℃～%(weather.nighttemp)℃\n"
+		--
+		Weather.Talks
 	}
 	else{
 		_txt+="这个，%(selfname)也不知道呢，因为不能获得天气信息。"
 	}
-	_txt
 }
 HtmlToAI{//HtmlToAI('D:\CHM','meal')
 	_path=_argv[0]

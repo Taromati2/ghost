@@ -141,7 +141,7 @@ OnKeyPress{
 		'\![raise,OnOpenMenu]'
 	}
 	elseif reference0 == 'w' {
-		OnWeatherFoundAuto
+		OnWeatherUpdate
 	}
 	elseif reference0 == 'a' {
 		OnAstroFoundAuto

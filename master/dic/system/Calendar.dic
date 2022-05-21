@@ -355,7 +355,7 @@ OnAgenda{
 	\_l[[%(_x),%(_y+260+15)]\q[◆新增事件,OnAgenda,%(_year),%(_m),%(_d),add,1,%(_n),%(_t)\n点击进入记事设置]/
 	\_l[%(_x),%(_y+260+15*2)]%(_lunar[3])年%(_lunar[5])月%(_lunar[6])（%(lunardata[7])年%(lunardata[8])月%(lunardata[9])日）%(_jieqi)/
 	\_l[%(_x),%(_y+260+15*3)]"+ColorText("%(_lunar[7])","bold,color=%(ColorIdx(6))")+"    %(_jieri[0])%(_jieri[1])%(_jieri[2])%(_jieri[3])/
-	\_l[%(_x),%(_y+260+15*4)]%(WeatherToday2)/
+	\_l[%(_x),%(_y+260+15*4)]%(Weather.EmbeddingString2)/
 	\_l[%(_x+100),%(_y+260+15*4)]\q[◇退出,OnoverCalendar]/
 	%(_w)\![set,choicetimeout,0]"
 	agenda=(1,"OnAgenda(%(_year),%(_m),%(_d),%(_mode))")

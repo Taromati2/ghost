@@ -27,7 +27,7 @@ OpenMenu{
 		_submenuex=_argv[1]
 		menu=_submenu
 		menuex=_submenuex
-		_message=hitokoto
+		_message=RandomMenuMessage
 	}
 	else {
 		_message=OpenMenuTalk
@@ -48,6 +48,11 @@ OpenMenu{
 	if _submenu==0 && MenuMode!=2{
 		NotePadShow(178,44,4)//坐标x，坐标y，显示条数
 	}
+}
+RandomMenuMessage{
+	hitokoto
+	if weather.lastcity
+		Weather.Talks
 }
 OnSubMenu{
 	click=NULL
