@@ -98,7 +98,7 @@ OnKeyPress{
 		else
 			'\0\s[0]嗯'
 		--
-		'…\n\w9\w9\![reload,shell]重新讀取SHELL……'
+		'…\n\w9\w9重新讀取SHELL……\![reload,shell]'
 	}
 	elseif reference0 == 'f5' {
 		//---- shiori重新載入

@@ -152,8 +152,8 @@ TalkSakuraFacePat.0{
 	'\0\s[6]嗯。\w9\w9\s[0]\n怎么了？'
 }
 TalkSakuraFacePat.1{
-	'\0\s[2]嗯?\w9\w9[0]怎麼了？'
-	'\0\s[2]嗯?\w9\w9[0]什麼事？'
+	'\0\s[2]嗯?\w9\w9\s[0]怎么了？'
+	'\0\s[2]嗯?\w9\w9\s[0]什么事？'
 }
 TalkSakuraFacePat.2{
 	intimacy += 1
