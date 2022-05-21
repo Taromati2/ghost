@@ -60,33 +60,8 @@ BeginToEnd{//BeginToEnd('君不见，黄河之水天上来，奔流到海不复�
 	}
 	_d
 }
-//天气查询
+//图灵api
 ////////////////////////////////////////////////////////////////////////////////
-OnCheckWeather{
-	if ISVAR('city') {
-		"\b[1]要查询『\_a[OnChangeCity]%(city)\_a』的天气吗？/
-		\n[150]\_q\__q[OnDownLoadWeather]◇新浪天气查询\__q\n/
-		（未来3-5天天气状况，可查询国外城市）\n/
-		\_a[OnUrl,http://weather.news.sina.com.cn/]http://weather.news.sina.com.cn/\_a\n[150]/
-		\__q[OnDownLoadWeather2]◇Google天气查询\__q\n/
-		（未来3天天气状况）\n/
-		\_a[OnUrl,http://www.Google.cn/ig/]http://www.Google.cn/ig/\_a\n[150]"
-		--
-		'\q[◇返回,OnOpenMenu]    \q[◇取消,OnWeatherEnd]\_q'
-	}
-	else {
-		OnChangeCity
-	}
-}
-OnWeatherEnd{
-}
-OnChangeCity{
-	"请输入你要查询的城市名称：\![open,inputbox,OnChangeCityComplete,-1,%(city)]"
-}
-OnChangeCityComplete{
-	city = reference0
-	OnCheckWeather
-}
 OntulingApi{
 	callingtulingapi=1
 	tulingapi.in=_argv[0]
@@ -158,6 +133,31 @@ OnTuLingFound{
 	'\'+mode
 	--
 	_txt
+}
+//天气查询
+////////////////////////////////////////////////////////////////////////////////
+OnCheckWeather{
+	if ISVAR('city') {
+		"\b[1]要查询『\_a[OnChangeCity]%(city)\_a』的天气吗？/
+		\n[150]\_q\__q[OnDownLoadWeather]◇新浪天气查询\__q\n/
+		（未来3-5天天气状况，可查询国外城市）\n/
+		\_a[OnUrl,http://weather.news.sina.com.cn/]http://weather.news.sina.com.cn/\_a\n[150]/
+		\__q[OnDownLoadWeather2]◇Google天气查询\__q\n/
+		（未来3天天气状况）\n/
+		\_a[OnUrl,http://www.Google.cn/ig/]http://www.Google.cn/ig/\_a\n[150]"
+		--
+		'\q[◇返回,OnOpenMenu]    \q[◇取消,Cancel]\_q'
+	}
+	else {
+		OnChangeCity
+	}
+}
+OnChangeCity{
+	"请输入你要查询的城市名称：\![open,inputbox,OnChangeCityComplete,-1,%(city)]"
+}
+OnChangeCityComplete{
+	city = reference0
+	OnCheckWeather
 }
 OnDownLoadWeather{
 	"正在连接网站，请稍等……\![excute,http-post,http://php.weather.sina.com.cn/search.php,--param=city=%(city),--param-charset=UTF-8,--file=weather-sina.html,--timeout=200,--async=weathersina]"
@@ -371,112 +371,11 @@ WeatherFoundAuto{
 	Weatherremind
 	//_found
 }
-OnWeatherFound2{
-	_txt = "\b[2]『\_a[OnChangeCity]%(city)\_a』未来3天天气预报：\n"
-	_file = 'VAR_PATH\\weatherig.html'
-	_buff = ''
-	_found = 0
-	FCHARSET(127)
-	if FOPEN(_file,'r') {
-		for _buff = FREAD(_file); _buff != -1; _buff = FREAD(_file) {
-			if '天气' _in_ _buff && '添加到 iGoogle' _in_ _buff {
-				_title = TextBetween(_buff,'<FONT color=#cc0033>','<')
-				_tmp = TextBetween(_buff,'添加到 iGoogle','搜索结果')
-				_wind = TextBetween(_tmp,'>','<',11)
-				_wet = TextBetween(_tmp,'>','<',12)
-				_info = TextBetween(_tmp,'color:#6f6f6f">','<')
-				_found = 1
-				_txt += "（%(_info)）\n\n"
-				for _i = 0; _i < 3; _i++ {
-					_day = TextBetween(_tmp,'float:left">','<',_i + 1)
-					_weather = TextBetween(_tmp,'alt="','"',_i)
-					_temperature = TextBetween(_tmp,'<nobr>','<',_i)
-					_txt += "\f[bold,1]%(_day)\f[bold,default]\n天气：%(_weather)\n气温：%(_temperature)\n"
-					if _day == '今日' {
-						_txt += "%(_wind)\n%(_wet)\n[150]"
-					}
-					else {
-						_txt += '\n[half]'
-					}
-				}
-			}
-		}
-	}
-	FCLOSE(_file)
-	FCHARSET.default
-	if !_found {
-		_txt += '\n没有查到这个城市的天气情况……\n'
-	}
-	_txt += '\n\q[◇返回,OnCheckWeather]    \q[◇终了,OnWeatherEnd]'
-	_txt
-}
-//Google计算器
-//////////////////////////////////////////////////////////////////////
-OnGoogleCal{
-	"\b[2]\![set,autoscroll,false]请输入你要计算的表达式：\n[150]\![open,inputbox,OnGoogleCalInput,-1]/
-	\_qTips：\n/
-	\_l[0]符号\_l[76]功能\_l[160]示例\n/
-	\_l[0]+\_l[76]加\_l[160]3+44\n/
-	\_l[0]-\_l[76]减\_l[160]13-5\n/
-	\_l[0]*\_l[76]乘\_l[160]7*8\n/
-	\_l[0]/\_l[76]除以\_l[160]12/3\n/
-	\_l[0]^\_l[76]的…次方\_l[160]8^2\n/
-	\_l[0]\%\_l[76]模\_l[160]8%7\n/
-	\_l[0]选\_l[76]组合运算\_l[160]18选4\n/
-	\_l[0]开…次方\_l[76]n次方根\_l[160]32开5次方\n/
-	\_l[0]sqrt\_l[76]平方根\_l[160]sqrt(9)\n/
-	\_l[0]sin,cos,etc.\_l[76]三角函数(弧度)\_l[160]sin(pi/3)\n/
-	\_l[0]ln\_l[76]e底对数\_l[160]ln(17)\n/
-	\_l[0]log\_l[76]10底对数\_l[160]log(1000)\n/
-	\_l[0]!\_l[76]阶乘\_l[160]5!\n/
-	\_l[0]\%\_l[76]百分之\_l[160]20\%\n/
-	\n/
-	你可以将等号（=）放在一个式子之后对这个式子进行强制计算。如果这个式子是合理的，Google将返回结果。\n[150]/
-	你也可以用十六进制，八进制，或者二进制数进行计算，只需要在十六进制数前加前缀 0x ，在八进制数前加前缀 0o ，在二进制数前加前缀 0b 。\n[150]/
-	Google计算器能识别很多单位，以及各种物理和数学常数。你也可以在计算表达式中直接用这些常数。你可以用是几，等于多少，或者＝？来做单位间的换算。比如，三十摄氏度等于多少华氏度。\n/
-	\_q\x"
-}
-OnGoogleCalInput{
-	_t = reference0
-	_in = ('%','#','&','+','=','?',' ')
-	_out = ('%25','%23','%26','%2B','%3D','%3F','+')
-	for _i = 0; _i < 7; _i ++ {
-		_t = REPLACE(_t,_in[_i],_out[_i])
-	}
-	//_t = STRENCODE(_t,'base64')
-	"正在连接Google……\![excute,http-get,http://www.google.cn/search,--param=hl=zh-CN&q=%(_t),--file=googlecal.html,--timeout=50,--async=googlecal]"
-}
-OnGoogleCalFound{
-	_txt = '\_q'
-	_file = 'VAR_PATH/googlecal.html'
-	_buff = ''
-	_found = 0
-	FCHARSET(127)
-	if FOPEN(_file,'r') {
-		for _buff = FREAD(_file); _buff != -1; _buff = FREAD(_file) {
-			if '计算器详情' _in_ _buff || '汇率比价仅作信息参考' _in_ _buff {
-				_tmp = _buff[1,'font-size:138']
-				_tmp = _tmp[0,'</b>']
-				_tmp = _tmp[1,'<b>']
-				_tmp = REPLACE(_tmp,'&#160;',' ')
-				_txt += "您要计算的表达式：\n[150]\f[bold,1]%(_tmp)\f[bold,default]\n"
-				_found = 1
-				break
-			}
-		}
-		FCLOSE(_file)
-	}
-	FCHARSET.default
-	if !_found {
-		_txt += 'Google无法计算您给的表达式，请检查输入是否正确……'
-	}
-	_txt += '\n\n\q[◇返回,OnOpenMenu]    \q[◇终了,OnGoogleCalEnd]'
-	_txt
-}
-OnGoogleCalEnd{
-	'\0\s[41]那个……橘花有帮到你吗？\w9'
-}
+//Hitokoto
 OnHitokotoUpdate{
+	'\![execute,http-get,https://v1.hitokoto.cn/,encode=text,--nofile,--async=hitokoto]'//更新一言
+}
+OnHitokotoUpdate.Success{
 	hitokoto=reference3
 	--
 	DiscordCustomSet.CustomDetail(hitokoto)
@@ -844,7 +743,7 @@ OnExecuteHTTPComplete{
 			OnKikkaStockFound
 	}
 	elseif reference1 == 'hitokoto' {
-		OnHitokotoUpdate
+		OnHitokotoUpdate.Success
 	}
 	else {
 		BUGNow('OnExecuteHTTPComplete的未定义async id: '+reference1)
