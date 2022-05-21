@@ -53,7 +53,7 @@ OnReloadShiori{
 	else
 		'\0\s[0]嗯'
 	--
-	'…\n\![reload,shiori]重新讀取SHIORI……'
+	'…\n\![reload,shiori]重新读取SHIORI……'
 }
 SakuraScriptArgConverter{
 	'"'+REPLACE(TOSTR(_argv),'"','""')+'"'
@@ -127,7 +127,7 @@ OnSakuraScript{
 				if ('\!' _in_ reference.raw[0] || '\-' _in_ reference.raw[0]){
 					'\0\s[100]/
 					警告\w9\w9：此Sakura Script可能含有较危险操作\n/
-					\q[◇确认執行,OnSakuraScript,'+SakuraScriptArgConverter(reference.raw[0])+',force_run]\n/
+					\q[◇确认执行,OnSakuraScript,'+SakuraScriptArgConverter(reference.raw[0])+',force_run]\n/
 					\q[◇无用,Cancel]\n/
 					'
 					return
@@ -137,8 +137,8 @@ OnSakuraScript{
 				'\0\s[100]/
 				这段Sakura Script中似乎含有aya转义符\w9\n/
 				需要转义么？\w9\n/
-				\q[◇转义執行,OnSakuraScript.Forment,'+SakuraScriptArgConverter(reference.raw[0])+']\n/
-				\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference.raw[0])+',no_convert]\n/
+				\q[◇转义执行,OnSakuraScript.Forment,'+SakuraScriptArgConverter(reference.raw[0])+']\n/
+				\q[◇直接执行,OnSakuraScript,'+SakuraScriptArgConverter(reference.raw[0])+',no_convert]\n/
 				\q[◇无用,Cancel]\n/
 				'
 				return
@@ -148,8 +148,8 @@ OnSakuraScript{
 			'\0\s[100]/
 			这段Sakura Script中似乎含有全局define\w9\n/
 			需要处理么？\w9\n/
-			\q[◇处理執行,OnSakuraScript,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference.raw[0]))+',no_defineprocess]\n/
-			\q[◇直接執行,OnSakuraScript,'+SakuraScriptArgConverter(reference.raw[0])+',no_defineprocess]\n/
+			\q[◇处理执行,OnSakuraScript,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference.raw[0]))+',no_defineprocess]\n/
+			\q[◇直接执行,OnSakuraScript,'+SakuraScriptArgConverter(reference.raw[0])+',no_defineprocess]\n/
 			\q[◇无用,Cancel]\n/
 			'
 			return
@@ -307,7 +307,7 @@ OnCalculateVar{
 					--
 					'/
 					\q[◇仍然执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',force_run]\n/
-					\q[◇改作Sakura Script執行,OnCalculateVar.ToSakuraScript,'+SakuraScriptArgConverter(reference0)+']\n/
+					\q[◇改作Sakura Script执行,OnCalculateVar.ToSakuraScript,'+SakuraScriptArgConverter(reference0)+']\n/
 					\q[◇算了,Cancel,with_func,OnCalculateVar.Cancel]\n/
 					'
 					return
@@ -320,8 +320,8 @@ OnCalculateVar{
 					'\0\s[20]处理表达式中的全局define么？\n'
 				--
 				'/
-				\q[◇处理執行,OnCalculateVar,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
-				\q[◇直接執行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',no_defineprocess]\n/
+				\q[◇处理执行,OnCalculateVar,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
+				\q[◇直接执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',no_defineprocess]\n/
 				\q[◇算了,Cancel,with_func,OnCalculateVar.Cancel]\n/
 				'
 				return
@@ -375,7 +375,7 @@ OnCalculateVar{
 		'\_q\n/
 		\q[◇复制结果,OnCopy,'+SakuraScriptArgConverter(_Result)+']\n/
 		\q[◇复制表达式,OnCopy,'+SakuraScriptArgConverter(reference0)+']\n/
-		\q[◇结果作Sakura Script執行,OnSakuraScript,'+SakuraScriptArgConverter(_Result)+']\n/
+		\q[◇结果作Sakura Script执行,OnSakuraScript,'+SakuraScriptArgConverter(_Result)+']\n/
 		'
 		--
 		'\n/

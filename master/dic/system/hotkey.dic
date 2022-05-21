@@ -25,18 +25,18 @@ OnKeyPress{
 		'\_q'
 		--
 		if mode == '1'
-			"\1\s[%(specialmode != 'mealtime')10]%(reference0)，編碼%(reference1)。"
+			"\1\s[%(specialmode != 'mealtime')10]%(reference0)，编码%(reference1)。"
 		else
-			"\0\s[0]你按了%(reference0)。編碼是%(reference1)。"
+			"\0\s[0]你按了%(reference0)。编码是%(reference1)。"
 		--
 		'\n\q[◇退出键位码测试,OnExitKeyCodeTest]\_q\n'
 		return
 	}
 	if reference1 == 229 {//steve02081504：我也不知道为什么是这个值，试出来的
 		if mode == '1'
-			"\1\s[%(specialmode != 'mealtime')10]使用熱鍵的話，好歹把输入法关了啊。"
+			"\1\s[%(specialmode != 'mealtime')10]使用热键的话，好歹把输入法关了啊。"
 		else
-			'\0\s[8]使用熱鍵的話，要關掉輸入法哦？'
+			'\0\s[8]使用热键的话，要关掉输入法哦？'
 		return
 	}
 	elseif playingbox {
@@ -80,11 +80,11 @@ OnKeyPress{
 		'\0\w9\w9\w9\w9\b[-1]'
 	}
 	elseif reference0 == 'f1' {
-		//---- 開啟readme.txt
+		//---- 开启readme.txt
 		'\![open,readme]'
 	}
 	elseif reference0 == 'f2' {
-		//---- 開始溝通
+		//---- 开始沟通
 		'\![open,communicatebox]'
 	}
 	elseif reference0 == 'f3' {
@@ -92,16 +92,16 @@ OnKeyPress{
 		OnChatRoom(j)
 	}
 	elseif reference0 == 'f4' {
-		//---- shell重新載入
+		//---- shell重新载入
 		if mode == '1'
 			"\1\s[%(specialmode != 'mealtime')10]唔"
 		else
 			'\0\s[0]嗯'
 		--
-		'…\n\w9\w9重新讀取SHELL……\![reload,shell]'
+		'…\n\w9\w9重新读取SHELL……\![reload,shell]'
 	}
 	elseif reference0 == 'f5' {
-		//---- shiori重新載入
+		//---- shiori重新载入
 		OnReloadShiori
 	}
 	elseif reference0 == 'f6' {
@@ -211,9 +211,9 @@ OnKeyPress{
 	}
 	else {
 		if mode == '1'
-			"\1\s[%(specialmode != 'mealtime')10]%(reference0)，編碼%(reference1)。\n不是熱鍵。"
+			"\1\s[%(specialmode != 'mealtime')10]%(reference0)，编码%(reference1)。\n不是热键。"
 		else
-			"\0\s[0]你按了%(reference0)。編碼是%(reference1)。目前尚未被設定為熱鍵。"
+			"\0\s[0]你按了%(reference0)。编码是%(reference1)。目前尚未被设定为热键。"
 	}
 }
 Select.Multitask{

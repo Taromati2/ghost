@@ -1,7 +1,7 @@
-/*拼圖遊戲1.1 by Pygmalion  --2009.8.27*/
+/*拼图游戏1.1 by Pygmalion  --2009.8.27*/
 #define PUZZLE_PIC_SIZE		180
 #define FILE_PATH			DATA_PATH\Game\puzzle
-OnPuzzlePlay{//拼圖開始
+OnPuzzlePlay{//拼图开始
 	if QuickStartVersion{
 		NeedUpdate
 		return
@@ -30,26 +30,26 @@ OnPuzzleList{
 	_txt += '\n\n\q[◇返回游戏列表,OnOpenMenu,2]\n\q[◇终了,PuzzleEnd]\n[150]'
 	_txt
 }
-Select.PuzzleShow{//拼圖進行
+Select.PuzzleShow{//拼图进行
 	if _argv[0]==iPuzzleBlank+1 || _argv[0]==iPuzzleBlank-1 || _argv[0]==iPuzzleBlank+PUZZLE_X || _argv[0]==iPuzzleBlank-PUZZLE_X {
 		PlayPuzzleChange(_argv[0])
 		iPuzzleStep++
 	}
 	PlayPuzzleShow
 }
-Select.PuzzleEnd{//拼圖結束
+Select.PuzzleEnd{//拼图结束
 	ClearPlayPuzzleVar
 	'\0\s[0]不玩了吗？'
 }
-PlayPuzzleReset{//拼圖初始化
+PlayPuzzleReset{//拼图初始化
 	arrPuzzle = IARRAY
 	for _i = 0; _i < PUZZLE_X*PUZZLE_X; _i++ {
 		arrPuzzle[_i] = _i
 	}
 	iPuzzleBlank = PUZZLE_X*PUZZLE_X-1//空位位置
-	iPuzzleStep = 0//步數
+	iPuzzleStep = 0//步数
 }
-PlayPuzzleShow{//拼圖顯示
+PlayPuzzleShow{//拼图显示
 	'\C\![quicksession,true]\c'
 	--
 	_tempstr = ''
@@ -73,7 +73,7 @@ PlayPuzzleShow{//拼圖顯示
 		}
 		_tempstr = _tempstr + '\n'
 	}
-	if PlayPuzzleWin == 1 {//獲勝
+	if PlayPuzzleWin == 1 {//获胜
 		"\0\s[5]\b[2]拼图完成！共用了%(iPuzzleStep)步。\_l[14,26]\_b[FILE_PATH/%(MapIdx),inline,--option=opaque]"
 		--
 		"\n[150]%(username)好厉害～\n"
@@ -98,12 +98,12 @@ OnShowPuzzleMap{
 	ShowPuzzleMap = reference0
 	PlayPuzzleShow
 }
-PlayPuzzleChange{//拼圖移動
+PlayPuzzleChange{//拼图移动
 	arrPuzzle[iPuzzleBlank] = arrPuzzle[_argv[0]]
 	iPuzzleBlank = _argv[0]
 	arrPuzzle[iPuzzleBlank] = PUZZLE_X*PUZZLE_X-1
 }
-PlayPuzzleShuffle{//拼圖打亂
+PlayPuzzleShuffle{//拼图打乱
 	_step = RAND(500)
 	for _i = 0; _i < _step; _i++ {
 		_temp = RAND(4)//方向
@@ -117,7 +117,7 @@ PlayPuzzleShuffle{//拼圖打亂
 			PlayPuzzleChange(iPuzzleBlank - 1)
 	}
 }
-PlayPuzzleWin{//判斷獲勝
+PlayPuzzleWin{//判断获胜
 	_temp = 1
 	for _i = 0; _i < PUZZLE_X*PUZZLE_X; _i++ {
 		if arrPuzzle[_i] != _i {
@@ -127,7 +127,7 @@ PlayPuzzleWin{//判斷獲勝
 	}
 	_temp
 }
-ClearPlayPuzzleVar:void{//消除變數
+ClearPlayPuzzleVar:void{//消除变数
 	ERASEVAR('MapIdx')
 	ERASEVAR('PUZZLE_SIZEX')
 	ERASEVAR('PUZZLE_X')

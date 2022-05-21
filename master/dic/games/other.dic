@@ -574,7 +574,7 @@ Select.ShowHand{
 		{
 			"\0\s[5]橘花赢了!好高兴喔~\w9\w9\1\s[12]今天运气不好喔!\0\s[6]\n谢谢你%(username)\w9\w9"
 			"\1\s[10]....\w8....\w8....\w8...\0\s[40]加油!\w8\w8下一次%(username)会赢我喔!\w8\w8\1\s[11]这是败北宣言吗?\w8\w8\0\s[9]\c\n才不是呢\w9\w9"
-			"\0\s[41]橘花赢了!\w9\s[41]%(username)要加油喔!\w9\w9\1\s[10]该不会是作...\0\s[32]\c作什麽?\w9\w9\n\1\s[13]\c没...没事\w9\w9"
+			"\0\s[41]橘花赢了!\w9\s[41]%(username)要加油喔!\w9\w9\1\s[10]该不会是作...\0\s[32]\c作什么?\w9\w9\n\1\s[13]\c没...没事\w9\w9"
 			"\0\%(username)输了\n\1\s[10]展现你的实力给我看吧!\w9\w9\0\q[◇继续玩,P1]\n\q[◇不用了,P2]"
 		}
 		{
@@ -2111,7 +2111,7 @@ KikkaBattleInfo{
 	%(username)HP：%(TOINT(HP[2]))   SP：%(SP[2])\_q"
 }
 OnKikkaUvcBegin{
-	//---- 決定攻击对象
+	//---- 决定攻击对象
 	ERASEVAR('s')
 	if ghostexcount > 0{
 		指定人格 = ghostexlist[RAND(ghostexcount)]

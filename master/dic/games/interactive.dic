@@ -2,7 +2,7 @@
 //此程序支持多个人格进行互动战斗，使用前提是都是AYA语言的人格，使用方法是将辞书复制到每个要使用的人格的dic目录里面，在aya.txt里调用本辞书，最后在menu里调用On战斗开始，三个人格的使用要注意一定由最先开启的人格进入乱斗，也就是说乱斗的发起者也是其他人格的呼叫者。
 //by 广岛秋泽\fancyang
 On战斗开始{
-	//---- 決定攻击对象
+	//---- 决定攻击对象
 	if ghostexcount > 0{
 		//res_reference0 指定人格
 		指定人格 = ghostexlist[RAND(ghostexcount)]

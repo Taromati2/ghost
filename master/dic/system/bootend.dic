@@ -6,7 +6,7 @@ BaseGhostStart{//改动于2020 by steve02081504
 	OnOptionSet
 	--
 	FCHARSET(1)
-	lastTalk = '\0\s[20]咦？分明才刚启动的說…\1\s[10]喵，刚才什么都没说'
+	lastTalk = '\0\s[20]咦？分明才刚启动的说…\1\s[10]喵，刚才什么都没说'
 	if TimeErrorCheck
 		InTimeError = 1
 	if !InTimeError
@@ -410,18 +410,18 @@ OnBoot.aboutTime{
 		intimacy--
 		HolidayRemindFlag = 0
 		birthdaygiftmode = 0
-		"\0\s[21]\w6\s[0]好久不见啊，%(username)。\1\s[10]至少有一个礼拜沒见了吧。\x"
+		"\0\s[21]\w6\s[0]好久不见啊，%(username)。\1\s[10]至少有一个礼拜没见了吧。\x"
 		"\1\s[117]%(username)把我们给忘了吗,\w9这么久才回来。\w9\w9\0\s[0]%(username)，好久不见啊。\x"
-		"\1\s[10]\0\s[21]\w6\s[5]%(username) ，好久不见\1\s[10]至少有一个礼拜沒见了吧。\x"
+		"\1\s[10]\0\s[21]\w6\s[5]%(username) ，好久不见\1\s[10]至少有一个礼拜没见了吧。\x"
 	}
 	//超过一月半小于半年
 	elseif elapsetime >= 3628800 && elapsetime < 15768000{
 		intimacy-=5
 		HolidayRemindFlag = 0
 		birthdaygiftmode = 0
-		"\0\s[21]\w6\s[0]好久不见啊，%(username)。\1\s[10]至少有一个月沒见了吧。\x"
+		"\0\s[21]\w6\s[0]好久不见啊，%(username)。\1\s[10]至少有一个月没见了吧。\x"
 		"\1\s[117]%(username)把我们给忘了吗,\w9这么久才回来。\w9\w9\0\s[0]%(username)，好久不见啊。\x"
-		"\1\s[10]\0\s[21]\w6\s[5]%(username) ，好久不见\1\s[10]至少有一个月沒见了吧。\x"
+		"\1\s[10]\0\s[21]\w6\s[5]%(username) ，好久不见\1\s[10]至少有一个月没见了吧。\x"
 	}
 	//超过半年
 	elseif elapsetime >= 15768000{
@@ -430,9 +430,9 @@ OnBoot.aboutTime{
 		birthdaygiftmode = 0
 		_years = TOINT(FLOOR(elapsetime / 31536000))
 		if _years=0{
-			"\0\s[21]\w6\s[0]好久不见啊，%(username)。\1\s[10]至少有半年沒见了吧。\x"
+			"\0\s[21]\w6\s[0]好久不见啊，%(username)。\1\s[10]至少有半年没见了吧。\x"
 			"\1\s[117]%(username)把我们给忘了吗,\w9这么久才回来。\w9\w9\0\s[0]%(username)，好久不见啊。\x"
-			"\1\s[10]\0\s[21]\w6\s[5]%(username) ，好久不见\1\s[10]至少有半年沒见了吧。\x"
+			"\1\s[10]\0\s[21]\w6\s[5]%(username) ，好久不见\1\s[10]至少有半年没见了吧。\x"
 		}else{
 			"\0\s[3]%(username)\w8，%(_years)年未见\n\1\s[10]过得还好吗？\w6\n小公主可是一直都在等你哦？\x"
 		}
@@ -468,7 +468,7 @@ OnBoot.aboutTime{
 			when 'Day'{
 				if _phase >= 2{
 					if weekday == '0'
-						'\0\s[26]早安。\w9\w9\n…\w9嗯、\w9\s[8]已經中午了喔。\w9\w9\1\s[10]反正是禮拜天嘛。\w9\w9\n有好好休息嗎？\x'
+						'\0\s[26]早安。\w9\w9\n…\w9嗯、\w9\s[8]已经中午了喔。\w9\w9\1\s[10]反正是礼拜天嘛。\w9\w9\n有好好休息吗？\x'
 					else{
 						"\1\s[10]\0\s[2]啊。\w9\w9\s[40]\n午安、\w9%(username)。\x"
 						"\1\s[10]\0\s[40]午安、\w9%(username)。\1\s[10]哟。\x"

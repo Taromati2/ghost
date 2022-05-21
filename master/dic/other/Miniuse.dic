@@ -3293,18 +3293,18 @@ OnOtherGhostClosed{
 	else{
 		if mode == '1'{
 			if ghostexcount > 0{
-				'\1\s[11]喵嗚~？'
+				'\1\s[11]喵呜~？'
 			}
 			else{
 				mode = '0'
-				'\1\s[18]哈啊……沒人在的話就好。\n/
-				真是麻煩。'
+				'\1\s[18]哈啊……没人在的话就好。\n/
+				真是麻烦。'
 			}
 		}
 		else{
 			if ghostexcount > 0{
 				mode = '1'
-				'\0\s[11]喵嗚~？'
+				'\0\s[11]喵呜~？'
 			}
 			else{
 				mode = '0'

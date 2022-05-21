@@ -427,7 +427,7 @@ ClearPlayerVar{
 OnLrcClose{
 	'\0\c\b[-1]'
 }
-//打開音量調節程式
+//打开音量调节程式
 //---------------------------------------------------
 OnMusicPlayerVolume{
 	_file = CALLSAORI('advanced_sysinfo','get_special_folder_path','System') + '\Sndvol32.exe'
@@ -438,7 +438,7 @@ OnMusicPlayerVolume{
 	--
 	OnMusicPlayer
 }
-//設定播放模式
+//设定播放模式
 //---------------------------------------------------
 OnMusicPlayMode{
 	musicplaymode = (musicplaymode + 1) % 5
@@ -457,7 +457,7 @@ OnMusicLrc{
 	_t=GETTICKCOUNT - musicplaystart + musicplaytime
 	ShowLrc(_t)
 }
-//設定是否顯示歌詞卡
+//设定是否显示歌词卡
 //---------------------------------------------------
 OnMusicSetLrc{
 	musiclrcenable = !musiclrcenable
@@ -482,7 +482,7 @@ IsSelectList{
 	}
 	_found;return
 }
-//打開歌曲列表
+//打开歌曲列表
 //---------------------------------------------------
 OnMusicPlayerList{
 	_txt = '\C\![quicksession,true]\c\0\s[40]\b[2]\![set,autoscroll,false]\![set,choicetimeout,0]\f[bold,1]播放列表\f[bold,default]\_l[178]\q[◇关闭,OnMusicPlayListClose]\n[150]'
@@ -621,7 +621,7 @@ OnMusicListPage{
 		music_listpage[_id]=musicfile[0]/100
 	OnMusicPlayerList
 }
-//移動歌曲
+//移动歌曲
 //---------------------------------------------------
 OnMusicPlayListMove{
 	SETDELIM(musiclist,'*')
@@ -662,7 +662,7 @@ OnMusicPlayListMove{
 	DialogMusicSaveList(musiclistfile[0],1)
 	OnMusicPlayerList
 }
-//移動歌曲列表
+//移动歌曲列表
 //---------------------------------------------------
 OnListNameMove{
 	_m3u='PROFILE_PATH\playlist\'
@@ -850,7 +850,7 @@ DialogMusicAddList{
 	DialogMusicOpenList(_argv[0])
 	DialogMusicSaveList(_file,1)
 }
-//打開列表操作
+//打开列表操作
 //---------------------------------------------------
 DialogMusicOpenList:void{
 	_m3u = M3UPATH
@@ -1102,7 +1102,7 @@ GetRangeList{
 		_txt
 	}
 }
-//選擇歌曲播放
+//选择歌曲播放
 //---------------------------------------------------
 OnSelectMusic{
 	_txt='\C\![quicksession,1]\c\![sound,stop]\![sound,wait]'
@@ -1126,7 +1126,7 @@ OnSelectMusic{
 	_txt += PlayWithLyric('play',musiclrcenable,musicfile[2])
 	_txt
 }
-//選擇上一曲
+//选择上一曲
 //---------------------------------------------------
 OnLastMusic{
 	_txt='\![sound,stop]\![sound,wait]'
@@ -1157,7 +1157,7 @@ OnLastMusic{
 	_txt+=OnMusicPlayer
 	_txt
 }
-//選擇下一曲
+//选择下一曲
 //---------------------------------------------------
 OnNextMusic{
 	_txt='\![sound,stop]\![sound,wait]'
@@ -1188,7 +1188,7 @@ OnNextMusic{
 	_txt+=OnMusicPlayer
 	_txt
 }
-//當音樂結束時
+//当音乐结束时
 //---------------------------------------------------
 OnSoundStop{
 	if playLinkWnd&&!linkwndmusic&&freemode && linkmusicfile _in_ reference0 {
@@ -1271,7 +1271,7 @@ OnSoundStop{
 			SHIORI_FW.MakeValueNotify(OnPlayCmd('play',musicfile[2]))
 	}
 }
-//播放器面板的選項按鈕動作
+//播放器面板的选项按钮动作
 //---------------------------------------------------
 OnMusicPlayerCmd{
 	_temp=NULL
@@ -1301,7 +1301,7 @@ OnMusicPlayerCmd{
 	_txt += OnMusicPlayer
 	_txt
 }
-//播放列表的選項按鈕動作
+//播放列表的选项按钮动作
 //---------------------------------------------------
 OnMusicPlayListAdd{
 	if reference0 == 'folder' {
@@ -1337,7 +1337,7 @@ OnMusicPlayListAdd{
 		OnMusicPlayerList
 	}
 }
-//dialog事件的處理函式
+//dialog事件的处理函式
 //---------------------------------------------------
 OnSystemDialog{
 	if reference1 == 'musicfolder' {
@@ -1409,7 +1409,7 @@ OnSystemDialog{
 		OnEventEditSet(temp[0],temp[1],temp[2],temp[3],temp[4],temp[5],reference2,temp[7])
 	}
 }
-//選擇音樂文件
+//选择音乐文件
 //---------------------------------------------------
 DialogMusicFile{
 	_file = _argv[0]
@@ -1428,7 +1428,7 @@ DialogMusicFile{
 		}
 	}
 }
-//選擇文件夾
+//选择文件夹
 //---------------------------------------------------
 DialogMusicFolder{
 	MusicLoadFolder(_argv[0])
@@ -1465,7 +1465,7 @@ MusicLoadFolder{
 		}
 	}
 }
-//拖放音樂文件
+//拖放音乐文件
 //---------------------------------------------------
 MusicFileDrop{
 	_buff = _argv[0]
