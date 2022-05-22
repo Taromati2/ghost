@@ -216,7 +216,7 @@ OnBoot{
 		\x"
 	}
 	--
-	if autoweather
+	if setting.WeatherReminder
 		OnWeatherUpdate.boot
 	--
 	if AutoUpdate

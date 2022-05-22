@@ -1,6 +1,6 @@
 //by steve
 
-#define VERSION_NOW 5
+#define VERSION_NOW 6
 
 VERSION_INIT:void{
 	VERSION = VERSION_NOW
@@ -159,12 +159,13 @@ VERSION_UPGRADE_5:void{
 	RENAME_VAR('敏捷','nurturance.subvar.Agile')
 	RENAME_VAR('幸运','nurturance.subvar.Luck')
 }
-VERSION_UPGRADE_6:void{//building
+VERSION_UPGRADE_6:void{
+	setting.WeatherReminder=!autoweather
 	ERASEVAR('weather')
 	ERASEVAR('weatherfoundauto')
 	FDEL('VAR_PATH/astro-sina.html')
 	ERASEVAR('date')
 	ERASEVAR('astro')
 	ERASEVAR('autoastro')
-	autoweather=!autoweather
+	ERASEVAR('autoweather')
 }
