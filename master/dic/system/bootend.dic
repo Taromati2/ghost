@@ -218,10 +218,6 @@ OnBoot{
 	--
 	if autoweather
 		OnWeatherUpdate.boot
-	/*
-	if TOINT(autoastro)==0
-		OnAstroFoundAuto
-	*/
 	--
 	if AutoUpdate
 		OnSilentUpdate

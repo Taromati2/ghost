@@ -163,5 +163,8 @@ VERSION_UPGRADE_6:void{//building
 	ERASEVAR('weather')
 	ERASEVAR('weatherfoundauto')
 	FDEL('VAR_PATH/astro-sina.html')
+	ERASEVAR('date')
+	ERASEVAR('astro')
+	ERASEVAR('autoastro')
 	autoweather=!autoweather
 }

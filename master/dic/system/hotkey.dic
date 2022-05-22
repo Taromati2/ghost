@@ -143,9 +143,6 @@ OnKeyPress{
 	elseif reference0 == 'w' {
 		OnWeatherUpdate
 	}
-	elseif reference0 == 'a' {
-		OnAstroFoundAuto
-	}
 	elseif reference0 == 'u' {
 		UnoUserInit
 	}

@@ -73,7 +73,7 @@ SubMenu{
 			\q[◇天气预报,OnCheckWeather]	\_l[100,-]\q[◇日程提醒,OnAgenda]\n/
 			\q[◇IP查询,OnCheckIp]			\_l[100,-]\q[◇计算器,OnCalculator]\n/
 			\q[◇放大镜,OnMagnify]			\_l[100,-]\q[◇录音机,OnRecorder]\n/
-			\q[◇星座运势,OnAstrofate]		\_l[100,-]\q[◇橘花行情,OnKikkaStockMenu]\n/
+			\q[◇橘花行情,OnKikkaStockMenu]	\n/
 			'
 		}
 		when 1 {
@@ -650,9 +650,6 @@ Select.Option{
 	--
 	"\q[◇任务繁忙提醒,OnMemoryBusySet]	\_l[120]\q[%(_t[1 - TOINT(memorybusyrm[0])]) ON,Onusage,memorybusyrm[0\],0]  ・  \_l[180]\q[%(_t[TOINT(memorybusyrm[0])]) OFF,Onusage,memorybusyrm[0\],1]\n"
 	--
-	TheDefaultValue('autoastro',1)
-	"星座运势提醒	\_l[120]\q[%(_t[1 - TOINT(autoastro)]) ON,Onusage,autoastro,0]  ・  \q[%(_t[TOINT(autoastro)]) OFF,Onusage,autoastro,1]\n"
-	--
 	TheDefaultValue('autobackupclosealert',1)
 	"自动备份关闭时提醒	\_l[120]\q[%(_t[TOINT(autobackupclosealert)]) ON,Onusage,autobackupclosealert,1]  ・  \_l[180]\q[%(_t[1 - TOINT(autobackupclosealert)]) OFF,Onusage,autobackupclosealert,0]\n"
 	--
@@ -718,8 +715,7 @@ Select.Option{
 	"\q[◇互动对话,OnAutoComm]		\_l[120]\q[%(_t[TOINT(communicate[0])]) ON,Onusage,communicate[0\],1]    \_l[180]\q[%(_t[1-TOINT(communicate[0])]) OFF,Onusage,communicate[0\],0]\n"
 	--
 	'\n[half]'
-	if !ISVAR('voice.rate')
-		voice.rate=3
+	TheDefaultValue('voice.rate',3)
 	--
 	'\n\q[◇返回上一层,OnOpenMenu,4]\n/
 	\q[◇终了,OptionEnd]'
@@ -1021,8 +1017,7 @@ Select.shortcutkey{
 	--
 	'/
 	F12	\_l[23]截屏功能\n/
-	W	\_l[23]天气预报（小窗口）\n/
-	A	\_l[23]星座运势（小窗口）\n/
+	W	\_l[23]天气预报\n/
 	M	\_l[23]打开菜单\n/
 	'
 }
