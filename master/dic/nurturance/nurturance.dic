@@ -210,7 +210,7 @@ KikkaInfo{
 		_color = '238,50,95'
 	}
 	if infofresh
-		'\![set,choicetimeout,1000]'
+		'\![set,choicetimeout,990]'
 	--
 	"\_l[0,204]\f[bold,true]系统资讯\f[bold,default]\n[150]/
 	%(year)年%(month)月%(day)日  \f[color,%(_color)]星期%(lunardata[3])\f[color,default]   %(_ampm)%(_hour)点%(minute)分%(second)秒\n/
