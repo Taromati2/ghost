@@ -1129,14 +1129,8 @@ OnNetworkStatusChange{
 	}
 	--
 	if setting.IP_ChangeReminder{
-		if reference.raw[1] && NetworkStatus.IP != reference.raw[1]{
+		if reference.raw[1] && NetworkStatus.IP != reference.raw[1]
 			"当前ip：%(REPLACE(reference.raw[1],CHR(1),'以及\n'))\n"
-			--
-			'/
-			\q[◇关闭IP变动提醒,OnSet,setting.IP_ChangeReminder,0]\n/
-			\q[◇无用,Cancel]\n/
-			'
-		}
 	}
 	OnUpdateNetworkStatus
 	NetworkStatus = reference0
@@ -1352,6 +1346,7 @@ OnSysResume{
 	if !InMinimize{
 		SHIORI_FW.PushNotifyResult(OnSysResume.base)
 		SHIORI_FW.PushNotifyResult(OnBoot.aboutTime)
+		SHIORI_FW.PushNotifyResult(OnWeatherUpdate.boot)
 	}
 }
 //资源不足

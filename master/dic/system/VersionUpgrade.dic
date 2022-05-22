@@ -159,3 +159,9 @@ VERSION_UPGRADE_5:void{
 	RENAME_VAR('敏捷','nurturance.subvar.Agile')
 	RENAME_VAR('幸运','nurturance.subvar.Luck')
 }
+VERSION_UPGRADE_6:void{//building
+	ERASEVAR('weather')
+	ERASEVAR('weatherfoundauto')
+	FDEL('VAR_PATH/astro-sina.html')
+	autoweather=!autoweather
+}

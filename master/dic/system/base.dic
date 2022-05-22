@@ -77,3 +77,6 @@ OnSet{
 	LETTONAME(reference0,reference1)
 	'完成了'
 }
+AntiFlicker{
+	'\C\![lock,balloonrepaint]\c'+_argv+'\![unlock,balloonrepaint]'
+}

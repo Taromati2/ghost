@@ -2088,8 +2088,10 @@ WeatherState{
 		Weather.Talks
 	}
 	else{
-		_txt+="这个，%(selfname)也不知道呢，因为不能获得天气信息。"
+		"这个，%(selfname)也不知道呢，因为不能获得天气信息。"
 	}
+	--
+	'\n'
 }
 HtmlToAI{//HtmlToAI('D:\CHM','meal')
 	_path=_argv[0]

@@ -216,12 +216,10 @@ OnBoot{
 		\x"
 	}
 	--
+	if autoweather
+		OnWeatherUpdate.boot
 	/*
 	if TOINT(autoastro)==0
-		temp='autoastro'
-	if TOINT(autoweather)==0
-		OnWeatherUpdate
-	elseif TOINT(autoastro)==0
 		OnAstroFoundAuto
 	*/
 	--

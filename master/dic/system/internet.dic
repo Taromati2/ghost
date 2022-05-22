@@ -164,29 +164,45 @@ OnChangeCity{
 	"请输入你要查询的城市名称（留空以自动推断）：\![open,inputbox,OnChangeCityComplete,-1,%(city)]"
 }
 OnChangeCityComplete{
+	if city != reference0 || !city
+		OnWeatherUpdate.force
 	city = reference0
-	OnWeatherUpdate
+}
+WeatherTimeTOseccount{
+	_ymd_str=weather.lasttime[0,' ']
+	_hms_str=weather.lasttime[1,' ']
+	_year=TOINT(_ymd_str[0,'-'])
+	_month=TOINT(_ymd_str[1,'-'])
+	_day=TOINT(_ymd_str[2,'-'])
+	_hour=TOINT(_hms_str[0,':'])
+	_min=TOINT(_hms_str[1,':'])
+	_sec=TOINT(_hms_str[2,':'])
+	GETSECCOUNT(_year,_month,_day,0,_hour,_min,_sec)
 }
 OnWeatherUpdate.DosntNeedCheck{
+	if city && city!=weather.lastcity{
+		0
+		return
+	}
 	if weather.lasttime{
-		_ymd_str=weather.lasttime[0,' ']
-		_hms_str=weather.lasttime[0,' ']
-		_year=TOINT(_ymd_str[0,'-'])
-		_month=TOINT(_ymd_str[1,'-'])
-		_day=TOINT(_ymd_str[2,'-'][0,' '])
-		_hour=TOINT(_hms_str[0,':'])
-		_min=TOINT(_hms_str[1,':'])
-		_sec=TOINT(_hms_str[2,':'])
-		if (GETSECCOUNT-GETSECCOUNT(_year,_month,_day,_hour,_min,_sec))<10800{
+		if (GETSECCOUNT-WeatherTimeTOseccount)<10800{
 			1
 			return
 		}
 	}
-	0
 }
 OnWeatherUpdate{
 	if !OnWeatherUpdate.DosntNeedCheck
-		"\![execute,http-get,https://query.asilu.com/weather/gaode,--param=city=%(city),--param-charset=UTF-8,--nofile,--async=weather]"
+		OnWeatherUpdate.force
+	elseif FromWeatherUpdate.boot{
+		ERASEVAR('FromWeatherUpdate.boot')
+		OnWeatherUpdate.Success.boot.Talk
+	}
+	elseif FromWeatherUpdate.menu
+		ERASEVAR('FromWeatherUpdate.menu')
+}
+OnWeatherUpdate.force{
+	"\![execute,http-get,https://query.asilu.com/weather/gaode,--param=city=%(city),--param-charset=UTF-8,--nofile,--async=weather]"
 }
 OnWeatherUpdate.menu{
 	FromWeatherUpdate.menu=1
@@ -196,8 +212,17 @@ OnWeatherUpdate.boot{
 	FromWeatherUpdate.boot=1
 	OnWeatherUpdate
 }
+OnWeatherUpdate.Success.boot.Talk{
+	"/
+	今天%(weather.lastcity)的天气：\n/
+	白天 %(weather.day)  %(weather.daytemp)℃\n/
+	夜间 %(weather.night)  %(weather.nighttemp)℃\n/
+	\n/
+	"
+	--
+	Weather.Talks
+}
 OnWeatherUpdate.Success{
-	//str for test
 	_str=reference3
 	//get city
 	_city=TextBetween(_str,'city":"','",',0)
@@ -225,7 +250,7 @@ OnWeatherUpdate.Success{
 		}
 		elseif FromWeatherUpdate.boot{
 			ERASEVAR('FromWeatherUpdate.boot')
-			Weather.Talks
+			OnWeatherUpdate.Success.boot.Talk
 		}
 	}
 	else{
@@ -233,10 +258,15 @@ OnWeatherUpdate.Success{
 		OnWeatherUpdate
 	}
 }
+OnWeatherUpdate.Failure.menu.Talk{
+	"\0\s[3]连线失败了……\nError：%(reference4)\n要查看本地信息吗？\n\q[◇确定,OnWeatherUpdate.Success.Talk]"
+	--
+	'\n\n\q[◇返回,OnCheckWeather]    \q[◇终了,Cancel]'
+}
 OnWeatherUpdate.Failure{
 	if FromWeatherUpdate.menu{
 		ERASEVAR('FromWeatherUpdate.menu')
-		'\0\s[8]查询失败，\w9检查下网络连接吧？'
+		OnWeatherUpdate.Failure.menu.Talk
 	}
 	elseif FromWeatherUpdate.boot{
 		ERASEVAR('FromWeatherUpdate.boot')
@@ -245,31 +275,31 @@ OnWeatherUpdate.Failure{
 Weather.Talks{
 	if hour>=8&&hour<18{
 		if '晴' _in_ weather.day{
-			'天晴的话出去走走比较好哦。'
-			'今天天气还好啦，因为是晴天呢。'
+			'\0\s[0]天晴的话\w9\s[26]出去走走比较好哦。'
+			'\0\s[5]今天天气还好啦，\w9因为是晴天呢。'
 		}
 		elseif '雨' _in_ weather.day{
-			'今天下雨了吗？下雨出门记得带伞哦。'
-			'今天是雨天，天气不好啊'
+			'\0\s[8]今天下雨了吗？\w9\s[26]下雨出门记得带伞哦。'
+			'\0\s[8]今天是雨天\w9\1，\c天气不好啊\0'
 		}
 		elseif '雪' _in_ weather.day{
-			"%(username)，外面下雪了吗？"
-			'今天下雪了吗，好好玩'
+			"\0\s[0]%(username)，\w9\s[20]外面下雪了吗？"
+			'\0\s[0]今天下雪了吗，\w9\s[5]来打雪仗吧？'
 		}
 		if TOINT(weather.daytemp)<16
-			'今天天气比较冷，要注意保重身体哦。'
+			'\0\s[0]今天天气比较冷，\w9\s[26]要注意保重身体哦。'
 		elseif TOINT(weather.daytemp)>38
-			'天气太热了，还是少呆在外面比较好。'
+			'\0\s[8]天气太热了，\w9还是少呆在外面比较好。'
 		elseif TOINT(weather.daytemp)>33
-			'今天天气比较热，要注意降温解暑哦。'
+			'\0\s[0]今天天气比较热，\w9\s[26]要注意降温解暑哦。'
 	}
 	else{
 		if '雨' _in_ weather.night
-			'晚上可能有雨，记得收衣服关好门窗哦。'
+			'\0\s[0]晚上可能有雨，\w9\s[26]记得收衣服关好门窗哦。'
 		elseif '雪' _in_ weather.night
-			'外面应该很冷吧，还是呆在家里比较好。'
+			'\0\s[20]外面应该很冷吧，\w9\s[0]还是呆在家里比较好。'
 		if TOINT(weather.nighttemp)<10
-			'晚上睡觉要注意保暖哦，不要冻着身子。'
+			'\0\s[26]晚上睡觉要注意保暖哦，\w9\s[0]不要冻着身子。'
 	}
 }
 Weather.EmbeddingString1{
@@ -663,24 +693,15 @@ OnExecuteHTTPComplete{
 	}
 }
 OnExecuteHTTPFailure{
-	if reference1 == 'weatherurl' || reference1 == 'weather' || reference1 == 'weather24' || reference1 == 'weatherig' {
-		"\0\s[3]连线失败了……\nError：%(reference4)\n要查看本地信息吗？\n\q[◇确定,OnWeatherFound]"
-		--
-		'\n\n\q[◇返回,OnCheckWeather]    \q[◇终了,OnWeatherEnd]'
+	if reference1 == 'weather'
+		OnWeatherUpdate.Failure
+	elseif reference1 == 'tulingapi' {
+		OnTuLingFound.Failure
 	}
-	else {
-		if reference1=='weather'{
-			OnWeatherUpdate.Failure
-		}
-		elseif reference1 == 'tulingapi' {
-			OnTuLingFound.Failure
-		}
-		elseif reference1 == 'hitokoto' {
-			OnHitokotoUpdate.Failure
-		}
-		else{
-			"\0\s[3]连线失败了……\nError：%(reference4)"
-		}
-
+	elseif reference1 == 'hitokoto' {
+		OnHitokotoUpdate.Failure
+	}
+	else{
+		"\0\s[3]连线失败了……\nError：%(reference4)"
 	}
 }

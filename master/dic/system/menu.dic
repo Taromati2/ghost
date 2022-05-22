@@ -21,19 +21,17 @@ OpenMenu{
 	RunningReset
 	_submenu = 0
 	_submenuex=0
-	_message=''
 	if _argc > 0 {
 		_submenu = _argv[0]
 		_submenuex=_argv[1]
-		menu=_submenu
-		menuex=_submenuex
-		_message=RandomMenuMessage
 	}
 	else {
-		_message=OpenMenuTalk
+		temp=OpenMenuTalk
 	}
+	menu=_submenu
+	menuex=_submenuex
 	_sub = '◆,◇,◇,◇,◇,◆,◇,◇,◇,◇,◆,◇,◇,◇,◇,◆,◇,◇,◇,◇,◆'
-	'\![quicksession,true]\0'+_message+"\b[2]/
+	'\![quicksession,true]\0'+temp+"\b[2]/
 	\_l[0,22]\q[%(_sub[_submenu])常用功能,OnSubMenu,0,%(_submenuex)]/
 	\_l[68]\q[%(_sub[_submenu + 4])休闲,OnSubMenu,1,%(_submenuex)]/
 	\_l[112]\q[%(_sub[_submenu + 8])游戏,OnSubMenu,2,%(_submenuex)]/
@@ -49,14 +47,15 @@ OpenMenu{
 		NotePadShow(178,44,4)//坐标x，坐标y，显示条数
 	}
 }
+OnSubMenu{
+	temp=RandomMenuMessage
+	click=NULL
+	OpenMenu(reference0,reference1)
+}
 RandomMenuMessage{
 	hitokoto
 	if weather.lastcity
-		Weather.Talks
-}
-OnSubMenu{
-	click=NULL
-	OpenMenu(reference0,reference1)
+		SHIORI_FW.RemoveAllTags(Weather.Talks)
 }
 SubMenu{
 	_submenu = _argv[0]
@@ -288,7 +287,6 @@ RunningReset{
 	running=''
 	option=NULL
 	read=-1
-	temp=NULL
 	//Speech_Recognition=NULL
 }
 IgnoreChoiceTimeout{
@@ -320,7 +318,7 @@ OnChoiceTimeout{
 	elseif playingplane
 		OnShowBackground
 	elseif infomode
-		OpenMenu(menu,menuex)
+		AntiFlicker(OpenMenu(menu,menuex))
 	elseif mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]…啧。"
 	else{
@@ -642,7 +640,7 @@ Select.Option{
 	'\n■提醒设定■\n'
 	--
 	TheDefaultValue('autoweather',1)
-	"天气提醒		\_l[120]\q[%(_t[1 - TOINT(autoweather)]) ON,Onusage,autoweather,0]  ・  \_l[180]\q[%(_t[TOINT(autoweather)]) OFF,Onusage,autoweather,1]\n"
+	"天气提醒		\_l[120]\q[%(_t[1 - TOINT(autoweather)]) ON,Onusage,autoweather,1]  ・  \_l[180]\q[%(_t[TOINT(autoweather)]) OFF,Onusage,autoweather,0]\n"
 	--
 	TheDefaultValue('rmswitch',1)
 	"节日提醒		\_l[120]\q[%(_t[1 - TOINT(rmswitch)]) ON,Onusage,rmswitch,0]  ・  \_l[180]\q[%(_t[TOINT(rmswitch)]) OFF,Onusage,rmswitch,1]\n"
