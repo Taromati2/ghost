@@ -13,6 +13,10 @@ OnOpenMenu{
 	}
 }
 OpenMenu{
+	if battlemode!=0{
+		OnRpgGame
+		return
+	}
 	if !haveshell {
 		SilentShellChange=1
 		'\![change,shell,预设]'

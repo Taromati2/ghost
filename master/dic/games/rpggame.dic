@@ -5,6 +5,8 @@ OnRpgGame{
 	}
 	DiscordCustomSet.CustomDetail('玩RPG')
 	--
+	if battlemode && !weaponA
+		battlemode=0
 	rpggame=1
 	STRADD=1
 	DEFADD=1
@@ -4367,6 +4369,8 @@ On休息{
 	battleinfo
 }
 ClearRpgGameVar{
+	if battlemode!=0
+		return
 	ERASEVAR('rpggame')
 	ERASEVAR('weaponA')
 	ERASEVAR('weaponB')
