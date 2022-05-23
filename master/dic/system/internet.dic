@@ -168,28 +168,22 @@ OnChangeCityComplete{
 		OnWeatherUpdate.force
 	city = reference0
 }
-WeatherTimeTOseccount{
-	_ymd_str=weather.lasttime[0,' ']
-	_hms_str=weather.lasttime[1,' ']
-	_year=TOINT(_ymd_str[0,'-'])
-	_month=TOINT(_ymd_str[1,'-'])
-	_day=TOINT(_ymd_str[2,'-'])
-	_hour=TOINT(_hms_str[0,':'])
-	_min=TOINT(_hms_str[1,':'])
-	_sec=TOINT(_hms_str[2,':'])
-	GETSECCOUNT(_year,_month,_day,0,_hour,_min,_sec)
-}
 OnWeatherUpdate.DosntNeedCheck{
+	if (GETSECCOUNT-weather.lasttime)<13{
+		1
+		return
+	}
 	if city && city!=weather.lastcity{
 		0
 		return
 	}
 	if weather.lasttime{
-		if (GETSECCOUNT-WeatherTimeTOseccount)<10800{
+		if (GETSECCOUNT-weather.lasttime)<10800{
 			1
 			return
 		}
 	}
+	0
 }
 OnWeatherUpdate{
 	if !OnWeatherUpdate.DosntNeedCheck
@@ -232,7 +226,7 @@ OnWeatherUpdate.Success{
 			city=weather.lastcity
 		}
 		//get last update time
-		weather.lasttime=TextBetween(_str,'reporttime":"','",',0)
+		weather.lasttime=GETSECCOUNT
 		//get weather
 		weather.day=TextBetween(_str,'dayweather":"','",',0)
 		weather.night=TextBetween(_str,'nightweather":"','",',0)
