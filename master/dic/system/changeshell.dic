@@ -275,12 +275,12 @@ HaveShellCount{
 		0
 }
 OnBuyShell{
-	if money>=30000{
+	if money>=5000{
 		haveshell=1
-		money-=30000
+		money-=5000
 		crystalnum=TOINT(crystalnum)+1
 		ERASEVAR('SilentShellChange')
-		"\1\s[10]\0\s[0]花费￥30000金钱购买能量水晶#%(crystalnum)以激活%(reference0)。\w9\w9\x\![change,shell,%(reference0)]]"
+		"\1\s[10]\0\s[0]花费￥5000金钱激活%(reference0)。\w9\w9\x\![change,shell,%(reference0)]]"
 	}
 	else{
 		'\1\s[10]\0\s[9]很遗憾，钱不够啊。\w9\w9\w9'
