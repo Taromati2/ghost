@@ -369,19 +369,19 @@ KikkaGrow{
 	_class = kikkaclass[weekday]
 	_lvl = kikkalvl / 30 + 1
 	if kikkatick % 5 == 0 && _class != '休息' {
-		KikkaStatusChange("stm=-%(_lvl)")
+		KikkaStatusChange("stm=-2")
 		if kikkastm == 0 {
-			if kikkacareonherself == 0 && money > 600 {
+			if kikkacareonherself == 1 && money > 600 {
+				money -= 600
+				KikkaStatusChange('stm=300')
+				KikkaStatusChange('exp=30')
+			}else{
 				kikkaangry ++
 				'\c\0\s[3]橘花好饿喔，\w9有什么东西吃吗……\w9'
 				if kikkaangry >= 12 {
 					kikkaangry = 0
 					intimacy --
 				}
-			}else{
-				money -= 600
-				KikkaStatusChange('stm=300')
-				KikkaStatusChange('exp=30')
 			}
 		}
 		else {
