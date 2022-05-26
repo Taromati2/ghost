@@ -16,7 +16,7 @@ OnShellChanging{
 		_p=reference2[ARRAYSIZE(reference2)-2]
 		Haveshellinfo+="%(reference0)|%(_p)*"
 	}
-	if judgeshell(reference0)=='0|'&& Userspitem[0][2]!=1&& Userspitem[1][2]!=1{
+	if judgeshell(reference0)=='0|'&& Userspitem[0][2]!=1{
 		haveshell=0
 		'\0\s[-1]\b[-1]'
 	}
@@ -304,19 +304,7 @@ OnShellChanged{
 	--
 	_temp=shellID
 	shellID = reference0
-	if crystalnum>=36&&!TOINT(Userspitem[1][2]) {
-		"\1\s[10]\0\s[5]到目前为止，\w9\w9%(username)为橘花激活衣服所购买的能量水晶已有36个了，\w9\w9每一次激活完的水晶，\w9\w5橘花并没有扔掉，\w9\w5而是放在一起在日光下继续吸收能量,\w9\w9现在，\w9橘花用这些能量水晶给%(username)做了一件礼物，\w9\w5这是用能量水晶融合而成的,\w9\w5佩戴在%(username)身上，\w9有意想不到的作用哦。\x"
-		--
-		gift
-		UserspitemNum[1]=1
-		Userspitemtime[1]="%(year)年%(month)月%(day)日橘花送的特殊礼物"
-		Useriteminfo=("%(year)年%(month)月%(day)日%(hour)时%(minute)分收到特殊礼物%(Userspitem[1][1])。" , Useriteminfo)
-		--
-		gift
-		'红色水晶项链“绯红之眼”获得。'
-		--
-	}
-	if Userspitem[0][2]==1||Userspitem[1][2]==1||judgehaveshell(_temp)!='-1'||judgeshell(_temp)!='0|'
+	if Userspitem[0][2]==1||judgehaveshell(_temp)!='-1'||judgeshell(_temp)!='0|'
 		haveshell=1
 	if SilentShellChange{
 		ERASEVAR('SilentShellChange')
@@ -378,7 +366,7 @@ OnFittingRoom{
 	_Shellrand=ANY('00','01','02','03','05','07','20','21','22','23','26','30','32')
 	_haveshellnum=0
 	foreach shelllist; _i{
-		if judgeshell(_i)=='0|' &&judgehaveshell(_i)=='-1'&&Userspitem[0][2]!=1&&Userspitem[1][2]!=1
+		if judgeshell(_i)=='0|' &&judgehaveshell(_i)=='-1'&&Userspitem[0][2]!=1
 			_haveshellnum=_haveshellnum
 		else
 			_haveshellnum++
@@ -389,7 +377,7 @@ OnFittingRoom{
 	_haveshell=''
 	foreach shelllist; _i {
 		if _n>=_j && _n<_j+15 {
-			if judgeshell(_i)=='0|' &&judgehaveshell(_i)=='-1'&&Userspitem[0][2]!=1&&Userspitem[1][2]!=1
+			if judgeshell(_i)=='0|' &&judgehaveshell(_i)=='-1'&&Userspitem[0][2]!=1
 				_judge='\f[color,192,192,192]'+_i+'\f[color,default]'
 			else{
 				_judge=_i
