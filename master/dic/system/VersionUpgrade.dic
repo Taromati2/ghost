@@ -1,6 +1,6 @@
 //by steve
 
-#define VERSION_NOW 6
+#define VERSION_NOW 7
 
 VERSION_INIT:void{
 	VERSION = VERSION_NOW
@@ -168,4 +168,11 @@ VERSION_UPGRADE_6:void{
 	ERASEVAR('astro')
 	ERASEVAR('autoastro')
 	ERASEVAR('autoweather')
+}
+VERSION_UPGRADE_7:void{
+	UserspitemNum=(UserspitemNum[0])
+	Userspitemtime=(Userspitemtime[0])
+	void gift
+	money+=crystalnum*25000
+	ERASEVAR('crystalnum')
 }
