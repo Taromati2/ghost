@@ -1069,8 +1069,10 @@ OnTrashClean{
 OnTrashClean_s{
 	_gomisute = CALLSAORI('gomi', '-ef')
 	if _gomisute {
-		kikkamood+=LOG(nurturance.Darkness*trashnum,2.718281)*kikkamood
-		kikkamood=MAX(MIN(kikkamoodmax,kikkamood),1)
+		_t=MIN(kikkamoodmax,LOG(nurturance.Darkness*trashnum,2.718281)*kikkamood)
+		if _t<=0
+			_t=kikkamoodmax
+		kikkamood=MIN(kikkamoodmax,_t+kikkamood)
 		if nurturance.Moeness>200||nurturance.Darkness>200||nurturance.Moeness>nurturance.Darkness
 			'\w9\w9\0\s[22]嗯，久等了，所有的敌人已清理完毕'
 		else{
