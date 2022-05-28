@@ -498,26 +498,6 @@ OnInstallRefuse{
 	else
 		'\1\s[11]不\w9\w9\n目前来说根本查无此人。'
 }
-OnShioriReloaded{
-	OnSQLLoad.Fixer//非中文环境编码问题再修复
-	SETTAMAHWND(TamaHwnd)
-	if ReloadFromTerminal{
-		ShioriEcho.Special='重载完成'
-		ERASEVAR('ReloadFromTerminal')
-	}
-	if SHIORI_FW.LastBootInEmergencyMode
-		return
-	if mode == '1'{
-		"\1\s[%(specialmode != 'mealtime')10]唔…\n重载完了。"
-		return
-	}
-	if !SHIORI_FW.EmergencyMode{
-		'\0\s[0]重载成功，没有语法错误'
-		'\0\s[0]重载完成'
-		if GetPhase >= 2
-			'\0\s[5]重载成功，没有出错哦'
-	}
-}
 SelfRecoveryFailed{
 	ERASEVAR('InSelfRecovery')
 	if mode == '1'
