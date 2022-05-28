@@ -425,19 +425,19 @@ KikkaGrow{
 	}
 }
 OnKikkaReset:void{
-	SHIORI_FW.PushNotifyResult(DiscordCustomSet.CustomDetail('这能带来什么？'))
+	if ISVAR('kikkaexp')
+		SHIORI_FW.PushNotifyResult(DiscordCustomSet.CustomDetail('这能带来什么？'))
 	--
-	kikkalvl =1
+	kikkalvl = 1
 	kikkaexp = 0
 	kikkapow = 0
 	kikkawiz = 0
 	kikkachm = 0
 	kikkastm = 240
-	money = 1000
+	if money>1000 || !ISVAR('money')
+		money = 1000
 	kikkatick = 0
-	//intimacy = 0
 	kikkaclass = ('休息','休息','休息','休息','休息','休息','休息')
-	//OpenMenu(0)
 }
 OnKikkaItemList{
 	KikkaItemTalk(reference0)
