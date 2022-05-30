@@ -176,3 +176,6 @@ VERSION_UPGRADE_7:void{
 	money+=crystalnum*25000
 	ERASEVAR('crystalnum')
 }
+VERSION_UPGRADE_8:void{//building
+	ERASEVAR('ShioriReloading')
+}
