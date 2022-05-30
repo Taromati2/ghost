@@ -241,10 +241,6 @@ load {
 		if SHIORI_FW.LastBootInEmergencyMode
 			SHIORI_FW.PushNotifyResult('\![raise,OnEmergencyModeEnd]')
 	}
-
-	if ShioriReloading
-		SHIORI_FW.PushNotifyResult('\![raise,OnShioriReloaded]')
-	ERASEVAR('ShioriReloading')
 }
 
 //******************************************************************************
@@ -263,10 +259,6 @@ unload {
 	var.req.rawvalue = IARRAY
 
 	ghostupmin_last = MAX(ghostupmin_total,elapsedtimetotal)
-
-	if !OnCloseCalled && !BasewareUpdating
-		ShioriReloading=1
-	ERASEVAR('OnCloseCalled')
 
 	CALLALLFUNCTIONBEGINAS('Fin.')
 
