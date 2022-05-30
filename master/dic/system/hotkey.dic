@@ -1,6 +1,10 @@
 OnKeyCodeTest{
-	InKeyCodeTest=1
-	'\0\s[0]已进入键位码测试模式\n'
+	if InKeyCodeTest
+		OnExitKeyCodeTest
+	else{
+		InKeyCodeTest=1
+		'\0\s[0]已进入键位码测试模式\n'
+	}
 }
 OnExitKeyCodeTest{
 	ERASEVAR('InKeyCodeTest')
