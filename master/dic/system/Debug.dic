@@ -69,6 +69,8 @@ GETTYPE.to_string{
 			'字串'
 		when 4
 			'泛用阵列'
+		when 5
+			'散列表'
 		others
 			'内部错误'
 	}
@@ -88,6 +90,9 @@ ValueTOstring{
 			"'"+_argv[0]+"'"
 		else
 			REPLACE(RE_REPLACE(RE_REPLACE('"'+REPLACE(_argv[0],'"','"+'+"'"+'"'+"'"+'+"')+'"','^\"\"\+',''),'\+\"\"$',''),'"'+"'+'"+'"','')
+	}
+	elseif GETTYPE(_argv[0])==5{
+		'map'
 	}
 	elseif TOSTR(_argv[0])==''
 		'NULL'
