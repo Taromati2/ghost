@@ -229,6 +229,7 @@ OnOpenDirOrFile{
 }
 //文字拖拽处理 by steve02081504
 OnTextDrop{
+	infomode=0
 	if reference.raw[0]
 		temp = reference.raw[0]
 	if !RE_GREP(temp,"(?!%(CHR(1)))%(CHR(1))(?!%(CHR(1)))")

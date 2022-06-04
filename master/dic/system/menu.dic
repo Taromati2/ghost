@@ -245,11 +245,13 @@ TopModeChanged{
 			'\![set,windowstate,minimize]'
 	}
 }
+OnChoiceSelect.base{
+	infomode=0
+}
 //---- 无用 -----------------------------------------------------------------------------------------------------------
 Select.MenuCancel{
 	'\0\b[0]'
 	--
-	infomode=0
 	_phase = GetPhase
 	if _phase <= 0{
 		'\0\s[0]嗯。'

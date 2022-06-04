@@ -12,6 +12,7 @@ BaseGhostStart{//改动于2020 by steve02081504
 	if !InTimeError
 		BaseGhostStart.aboutTime
 	playingmusic = 0
+	infomode = 0
 	OnSQLLoad
 	OnAILoad
 	--

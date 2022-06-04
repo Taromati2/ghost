@@ -1,4 +1,5 @@
 OnChoiceSelectEx{
+	OnChoiceSelect.base
 	_arglist=reference
 	_arglist[0]=IARRAY
 	_arglist[0]=IARRAY
