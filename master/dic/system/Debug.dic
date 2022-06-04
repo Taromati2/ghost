@@ -72,7 +72,7 @@ GETTYPE.to_string{
 		when 5
 			'散列表'
 		others
-			'内部错误'
+			"内部错误（typeid：%(_argv[0])）"
 	}
 }
 ValueTOstring{
