@@ -348,15 +348,15 @@ OnFittingRoom{
 	if reference0 {
 		_j=TOINT(reference0)
 	}
-	if reference1 && reference1!=shellID &&reference1==reference2{
+	if IsHShell(reference1) && !CanH{
+		_q='当前关系还不允许激活这件衣服'
+	}
+	elseif reference1 && reference1!=shellID &&reference1==reference2{
 		_q="\f[color,242,35,250]\![*]\q[确定 换装为%(reference1),OnChangeShellWithTalk,%(reference1)]\f[default]"
 		_shellID=reference1
 	}
-	elseif IsHShell(reference1) && !CanH{
-		_q='当前关系还不允许激活这件衣服'
-	}
 	elseif reference1!=reference2{
-		_q="没有激活这件衣服\n\&[hearts]\q[◇购买激活%(reference1)（￥30000）,OnBuyShell,%(reference1),%(_shellID)]"
+		_q="没有激活这件衣服\n\&[hearts]\q[◇购买激活%(reference1)（￥5000）,OnBuyShell,%(reference1),%(_shellID)]"
 		_shellID=reference1
 	}
 	if judgeshell(_shellID)!='0|'
