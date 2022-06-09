@@ -255,7 +255,7 @@ OnWeatherUpdate.Success{
 OnWeatherUpdate.Failure.menu.Talk{
 	"\0\s[3]连线失败了……\nError：%(reference4)\n要查看本地信息吗？\n\q[◇确定,OnWeatherUpdate.Success.Talk]"
 	--
-	'\n\n\q[◇返回,OnCheckWeather]    \q[◇终了,Cancel]'
+	'\n\n\q[◇返回,OnOpenMenu]    \q[◇终了,Cancel]'
 }
 OnWeatherUpdate.Failure{
 	if FromWeatherUpdate.menu{
