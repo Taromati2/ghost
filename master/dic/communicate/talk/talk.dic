@@ -33,15 +33,10 @@ AITalk{
 }
 OnTranslate{
 	_txt = reference.raw[0]
-	_language=-1
-	if _argc>0{
-		_txt=_argv[0]
-		_language=_argv[1]
-	}
-	if language == 1||_language==1{
+	if language == 1{
 		_txt = TOTRADITIONAL(_txt)//繁体化
 	}
-	elseif language==2||language==3||_language==2||_language==3{
+	elseif language==2||language==3{
 		_txt = TranslateWithDictionary(_txt)
 	}
 	_ICT=0
