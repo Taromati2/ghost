@@ -1,2 +1,2 @@
 include, aya_base.txt
-includeEX, ../var/last_work_able_dic/dic/_loading_order.txt
+dicdir, ../var/last_work_able_dic/dic
