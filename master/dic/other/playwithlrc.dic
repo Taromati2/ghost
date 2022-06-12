@@ -365,7 +365,10 @@ OnMusicPlayer:all{
 	}
 	if !_name
 		_name=',无文件'
-	'\C\![quicksession,true]\![set,choicetimeout,0]\1\![set,autoscroll,false]\c\s[12]\f[bold,1]Mini音乐播放器\f[bold,default]\_l[145]\q[◇打开路径,OnMusicPathOpen]\_l[215]\q[◇关闭,OnMusicPlayerClose]\n'
+	'\C\![lock,balloonrepaint]\1\c\![quicksession,true]'
+	if !infofresh
+		'\![set,choicetimeout,0]'
+	'\![set,autoscroll,false]\c\s[12]\f[bold,1]Mini音乐播放器\f[bold,default]\_l[145]\q[◇打开路径,OnMusicPathOpen]\_l[215]\q[◇关闭,OnMusicPlayerClose]\n'
 	_name[2]
 	'\n'
 	_now=TOINT(musicfile[1])+1+'/'
@@ -389,8 +392,9 @@ OnMusicPlayer:all{
 	'\s[10]\0'
 	if musicplayerlist
 		_txt+=OnMusicPlayerList
+	'\![unlock,balloonrepaint]'
 	if reference0 != 'NoSurfaceRestore'
-		'\_w[1000]\![raise,OnSurfaceRestore.Music]'
+		'\_w[1000]\![raise,OnSurfaceRestore.Music.Played]'
 }
 OnMusicVolumeChange{
 	musicvolume+=TOINT(reference0)
