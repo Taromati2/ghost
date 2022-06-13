@@ -245,9 +245,6 @@ OnPlayCmd{
 	--
 	if musicplayer||shutdownstart{
 		'\0\c\b[-1]'
-		--
-		if musicplayer
-			OnMusicPlayer
 	}
 }
 PlayWithLyric{
