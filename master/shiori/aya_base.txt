@@ -5,8 +5,8 @@ charset.dic, UTF-8
 charset.file, UTF-8
 charset.extension, default
 
-iolog.filter.keyword,ID: OnSecondChange	//OnSecondChange無視
-iolog.filter.keyword,ID: OnMouse		//OnMouse系無視
+iolog.filter.keyword, OnSecondChange	//OnSecondChange無視
+iolog.filter.keyword, OnMouse			//OnMouse系無視
 
 fncdepth,0
 maxlognum,256
