@@ -328,9 +328,6 @@ OnHitokotoUpdate.Success{
 OnHitokotoUpdate.Failure{
 	//hitokoto=''
 }
-ClearHitokotoVar{
-	ERASEVAR('hitokoto')
-}
 //RSS读取
 //////////////////////////////////////////////////////////////////////
 /*
