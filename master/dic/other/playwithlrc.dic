@@ -550,15 +550,17 @@ OnMusicPlayerList{
 	_txt+=OnMusicListPageTxt
 	for _i = 0+music_listpage[_id]*100; _i < _total&&_i<(music_listpage[_id]+1)*100; _i ++ {
 		_path=musiclist[_i]
-		_path=REPLACE(_path,']','\]')
-		_tmp = (_i + 1) + "\_l[20]: \__q[OnSelectMusic,%(_i),%(_path)]" + SPLITPATH(musiclist[_i])[2] + '\__q'
+		_tmp = (_i + 1) + "\_l[20]: \__q[OnSelectMusic,%(_i),%(SakuraScriptArgConverter(_path))]" + SPLITPATH(musiclist[_i])[2] + '\__q'
 		if _i == _now&&TOINT(musicfile[4])==musiclistfile[1]{
 			_status = ('\f[color,108,129,182]','\f[color,238,50,95]','\f[color,229,134,82]')[playingmusic]
 			_tmp =_status + _tmp
 		}
 		if _i-13==_now &&playingmusic && musicplayerscroll==1
 			_tmp+='\![set,autoscroll,false]'
-		_tmp += "        \_l[240]\__q[OnMusicPlayListMove,up,%(_i)]\[↑\__q\__q[OnMusicPlayListMove,down,%(_i)]↓\__q\__q[OnMusicPlayListMove,delete,%(_i)]X\]\__q\f[color,default]\n"
+		_tmp += "        \_l[240]\__q[OnMusicPlayListMove,up,%(_i)]\[↑\__q\__q[OnMusicPlayListMove,down,%(_i)]↓\__q\__q[OnMusicPlayListMove,delete,%(_i)]X\]\__q"
+		if _i == _now&&TOINT(musicfile[4])==musiclistfile[1]
+			_tmp += '\f[color,default]'
+		_tmp += '\n'
 		_txt += _tmp
 	}
 	_txt+=OnMusicListPageTxt
@@ -1445,12 +1447,11 @@ MusicLoadFile{
 }
 MusicLoadFolder{
 	_path = _argv[0]
-	_path=REPLACE(_path,'\\','\')
+	_path = REPLACE(_path,'\\','\')
 	_file = FENUM(_path)
 	foreach _file; _f {
 		_t = _path + _f
 		_fileext = TOLOWER(SPLITPATH(_t)[3])
-		_folder=0
 		if ISDIR(_t){
 			MusicLoadFolder(_t)
 		}else{
