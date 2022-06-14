@@ -342,7 +342,7 @@ MusicHotKey{
 #define		M3U8PATH	'PROFILE_PATH\\playlist\\'
 OnMusicPlayer:all{
 	if !ISVAR('musicplaymode') {
-		musicplaymode = 2
+		musicplaymode = 1
 	}
 	if !ISVAR('musiclrcenable') {
 		musiclrcenable = 1
@@ -1256,6 +1256,9 @@ OnSoundStop{
 				musicfile[2] = musicrandlist[_tmp]
 				//musicfile[4]=musiclistfile[1]
 			}
+		}
+		elseif musicplaymode == 2{
+			do_nothing
 		}
 		elseif musicplaymode == 4 || musicplayerrange{
 			SETDELIM(musicrandlist,'*')
