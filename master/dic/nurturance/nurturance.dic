@@ -19,22 +19,33 @@ KikkaVar{
 	kikkastmmax = kikkalvl * 20 + 220
 	KikkaItem=("0,电锯,%(KikkaItemNum[0]),%(KikkaItemtime[0])","1,P90,%(KikkaItemNum[1]),%(KikkaItemtime[1])","0,派克笔,%(KikkaItemNum[2]),%(KikkaItemtime[2])","0,电脑,%(KikkaItemNum[3]),%(KikkaItemtime[3])","0,香水,%(KikkaItemNum[4]),%(KikkaItemtime[4])","0,钻戒,%(KikkaItemNum[5]),%(KikkaItemtime[5])")
 
+	nurturance.Moeness++
+	nurturance.Darkness++
+	nurturance.Dependency++
+	nurturance.Closeness++
+	nurturance.Happiness++
+
 	_Energy=TOREAL(nurturance.Closeness+nurturance.Dependency+nurturance.Moeness+nurturance.Happiness+nurturance.Darkness)
 	_EnergyIndex=TOINT(_Energy)
-	nurturance.subvar.Strength=5*TOREAL(nurturance.Happiness)*nurturance.Darkness*nurturance.Darkness/_Energy/nurturance.Moeness
+	nurturance.subvar.Strength=5*TOREAL(nurturance.Happiness)*nurturance.Darkness*nurturance.Darkness/_Energy/MAX(nurturance.Moeness,7)
 	_diff=nurturance.subvar.Agile*(nurturance.Moeness/_Energy)
+	_diff=MAX(1,_diff)
 	nurturance.subvar.Strength*=0.333+0.667*MAX(0.72,7-LOG(_diff,2.718281))
-	nurturance.subvar.Intelligence=5*TOREAL(nurturance.Darkness)*nurturance.Closeness*nurturance.Closeness/_Energy/nurturance.Happiness
+	nurturance.subvar.Intelligence=5*TOREAL(nurturance.Darkness)*nurturance.Closeness*nurturance.Closeness/_Energy/MAX(nurturance.Happiness,7)
 	_diff=nurturance.subvar.Luck*(nurturance.Happiness/_Energy)
+	_diff=MAX(1,_diff)
 	nurturance.subvar.Intelligence*=0.333+0.667*MAX(0.72,7-LOG(_diff,2.718281))
-	nurturance.subvar.Willpower=5*TOREAL(nurturance.Closeness)*nurturance.Dependency*nurturance.Dependency/_Energy/nurturance.Darkness
+	nurturance.subvar.Willpower=5*TOREAL(nurturance.Closeness)*nurturance.Dependency*nurturance.Dependency/_Energy/MAX(nurturance.Darkness,7)
 	_diff=nurturance.subvar.Strength*(nurturance.Darkness/_Energy)
+	_diff=MAX(1,_diff)
 	nurturance.subvar.Willpower*=0.333+0.667*MAX(0.72,7-LOG(_diff,2.718281))
-	nurturance.subvar.Agile=5*TOREAL(nurturance.Dependency)*nurturance.Moeness*nurturance.Moeness/_Energy/nurturance.Closeness
+	nurturance.subvar.Agile=5*TOREAL(nurturance.Dependency)*nurturance.Moeness*nurturance.Moeness/_Energy/MAX(nurturance.Closeness,7)
 	_diff=nurturance.subvar.Intelligence*(nurturance.Closeness/_Energy)
+	_diff=MAX(1,_diff)
 	nurturance.subvar.Agile*=0.333+0.667*MAX(0.72,7-LOG(_diff,2.718281))
-	nurturance.subvar.Luck=5*TOREAL(nurturance.Moeness)*nurturance.Happiness*nurturance.Happiness/_Energy/nurturance.Dependency
+	nurturance.subvar.Luck=5*TOREAL(nurturance.Moeness)*nurturance.Happiness*nurturance.Happiness/_Energy/MAX(nurturance.Dependency,7)
 	_diff=nurturance.subvar.Willpower*(nurturance.Dependency/_Energy)
+	_diff=MAX(1,_diff)
 	nurturance.subvar.Luck*=0.333+0.667*MAX(0.72,7-LOG(_diff,2.718281))
 	//nurturance.subvar.Strength*=nurturance.subvar.Luck/nurturance.subvar.Agile
 	//nurturance.subvar.Intelligence*=nurturance.subvar.Strength/nurturance.subvar.Luck
@@ -46,11 +57,18 @@ KikkaVar{
 	//nurturance.subvar.Willpower=ABS(nurturance.subvar.Intelligence*(nurturance.subvar.Willpower)/nurturance.subvar.Strength)-nurturance.subvar.Strength*(nurturance.Darkness/_Energy)
 	//nurturance.subvar.Agile=ABS(nurturance.subvar.Willpower*(nurturance.subvar.Agile)/nurturance.subvar.Intelligence)-nurturance.subvar.Intelligence*(nurturance.Closeness/_Energy)
 	//nurturance.subvar.Luck=ABS(nurturance.subvar.Agile*(nurturance.subvar.Luck)/nurturance.subvar.Willpower)-nurturance.subvar.Willpower*(nurturance.Dependency/_Energy)
-	nurturance.subvar.Strength=TOINT(nurturance.subvar.Strength)
-	nurturance.subvar.Intelligence=TOINT(nurturance.subvar.Intelligence)
-	nurturance.subvar.Willpower=TOINT(nurturance.subvar.Willpower)
-	nurturance.subvar.Agile=TOINT(nurturance.subvar.Agile)
-	nurturance.subvar.Luck=TOINT(nurturance.subvar.Luck)
+
+	nurturance.Moeness--
+	nurturance.Darkness--
+	nurturance.Dependency--
+	nurturance.Closeness--
+	nurturance.Happiness--
+
+	nurturance.subvar.Strength=MIN(TOINT(nurturance.subvar.Strength),9999)
+	nurturance.subvar.Intelligence=MIN(TOINT(nurturance.subvar.Intelligence),9999)
+	nurturance.subvar.Willpower=MIN(TOINT(nurturance.subvar.Willpower),9999)
+	nurturance.subvar.Agile=MIN(TOINT(nurturance.subvar.Agile),9999)
+	nurturance.subvar.Luck=MIN(TOINT(nurturance.subvar.Luck),9999)
 	kikkamoodmax = TOINT((nurturance.subvar.Strength+nurturance.subvar.Intelligence+nurturance.subvar.Willpower+nurturance.subvar.Agile+nurturance.subvar.Luck)/5)+100
 	if kikkamood > kikkamoodmax {
 		kikkamood = kikkamoodmax
