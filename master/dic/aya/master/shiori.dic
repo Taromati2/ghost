@@ -101,6 +101,7 @@ ClearAyaTempVar {
 	ERASEVAR('sakurablnhwnd')
 	ERASEVAR('keroblnhwnd')
 	ERASEVAR('SHIORI_FW.Path')
+	ERASEVAR('SHIORI_FW.Status')
 	ERASEVAR('SHIORI_FW.LastAITalk')
 	ERASEVAR('SHIORI_FW.LastAITalkTime')
 	ERASEVAR('SHIORI_FW.LastTalk')
@@ -126,11 +127,8 @@ ClearAyaTempVar {
 	ERASEVAR('SHIORI_FW.LastBootInEmergencyMode')
 	ERASEVAR('SHIORI_FW.InVarFileMiss')
 
-	_n = ARRAYSIZE(tempvarname)
-	for _i = 0 ; _i < _n ; _i++ {
-		ERASEVAR(tempvarname[_i])
-	}
-	ERASEVAR('tempvarname')
+	ERASEVAR(SHIORI_FW.tempvarname)
+	ERASEVAR('SHIORI_FW.tempvarname')
 
 	SHIORI_FW.ClearChainVariable
 	SHIORI_FW.ClearReferenceVariable
@@ -188,7 +186,6 @@ load {
 	SHIORI_FW.LastAITalk	= ''
 	SHIORI_FW.LastAITalkTime= _sec
 	SHIORI_FW.TalkEndTime	= _sec
-	SHIORI_FW.IsTalking		= 0
 	SHIORI_FW.LastSurface	= (0,10)
 	SHIORI_FW.IsVisible		= (1,1)
 	SHIORI_FW.HWnd			= (0,0)
@@ -208,7 +205,7 @@ load {
 	S_CHARSET = GETSETTING('charset.output')
 
 	status = ''
-	tempvarname = IARRAY
+	SHIORI_FW.tempvarname = IARRAY
 
 	array_eventtranslate = ASORT('string,ascending',GETFUNCLIST('OnGhostEventTranslate'))
 	array_translateinternal = ASORT('string,ascending',GETFUNCLIST('OnTranslateInternal'))
@@ -1277,13 +1274,13 @@ SHIORI_FW.RequestLib {
 //　　　　_argv[1] リクエスト文字列
 //------------------------------------------------------------------------------
 SHIORI_FW.MakeValueexVariable:void {
-	SHIORI_FW.ValueexList	= IARRAY
-	_sz						= ARRAYSIZE(var.lib.key)
+	SHIORI_FW.ClearValueexVariable
+	valueex = IARRAY
+	_sz = ARRAYSIZE(var.lib.key)
 	for _i = 0; _i < _sz; _i++ {
 		if SUBSTR(_keyname = var.lib.key[_i], 0, 5) == 'Value' {
 			_varname = "valueex%(SUBSTR(_keyname, 5, 3))"
 			LETTONAME(_varname, var.lib.value[_i])
-			SHIORI_FW.ValueexList ,= _varname
 			valueex[TOINT(SUBSTR(_keyname, 5, 3))] = var.lib.value[_i]
 		}
 	}
@@ -1294,8 +1291,12 @@ SHIORI_FW.MakeValueexVariable:void {
 //機能　：valueex*変数を削除します
 //------------------------------------------------------------------------------
 SHIORI_FW.ClearValueexVariable {
-	foreach SHIORI_FW.ValueexList; _exname { ERASEVAR(_exname) }
-	ERASEVAR('SHIORI_FW.ValueexList')
+	_valueexList = GETVARLIST('valueex')
+	foreach _valueexList; _exname {
+		if ISINTSTR(ERASE(_exname, 0, STRLEN('valueex'))) {
+			ERASEVAR(_exname)
+		}
+	}
 	ERASEVAR('valueex')
 }
 
@@ -1315,8 +1316,8 @@ SHIORI_FW.SaoriUnloadAll {
 //------------------------------------------------------------------------------
 SHIORI_FW.RegisterTempVar {
 	for _i = 0 ; _i < _argc ; _i++ {
-		if ASEARCH(_argv[_i],tempvarname) < 0 {
-			tempvarname ,= _argv[_i]
+		if ASEARCH(_argv[_i],SHIORI_FW.tempvarname) < 0 {
+			SHIORI_FW.tempvarname ,= _argv[_i]
 		}
 	}
 }

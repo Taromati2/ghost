@@ -178,4 +178,5 @@ VERSION_UPGRADE_7:void{
 }
 VERSION_UPGRADE_8:void{//building
 	ERASEVAR('ShioriReloading')
+	ERASEVAR('SHIORI_FW.IsTalking')
 }
