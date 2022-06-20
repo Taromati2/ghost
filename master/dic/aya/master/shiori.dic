@@ -402,17 +402,10 @@ request {
 
 	OnRequest
 }
+
 SHIORI_FW.NoMatchingEvent{
 	SHIORI_FW.PushNotifyResult(OnNoMatchingEvent)
 	SHIORI_FW.MakeBadResponse
-}
-TOAUTOEX {
-	_v = _argv[0]
-	if TOSTR(TOAUTO(_v)) == _v {
-		TOAUTO(_v)
-		return
-	}
-	_v
 }
 
 SHIORI_FW.PushNotifyResult:void{//Notify返回值积压
