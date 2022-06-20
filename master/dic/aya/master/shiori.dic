@@ -127,7 +127,8 @@ ClearAyaTempVar {
 	ERASEVAR('SHIORI_FW.LastBootInEmergencyMode')
 	ERASEVAR('SHIORI_FW.InVarFileMiss')
 
-	ERASEVAR(SHIORI_FW.tempvarname)
+	if SHIORI_FW.tempvarname
+		ERASEVAR(SHIORI_FW.tempvarname)
 	ERASEVAR('SHIORI_FW.tempvarname')
 
 	SHIORI_FW.ClearChainVariable
