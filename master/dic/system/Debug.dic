@@ -200,15 +200,21 @@ On_ShioriEcho {
 				}
 				elseif RE_GREP(reference0,'^\s*openfunc\s+'){
 					_funcname=RE_REPLACE(reference0,'^\s*openfunc\s+','')
-					_info=GETFUNCINFO(_funcname)
-					_path=SPLITPATH(_info[0])
-					if _path
-						_path=_path[2]+_path[3]
-					else
-						_path=_info[0]
-					if _info!=-1{
-						OnOpenDicWithLineNum(_info[0],_info[1])
-						ShioriEcho.Special="打开%(_path)第%(_info[1])行"
+					if Is_Defened_Event(_funcname)||Is_Defened_Event(_funcname+'Ex'){
+						_EXfunc=!Is_Defened_Event(_funcname)
+						if _EXfunc
+							_funcname=_funcname+'Ex'
+						_funcname=Get_Full_Defened_Event_Name(_funcname)
+						_info=GETFUNCINFO(_funcname)
+						_path=SPLITPATH(_info[0])
+						if _path
+							_path=_path[2]+_path[3]
+						else
+							_path=_info[0]
+						if _info!=-1{
+							OnOpenDicWithLineNum(_info[0],_info[1])
+							ShioriEcho.Special="打开%(_path)第%(_info[1])行"
+						}
 					}
 					else
 						ShioriEcho.Special='不是用户函数'
