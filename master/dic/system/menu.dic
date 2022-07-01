@@ -1109,9 +1109,9 @@ DialogWallPaper{
 		when '.png', '.jpg', '.jpeg', '.bmp' {
 			Wallpaperfile = _argv[0]
 			"\1\s[11]\0\b[2]\s[2]图像文件\n\_q「%(_filename)%(_fileext)」\n\n[half]\_q要把这个设定为壁纸吗？\n\n[half]/
-			\![*]\q[居中,OnSetWallpaper,0]\n/
-			\![*]\q[平铺,OnSetWallpaper,1]\n/
-			\![*]\q[拉伸,OnSetWallpaper,2]\n\n[half]/
+			\![*]\q[居中,OnSetWallpaper,center]\n/
+			\![*]\q[平铺,OnSetWallpaper,tile]\n/
+			\![*]\q[拉伸,OnSetWallpaper,stretch]\n\n[half]/
 			\q[◇取消,Cancel]"
 		}
 		others {
@@ -1123,11 +1123,9 @@ DialogWallPaper{
 	}
 }
 OnSetWallpaper{
-	void CHARSETLIBEX('SAORI_PATH\proxy.dll', 127)
-	void CALLSAORI('proxy', 'SAORI_PATH\set_wall_paper.exe', "%(ASC(34))%(REPLACE(Wallpaperfile,'/','\'))%(ASC(34))', '%(reference0)")
 	'\0\s[0]似乎应该这样……'
 	--
-	//"\![set,wallpaper,%(Wallpaperfile)]"
+	"\![set,wallpaper,%(Wallpaperfile),reference0]"
 	ERASEVAR('Wallpaperfile')
 }
 ClearWallpaperVar{
