@@ -123,7 +123,6 @@ ShowLrc{
 		}
 	}
 	_txt += '\n \n \n \n \n \n \n \n \n \n \n \n \n'+lrcset + ' \n \n'
-	_txt+=_tmp
 	for _i = 0; lrctime[_i] != ''; _i ++ {
 		_tmp = '\__w[' + (lrctime[_i] - _time) + ']'
 		if _time >= lrctime[_i] {
@@ -388,7 +387,7 @@ OnMusicPlayer:all{
 	"\q[◇模式:%(_mode),OnMusicPlayMode]    \_l[110]\q[◇歌词卡:,OnMusicLrc]\q[%(_lrcenable),OnMusicSetLrc]\_l[195]\q[◇歌词目录,OnLrcfolder]\n"
 	'\s[10]\0'
 	if musicplayerlist
-		_txt+=OnMusicPlayerList
+		OnMusicPlayerList
 	'\![unlock,balloonrepaint]'
 	if reference0 != 'NoSurfaceRestore'
 		'\_w[1000]\![raise,OnSurfaceRestore.Music.Played]'
@@ -576,7 +575,7 @@ OnMusicListPageTxt{
 	_txt=''
 	_id=TOINT(musiclistfile[1])
 	music_listpage[_id]=music_listpage[_id]%(musicfile[0]/100+1)
-	_txt+="\_l[130]\q[%(music_listpage[_id]+1)/%(musicfile[0]/100+1),OnInputMusicPage]"
+	_txt+="\_l[130]\q[%(music_listpage[_id]+1)/%(musicfile[0]/100+1),OnInputMusicPage,%(_id)]"
 	if music_listpage[_id]==0
 		_txt+="\_l[170]\q[一>>,OnMusicListPage,%(music_listpage[_id]+1)]"
 	elseif music_listpage[_id]==book_dexnum-1
@@ -605,6 +604,7 @@ OnMusicListPageTxt{
 	_txt
 }
 OnInputMusicPage{
+	_id=TOINT(_argv[0])
 	"\C\![open,inputbox,OnMusicListPage,-1,%(music_listpage[_id]+1)]"
 	temp='input'
 }
@@ -676,13 +676,11 @@ OnListNameMove{
 			musiclistname[reference1] = _tmp
 			if reference1==musiclistfile[1]{
 				_t=_tmp[0,'|']
-				_name=_tmp[1,'|']
 				musiclistfile[0]=_m3u+_t+'.m3u8'
 				musiclistfile[1]=reference1-1
 			}
 			elseif reference1 - 1==musiclistfile[1]{
 				_t=musiclistname[reference1-1][0,'|']
-				_name=musiclistname[reference1-1][1,'|']
 				musiclistfile[0]=_m3u+_t+'.m3u8'
 				musiclistfile[1]=reference1
 			}
@@ -695,13 +693,11 @@ OnListNameMove{
 			musiclistname[reference1] = _tmp
 			if reference1==musiclistfile[1]{
 				_t=_tmp[0,'|']
-				_name=_tmp[1,'|']
 				musiclistfile[0]=_m3u+_t+'.m3u8'
 				musiclistfile[1]=reference1+1
 			}
 			elseif reference1 + 1==musiclistfile[1]{
 				_t=musiclistname[reference1+1][0,'|']
-				_name=musiclistname[reference1+1][1,'|']
 				musiclistfile[0]=_m3u+_t+'.m3u8'
 				musiclistfile[1]=reference1
 			}
@@ -790,7 +786,6 @@ OnMusicListRename{
 	_m3u = M3U8PATH
 	_i=TOINT(musiclistfile[1])
 	_t=musiclistname[_i][0,'|']
-	_name=musiclistname[_i][1,'|']
 	_file=_m3u+_t+'.m3u8'
 	MusicListReName(_file,_replace)
 	OnMusicPlayerList
@@ -816,6 +811,7 @@ OnMusicListCreat{
 //---------------------------------------------------
 MusicListReName:void{
 	_file=_argv[0]
+	_m3upath = SPLITPATH(_file)
 	_replace=_argv[1]
 	_musiclist=IARRAY
 	FCHARSET(1)
@@ -869,7 +865,6 @@ DialogMusicOpenList:void{
 		elseif _m3uext == '.m3u8' {
 			FCHARSET(1)
 		}
-		_range=0
 		if musicplayerrange&&_argc==0{
 			musicrandlist=''
 		}
@@ -1030,7 +1025,6 @@ GetRangeList{
 		_txt=''
 		for _i=0;_i<_listnum;_i++{
 			_t=musiclistname[_i][0,'|']
-			_name=musiclistname[_i][1,'|']
 			_file=_m3u+_t+'.m3u8'
 			if musicplayerrange==2{
 				if IsSelectList(_i)
@@ -1042,7 +1036,6 @@ GetRangeList{
 		_musicrangelist=musicrandlist
 		musicrandlist=''
 		SETDELIM(_musicrangelist,'*')
-		_id=0
 		_n=musicfile[4]
 		musicfile[3]=0
 		for _i=0;_i<TOINT(_n);_i++{
@@ -1083,7 +1076,6 @@ GetRangeList{
 		_txt=''
 		for _i=0;_i<_listnum;_i++{
 			_t=musiclistname[_i][0,'|']
-			_name=musiclistname[_i][1,'|']
 			_file=_m3u+_t+'.m3u8'
 			if musicplayerrange==2{
 				if IsSelectList(_i)
@@ -1333,7 +1325,6 @@ OnMusicPlayListAdd{
 	elseif reference0 == 'renamelist' {
 		_i=reference1
 		musiclistfile[1]=_i
-		_t=musiclistname[_i][0,'|']
 		_name=musiclistname[_i][1,'|']
 		"\C\![open,inputbox,OnMusicListRename,-1,%(_name)] "
 	}
@@ -1459,8 +1450,8 @@ MusicLoadFolder{
 			MusicLoadFolder(_t)
 		}else{
 			case _fileext {
-				_t = _path +'/'+ _f
 				when '.mid', '.wav', '.mp3',  '.m4a', '.au', '.ogg', '.wma','.ape','.flac','.avi','.wmv','.rm','.rmvb','.mp4','.mkv','.flv','.mpg'{
+					_t = _path +'/'+ _f
 					_t = REPLACE(_t,'/','\')
 					_t = REPLACE(_t,'\\','\')
 					musiclist += _t+'*'

@@ -3,6 +3,5 @@ dicdir, system
 dicdir, dev
 dicdir, nurturance
 dicdir, communicate
-dicdir, story
 dicdir, games
 dicdir, other

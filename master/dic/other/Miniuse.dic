@@ -131,8 +131,6 @@ Onlunarbirth{
 	_d=_argv[2]
 	//_m=REPLACE(_m,'腊','十二')
 	_mon=(31,28,31,30,31,30,31,31,30,31,30,31)
-	_mm=1
-	_dd=1
 	for _i = 1;_i <= 12;_i++{
 		//Onlunarbirth(2015,'十一','廿一')
 		for _j = 1;_j <= _mon[_i-1];_j++{
@@ -371,14 +369,14 @@ OnFriendNextBirthDay{
 			_days+=_mon[_fm-2]
 			_fm--
 		}
-		_days=_days-day+_fd;ss=0
+		_days=_days-day+_fd
 	}
 	elseif year<_fy{
 		while _fm>1{
 			_days+=_mon[_fm-2]
 			_fm--
 		}
-		_days=_days-1+_fd;       ss=1
+		_days=_days-1+_fd
 		_fm = 12;_fd = 31
 		while _fm>month{
 			_days+=_mon[_fm-2]
@@ -407,7 +405,6 @@ Ongift{
 	gift
 	_N=ARRAYSIZE(Useritem)-2
 	_G=RAND(_N)
-	_spitemflag=0
 	while _G==19{
 		_G=RAND(_N)
 	}
@@ -520,7 +517,7 @@ OnBackup{
 	_w+='■数据备份■\n\n[half]'
 	_txt=''
 	if !ISDIR('SHIORI_BACKUP_PATH')
-		_temp=MKDIR('SHIORI_BACKUP_PATH')
+		void MKDIR('SHIORI_BACKUP_PATH')
 	if reference0=='mem'{
 		if reference1==NULL
 			_txt+='要对_SAVE_file及profile文件夹进行备份操作吗？\n\n[half]/
@@ -1043,7 +1040,6 @@ Operate2{//二目运算
 todec{
 	_num=TOSTR(_argv[0])
 	_oldcarry=_argv[1]
-	_weight=_oldcarry
 	_l=STRLEN(_num)
 	if _oldcarry==10 || _num==0{_num;return;}
 	_neg=(SUBSTR(_num,0,1)=='-')
@@ -1086,7 +1082,7 @@ evaluate{//表达式求值主函数
 	_theta=''
 	_i=0.0;_optr_i=0.0;_opnd_i=0.0;_j=0.0;_zpart=0.0;_k=0.0
 	_operand=0.0;_weight=0.0;_a=0.0;_b=0.0;_xpart=0.0
-	//_index=0
+	_index=0
 	_num=1.0
 	_expression=_exp
 	_expression+='\0'
@@ -1229,8 +1225,6 @@ evaluate{//表达式求值主函数
 					_i++
 				}
 				when '>'{
-					if _temp=='+'
-						tt='>'
 					_optr_i--
 					_theta=_optr[_optr_i]
 					if _theta>='a'&&_theta<='t'{
@@ -1552,14 +1546,10 @@ Error{//以下为表达式出错处理函数
 	_str;return
 }
 result{
-	_temp=0
-	_m_error=''
 	//UpdateData(1)
 	_m_error=Error(m_exp)
 	if _m_error==''{
-		_temp=m_exp
 		_m_error=evaluate(m_exp)
-		m_point=_m_error
 	}
 	m_res=_m_error
 }
@@ -1797,8 +1787,6 @@ TXTREPLACE{
 	_ori=_argv[1]
 	_rep=_argv[2]
 	_case=TOINT(_argv[3])
-	_l=STRLEN(_str)
-	_o=STRLEN(_ori)
 	_result=''
 	if _case==0{
 		_ori=REPLACE(_ori,'?','.?')
@@ -1820,7 +1808,7 @@ POSREPLACE{
 	_temp=''
 	_result=''
 	_l=STRLEN(_str)
-	if _l-_start-len+1>0{
+	if _l-_start-_len+1>0{
 		_temp=SUBSTR(_str,0,_start-1)
 		_temp+=_txt+SUBSTR(_str,_start+_len-1,_l)
 	}
@@ -1839,7 +1827,6 @@ FIXREPLACE{
 	_num=''
 	_zero=''
 	_result=''
-	_temp=''
 	_len=STRLEN(_numbegin)
 	if _numbegin<POW(10,_numlen-1){
 		for _i=_numlen-_len;_i>0;_i--{
@@ -1851,11 +1838,10 @@ FIXREPLACE{
 	elseif _numlen>0
 		_num=_numbegin
 	if _fix==0
-		_temp=_add+_num+_str
+		_result=_add+_num+_str
 	else
-		_temp=_str+_add+_num
-	_sesult=_temp
-	_sesult
+		_result=_str+_add+_num
+	_result
 }
 FilesRenameMenu:all{
 	_submenu=0
@@ -1913,7 +1899,7 @@ OnClickOption{
 		_w+="\q[%(_num),OnClickOption,%(_submenu),%(_varname),%(_exp+_num)]"
 	}
 	_back=LEFT(_exp,STRLEN(_exp)-1)
-	_w+=" \q[Backspace,OnClickOption,%(_submenu),%(_varname),%(LEFT(_exp,STRLEN(_exp)-1))]"
+	_w+=" \q[Backspace,OnClickOption,%(_submenu),%(_varname),%(_back)]"
 	option=_w
 	if running=='rename'
 		_txt+=OnFilesRename(_submenu)
@@ -1975,7 +1961,6 @@ OnFilesRenameSet{
 		_state='editlist'
 	}
 	elseif reference1=='bottom'{
-		_total=ARRAYSIZE(filerenamelist)
 		_id=reference2
 		_temp=filerenamelist[_id]
 		filerenamelist[_id]=IARRAY
@@ -2617,7 +2602,7 @@ OnBookChapter{
 	_txt+='\![*]\q[刷新章节信息,OnBookChapter,fresh]\n[150]'
 	_book_file=LoadChapterBookName
 	if _book_file!=book_file||reference0=='fresh'
-		_t=OnReadBookLoad(book_file,book_dexid,0,'chapter')
+		void OnReadBookLoad(book_file,book_dexid,0,'chapter')
 	_chapter=LoadChapter
 	SETDELIM(_chapter,'§')
 	_n=ARRAYSIZE(_chapter)-1
@@ -2626,7 +2611,7 @@ OnBookChapter{
 		_buff=_chapter[_i]
 		book_dexid=TOINT(_buff[0,'|'])
 		book_dex=_buff[1,'|']
-		_t=OnReadBookLoad(book_file,book_dexid,0,'recover')
+		void OnReadBookLoad(book_file,book_dexid,0,'recover')
 		_txt+='\![raise,OnReadBook]'
 		_txt
 		return
@@ -2643,7 +2628,7 @@ OnBookChapter{
 		_j=_n/20
 	for _i=_j*20;_i<_n&&_i<(_j+1)*20;_i++{
 		_buff=_chapter[_i]
-		_book_dex=_buff[1,'|']
+		//_book_dex=_buff[1,'|']
 		_book_percent=_buff[2,'|']
 		_book_txt=CUTSPACE(_buff[3,'|'])
 		if !RE_GREP(_book_txt,'[A-Za-z]')
@@ -2674,9 +2659,9 @@ OnBookmarkLoad{
 		book_dex=_buff[2,'|']
 		if book_file!=_book_file{
 			book_file=_book_file
-			_t=OnReadBookLoad(book_file,book_dexid,0,'fresh')
+			void OnReadBookLoad(book_file,book_dexid,0,'fresh')
 		}
-		_t=OnReadBookLoad(book_file,book_dexid,0,'recover')
+		void OnReadBookLoad(book_file,book_dexid,0,'recover')
 		_txt+='\![raise,OnReadBook]'
 		_txt
 		return
@@ -2691,7 +2676,7 @@ OnBookmarkLoad{
 		_book_file=REPLACE(_book_file,']','\]')
 		_book_filename=REPLACE(_book_filename,']','\]')
 		_book_dexid=TOINT(_buff[1,'|'])
-		_book_dex=_buff[2,'|']
+		//_book_dex=_buff[2,'|']
 		_book_txt=CUTSPACE(_buff[3,'|'])
 		_book_percent=TOINT(_buff[4,'|'])
 		//if !RE_GREP(_book_txt,'[A-Za-z]')
@@ -2823,8 +2808,8 @@ OnReadBookOption{
 OnReadBookUsage{
 	LETTONAME(reference0,reference1)
 	if reference0=='booklength'{
-		_t=OnReadBookLoad(book_file,book_dexid,0,'fresh')
-		_t=OnReadBookLoad(book_file,book_dexid,0,'recover')
+		void OnReadBookLoad(book_file,book_dexid,0,'fresh')
+		void OnReadBookLoad(book_file,book_dexid,0,'recover')
 	}
 	OnReadBookOption
 }
@@ -2837,7 +2822,7 @@ OnOpenBook{
 	book_dexid=0
 	if !ISVAR('booklength')
 		booklength=200
-	_t=OnReadBookLoad(_file,0,0,'fresh')
+	void OnReadBookLoad(_file,0,0,'fresh')
 	OnReadBook
 }
 OnReadBookStop{
@@ -2988,7 +2973,7 @@ IsChapterMenu{
 	_result=0
 	_txt=CUTSPACE(_txt)
 	_A=SUBSTR(_txt,0,3)
-	if RE_GREP(_txt,'[一二三四五六七八九十123456789]')&&!RE_GREP(_txt,'[\,\?，。？！!:“”]')&&(STRLEN(_txt)<25&&RE_GREP(_A,'[一二三四五六七八九十123456789]')||RE_GREP(_txt,'[章节部]')&&“第” _in_ _txt)||RE_GREP(TOLOWER(_txt),'chapter')
+	if RE_GREP(_txt,'[一二三四五六七八九十123456789]')&&!RE_GREP(_txt,'[\,\?，。？！!:“”]')&&(STRLEN(_txt)<25&&RE_GREP(_A,'[一二三四五六七八九十123456789]')||RE_GREP(_txt,'[章节部]')&&"第" _in_ _txt)||RE_GREP(TOLOWER(_txt),'chapter')
 		_result=1
 	_result
 }
@@ -3018,30 +3003,23 @@ OnFileRead{
 	if _argc
 		_file=_argv[0]
 	_strbegin='◇'
-	_str='abc'
 	_strend='#'
 	_txt=''
-	_found=''
 	if FOPEN(_file,'r'){
 		for _buff = FREAD(_file); _buff != -1; _buff = FREAD(_file){
 			while _strbegin !_in_  _buff  && _buff!= -1{
 				_buff = FREAD(_file)
 			}
 			while _strend !_in_  _buff && _buff!= -1{
-				if _str _in_ _buff&&_str!=''{
-					_found+=_str
-				}
 				_txt+=_buff
 				_buff = FREAD(_file)
 			}
 		}
 	}
 	FCLOSE(_file)
-	//_found
 	_txt
 }
 OnKikkaKnowl{
-	kikkaknowl=1
 	running='kikkaknowl'
 	_txt='\C\![quicksession,true]\c\0\b[2]\![set,choicetimeout,0]'
 	_txt+='■橘花知识库 - 文件列表■\n[150]'
@@ -3073,7 +3051,6 @@ OnKikkaKnowl{
 			_file = _path +'/'+ _file
 			_fileext = TOLOWER(SPLITPATH(_file)[3])
 			_txt+="\__q[OnKikkaKnowl.SelectFile,%(_file)]"+_n+'.'+_filename+_fileext+'\__q\n'
-			_m++
 		}
 		_n++
 	}
@@ -3218,7 +3195,6 @@ OnKikkaKnowl.ShowFile{
 }
 ClearKnowlVar{
 	ERASEVAR('knowltemp')
-	ERASEVAR('kikkaknowl')
 }
 OnNumberAddZero{
 	_nam=_argv[0]

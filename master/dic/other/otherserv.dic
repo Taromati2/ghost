@@ -412,26 +412,15 @@ Select.goodjob{
 	intimacy += 20
 	"\0\s[41]橘花很高兴呢，得到%(username)的称赞，橘花一定会做出更可口的菜式\![set,choicetimeout,0]"
 	"\0\s[41]只要%(username)喜欢，橘花会更加努力的\![set,choicetimeout,0]"
-	--
-	if picnic==1{
-		picnic=NULL
-		"\n\x%(OnPicnic_13)"
-	}
 }
 Select.notgoodjob{
 	"\0\s[1]唔，%(username)不喜欢吗，下次橘花一定会做好的。\![set,choicetimeout,0]"
 	'\0\s[1]呃……，橘花会努力做好的……\![set,choicetimeout,0]'
-	--
-	if picnic==1{
-		picnic=NULL
-		"\n\x%(OnPicnic_13)"
-	}
 }
 //**************************亲密动作**********************************************************************
 Onclosetouch{
 	if GetPhase >= 3{
 		'\q[◇亲密接触,closetouch]'
-		closetouchmode=1
 	}
 }
 Select.closetouch{
@@ -487,26 +476,6 @@ Select.hug{
 	"\0\s[29]%(username)会一直陪伴在橘花的身边吗\n%(Select.closetouch)"
 	"\0\s[9]如果可以的话…\w9再多抱会儿行吗？\n%(Select.closetouch)"
 }
-/*
-Onaccounting{
-	if closetouchmode ==1{
-		'\q[◇统计,accounting]\n'
-	}
-}
-Select.accounting{
-	nurturance.Moeness=TOINT(headtouchnum/10+10*KikkaItemNum[1])
-	nurturance.Darkness=TOINT(facetouchnum/10+5*KikkaItemNum[0]+5*KikkaItemNum[2])
-	nurturance.Dependency=TOINT(hugnum/10+10*KikkaItemNum[3])
-	H度=TOINT(kissnum/10+5*KikkaItemNum[4])
-	nurturance.Happiness=TOINT(leadhandnum/10+10*KikkaItemNum[5])
-	"萌度：%(nurturance.Moeness)\n/
-	腹黑度：%(nurturance.Darkness)\n/
-	依赖度：%(nurturance.Dependency)\n/
-	H度：%(H度) \n/
-	幸福度：%(nurturance.Happiness)\n/
-	\n\n\n\q[◇返回上一层,help]\![set,choicetimeout,0]"
-}
-*/
 //*********************生病**********************************
 Select.notsogood{
 	if howbady0 == ''{

@@ -98,8 +98,8 @@ OnMinuteChange{
 		}
 	}
 	if mode == '0'{
+		_boottime = ghostuptime
 		if !specialmode{
-			_boottime = ghostuptime
 			if minute == 0{
 				if timerm == 0{
 					Hourlychime
@@ -120,7 +120,7 @@ OnMinuteChange{
 			elseif (_boottime % 3600 <= 60) && _boottime >= 3600{//每启动满一小时时开头一分钟，第一小时除外
 				{
 					_worktime = _boottime / 3600
-					"\1\s[10]我们连续工作了%_worktime小时啊。\w9\s[12]\n把薪水交出来。\w9\w9\0\s[30]不是什么都没做吗。"
+					"\1\s[10]我们连续工作了%(_worktime)小时啊。\w9\s[12]\n把薪水交出来。\w9\w9\0\s[30]不是什么都没做吗。"
 					--
 					''
 					'\w9\w9\1\s[10]\n\n[half]装可爱就是猫的工作啊。\w9\w9\0\s[6]\n\n[half]既然如此、快点开始工作吧。\w9\w9\1\n\n[half]…\w9…\w9…'
@@ -164,7 +164,7 @@ OnMinuteChange{
 			if AutoShellChangeflag[5]==1{
 				if !tshellid {
 					OnAutoChangeShell
-					tshellid=shellid
+					tshellid=shellID
 				}
 				--
 				if tshellid!=shellID{
@@ -692,7 +692,7 @@ GetGMTDateTime{
 OnAnalogClock{
 	'\0\s[5]打开时钟'
 	--
-	_result=CALLSAORI('AnalogClock2_0\AnalogClock','show','clock',100,-200,'sakura')
+	void CALLSAORI('AnalogClock2_0\AnalogClock','show','clock',100,-200,'sakura')
 }
 OnClockTime{
 	"\0\s[5]现在是%(reference0):%(reference1):%(reference2)"
@@ -702,7 +702,7 @@ OnClockClose{
 	'\0\s[5]关闭时钟'
 }
 //**** 设定关机时间 ***********************************************************************************
-OnSetShutdownMenu{
+OnSetShutdownMenu:all{
 	if !ISVAR('shutdownset') {
 		shutdownset = IARRAY
 		shutdownset[0] = 'OFF'
@@ -718,17 +718,17 @@ OnSetShutdownMenu{
 	\q[◇倒计时关机,OnCountShutdown]\n"
 	--
 	if shutdownset[0] == 'ON' {
-		_txt += '自动关机开关：\q[◎ON,OnShutdownSet,0,ON]\_l[180]\q[○OFF,OnShutdownSet,0,OFF]\n'
+		'自动关机开关：\q[◎ON,OnShutdownSet,0,ON]\_l[180]\q[○OFF,OnShutdownSet,0,OFF]\n'
 	}
 	else {
-		_txt += '自动关机开关：\q[○ON,OnShutdownSet,0,ON]\_l[180]\q[◎OFF,OnShutdownSet,0,OFF]\n'
+		'自动关机开关：\q[○ON,OnShutdownSet,0,ON]\_l[180]\q[◎OFF,OnShutdownSet,0,OFF]\n'
 	}
 	--
 	if shutdownset[1] == '当天' {
-		_txt += '自动关机频率：\q[◎当天自动关机,OnShutdownSet,1,当天]\_l[180]\q[○每天自动关机,OnShutdownSet,1,每天]\n'
+		'自动关机频率：\q[◎当天自动关机,OnShutdownSet,1,当天]\_l[180]\q[○每天自动关机,OnShutdownSet,1,每天]\n'
 	}
 	else {
-		_txt += '自动关机频率：\q[○当天自动关机,OnShutdownSet,1,当天]\_l[180]\q[◎每天自动关机,OnShutdownSet,1,每天]\n'
+		'自动关机频率：\q[○当天自动关机,OnShutdownSet,1,当天]\_l[180]\q[◎每天自动关机,OnShutdownSet,1,每天]\n'
 	}
 	--
 	'\n[half]\q[◇返回上一层,OnOpenMenu,3]    \q[◇终了,Cancel]'
@@ -796,7 +796,8 @@ ShutdownMonitor{
 	}
 	--
 	if shutdownstart > 0{
-		"即将自动关机，请%(username)保存资料"
+		_txt="即将自动关机，请%(username)保存资料"
+		_txt
 		--
 		_trayballoon="\![set,trayballoon,--icon=info,--timeout=10,--title=关机提醒,--text=现在是%(hour)点%(minute)分,--text=%(_txt)！,--text=（点击气泡关闭提醒）]"
 		if InNotify
@@ -821,8 +822,6 @@ AgendaMonitor{
 	SETDELIM(_events,'|')
 	foreach _events;_event{
 		_eventrepeat=TOINT(_event[19,'	'])
-		_eventbegindate=(_event[1,'	'],_event[2,'	'],_event[3,'	'],_event[4,'	'],_event[5,'	'])
-		_eventenddate=(_event[7,'	'],_event[8,'	'],_event[9,'	'],_event[10,'	'],_event[11,'	'])
 		if _eventrepeat
 			_eventtemp+=_event+'|'
 	}

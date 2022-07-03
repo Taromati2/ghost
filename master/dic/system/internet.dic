@@ -165,8 +165,8 @@ OnChangeCity{
 }
 OnChangeCityComplete{
 	if city != reference0 || !city
-		OnWeatherUpdate.force
-	city = reference0
+		city = reference0
+	OnWeatherUpdate.menu
 }
 OnWeatherUpdate.DosntNeedCheck{
 	if (GETSECCOUNT-weather.lasttime)<13{
@@ -437,17 +437,11 @@ OnUrl{
 }
 OnExecuteHTTPComplete{
 	if reference1[0,'='] == 'rss' {
-		_tmp = reference1[1,'=']
+		//_tmp = reference1[1,'=']
 		//ReadXml("VAR_PATH\\%(_tmp)")
 	}
 	elseif reference1 == 'weather' {
 		OnWeatherUpdate.Success
-	}
-	elseif reference1 == 'checkip' {
-		OnIpFound
-	}
-	elseif reference1 == 'googlecal' {
-		OnGoogleCalFound
 	}
 	elseif reference1 == 'tulingapi' {
 		OnTuLingFound

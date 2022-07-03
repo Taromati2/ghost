@@ -7,22 +7,20 @@ On战斗开始{
 		//res_reference0 指定人格
 		指定人格 = ghostexlist[RAND(ghostexcount)]
 	}
-	case 指定人格{
-		if 指定人格 != '' && ghostexcount == 1{
-			"准备和人格%(指定人格)进行战斗，接下来应该进行怎样的战斗？\n/
-			\q[◇猜拳大作战,OnHandGameVSMode]\n/
-			\q[◇一对一单挑,OnOneByOneBegin]\n"
-		}
-		elseif ghostexcount==2{
-			'当前人格数量为3，是否进行人格大乱斗？\n/
-			\q[◇人格大乱斗,On人格大乱斗模式]'
-		}
-		elseif ghostexcount>=3{
-			'人格数量超出限制，请保留三个人格\n'
-		}
-		else{
-			'\0\s[0]没有呼叫出任何人格，无法进行战斗。请确定要呼叫的人格安装了interactive.dic这个辞书，一定要由第一个开启的人格发起战斗，也就是说乱斗的发起者也是其他人格的呼叫者。否则会有BUG出现。'
-		}
+	if 指定人格 != '' && ghostexcount == 1{
+		"准备和人格%(指定人格)进行战斗，接下来应该进行怎样的战斗？\n/
+		\q[◇猜拳大作战,OnHandGameVSMode]\n/
+		\q[◇一对一单挑,OnOneByOneBegin]\n"
+	}
+	elseif ghostexcount==2{
+		'当前人格数量为3，是否进行人格大乱斗？\n/
+		\q[◇人格大乱斗,On人格大乱斗模式]'
+	}
+	elseif ghostexcount>=3{
+		'人格数量超出限制，请保留三个人格\n'
+	}
+	else{
+		'\0\s[0]没有呼叫出任何人格，无法进行战斗。请确定要呼叫的人格安装了interactive.dic这个辞书，一定要由第一个开启的人格发起战斗，也就是说乱斗的发起者也是其他人格的呼叫者。否则会有BUG出现。'
 	}
 }
 OnHandGameVSMode{
@@ -153,7 +151,6 @@ OnHandGameReset{
 	atk=0
 }
 OninterHandGame{
-	r0=reference0
 	受到伤害=reference1
 	if reference2 {
 		HP0=reference2
@@ -161,8 +158,6 @@ OninterHandGame{
 	if reference3 {
 		HP1=reference3
 	}
-	g0=_argv[0]
-	g1=_argv[1]
 	_i=RAND(3)+1
 	if 受到伤害>0{
 		HP0-=受到伤害

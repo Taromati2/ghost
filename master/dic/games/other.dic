@@ -676,7 +676,6 @@ OnGuessNumberInput{
 	}
 	else{
 		gn[0] ++
-		_n = gn[0] + 1
 		gn ,= _tmp
 		if GuessNumberCal == '4A0B'{
 			case gn[0]{
@@ -813,7 +812,6 @@ OnDeluxeBall{
 		_rs=ARRAYSIZE(ball)
 		if _rs<20
 			ball,=TOINT(reference1)
-		ball_=ball
 		_rs=ARRAYSIZE(ball)
 		for _i=0;_i<_rs;_i++{
 			for _j=_i+1;_j<=_rs;_j++{
@@ -1906,7 +1904,6 @@ OnKikkaAIId{
 				_HPMIN=_HPLEFT2
 		}
 		_n=1.0
-		_n2=1.0
 		if SP[0]-_SP[_i]*_n>=0
 			_HPLEFT=_HP0[_i]*_n-HP[1]-6*SP[1]
 		while SP[0]-_SP[_i]*_n>=0&&_HPLEFT<_HPMIN{
@@ -2116,20 +2113,18 @@ OnKikkaUvcBegin{
 	if ghostexcount > 0{
 		指定人格 = ghostexlist[RAND(ghostexcount)]
 	}
-	case 指定人格{
-		if 指定人格 != '' && ghostexcount == 1{
-			"准备和人格%(指定人格)进行战斗，接下来应该进行怎样的战斗？\n/
-			\q[◇猜拳大作战,OnInnerHandGameVSMode]\n/
-			\q[◇一对一单挑,OnInnerOneByOneBegin]\n/
-			\q[◇不用了,OnKikkaBattle]"
-		}
-		elseif ghostexcount>=2{
-			'当前人格数量大于3，是否进行人格大乱斗？\n/
-			\q[◇人格大乱斗,OnInner人格大乱斗模式]'
-		}
-		else{
-			'\0\s[0]没有呼叫出任何人格，无法进行战斗。'
-		}
+	if 指定人格 != '' && ghostexcount == 1{
+		"准备和人格%(指定人格)进行战斗，接下来应该进行怎样的战斗？\n/
+		\q[◇猜拳大作战,OnInnerHandGameVSMode]\n/
+		\q[◇一对一单挑,OnInnerOneByOneBegin]\n/
+		\q[◇不用了,OnKikkaBattle]"
+	}
+	elseif ghostexcount>=2{
+		'当前人格数量大于3，是否进行人格大乱斗？\n/
+		\q[◇人格大乱斗,OnInner人格大乱斗模式]'
+	}
+	else{
+		'\0\s[0]没有呼叫出任何人格，无法进行战斗。'
 	}
 }
 OnInnerHandGameVSMode{

@@ -137,8 +137,6 @@ RpgGameVar{
 		cp0=cpmax0
 	if cp1 > cpmax1
 		cp1=cpmax1
-	_Energy=TOREAL(nurturance.Closeness+nurturance.Dependency+nurturance.Moeness+nurturance.Happiness+nurturance.Darkness)
-	_EnergyIndex=TOINT(_Energy)
 	str0_=TOINT(2*0.05*B0 + 20) + '+' + TOINT(weaponequip_str0 + armorequip_str0)+'+'+TOINT(nurturance.subvar.Strength)+'+'+TOINT(_circleinfo0[3])+'+'+TOINT(kikkapow/10)
 	def0_=TOINT(0.8*0.05*B0) + '+' + TOINT(armorequip_def0 + bootsequip_def0)+'+'+TOINT(0.5*nurturance.subvar.Agile)+'+'+TOINT(_circleinfo0[4])+'+'+TOINT(kikkapow/10)
 	ats0_=TOINT(0.05*B0) + '+' + TOINT(weaponequip_ats0 + armorequip_ats0 + bootsequip_ats0)+'+'+TOINT(0.5*nurturance.subvar.Intelligence)+'+'+TOINT(_circleinfo0[5])+'+'+TOINT(kikkawiz/10)
@@ -1480,7 +1478,8 @@ Onkikkauseitem1{
 		else{
 			"不能对失去战斗能力斗和使用%(道具名称)\x"
 			--
-			Onbattleselect0;rerturn
+			Onbattleselect0
+			return
 		}
 	}
 	--
@@ -1786,7 +1785,6 @@ OnCircle{
 			_expcircletemp-=TOINT(_circle)
 			_circle0++
 			_circle=GetExp(20+10*_circle0)
-			_n=1
 		}
 		_exp-=_expcircle
 	}
@@ -1806,7 +1804,6 @@ OnCircle{
 			_expcircletemp-=TOINT(_circle)
 			_circle0++
 			_circle=GetExp(20+10*_circle0)
-			_n=1
 		}
 		_exp-=_expcircle
 	}
@@ -2829,15 +2826,7 @@ Onbattleselect{
 		battlemode=0
 		_txt+=OpenRpgGameMenu(5)
 	}
-	elseif hp0>0 && hp1>0 && mhp==0{
-		_txt+='\t\0\s[5]战斗胜利了。\x'
-		_txt+=战斗结束
-	}
-	elseif hp0>0 && hp==0 && mhp==0{
-		_txt+='\t\0\s[5]战斗胜利了。\x'
-		_txt+=战斗结束
-	}
-	elseif hp0==0 && hp1>0 && mhp==0{
+	elseif hp0+hp1>0 && mhp==0{
 		_txt+='\t\0\s[5]战斗胜利了。\x'
 		_txt+=战斗结束
 	}
@@ -3413,7 +3402,7 @@ Onusebeastsp{
 			"斗和使用了牺牲，斗和HP减少%(TOINT(0.5*hp1)),%(怪物名字)HP减少%(TOINT(0.5*mhp))\x"
 		}
 		elseif 兽技ID==6{
-			if hp1+0.2*mhp>=hp1max{
+			if hp1+0.2*mhp>=hpmax1{
 				"斗和使用了偷取，斗和HP增加%(TOINT(hpmax1-hp1)),%(怪物名字)HP减少%(TOINT(0.2*mhp))\x"
 				--
 				hp1=hpmax1

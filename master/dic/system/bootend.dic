@@ -247,7 +247,6 @@ OnBoot{
 }
 OnBoot.aboutTime{
 	_phase = GetPhase
-	_laststart=0
 	_timeslot = GetTimeSlot
 	if reference0!='return'{
 		if AutoShellChange[0]
@@ -446,7 +445,7 @@ OnBoot.aboutTime{
 		HolidayRemindFlag = 0
 		birthdaygiftmode = 0
 		_years = TOINT(FLOOR(elapsetime / 31536000))
-		if _years=0{
+		if _years==0{
 			"\0\s[21]\w6\s[0]好久不见啊，%(username)。\1\s[10]至少有半年没见了吧。\x"
 			"\1\s[117]%(username)把我们给忘了吗,\w9这么久才回来。\w9\w9\0\s[0]%(username)，好久不见啊。\x"
 			"\1\s[10]\0\s[21]\w6\s[5]%(username) ，好久不见\1\s[10]至少有半年没见了吧。\x"
@@ -599,7 +598,6 @@ ClearVar{
 	ERASEVAR('t6')
 	ERASEVAR('t2')
 	ERASEVAR('operand')
-	ERASEVAR('m_point')
 	ERASEVAR('file')
 	ERASEVAR('tempright')
 	ERASEVAR('headpatflag')
@@ -628,7 +626,6 @@ ClearVar{
 	ERASEVAR('B')
 	ERASEVAR('b')
 	ERASEVAR('com')
-	ERASEVAR('ball_')
 	ERASEVAR('ball1')
 	ERASEVAR('bs')
 	ERASEVAR('v')
@@ -655,7 +652,6 @@ ClearVar{
 	ERASEVAR('arrPuzzle')
 	ERASEVAR('ShowPuzzleMap')
 	ERASEVAR('buffnum')
-	ERASEVAR('buffnums')
 	ERASEVAR('SecondWatch.m')
 	ERASEVAR('SecondWatch.s')
 	ERASEVAR('SecondWatch.ss')
@@ -698,7 +694,6 @@ ClearVar{
 	ERASEVAR('say')
 	ERASEVAR('Acount')
 	ERASEVAR('runjr')
-	ERASEVAR('tt')
 	ERASEVAR('ttt')
 	ERASEVAR('s')
 	ERASEVAR('ss')

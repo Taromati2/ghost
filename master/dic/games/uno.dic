@@ -377,7 +377,7 @@ UnoCardComFollow{//电脑跟牌
 	'\_w[100]'//设置等待时间避免点击过快的问题
 	--
 	_txt=''
-	_comfollow=0；
+	_comfollow=0
 	if unocard.current==''{
 		_txt+=GetIndexUno("%(unocard.com)")
 		_color=GetUnoColorName(unocard.currentcolor)
@@ -400,7 +400,7 @@ UnoCardComFollow{//电脑跟牌
 				_txt+=ImpeachWild(1,'yes')
 			_txt+=UnoUserInit
 			_txt
-			retrun
+			return
 		}
 		else{
 			_unocard.current=UnoCardComPare
@@ -644,14 +644,11 @@ UnoWhoWinCheck{//赢家判断
 }
 GetUnoCardColor{//得到牌色
 	_unocard=_argv[0]
-	_a0=ARRAYSIZE(_unocard)
-	_str=STRLEN(_unocard)
 	_color=SUBSTR(_unocard,0,1)
 	_color
 }
 GetUnoCardSort{//得到牌型
 	_unocard=_argv[0]
-	_a0=ARRAYSIZE(_unocard)
 	_str=STRLEN(_unocard)
 	_color=SUBSTR(_unocard,0,1)
 	_sort=''
@@ -663,7 +660,6 @@ GetUnoCardSort{//得到牌型
 }
 GetUnoCardPoint{//得到牌分
 	_unocard=_argv[0]
-	_a0=ARRAYSIZE(_unocard)
 	_str=STRLEN(_unocard)
 	_color=SUBSTR(_unocard,0,1)
 	_sort=SUBSTR(_unocard,1,_str-1)

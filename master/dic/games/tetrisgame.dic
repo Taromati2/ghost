@@ -3,6 +3,12 @@
 #define		BGPFILE		PATH/BankGround.png
 #define		PATH		DATA_PATH/Game/Tetris
 
+#define		btmLeft		1
+#define		btmRight	2
+#define		btmDown		3
+#define		btmCW		4
+#define		btmCCW		5
+
 OnTetris.NewGame{//游戏入口
 	if QuickStartVersion{
 		NeedUpdate
@@ -21,11 +27,6 @@ OnTetris.NewGame{//游戏入口
 	Lines = 0
 	NumUnits=7
 	NumScores=5
-	btmLeft = 1
-	btmRight = 2
-	btmDown = 3
-	btmCW = 4
-	btmCCW = 5
 	MapXsize = 10
 	MapYsize = 18
 	DispBuffer=IARRAY
@@ -159,31 +160,31 @@ OnTetris.PaintBox.Base{//绘图
 			_x = TOINT(_argv[2]) * 16 + 180
 			_y = TOINT(_argv[3]) * 16 + 60
 		}
-		case _type{
-			when 1 {
-				_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=0 0 16 16]"
-			}
-			when 2 {
-				_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=16 0 32 16]"
-			}
-			when 3 {
-				_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=32 0 48 16]"
-			}
-			when 4 {
-				_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=48 0 64 16]"
-			}
-			when 5 {
-				_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=64 0 80 16]"
-			}
-			when 6 {
-				_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=80 0 96 16]"
-			}
-			when 7 {
-				_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=96 0 112 16]"
-			}
-			when 8 {
-				_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=112 0 128 16]"
-			}
+	}
+	case _type{
+		when 1 {
+			_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=0 0 16 16]"
+		}
+		when 2 {
+			_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=16 0 32 16]"
+		}
+		when 3 {
+			_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=32 0 48 16]"
+		}
+		when 4 {
+			_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=48 0 64 16]"
+		}
+		when 5 {
+			_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=64 0 80 16]"
+		}
+		when 6 {
+			_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=80 0 96 16]"
+		}
+		when 7 {
+			_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=96 0 112 16]"
+		}
+		when 8 {
+			_txt+="\_l[%(_x),%(_y)]\_b[PICFILE,inline,--option=opaque,--clipping=112 0 128 16]"
 		}
 	}
 	_txt
@@ -235,11 +236,11 @@ Tetris.Move{//方块移动
 		else{
 			_x=CurrUnit.x;_y=CurrUnit.y;_r=CurrUnit.r
 			case iMdir{
-				if		iMdir==btmLeft	{_x--;}
-				elseif	iMdir==btmRight	{_x++;}
-				elseif	iMdir==btmDown	{_y++;}
-				elseif	iMdir==btmCW	{_r++;_r=_r%4;}
-				elseif	iMdir==btmCCW	{
+				when btmLeft	{_x--;}
+				when btmRight	{_x++;}
+				when btmDown	{_y++;}
+				when btmCW		{_r++;_r=_r%4;}
+				when btmCCW	{
 					ck=Tetris.CheckUnit(_x,_y-1,_r)
 					while ck!=2&&ck!=1{
 						_y++
@@ -292,7 +293,7 @@ Tetris.CheckUnit{//方块判定
 					if _by>=MapYsize{
 						_v=1//dropped
 					}
-					elseif BlockBuffer[by*MapXsize+bx]{
+					elseif BlockBuffer[_by*MapXsize+_bx]{
 						_v=2//dropped
 					}
 				}
@@ -353,11 +354,11 @@ Tetris.TryToRemove{//方块消除
 Tetris.AddScore{//加分
 	iRmv=TOINT(_argv[0])
 	case iRmv{
-		if iRmv==0{ Score+=TOINT(Tetris.speed);}
-		elseif iRmv==1{ Score+=TOINT(Tetris.speed)*10;}
-		elseif iRmv==2{ Score+=TOINT(Tetris.speed)*30;}
-		elseif iRmv==3{ Score+=TOINT(Tetris.speed)*50;}
-		elseif iRmv==4{ Score+=TOINT(Tetris.speed)*80;}
+		when 0{ Score+=TOINT(Tetris.speed);}
+		when 1{ Score+=TOINT(Tetris.speed)*10;}
+		when 2{ Score+=TOINT(Tetris.speed)*30;}
+		when 3{ Score+=TOINT(Tetris.speed)*50;}
+		when 4{ Score+=TOINT(Tetris.speed)*80;}
 	}
 	DiscordCustomSet.CustomDetail('俄罗斯方块：得分'+Score)
 	--
@@ -424,11 +425,6 @@ CleartetrisVar:void{//消除变量
 	ERASEVAR('Lines')
 	ERASEVAR('NumUnits')
 	ERASEVAR('NumScores')
-	ERASEVAR('btmLeft')
-	ERASEVAR('btmRight')
-	ERASEVAR('btmDown')
-	ERASEVAR('btmCW')
-	ERASEVAR('btmCCW')
 	ERASEVAR('MapXsize')
 	ERASEVAR('MapYsize')
 	ERASEVAR('btm')
@@ -455,10 +451,6 @@ CleartetrisVar:void{//消除变量
 	ERASEVAR('bOK')
 	ERASEVAR('iRmv')
 	ERASEVAR('iChanged')
-	ERASEVAR('Left')
-	ERASEVAR('Right')
-	ERASEVAR('Up')
-	ERASEVAR('Down')
 }
 OnTetris.Option{
 	if reference0=='sp'{

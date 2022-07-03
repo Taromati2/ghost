@@ -115,8 +115,8 @@ DrawMap{
 }
 //在x，y处画类型为type的方块
 //----------------------------------------------
-DrawBox{
-	_txt = '\C\![quicksession,true]\c\0\b[2]'
+DrawBox:all{
+	'\C\![quicksession,true]\c\0\b[2]'
 	_type = _argv[0]
 	case _type {
 		when 0,1,2,3,4,5,8 {

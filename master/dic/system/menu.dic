@@ -773,7 +773,6 @@ OnVoiceName{
 	if !_n
 		_txt+='没有安装语音库吗？\n[150]\![*]\q[刷新,OnVoiceName]\n'
 	_txt+='\n\n语速调节：'
-	_x=0
 	for _i = -9; _i <11; _i ++{
 		_txt += "\_l[%((_i-1+10)%5*50+60)]"
 		if TOINT(voice.rate) == TOINT(_i){
@@ -784,7 +783,6 @@ OnVoiceName{
 		}
 		if _i%5==0{
 			_txt+='\n'
-			_x+=50
 		}
 	}
 	_txt+='\n\n\n[half]\q[◇返回上一层,Option]      \q[◇终了,OptionEnd]'

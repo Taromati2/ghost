@@ -1101,7 +1101,8 @@ SHIORI_FW.GetGhostNameFromDir {
 	_ghostnames = IARRAY
 	_flag = 0
 	while _flag != 7 {
-		if (_line = FREAD(_filename)) == -1; break
+		_line = FREAD(_filename)
+		if _line == -1; break
 
 		case CUTSPACE(_line[0]) {
 			when 'charset'{

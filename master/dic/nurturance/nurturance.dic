@@ -26,7 +26,6 @@ KikkaVar{
 	nurturance.Happiness++
 
 	_Energy=TOREAL(nurturance.Closeness+nurturance.Dependency+nurturance.Moeness+nurturance.Happiness+nurturance.Darkness)
-	_EnergyIndex=TOINT(_Energy)
 	nurturance.subvar.Strength=5*TOREAL(nurturance.Happiness)*nurturance.Darkness*nurturance.Darkness/_Energy/MAX(nurturance.Moeness,7)
 	_diff=nurturance.subvar.Agile*(nurturance.Moeness/_Energy)
 	_diff=MAX(1,_diff)
@@ -379,7 +378,6 @@ OnKikkaTitle{
 	_txt='\C\![quicksession,true]\c\0\b[2]\![set,choicetimeout,0]'
 	_txt+='■橘花养成头衔经验说明■\n\n[half]'
 	_txt+='级别 \_l[80]头衔 \_l[160]所需经验值   \_l[240]\n'
-	_s=0
 	_level=(1,5,15,30,50,100,200,500,1000,2000,3000,6000,10000,18000,30000,60000,100000)
 	for _i=0;_i<17;_i++{
 		_txt+="%(_i+1)   \_l[80]%(KikkaTitle(_level[_i]+1))   \_l[160]%(_level[_i])   \_l[240]\n"
@@ -581,7 +579,6 @@ ColorBar{
 	_max = 100
 	_mode = _argv[5]
 	_txt = "\_l[%(_xpos)]"
-	_len = 0
 	_w=''
 	if _argv[3] != '' {
 		_max = _argv[3]

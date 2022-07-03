@@ -252,7 +252,6 @@ Talksearch{//在教学、修改、删除查询时用
 				_j=_f[_y]
 				SETDELIM(_j,'&')
 				_n=ARRAYSIZE(_j)
-				_k=0
 				for _l=0,_m=1;_l<_n && _m==1;_l++ {
 					_m=(_j[_l] _in_ _a)
 				}

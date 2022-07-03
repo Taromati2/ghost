@@ -28,7 +28,7 @@ OnshioriLimit{
 	_file=_argv[1]
 	_linenum=_argv[2]
 	_errorinfo_for_copy=''
-	case _argv[0]{
+	case _type{
 		when 'call'
 			_type_txt='递归'
 		when 'loop'
@@ -660,7 +660,7 @@ OnErrorLog{
 	_txt+='\n\_q'
 	while ErrorList.filename[_i]{
 		_txt+='\q[◇'
-		if _t=SPLITPATH(ErrorList.filename[_i])
+		if (_t=SPLITPATH(ErrorList.filename[_i]))!=0
 			_txt+=_t[2]+_t[3]
 		else
 			_txt+=ErrorList.filename[_i]

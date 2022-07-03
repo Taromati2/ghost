@@ -215,7 +215,7 @@ OnUserDatabase.Rename{
 OnUserDatabase.Drop{
 	_txt = '\1\s[11]\0\s[0]\b[2]\*\_q\f[bold,true]■数据库编辑■\f[default]\n\n'
 	if reference1 == 'checked' {
-		_res = SQLite.Drop(reference0)
+		void SQLite.Drop(reference0)
 		_txt = '\![raise,OnUserDatabase,Changed]'
 	}
 	elseif reference0 {
@@ -252,7 +252,7 @@ OnUserDatabase.Column.Drop{
 	return
 	_txt = '\1\s[11]\0\s[0]\b[2]\*\_q\f[bold,true]■数据库编辑■\f[default]\n\n'
 	if reference1 == 'checked' {
-		_res = SQLite.Alter.Drop(EXT_Table,EXT_SelectColumn)
+		void SQLite.Alter.Drop(EXT_Table,EXT_SelectColumn)
 		_txt = "\![raise,OnUserDatabase.Table,%EXT_Table,Table]"
 	}
 	else{
@@ -537,7 +537,7 @@ OnUserDatabase.Table.Update{
 		EXT_InputState = 'SelectColumn'
 		EXT_InputUpdate = reference0
 		_cln = SQLite.Column(EXT_Table)
-		_res = SQLite.Update(EXT_Table,"%(_cln[EXT_UpdateColumn])='%(EXT_InputUpdate)'","ID='%(EXT_UpdateID)'")
+		void SQLite.Update(EXT_Table,"%(_cln[EXT_UpdateColumn])='%(EXT_InputUpdate)'","ID='%(EXT_UpdateID)'")
 		_val = SQLite.List(EXT_Table,'*',"ID='%(EXT_UpdateID)'")
 		_txt += '变更已完成，请选择想要更改的资料。\n\n/
 		输入栏位：\n\n'
@@ -564,7 +564,7 @@ OnUserDatabase.Table.Delete{
 	EXT_SearchResult=''
 	_txt = '\1\s[11]\0\s[0]\b[2]\*\_q\f[bold,true]■数据库编辑■\f[default]\n\n'
 	if reference1 == 'checked' {
-		_res = SQLite.Delete(EXT_Table,"ID='%(EXT_DeleteID)'")
+		void SQLite.Delete(EXT_Table,"ID='%(EXT_DeleteID)'")
 		_txt += '已删除资料。\n\n/
 		\q[◇继续删除,OnUserDatabase.Table.Delete]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/
 		\n\q[◇返回上一层,OnUserDatabase.Table,,Return]\q[◇结束,OnCloseDatabase]\_q'

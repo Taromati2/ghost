@@ -113,7 +113,7 @@ OnLastTalk{
 }
 RandomTalk{
 	if !RAND(5){
-		if _t=RandomTalk.others{
+		if (_t=RandomTalk.others)!=''{
 			_t
 			return
 		}
@@ -1520,7 +1520,7 @@ TWO.dicpart{
 		}
 	}
 	elseif (_t=OnPoemAnswer(reference1))!=''{
-		"%(_t)"
+		_t
 	}
 	elseif RE_GREP(reference1,'被\S*?欺负'){
 		_name=RE_REPLACEEX(reference1,'被(\S*?)欺负','$1')
@@ -1769,7 +1769,6 @@ TWO.dicpart{
 		if scope == '0'{
 			if month == 7 || month == 8 || month == 9{
 				'\0\s[33]是啊，\w8\真热！！真想去海边。'
-				"%(username)带我们去海边好不好？\n\q[◇好啊,gotosea]\n\q[◇算了吧！,nogotosea]"
 				"\0\s[26]天气炎热，\w9注意防暑解渴，\w9%(username)要不要来碗绿豆汤呢。"
 				'\0\s[29]外面实在太热，就在家里陪着橘花嘛。\w9'
 			}
@@ -1785,7 +1784,6 @@ TWO.dicpart{
 	}
 	elseif '晴' _in_ reference1{
 		if scope == '0'{
-			"天气真好啊！！\w9%(OnDoor) "
 			"\0\s[5]%(username)，\w9\w5天气好的话，\w9\w4\n就请出去走走哦。"
 			'\0\s[5]嗯。\w9\w4不要总是坐在电脑前哦。'
 			'\0\s[5]是吗…\w9\w3天气晴朗出去运动运动哦。'
@@ -2141,13 +2139,6 @@ TWO.dicpart{
 			'\0\s[2]很可爱的吗?\w9是什么啊?\w9橘花也想知道喔~'
 			'\0\s[2]很好看的吗?\w9是什么啊?\w9橘花也想知道喔~'
 		}
-	}
-	elseif '橘花' _in_ reference1 && '秘密' _in_ reference1{
-		"\0\s[40]那么我悄悄的告诉%(username)啊，\w9\w9%(ak_6s)"
-	}
-	elseif '斗和' _in_ reference1 && '秘密' _in_ reference1{
-		'\0\s[8]这样对斗和不好吧？'
-		"那橘花告诉%(username)，\w9不要让斗和知道是橘花说的哦。\w9\w9%(at_7s)"
 	}
 	elseif '渴' _in_ reference1 || '喝' _in_ reference1{
 		"%(Select.get_some_tea)"
@@ -2528,14 +2519,6 @@ Select.Usercomm0_yes{
 Select.Usercomm0_no{
 	'\0\s[1]是、\w9是吗？\w9\w9\s[5]\n嗯…'
 }
-Select.gotosea{
-	intimacy += 5
-	OnSummer
-}
-Select.nogotosea{
-	intimacy -= 5
-	'\0\s[29]唔、明明很想去海边的呢。'
-}
 OnSmokingPlace{
 	DiscordCustomSet.CustomDetail('斗和不在家.avi')
 	--
@@ -2547,6 +2530,8 @@ MikireTalk{
 	talkmemo = 'e_0'
 	'\0\s[3]嗯…'
 	'\0\s[3]如果会碍事的话、\w9\w9\n可以不要勉强让我们留着喔…'
+}
+MikireTalk1{
 }
 //---- 见切れ终了 -----------------------------------------------------------------------------------------------------
 EndMikireTalk{

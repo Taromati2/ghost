@@ -95,10 +95,7 @@ FontCPage{
 }
 //---- 显示诗歌 ------------------------------------------------------------------------------------
 OnPoesyShow{
-	_t = reference0
-	_B = reference1
-	_A = reference2
-	"\0\s[26]\b[2]\![set,autoscroll,false]\![set,choicetimeout,0]\_q\f[bold,true]《%(reference0[0,'|'])》\f[bold,false]\n[120] 作者:%(ShowPoesySQL('作者'))\f[color,111,111,111]\_l[115,-]◇\__q[OnResP,%(_B),eras〓][%(_A)]\_l[180,-]\q[◇返回,OnResearchPoesy]\_l[235,-]\q[◇退出,OnverPoesy]\f[default]\n[140]%(ShowPoesySQL('正文'))\n%(ShowPoesySQL('注译'))"
+	"\0\s[26]\b[2]\![set,autoscroll,false]\![set,choicetimeout,0]\_q\f[bold,true]《%(reference0[0,'|'])》\f[bold,false]\n[120] 作者:%(ShowPoesySQL('作者'))\f[color,111,111,111]\_l[115,-]◇\__q[OnResP,%(reference1),eras〓][%(reference2)]\_l[180,-]\q[◇返回,OnResearchPoesy]\_l[235,-]\q[◇退出,OnverPoesy]\f[default]\n[140]%(ShowPoesySQL('正文'))\n%(ShowPoesySQL('注译'))"
 }
 ShowPoesySQL{
 	SQLite('-j',"SELECT %(_argv[0]) FROM Poesy WHERE 标题='%(reference0[0,'|'])'")
@@ -125,7 +122,7 @@ TalkPoesy{
 //---- 诗歌默写 ------------------------------------------------------------------------------------
 OnPoesywrite{
 	if !Poesywritedegree
-		_t=TalkPoesyShow('〓')
+		void TalkPoesyShow('〓')
 	Poesywritedegree+=1
 	_a=Poesywrite[0]
 	_b=Poesywrite[1]
@@ -168,7 +165,7 @@ OnPoesywrite_1{
 		"\0\s[8]%(username),\w9那个..\w9错了哦..\w9\1这很正常吧..\w[1000]\n"
 		"\0\s[6]%(username),\w9没对呢,\w9继续加油哦~\w[1000]\n"
 		--
-		if _n=0 {
+		if _n==0 {
 			OnPoesywrite
 		}
 		else {
@@ -377,7 +374,6 @@ OnPoemAnswer{//OnPoemAnswer('床前明月光')=='疑是地上霜'
 	_found=IARRAY
 	if FOPEN(_file,'r'){
 		for _buff = FREAD(_file); _buff != -1; _buff = FREAD(_file){
-			_table=0
 			while '[title]' !_in_  _buff  && _buff!= -1{
 				_buff = FREAD(_file)
 			}

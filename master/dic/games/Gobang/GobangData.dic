@@ -1,3 +1,7 @@
+#define BLACK 0
+#define WHITE 15
+#define true 1
+#define false 0
 initdat{
 	initdat2
 	initdat3
@@ -499,7 +503,7 @@ zhuhe{
 /*_____________________________________________________________________________________*/
 Middle{
 	_i=TOINT(_argv[0])
-	_j=argv[1]
+	_j=_argv[1]
 	Oldlineflag=TOINT(_argv[2])
 	if Precount==Count{
 		if End(_i,_j,Oldlineflag)==1{

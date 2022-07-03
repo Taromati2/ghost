@@ -6,13 +6,13 @@ Onstorynook{
 	'\0\s[3]是嘛 那要听时要跟橘花说喔'
 }
 Onstoryok{
-	if _t=story1
+	if (_t=story1)!=''
 		_t
-	if _t=story2
+	if (_t=story2)!=''
 		_t
-	if _t=story3
+	if (_t=story3)!=''
 		_t
-	if _t=story4
+	if (_t=story4)!=''
 		_t
 }
 story1 : nonoverlap{

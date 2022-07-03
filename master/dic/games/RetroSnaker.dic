@@ -1,3 +1,8 @@
+#define		keyLeft		1
+#define		keyRight	2
+#define		keyUp		3
+#define		keyDown		4
+
 OnRetroSnaker{
 	if QuickStartVersion{
 		NeedUpdate
@@ -10,14 +15,9 @@ OnRetroSnaker{
 	Started = 1
 	GameOver=0
 	Paused=0
-	Left = 1
-	Right = 2
-	Up = 3
-	Down = 4
-	SDirect=Right
+	SDirect=keyRight
 	Score = 0
 	food.yes=1/*1表示需要出现新食物,0表示已经存在食物*/
-	RetroSnaker.life=0/*活着*/
 	//if !RetroSnaker.speed
 		RetroSnaker.speed=1
 	//if RetroSnaker.speed>9
@@ -35,8 +35,6 @@ OnRetroSnaker{
 	RetroSnaker.x[2]=10;RetroSnaker.y[2]=10
 	//RetroSnaker.x[3]=13;RetroSnaker.y[3]=10
 	//RetroSnaker.x[4]=14;RetroSnaker.y[4]=10
-	RetroSnaker=IARRAY
-	RetroSnaker_=IARRAY
 	PaintRetroSnaker
 }
 OnRetroSnakerTimer{
@@ -55,12 +53,10 @@ RetroSnakerKey{
 	elseif reference0 == 'p'	{	Paused=TOINT(Paused+1)%2			}
 	if !GameOver && Started && !Paused{
 		//SDirect = 0
-		case reference0{
-			if reference0 =='left' && SDirect!=2		{	SDirect=Left	}
-			elseif reference0 =='right' && SDirect!=1	{	SDirect=Right	}
-			elseif reference0 =='up' && SDirect!=4		{	SDirect=Up		}
-			elseif reference0 =='down' && SDirect!=3	{	SDirect=Down	}
-		}
+		if reference0 =='left' && SDirect!=2		{	SDirect=keyLeft	}
+		elseif reference0 =='right' && SDirect!=1	{	SDirect=keyRight	}
+		elseif reference0 =='up' && SDirect!=4		{	SDirect=keyUp		}
+		elseif reference0 =='down' && SDirect!=3	{	SDirect=keyDown	}
 		if SDirect{
 			_txt+=RetroSnaker.Move(SDirect)
 			_txt+=CheckRetroSnakerStatus
@@ -126,26 +122,24 @@ RetroSnaker.Move{
 		x=RetroSnaker.x[0];y=RetroSnaker.y[0]
 	}
 	case SDirect{
-		if SDirect==Left
+		when keyLeft
 			x--
-		elseif SDirect==Right
+		when keyRight
 			x++
-		elseif SDirect==Up
+		when keyUp
 			y--
-		elseif SDirect==Down
+		when keyDown
 			y++
-		RetroSnaker.x[0] = x
-		RetroSnaker.y[0] = y
 	}
+	RetroSnaker.x[0] = x
+	RetroSnaker.y[0] = y
 	for _i=3;_i<RetroSnaker.node;_i++/*从蛇的第四节开始判断是否撞到自己了，因为蛇头为两节，第三节不可能拐过来*/{
 		if RetroSnaker.x[_i]==RetroSnaker.x[0]&&RetroSnaker.y[_i]==RetroSnaker.y[0]{
 			GameOver=1
-			RetroSnaker.life=1
 		}
 	}
 	if RetroSnaker.x[0]<1||RetroSnaker.x[0]>SMapX-2||RetroSnaker.y[0]<1||RetroSnaker.y[0]>SMapY-2/*蛇是否撞到墙壁*/{
 		GameOver=1/*本次游戏结束*/
-		RetroSnaker.life=1/*蛇死*/
 	}
 	if RetroSnaker.x[0]==food.x&&RetroSnaker.y[0]==food.y/*吃到食物以后*/{
 		RetroSnaker.x[RetroSnaker.node]=-20
@@ -153,7 +147,7 @@ RetroSnaker.Move{
 		RetroSnaker.node++/*蛇的身体长一节*/
 		food.yes=1/*画面上需要出现新的食物*/
 		Score+=TOINT(10*RetroSnaker.speed)
-		PrScore/*输出新得分*/
+		Score/*输出新得分*/
 	}
 }
 CheckRetroSnakerStatus{//游戏状态
@@ -233,7 +227,7 @@ RetroSnakerspeed{
 	if TOINT(_argv[0])==1
 		_RetroSnaker.timespeed=250
 	elseif TOINT(_argv[0])==2
-		_RetroSnaker.speed=168
+		_RetroSnaker.timespeed=168
 	elseif TOINT(_argv[0])==3
 		_RetroSnaker.timespeed=112
 	elseif TOINT(_argv[0])==4
@@ -270,11 +264,8 @@ ClearRetroSnakerVar:void{
 	ERASEVAR('RetroSnaker.x')
 	ERASEVAR('RetroSnaker.y')
 	ERASEVAR('node')
-	ERASEVAR('RetroSnaker')
-	ERASEVAR('RetroSnaker_')
 	ERASEVAR('SDirect')
 	ERASEVAR('food.yes')
-	ERASEVAR('RetroSnaker.life')
 	ERASEVAR('RetroSnaker.speed')
 	ERASEVAR('SMapX')
 	ERASEVAR('SMapY')

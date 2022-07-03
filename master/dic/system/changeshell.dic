@@ -70,7 +70,7 @@ OnAutoChangeShell{
 		_t=_i[0,'|']
 		if AutoShellChange[1]==8{
 			_shellid+=_t+'|'
-			contiune
+			continue
 		}
 		if lunartime[10] {
 			case lunartime[10]{
@@ -316,9 +316,6 @@ OnShellChanged{
 			_p=reference2[ARRAYSIZE(reference2)-2]
 			Haveshellinfo+="%(reference0)|%(_p)*"
 			'\0\s[0]…嗯、\w9\w9\s[5]这样子如何呢？'
-		}
-		elseif summer == '1'{
-			"\1\s[-1]\0\s[0]…嗯、\w9\w9\s[5]这样子如何呢？\n%(uername)好看吗？\n\q[◇好看,goodlook]\n\q[◇换一件吧,notgoodlook]"
 		}
 		elseif bedroom == '1'{
 			'\0\s[0]…嗯、\w9\w9\s[5]洗好了吗？\n\n\q[◇洗好了,Choice9]\n\q[◇没事了,Choice2]\x'

@@ -16,7 +16,7 @@ OnGetUsernameFirst{
 		--
 		OnGetUsernameFirst.End
 	}
-	elseif _t = OnUserName.SpecialCheck {
+	elseif (_t = OnUserName.SpecialCheck)!='' {
 		OnUserName.Set(_name)
 		"\0\s[0]『%(username)』是吗。"
 		--
@@ -101,7 +101,7 @@ OnUserNameInput{
 		\q[◇返回上一层,OnOpenMenu,4]\n/
 		\q[◇终了,OptionEnd]'
 	}
-	elseif _t = OnUserName.SpecialCheck {
+	elseif (_t = OnUserName.SpecialCheck)!='' {
 		if OnUserName.IsTooClose && nurturance.Closeness<100
 			'\0\s[2]\w9欸\w9.\w9.\w9.\s[8]那样的称呼、\w8我做不到。\w9\w9\n/
 			如果可以的话、\w8请让我用其他的称呼方式吧。\n/
@@ -182,7 +182,7 @@ OnUserName.IsTooClose{
 }
 OnUserName.SpecialCheck{
 	_name = reference.raw[0]
-	if _t = OnUserName.SpecialCheck.base {
+	if (_t = OnUserName.SpecialCheck.base)!='' {
 		"\0\s[6]好的。\w9\s[0]\n\n[half]那么、往后就用\w9\s[26]\n『%(_name)』\w9来称呼喔。\n[150]\w9\w9"
 		--
 		_t
