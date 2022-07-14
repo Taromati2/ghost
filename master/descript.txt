@@ -16,4 +16,7 @@ recommended.balloon,wiz
 mousecursor,./img/curs/common.ani
 mousecursor.text,./img/curs/text.ani
 mousecursor.wait,./img/curs/busy.ani
+mousecursor.arrow,./img/curs/no_interaction.ani
+mousecursor.hand,./img/curs/hand.cur
+mousecursor.grip,./img/curs/hand_grip.cur
 homeurl,https://raw.githubusercontent.com/Taromati2/stable-mirror/master/Taromati2/
