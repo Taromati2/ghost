@@ -36,6 +36,24 @@ OnKeyPress{
 		'\n\q[◇退出键位码测试,OnExitKeyCodeTest]\_q\n'
 		return
 	}
+	//匹配特定字符串输入：↑↑↓↓←→←→BA
+	{
+		_match_keys=('up','up','down','down','left','right','left','right','b','a')
+		_step=TOINT(temp)
+		_match_keys_len=ARRAYSIZE(_match_keys)
+		if reference0 == _match_keys[_step]{
+			_step++
+			if _step == _match_keys_len{
+				DiscordCustomSet.CustomDetail('你被骗了！')
+				--
+				OnUrlOpen('https://taromati2.github.io/rickroll/')
+				return
+			}
+			temp = _step
+		}
+		elseif _step
+			temp = 0
+	}
 	if reference1 == 229 {//steve02081504：我也不知道为什么是这个值，试出来的
 		if mode == '1'
 			"\1\s[%(specialmode != 'mealtime')10]使用热键的话，好歹把输入法关了啊。"
