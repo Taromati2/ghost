@@ -371,6 +371,23 @@ OnInstallBegin{
 }
 //---- インストール完了メッセージ -------------------------------------------------------
 OnInstallComplete{
+	if reference1 == 'Taromati2 full data pack'{
+		if QuickStartVersion{
+			DiscordCustomSet.CustomDetail('好耶')
+			--
+			'\0\s[6]追加档案包完成，开始修复性更新\n'
+			--
+			OnSilentUpdate
+		}
+		else{
+			DiscordCustomSet.CustomDetail('厘在赣什么')
+			--
+			'\0\s[8].\w9.\w9.\w9\n/
+			已经是完整版了哦？\n/
+			'
+		}
+		return
+	}
 	DiscordCustomSet.CustomDetail('搞了些新东西')
 	--
 	if mode == '0'
