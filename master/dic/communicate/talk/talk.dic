@@ -883,9 +883,9 @@ RandomTalk.pool : nonoverlap_pool{
 		'\1\s[10]『永远不灭』和\w9『很头痛』同样水准。\w9\w9\n把它当名言的家伙也是同样水准。\w9\w9\0\s[30]反巨人球迷？:chain=Chain21'
 		'\0\s[6]『あんたじゃ役不足だ』\w9\w9\s[0]唔、\w9\n这句子使用法错了呢。\w9\w9\1\s[10]啊啊…\w9\w9\n突然在说什么啊…\w9\w9\0\s[8]\n\n[half]不合适吗？\w9\w9\1\s[10]\n\n[half]唔～。:chain=Chain22'
 		'\0\s[20]把铁球和木球同时往下扔…\w9\n那铁球和氦球呢？\w9\w9\1\s[10]氦球的时候\w9受到可疑的力在作用这样吧…:chain=Chain23'
-		if GetPhase > 1
+		if GetPhase >= 2
 			'\1\s[10]恋人和亲友都遇溺了。\w9\n救生圈只有一个。\w9\w9\s[11]\n然后、怎么办？\w9\w9\0\s[2]嗯…\w9\w9\s[3]这个要…\w9\w9\s[1]\n看情况。\w9\w9\1\s[10]\n\n[half]…\w9真无趣。:chain=Chain24'
-		if daysfromfirstboot > 180
+		if daysfromfirstboot > 180 && elapsetime > 604800 && GetPhase >= 2
 			"\0\s[0]%(username),\w9\w9这些日子以来,\w9\w9多谢你对橘花和斗和的照顾，\w9\w9\1\s[11]小公主，你说这话%(username)会误解哦\0\s[32]\n\n[half]不要插话。听我把话说完\w9\w9\1\s[12]\n\n[half]……\w9\w9\0\s[3]\n\n[half]橘花知道，\w9\w9长期的寄宿在%(username)家中，\w9\w9给%(username)带来了很多麻烦，\w9\w9橘花不想因为自己的关系，\w9\w9给%(username)造成困绕\w9\w9\1\s[12]\n\n[half]小公主，\w9\w9你到底想要说什么……\w9\w9\0\s[1]\n\n[half]橘花希望，\w9\w9能陪%(username)度过快乐的每一天，\w9\w9但是，\w9\w9橘花心中也有些隐隐不安，\w9\w9觉得，\w9觉得有一天我会和%(username)分开\w9\w9\1\s[10]\n\n[half]小公主，\w9你是不是多虑了？\w9\w9\0\s[7]\n\n[half]世上没有不散的宴席，\w9\w9也许有一天，\w9\w9%(username)对我们的热情减退，\w9\w9就不再理我们了\w9\w9\1\n\n[half]唉，你什么时候变得多愁善感起来了。:chain=Chain25"
 		'\0\s[8]‘不卖立省百分百’...\w9\w9\n/
 		\1\s[11]冲动消费是智商税，\w9品牌主义也是。\w9\w9\n/
