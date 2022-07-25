@@ -838,11 +838,11 @@ Onusage{
 		}
 	}
 	elseif reference0=='communicate[1]'{
-		LETTONAME(reference0,reference1)
+		EVAL(reference0+'='+reference1)//有xxx[x]的形式，不能用LETTONAME
 		OnAutoComm
 	}
 	else{
-		LETTONAME(reference0,reference1)
+		EVAL(reference0+'='+reference1)//有xxx[x]的形式，不能用LETTONAME
 		Select.Option
 	}
 }
