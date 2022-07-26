@@ -695,6 +695,11 @@ OnUpdate{
 	--
 	'\![update,ghost+shell+balloon]'
 }
+OnInstallFullDataPack{
+	DiscordCustomSet.CustomDetail('Hello World!')
+	--
+	'\![execute,install,url,https://github.com/Taromati2/package-factory/releases/latest/download/full_data_pack.nar,nar]'
+}
 OnSilentUpdate{
 	DiscordCustomSet.CustomDetail('眼睛在脉动')
 	--
@@ -939,9 +944,12 @@ OnUpdateFailure{
 	}
 }
 OnURLDropping{
-	"\0\s[0]下载%(reference0)并作为安装包安装\w9\n/
-	\s[6]进行中\n/
-	"
+	if reference0 == 'https://github.com/Taromati2/package-factory/releases/latest/download/full_data_pack.nar'
+		'\0\s[0]下载补全数据包并安装\w9\n'
+	else
+		"\0\s[0]下载%(reference0)并作为安装包安装\w9\n"
+	--
+	'\s[6]进行中\n'
 }
 OnURLDropFailure{
 	'\0\s[3]'
