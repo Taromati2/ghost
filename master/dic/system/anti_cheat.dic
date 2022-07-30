@@ -53,6 +53,9 @@ Init.AntiCheatIniter{
 	AntiCheat('money')
 	AntiCheat('intimacy')
 }
+ClearAntiCheatVar{
+	ERASEALLVARBEGINAS('CheattedTrigging.')
+}
 OnValueCheatted{
 	_varname=reference0
 	_var_should_have=reference1
