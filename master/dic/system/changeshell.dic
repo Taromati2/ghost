@@ -396,7 +396,11 @@ OnFittingRoom{
 		if _j+15<shelllistcount
 			_Page+="\q[下一页>>,OnFittingRoom,%(_j+15)]"
 	}
-	_w+_Page+'\n[140]'+_q+'\_l[0,-]\n[150]\![*]\q[返回上一层,OnOpenMenu,1]\n\![*]\q[取消,overchangeshell]'
+	_w+_Page+'\n[140]'+_q+'\_l[0,-]\n[150]/
+	\![*]\q[返回上一层,OnOpenMenu,1]\n/
+	\![*]\q[查看可下载shell,OnUrlOpen,https://github.com/Taromati2/Taromati2/releases/tag/shell_list]\n/
+	\![*]\q[取消,overchangeshell]/
+	'
 }
 judgehaveshell{
 	_a='-1'
