@@ -60,6 +60,8 @@ local func  = {
       "^TalkSakura.*",
       "^TalkKero.*",
       "^Clear.*Var",
+      "^Init..*",
+      "^Fin..*",
   },
   predefined = {
   },

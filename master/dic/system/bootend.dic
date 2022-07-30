@@ -208,7 +208,10 @@ OnBoot{
 			'\x'
 		}else{
 			MAGICSAVE
-			"\0\s[26]再次见面，%(username)。\s[8]\w9\1\s[10]\什么啊，虚惊一场么\w9\w9\w9\n\x"
+			"\0\s[26]再次见面，%(username)。"
+			--
+			if uninstall
+				'\s[8]\w9\1\s[10]\什么啊，虚惊一场么\w9\w9\w9\n\x'
 		}
 	}
 	elseif SHIORI_FW.InVarFileMiss{//完全失忆
