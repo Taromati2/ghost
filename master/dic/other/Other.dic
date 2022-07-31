@@ -2058,6 +2058,7 @@ JapWordDay{
 }
 bsod{
 	MAGICSAVE
+	SLEEP(1974)
 	CALLSAORI('bsod',_argv[0])
 }
 OntriggerBSOD{

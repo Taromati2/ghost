@@ -136,5 +136,4 @@ OnValueCheatted{
 		}
 	}
 	ERASEVAR('CheattedTrigging.'+_varname)
-	MAGICSAVE
 }
