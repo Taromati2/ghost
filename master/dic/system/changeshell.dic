@@ -307,6 +307,13 @@ UpdateSurfaceDump{
 		'\![execute,dumpsurface,'+_surface_dump_dir+',0,"0-3,5,7,20,21,22,23,26,30,32"]'
 	}
 }
+HasSurfaceDump{
+	_shellID=shellID
+	if _argv[0]
+		_shellID=_argv[0]
+	_surface_dump_dir='VAR_PATH\surface_dumps\'+judgeshell(_shellID)
+	FILEEXIST(_surface_dump_dir)
+}
 //---- SHELL更替完毕 -----------------------------------------------------------------
 OnShellChanged{
 	if IsHShell(reference0) && !CanH{
@@ -320,7 +327,8 @@ OnShellChanged{
 	--
 	_temp=shellID
 	shellID = reference0
-	UpdateSurfaceDump
+	if !HasSurfaceDump
+		UpdateSurfaceDump
 	--
 	if AutoUpdate
 		OnSilentUpdate.shell
