@@ -122,14 +122,19 @@ OnValueCheatted{
 					when 1
 						'\0\s[26]啊，\w9那个\w9—\w9—\w9\n/
 						\s[8]把好感改低，\w9是什么意思呢？'
-					when 0
-						'\s[7]是抖m么?\w9\w9\n/
+					when 0{
+						intimacy-=2
+						'\0\s[7]是抖m么?\w9\w9\n/
 						\s[6]真是没救的阳痿猪头男呢\w9'
-					when -1
-						bsod('0xc000007F')
+					}
+					when -1{
+						intimacy-=3
+						'\0\s[7]\w9\![raise,OntriggerBSOD,0xc000007F]'
+					}
 				}
 			}
 		}
 	}
 	ERASEVAR('CheattedTrigging.'+_varname)
+	MAGICSAVE
 }
