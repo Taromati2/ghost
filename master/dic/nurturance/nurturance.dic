@@ -240,7 +240,7 @@ KikkaInfo{
 	农历 %(lunardata[4])年 %(lunardata[5])月%(lunardata[6])  %(Weather.EmbeddingString1)  \f[color,238,50,95]%(lunardata[10])\f[color,default]\n/
 	\_l[0,270]系统启动：%(systemuphour)小时%(systemupminute)分  %(ShowEventInfo)\n/
 	\_l[0,285]人格启动：%(ghostuptime/3600)小时%(ghostuptime/60%60)分     用户呢称：%(username)\n/
-	内存使用：%(memoryload)\%           CPU使用：%(MAX(CALLSAORI('cpuusage','get'),0))%\n/
+	内存使用：%(memoryload)\%           CPU使用：%(CPU_usage)%\n/
 	"
 	--
 	if NetworkStatus.IP

@@ -581,7 +581,7 @@ Select.System{
 	%(year)年%(month)月%(day)日  \f[color,%(_color)]星期%(lunardata[3])\f[color,default]   %(_ampm)%(_hour)点%(minute)分\n/
 	农历 %(lunardata[4])年 %(lunardata[5])月%(lunardata[6])    \f[color,238,50,95]%(lunardata[10])\f[color,default]\n[150]/
 	\n[half]/
-	ＣＰＵ：%(CALLSAORI('cpuid','cpu.name'))\n/
+	ＣＰＵ：%(CPU_name)\n/
 	ＯＳ：%(_sysname)\n/
 	记忆体使用率：%(memoryload)\%\n/
 	记忆体(全体)：%(memorytotalphys/1048576) MB\n/
