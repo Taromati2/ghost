@@ -328,7 +328,7 @@ OnShellChanged{
 	_temp=shellID
 	shellID = reference0
 	if !HasSurfaceDump
-		UpdateSurfaceDump
+		NeedsUpdateSurfaceDump=1
 	--
 	if AutoUpdate
 		OnSilentUpdate.shell
