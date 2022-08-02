@@ -172,9 +172,10 @@ OpenMenuTalk{
 		elseif nurturance.Darkness>=250
 			"\0\s[27]%(username)要让橘花消灭谁呢"
 		if click>10{
-			"\0\s[21]讨厌，%(username)点这么快，当橘花是傻瓜吗\e:click=NULL"
+			click=0
+			"\0\s[21]讨厌，%(username)点这么快，当橘花是傻瓜吗\e"
 			if nurturance.Darkness>nurturance.Dependency
-				"\0\s[27]讨厌，%(username)想被锯上一锯吗？\e:click=NULL"
+				"\0\s[27]讨厌，%(username)想被锯上一锯吗？\e"
 		}
 	}
 	elseif !_phase {
