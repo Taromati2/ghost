@@ -728,8 +728,6 @@ OnClose.base:void{
 		inshutdown=1
 	if !TimeErrorCheck
 		CloseTime = GETSECCOUNT
-	if NeedsUpdateSurfaceDump
-		UpdateSurfaceDump
 	--
 	ClearTempVar
 	--
