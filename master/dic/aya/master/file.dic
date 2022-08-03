@@ -139,8 +139,9 @@ FULLNAMEFCOPY{
 		void FUNHIDDEN(_argv[0])
 	_p1=SPLITPATH.roughly(_argv[1])
 	_p2=SPLITPATH.roughly(_argv[0])
-	FCOPY(_argv[0],_p1[0])
-	FRENAME(_p1[0]+_p2[1],_argv[1])
+	void FCOPY(_argv[0],_p1[0])
+	void FRENAME(_p1[0]+_p2[1],_argv[1])
+	void FDEL(_p1[0]+_p2[1])
 	if _h{
 		void FHIDDEN(_argv[0])
 		void FHIDDEN(_argv[1])
