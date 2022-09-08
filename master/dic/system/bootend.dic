@@ -245,8 +245,12 @@ OnBoot{
 	if setting.WeatherReminder
 		OnWeatherUpdate.boot
 	--
-	if AutoUpdate
-		OnSilentUpdate
+	if AutoUpdate{
+		if QuickStartVersion && !FullDataPackInstalled
+			OnInstallFullDataPack
+		else
+			OnSilentUpdate
+	}
 }
 OnBoot.aboutTime{
 	_phase = GetPhase
