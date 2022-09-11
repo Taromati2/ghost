@@ -223,7 +223,7 @@ KikkaStatusChange{
 KikkaInfo{
 	Lunar
 	_ampm = TimeName
-	_hour=hour12
+	_hour=hour12ex
 	if TOINT(timehour[0])==0{
 		_ampm=''
 		_hour=(hour+timehour[1])%24

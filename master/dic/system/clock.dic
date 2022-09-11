@@ -399,9 +399,9 @@ Hourlychime.Text{
 Hourlychime.Common{
 	ANY('', '', '', "%(username).", GreetingPhrase + '..' )
 	--
-	"现在时间%(Timejud)%(hour12)点喔"
+	"现在时间%(Timejud)%(hour12ex)点喔"
 	"现在时间已经%(hour)点了喔"
-	"已经%(Timejud)%(hour12)点了"
+	"已经%(Timejud)%(hour12ex)点了"
 	"现在%(hour)点了"
 	--
 	'？'
