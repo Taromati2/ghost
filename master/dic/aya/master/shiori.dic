@@ -634,8 +634,10 @@ SHIORI_FW.RaiseIDEvent {
 	SHIORI_FW.MakeReferenceAndPassThruInsVariable
 
 	_event = SHIORI_FW.EventidTranslate
+	_event_fallback = _event
 
 	_result_internal = ''
+
 	if SHIORI_FW.Eventid == 'OnSecondChange' {
 		//OnSecondChangeならランダムトーク関連処理
 		_event = SHIORI_FW.ControlAITalk(_event)
@@ -662,10 +664,17 @@ SHIORI_FW.RaiseIDEvent {
 		_result = TOSTR(EVAL(_event))
 	}
 	if _result == '' {
+		if _event != _event_fallback {
+			if ISFUNC(_event_fallback) {
+				_result = TOSTR(EVAL(_event_fallback))
+			}
+		}
+	}
+	if _result == '' {
 		_result = _result_internal
 	}
 
-	if _result != '' {
+	if _result != '' {//トークあり
 		//遅延EVAL
 		_talk = RE_SPLIT(_result,'(' + EVAL_DELIM + '|' + CHAIN_DELIM + ')')
 		_delim = RE_GETSTR
@@ -712,6 +721,12 @@ SHIORI_FW.RaiseIDEvent {
 				}
 			}
 			_talk[0]
+		}
+	}
+	else {//トークなし
+		if _event == 'OnAITalk' {
+			SHIORI3FW.LastAITalk = ''
+			SHIORI3FW.ResetAITalkInterval
 		}
 	}
 
