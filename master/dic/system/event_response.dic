@@ -1121,8 +1121,7 @@ OnDisplayPowerStatus{
 				"\1\s[%(specialmode != 'mealtime')10]呦。\n"
 		}
 		elseif _displaypowerofftime>4*60*60{
-			if !TimeErrorCheck
-				CloseTime = displaypoweroff.starttime
+			OnSysSuspendAsTime(displaypoweroff.starttime)
 			OnSysResume
 		}
 		ERASEVAR('displaypoweroff.starttime')
@@ -1356,9 +1355,12 @@ OnScreenSaverEnd{
 	"\0\s[0]%(username)\w9\w9、欢迎回来。\n\x"
 }
 //待机
-OnSysSuspend{
+OnSysSuspendAsTime{
 	if !TimeErrorCheck
-		CloseTime = GETSECCOUNT
+		CloseTime = _argv[0]
+}
+OnSysSuspend{
+	OnSysSuspendAsTime(GETSECCOUNT)
 }
 //待机中恢复
 OnSysResume.base{
