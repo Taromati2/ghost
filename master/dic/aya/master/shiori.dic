@@ -91,6 +91,7 @@ ClearAyaTempVar {
 	ERASEVAR('displaybpp')
 	ERASEVAR('displaywidth')
 	ERASEVAR('displayheight')
+	ERASEVAR('displaypowerstatus')
 	ERASEVAR('uniqueid')
 	ERASEVAR('ghostboottime')
 	ERASEVAR('ghostbootmin')

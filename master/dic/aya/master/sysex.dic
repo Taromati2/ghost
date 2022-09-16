@@ -20,6 +20,8 @@ OnChoiceSelectEx{
 OnAITalk{
 	if specialmode == 'rest'//休息事件中随机谈话禁止
 		return
+	if !displaypowerstatus//显示器无电源时随机谈话无用
+		return
 	if specialmode == 'mealtime'
 		REPLACE(RandomTalk1,'\s[1','\s[')
 	elseif mode == '1'{

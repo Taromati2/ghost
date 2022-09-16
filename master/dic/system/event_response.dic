@@ -1105,10 +1105,31 @@ OnNarCreated{
 //---- ディスプレイ解像度変更 -----------------------------------------------------------
 OnDisplayChange{
 	//---- 変数にディスプレイ解像度と色深度に関する情报を取得
-	//---- 使うかどうかは分からないがとりあえず保持しておく
 	displaybpp = reference0
 	displaywidth = reference1
 	displayheight = reference2
+}
+OnDisplayPowerStatus{
+	//---- 変数にディスプレイの電源状態に関する情报を取得
+	displaypowerstatus = reference0
+	if displaypowerstatus{
+		_displaypowerofftime=GETSECCOUNT-displaypoweroff.starttime
+		if _displaypowerofftime>3*60{
+			if mode == '1'
+				'\0\s[26]欢迎回来。\n'
+			else
+				"\1\s[%(specialmode != 'mealtime')10]呦。\n"
+		}
+		elseif _displaypowerofftime>4*60*60{
+			if !TimeErrorCheck
+				CloseTime = displaypoweroff.starttime
+			OnSysResume
+		}
+		ERASEVAR('displaypoweroff.starttime')
+	}
+	else{
+		displaypoweroff.starttime=GETSECCOUNT
+	}
 }
 OnNetworkStatusChange{
 	if !ISVAR('NetworkStatus')
