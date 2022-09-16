@@ -396,10 +396,19 @@ OnFittingRoom{
 			_haveshellnum++
 	}
 	_w="\C\![quicksession,true]\c\![set,choicetimeout,0]\0\s[26]\b[2]橘花共有%(shelllistcount)件衣服哦，其中%(_haveshellnum)件已激活，%(username)想让橘花穿那件衣服呢？\n[140]"
+	_surface_preview=''
 	if (_t=judgeshell(_shellID))!='0|'{
 		_Shellrand=ANY('0','1','2','3','5','7','20','21','22','23','26','30','32')
-		_w+="\_b[VAR_PATH\surface_dumps\%(_t)\surface%(_Shellrand).png,40,30]"
+		_surface_preview="VAR_PATH/surface_dumps/%(_t)/surface%(_Shellrand).png"
+		if !FILEEXIST(_surface_preview)
+			_surface_preview=''
 	}
+	if !_surface_preview{
+		if FILEEXIST('DATA_PATH/shell/surface_unknown.png')
+			_surface_preview='DATA_PATH/shell/surface_unknown.png'
+	}
+	if _surface_preview
+		_w+="\_b[%(_surface_preview),40,30,--option=use_self_alpha]"
 	_n=1
 	_judge=''
 	_haveshell=''
