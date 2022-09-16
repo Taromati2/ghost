@@ -364,7 +364,7 @@ OnShellChanged{
 	}
 }
 //**************************************************************************************************************
-OnFittingRoom{
+OnFittingRoom:all{
 	if NeedsUpdateSurfaceDump
 		UpdateSurfaceDump
 	--
@@ -372,7 +372,6 @@ OnFittingRoom{
 	_j=1
 	_q=''
 	_shellID=shellID
-	_shellpath="BASE_PATH\..\..\shell\%(_shellID)\"
 	SETDELIM(shelllist,'*')
 	if reference0 {
 		_j=TOINT(reference0)
@@ -395,7 +394,10 @@ OnFittingRoom{
 		else
 			_haveshellnum++
 	}
-	_w="\C\![quicksession,true]\c\![set,choicetimeout,0]\0\s[26]\b[2]橘花共有%(shelllistcount)件衣服哦，其中%(_haveshellnum)件已激活，%(username)想让橘花穿那件衣服呢？\n[140]"
+	"\C\![quicksession,true]\c\![set,choicetimeout,0]\0\s[26]\b[2]橘花共有%(shelllistcount)件衣服哦"
+	if shelllistcount!=_haveshellnum
+		"，其中%(_haveshellnum)件已激活"
+	"，%(username)想让橘花穿那件衣服呢？\n[140]"
 	_surface_preview=''
 	if (_t=judgeshell(_shellID))!='0|'{
 		_Shellrand=ANY('0','1','2','3','5','7','20','21','22','23','26','30','32')
@@ -408,10 +410,11 @@ OnFittingRoom{
 			_surface_preview='DATA_PATH/shell/surface_unknown.png'
 	}
 	if _surface_preview
-		_w+="\_b[%(_surface_preview),40,30,--option=use_self_alpha]"
+		"\_b[%(_surface_preview),40,30,--option=use_self_alpha]"
 	_n=1
 	_judge=''
 	_haveshell=''
+	_shelllist=''
 	foreach shelllist; _i {
 		if _n>=_j && _n<_j+15 {
 			if judgeshell(_i)=='0|' &&judgehaveshell(_i)=='-1'&&Userspitem[0][2]!=1
@@ -421,22 +424,25 @@ OnFittingRoom{
 				_haveshell=_i
 			}
 			if shellID==_i
-				_w += "\f[color,240,45,100]\&[hearts]\f[default]\__q[OnFittingRoom,%(_j),%(_i),%(_haveshell)]%(_judge)\__q\n[120]"
+				_shelllist += "\f[color,240,45,100]\&[hearts]\f[default]\__q[OnFittingRoom,%(_j),%(_i),%(_haveshell)]%(_judge)\__q\n[120]"
 			elseif _shellID==_i
-				_w += "\f[color,24,98,250]\&[hearts]\f[default]\__q[OnFittingRoom,%(_j),%(_i),%(_haveshell)]%(_judge)\__q\n[120]"
+				_shelllist += "\f[color,24,98,250]\&[hearts]\f[default]\__q[OnFittingRoom,%(_j),%(_i),%(_haveshell)]%(_judge)\__q\n[120]"
 			else
-				_w += "\f[color,168,168,168]\&[hearts]\f[default]\__q[OnFittingRoom,%(_j),%(_i),%(_haveshell)]%(_judge)\__q\n[120]"
+				_shelllist += "\f[color,168,168,168]\&[hearts]\f[default]\__q[OnFittingRoom,%(_j),%(_i),%(_haveshell)]%(_judge)\__q\n[120]"
 		}
 		_n ++
 	}
-	_Page='\n[30]'
+	_shelllist
+	'\n[30]'
 	if shelllistcount>15{
 		if _j!=1
-			_Page+="\q[<<上一页,OnFittingRoom,%(_j-15)]   "
+			"\q[<<上一页,OnFittingRoom,%(_j-15)]   "
 		if _j+15<shelllistcount
-			_Page+="\q[下一页>>,OnFittingRoom,%(_j+15)]"
+			"\q[下一页>>,OnFittingRoom,%(_j+15)]"
 	}
-	_w+_Page+'\n[140]'+_q+'\_l[0,-]\n[150]/
+	'\n[140]'
+	_q
+	'\_l[0,-]\n[150]/
 	\![*]\q[返回上一层,OnOpenMenu,1]\n/
 	\![*]\q[查看可下载shell,OnUrlOpen,https://github.com/Taromati2/Taromati2/releases/tag/shell_list]\n/
 	\![*]\q[取消,overchangeshell]/
