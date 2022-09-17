@@ -54,14 +54,16 @@ OnTranslate{
 			if running!='chatroom'&&'引擎 (' !_in_ _t&&!CheckProcess('wscript.exe')//&&running!='readbook'&&read!='stop'
 				_txt=TxtToVoice(_t,voicename)+_txt
 		}
-		if musicplayer == 1 && ('OnSurfaceRestore.Music' !_in_ reference2) && mode=='0'{
-			if 'OnMusicPlayerClose' !_in_ _txt{
-				if '\_w' _in_ _txt || '\w' _in_ _txt{
-					_txt=RE_REPLACE(_txt,"(\\(w\S|w\[[^\]]+\]))+$",'')
-					if '\_w' _in_ _txt || '\w' _in_ _txt
-						_txt+='\_w[1000]'
+		if musicplayer == 1 && mode=='0'{
+			if reference2!='OnPlayCmd' && ('OnSurfaceRestore.Music' !_in_ reference2){
+				if 'OnMusicPlayerClose' !_in_ _txt{
+					if '\_w' _in_ _txt || '\w' _in_ _txt{
+						_txt=RE_REPLACE(_txt,"(\\(w\S|w\[[^\]]+\]))+$",'')
+						if '\_w' _in_ _txt || '\w' _in_ _txt
+							_txt+='\_w[1000]'
+					}
+					_txt+="\![raise,OnMusicPlayer,%(',NoSurfaceRestore'['\q' _in_ _txt || '\__q' _in_ _txt])]"
 				}
-				_txt+="\![raise,OnMusicPlayer,%(',NoSurfaceRestore'['\q' _in_ _txt || '\__q' _in_ _txt])]"
 			}
 		}
 	}
