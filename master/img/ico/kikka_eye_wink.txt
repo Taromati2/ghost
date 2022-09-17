@@ -1,0 +1,8 @@
+icon_anime
+frequency,rare
+frames,{
+	kikka_eye_half_open,25
+	kikka_eye_close,25
+	kikka_eye_half_open,25
+	kikka,25//reset
+}

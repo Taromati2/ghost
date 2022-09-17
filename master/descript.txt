@@ -5,7 +5,7 @@ sakura.name,橘花
 kero.name,斗和
 balloon,wiz
 seriko.alignmenttodesktop,free
-icon,./img/ico/kikka.ico
+icon,./img/ico/kikka_eye_wink.txt
 icon.minimize,./img/ico/kikka_eye_close.ico
 shiori,shiori/aya.dll
 craftman,8 and other contributors
