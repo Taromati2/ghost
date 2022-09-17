@@ -1,0 +1,31 @@
+//SamrtEval
+//积压非急需计算或耗时操作直至用户不与人格交互时进行
+
+//积压函数
+SmartEval.PushExpr{
+	SmartEval.Exprs,=_argv
+}
+//触发器
+SmartEval.Trigger{
+	if !SmartEval.Exprs
+		return
+	if CPU_usage>60
+		return
+	_expr_index=RAND(ARRAYSIZE(SmartEval.Exprs))
+	_expr=SmartEval.Exprs[_expr_index]
+	SmartEval.Exprs[_expr_index]=IARRAY
+	EVAL(_expr)
+}
+//移除指定表达式
+SmartEval.RemoveExpr{
+	_expr=_argv[0]
+	_expr_index=ARRAY.GetIndex(SmartEval.Exprs,_expr)
+	if _expr_index!=-1
+		SmartEval.Exprs[_expr_index]=IARRAY
+}
+//是否有积压特定表达式
+SmartEval.HasExpr{
+	_expr=_argv[0]
+	_expr_index=ARRAY.GetIndex(SmartEval.Exprs,_expr)
+	_expr_index!=-1
+}
