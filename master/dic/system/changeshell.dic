@@ -271,11 +271,7 @@ OnAutoChangeShell{
 }
 HaveShellCount{
 	SETDELIM(Haveshellinfo,'*')
-	_n=ARRAYSIZE(Haveshellinfo)-1
-	if _n>0
-		_n
-	else
-		0
+	ARRAYSIZE(Haveshellinfo)-1
 }
 OnBuyShell{
 	if money>=5000{
