@@ -1116,13 +1116,13 @@ OnDisplayPowerStatus{
 		_displaypowerofftime=GETSECCOUNT-displaypoweroff.starttime
 		if _displaypowerofftime>4*60*60{
 			void OnSysSuspendAsTime(displaypoweroff.starttime)
-			OnSysResume
+			void OnSysResume
 		}
 		elseif _displaypowerofftime>3*60{
 			if mode == '1'
-				"\1\s[%(specialmode != 'mealtime')10]呦。\n"
+				SHIORI_FW.PushNotifyResult("\1\s[%(specialmode != 'mealtime')10]呦。\n")
 			else
-				'\0\s[26]欢迎回来。\n'
+				SHIORI_FW.PushNotifyResult('\0\s[26]欢迎回来。\n')
 		}
 		ERASEVAR('displaypoweroff.starttime')
 	}
