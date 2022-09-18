@@ -1113,7 +1113,7 @@ OnDisplayPowerStatus{
 	//---- 変数にディスプレイの電源状態に関する情报を取得
 	displaypowerstatus = reference0
 	if displaypowerstatus{
-		if !InSystemSuspend{
+		if !InSystemSuspend && !InMinimize{
 			_displaypowerofftime=GETSECCOUNT-displaypoweroff.starttime
 			if _displaypowerofftime>4*60*60{
 				void OnSysSuspendAsTime(displaypoweroff.starttime)
