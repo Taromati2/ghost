@@ -1113,16 +1113,18 @@ OnDisplayPowerStatus{
 	//---- 変数にディスプレイの電源状態に関する情报を取得
 	displaypowerstatus = reference0
 	if displaypowerstatus{
-		_displaypowerofftime=GETSECCOUNT-displaypoweroff.starttime
-		if _displaypowerofftime>4*60*60{
-			void OnSysSuspendAsTime(displaypoweroff.starttime)
-			void OnSysResume
-		}
-		elseif _displaypowerofftime>3*60{
-			if mode == '1'
-				SHIORI_FW.PushNotifyResult("\1\s[%(specialmode != 'mealtime')10]呦。\n")
-			else
-				SHIORI_FW.PushNotifyResult('\0\s[26]欢迎回来。\n')
+		if !InSystemSuspend{
+			_displaypowerofftime=GETSECCOUNT-displaypoweroff.starttime
+			if _displaypowerofftime>4*60*60{
+				void OnSysSuspendAsTime(displaypoweroff.starttime)
+				void OnSysResume
+			}
+			elseif _displaypowerofftime>3*60{
+				if mode == '1'
+					SHIORI_FW.PushNotifyResult("\1\s[%(specialmode != 'mealtime')10]呦。\n")
+				else
+					SHIORI_FW.PushNotifyResult('\0\s[26]欢迎回来。\n')
+			}
 		}
 		ERASEVAR('displaypoweroff.starttime')
 	}
@@ -1356,6 +1358,7 @@ OnScreenSaverEnd{
 }
 //待机
 OnSysSuspendAsTime{
+	InSystemSuspend = 1
 	if !TimeErrorCheck
 		CloseTime = _argv[0]
 }
@@ -1382,6 +1385,7 @@ OnSysResume.base{
 	"\0\s[0]%(username)\w9\w9、欢迎回来。\n\x"
 }
 OnSysResume{
+	ERASEVAR('InSystemSuspend')
 	BaseGhostStart.aboutTime
 	if !InMinimize{
 		SHIORI_FW.PushNotifyResult(OnSysResume.base)
