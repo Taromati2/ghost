@@ -615,8 +615,12 @@ DayofWeek_w{
 }
 //---------- 人格设定 ----------------------------------------------------
 TheDefaultValue:void{
-	if !ISVAR(_argv[0])
-		LETTONAME(_argv[0],_argv[1])
+	_name=_argv[0]
+	_argv[0]=IARRAY
+	if _argc==2
+		_argv=_argv[0]
+	if !ISVAR(_name)
+		LETTONAME(_name,_argv)
 }
 OnOptionSet:void{
 	Select.Option
@@ -709,6 +713,7 @@ Select.Option{
 	TheDefaultValue('voice',0)
 	"\q[◇语音朗读,OnVoiceName]		\_l[120]\q[%(_t[TOINT(voice)]) ON,Onusage,voice,1]  ・  \_l[180]\q[%(_t[1 - TOINT(voice)]) OFF,Onusage,voice,0]\n"
 	--
+	TheDefaultValue('AutoShellChange',(1,0))
 	"\q[◇自动换装,OnAutoShellChange]		\_l[120]\q[%(_t[TOINT(AutoShellChange[0])]) ON,Onusage,AutoShellChange[0\],1]  ・  \_l[180]\q[%(_t[1 - TOINT(AutoShellChange[0])]) OFF,Onusage,AutoShellChange[0\],0]\n"
 	--
 	TheDefaultValue('eventinfo',1)
@@ -790,7 +795,11 @@ OnVoiceName{
 	_txt
 }
 OnAutoShellChange{
-	_t='全天保持,午前保持，午后默认,4小时内保持，4小时后默认,每次启动时更换,每天首次启动时保持，下次启动时默认,每4小时更换一次（开启中）,每2小时更换一次（开启中）,每小时更换一次（开启中）,立即更换,所有衣服随机更换(节气换装关闭）'
+	_t=(/
+		'每天初见更换',/
+		'每次问好更换',/
+		'每4小时更换'/
+		)
 	_txt = '\0\b[2]\_q选择自动换装作用时间范围\n[150]'
 	_n=ARRAYSIZE(_t)
 	for _i = 0; _i < _n; _i ++ {
@@ -805,7 +814,13 @@ OnAutoShellChange{
 	_txt
 }
 OnAutoComm{
-	_t='话痨,健谈,一般,寡言,沉默'
+	_t=(/
+		'话痨',/
+		'健谈',/
+		'一般',/
+		'寡言',/
+		'沉默'/
+		)
 	_txt = '\0\b[2]\_q选择橘花与其他人格对话的频率\n[150]'
 	_n=ARRAYSIZE(_t)
 	for _i = 0; _i < _n; _i ++ {
@@ -833,10 +848,8 @@ Onusage{
 		OnVoiceName
 	}
 	elseif reference0=='AutoShellChange[1]'{
-		if TOINT(reference1)==8{
-			AutoShellChangeflag[5]=1
-			OnAutoChangeShell
-		}
+		AutoShellChange[1]=reference1
+		OnAutoShellChange
 	}
 	elseif reference0=='communicate[1]'{
 		EVAL(reference0+'='+reference1)//有xxx[x]的形式，不能用LETTONAME

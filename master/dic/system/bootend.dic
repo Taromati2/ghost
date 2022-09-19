@@ -258,10 +258,8 @@ OnBoot{
 OnBoot.aboutTime{
 	_phase = GetPhase
 	_timeslot = GetTimeSlot
-	if reference0!='return'{
-		if AutoShellChange[0]
-			OnAutoChangeShell
-	}
+	if AutoShellChange[0]
+		OnAutoChangeShell
 	--
 	//-------------------------------------------------------------------
 	if elapsetime >= 36000 && elapsetime < 86400{

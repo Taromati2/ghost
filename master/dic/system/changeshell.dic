@@ -29,69 +29,43 @@ OnShellChanging{
 	}
 }
 OnAutoChangeShell{
-	if TOINT(AutoShellChange[1])==0&&month==AutoShellChangeflag[1]&&day==AutoShellChangeflag[2]
+	if TOINT(AutoShellChange[1])==0&&month==AutoShellChangeflag[0]&&day==AutoShellChangeflag[1]//'每天初见更换'
 		return
-	elseif TOINT(AutoShellChange[1])==1&&month==AutoShellChangeflag[1]&&day==AutoShellChangeflag[2]&&hour<12
-		return
-	elseif TOINT(AutoShellChange[1])==1&&month==AutoShellChangeflag[1]&&day==AutoShellChangeflag[2]&&hour>=12{
-		SilentShellChange=1
-		AutoShellChangeflag=(1,month,day,hour)
-		"\![change,shell,%(shellori)]"
-		return
+	elseif TOINT(AutoShellChange[1])==1//每次问好更换
+		do_nothing
+	elseif TOINT(AutoShellChange[1])==2{//每四小时更换
+		if hour<AutoShellChangeflag[2]+4
+			return
 	}
-	elseif TOINT(AutoShellChange[1])==2&&month==AutoShellChangeflag[1]&&day==AutoShellChangeflag[2]&&hour<AutoShellChangeflag[3]+4
-		return
-	elseif TOINT(AutoShellChange[1])==2&&month==AutoShellChangeflag[1]&&day==AutoShellChangeflag[2]&&hour>=AutoShellChangeflag[3]+4{
-		SilentShellChange=1
-		AutoShellChangeflag=(1,month,day,hour)
-		"\![change,shell,%(shellori)]"
-		return
-	}
-	elseif TOINT(AutoShellChange[1])==4&&month==AutoShellChangeflag[1]&&day==AutoShellChangeflag[2]&&AutoShellChangeflag[4]==0{
-		return
-	}
-	elseif TOINT(AutoShellChange[1])==4&&month==AutoShellChangeflag[1]&&day==AutoShellChangeflag[2]&&AutoShellChangeflag[4]==1{
-		SilentShellChange=1
-		AutoShellChangeflag[4]=0
-		"\![change,shell,%(shellori)]"
-		return
-	}
-	elseif TOINT(AutoShellChange[1])==5&&AutoShellChangeflag[5]!=1{
-		return
-	}
-	elseif TOINT(AutoShellChange[1])==6&&AutoShellChangeflag[5]!=1{
-		return
-	}
-	elseif TOINT(AutoShellChange[1])==7&&AutoShellChangeflag[5]!=1{
-		return
-	}
-	shellori=shellID
 	Lunartime
 	SETDELIM(Haveshellinfo,'*')
 	_shellid=''
+	if GetPhase<1{
+		OnSilentChangeShell('预设')
+		return
+	}
+	if GetPhase==1 && shellID=='预设'{
+		return
+	}
 	foreach Haveshellinfo;_i{
 		_t=_i[0,'|']
-		if AutoShellChange[1]==8{
-			_shellid+=_t+'|'
-			continue
-		}
 		if lunartime[10] {
 			case lunartime[10]{
 				when '元旦'{
-					if _t=='和服'{
-						_shellid+=_t+'|'
+					if _t=='和服' || _t=='浴衣'{
+						_shellid=_t+'|'
 						break
 					}
 				}
 				when '万圣节'{
 					if _t=='万圣节'||_t=='ハロウィン'{
-						_shellid+=_t+'|'
+						_shellid=_t+'|'
 						break
 					}
 				}
 				when '圣诞节'{
 					if _t=='圣诞服装'||_t=='聖誕服裝'{
-						_shellid+=_t+'|'
+						_shellid=_t+'|'
 						break
 					}
 				}
@@ -99,79 +73,79 @@ OnAutoChangeShell{
 		}
 		if month==2&&day==22{//猫咪日
 			if _t=='猫耳'||_t=='猫耳装'{
-				_shellid+=_t+'|'
+				_shellid=_t+'|'
 				break
 			}
 		}
 		elseif month==3&&day==5{//巫女日
 			if _t=='銀狐巫女'{
-				_shellid+=_t+'|'
+				_shellid=_t+'|'
 				break
 			}
 		}
 		elseif month==3&&day==9{//初音日
-			if _t=='miku(初音)'{
-				_shellid+=_t+'|'
+			if 'miku' _in_ _t{
+				_shellid=_t+'|'
 				break
 			}
 		}
 		elseif month==3&&day==28||month==4&&day==29{//《胧村正》发行日
-			if _t=='momohime(百姫)'{
-				_shellid+=_t+'|'
+			if 'momohime' _in_ _t{
+				_shellid=_t+'|'
 				break
 			}
 		}
 		elseif month==4&&day==8{//魂魄 妖梦生日
 			if _t=='Youmu Konpaku'{//魂魄 妖梦
-				_shellid+=_t+'|'
+				_shellid=_t+'|'
 				break
 			}
 		}
 		elseif month==5&&day==2{//女仆日
-			if _t=='女仆'||_t=='女仆装'{
-				_shellid+=_t+'|'
+			if _t=='女仆'||_t=='女仆装'||_t=='Sakuya Izayoi'{
+				_shellid=_t+'|'
 				break
 			}
 		}
 		elseif month==6&&day==10||month==8&&day==11||month==9&&day==27{//东方红魔乡发售
 			if _t=='Sakuya Izayoi'{//十六夜 咲夜
-				_shellid+=_t+'|'
+				_shellid=_t+'|'
 				break
 			}
 		}
 		elseif month==8&&day==17{//东方风神录发售
 			if _t=='Momizi Inubashiri'{//犬走椛
-				_shellid+=_t+'|'
+				_shellid=_t+'|'
 				break
 			}
 		}
 		elseif month==9&&day==3{//小原节子生日
 			if _t=='SETSUKO OHARA'{//小原节子 - 超级机器人大战Z
-				_shellid+=_t+'|'
+				_shellid=_t+'|'
 				break
 			}
 		}
 		elseif month==10&&day==13{//世界保键日
-			if _t=='白衣护士'||_t=='護士服裝'{
-				_shellid+=_t+'|'
+			if _t=='白衣护士'||_t=='護士服裝'||_t=='ナース'{
+				_shellid=_t+'|'
 				break
 			}
 		}
 		elseif month==10&&day==22{//win7发行日
 			if _t=='WIN7'{
-				_shellid+=_t+'|'
+				_shellid=_t+'|'
 				break
 			}
 		}
 		elseif month==10&&day==25{//湾娘生日
-			if _t=='taiwan(湾娘)'{
-				_shellid+=_t+'|'
+			if 'taiwan' _in_ _t{
+				_shellid=_t+'|'
 				break
 			}
 		}
 		else{
 			if month==3||month==4||month==5{
-				if _t=='传统衣着'{
+				if (_t=='传统衣着' || _t=='浴衣') && GetPhase>=2{
 					_shellid+=_t+'|'
 				}
 				elseif _t=='体操服'{
@@ -180,30 +154,42 @@ OnAutoChangeShell{
 				elseif _t=='女背心'{
 					_shellid+=_t+'|'
 				}
-				elseif _t=='兔女郎'{
+				elseif _t=='MeguMegu'{
+					_shellid+=_t+'|'
+				}
+				elseif _t=='キャミソール'{
+					_shellid+=_t+'|'
+				}
+				elseif _t=='ワンピース'{
+					_shellid+=_t+'|'
+				}
+				elseif _t=='黒ワンピ'{
+					_shellid+=_t+'|'
+				}
+				elseif _t=='ドイツ艦（艦これ）'{
 					_shellid+=_t+'|'
 				}
 				elseif _t=='预设'{
 					_shellid+=_t+'|'
 				}
-				elseif _t=='_橘花1预设'{
-					_shellid+=_t+'|'
-				}
-				elseif _t=='_橘花2预设'{
-					_shellid+=_t+'|'
-				}
 			}
 			elseif month==6||month==7||month==8{
-				if _t=='传统衣着'{
+				if (_t=='传统衣着' || _t=='浴衣') && GetPhase>=2{
 					_shellid+=_t+'|'
 				}
 				elseif '夏服' _in_ _t{
 					_shellid+=_t+'|'
 				}
-				elseif _t=='吊带裙(粉红)'{
+				elseif _t=='吊带裙-粉红' && GetPhase>=4{
 					_shellid+=_t+'|'
 				}
-				elseif _t=='旗袍'{
+				elseif _t=='旗袍' && GetPhase>=3{
+					_shellid+=_t+'|'
+				}
+				elseif _t=='ワンピース' && GetPhase>=1{
+					_shellid+=_t+'|'
+				}
+				elseif _t=='黒ワンピ'{
 					_shellid+=_t+'|'
 				}
 				elseif _t=='装甲削って高機動化'{
@@ -212,18 +198,39 @@ OnAutoChangeShell{
 				elseif _t=='膝隠して太腿隠さず'{
 					_shellid+=_t+'|'
 				}
+				elseif _t=='キャミソール'{
+					_shellid+=_t+'|'
+				}
+				elseif _t=='しましま水着' && GetPhase>=2{
+					_shellid+=_t+'|'
+				}
+				elseif _t=='水玉水着' && GetPhase>=2{
+					_shellid+=_t+'|'
+				}
+				elseif _t=='裸Yシャツ' && GetPhase>=4{
+					_shellid+=_t+'|'
+				}
+				elseif _t=='预设'{
+					_shellid+=_t+'|'
+				}
 			}
 			elseif month==9||month==10||month==11{
-				if _t=='传统衣着'{
+				if (_t=='传统衣着' || _t=='浴衣') && GetPhase>=2{
 					_shellid+=_t+'|'
 				}
-				elseif _t=='孩童装'{
+				elseif _t=='ワンピース' && GetPhase>=1{
 					_shellid+=_t+'|'
 				}
-				elseif _t=='拘束衣'{
+				elseif _t=='white base'{
 					_shellid+=_t+'|'
 				}
-				elseif _t=='白衬衫'{
+				elseif _t=='MeguMegu'{
+					_shellid+=_t+'|'
+				}
+				elseif _t=='SETSUKO OHARA'{
+					_shellid+=_t+'|'
+				}
+				elseif _t=='taiwan'{
 					_shellid+=_t+'|'
 				}
 				elseif _t=='预设'{
@@ -231,22 +238,25 @@ OnAutoChangeShell{
 				}
 			}
 			elseif month==12||month==1||month==2{
-				if _t=='传统衣着'{
+				if (_t=='传统衣着' || _t=='浴衣') && GetPhase>=2{
 					_shellid+=_t+'|'
 				}
 				elseif _t=='毛衣'{
 					_shellid+=_t+'|'
 				}
-				elseif _t=='犬耳装'{
+				elseif _t=='犬耳装' && GetPhase>=2{
 					_shellid+=_t+'|'
 				}
-				elseif _t=='猫耳装'{
+				elseif _t=='猫耳装' && GetPhase>=2{
 					_shellid+=_t+'|'
 				}
 				elseif _t=='长裙'{
 					_shellid+=_t+'|'
 				}
-				elseif _t=='连身裙（紅）'{
+				elseif _t=='连身裙（紅）' && GetPhase>=2{
+					_shellid+=_t+'|'
+				}
+				elseif _t=='Maetel'{
 					_shellid+=_t+'|'
 				}
 				elseif _t=='预设'{
@@ -265,8 +275,9 @@ OnAutoChangeShell{
 				__shellid=_shellid[RAND(_n)]
 			}
 		}
-		AutoShellChangeflag=(1,month,day,hour,1)
-		OnChangeShell(__shellid)
+		AutoShellChangeflag=(month,day,hour)
+		if __shellid!=shellID
+			OnSilentChangeShell(__shellid)
 	}
 }
 HaveShellCount{
@@ -344,11 +355,6 @@ OnShellChanged{
 		}
 		elseif bedroom == '1'{
 			'\0\s[0]…嗯、\w9\w9\s[5]洗好了吗？\n\n\q[◇洗好了,Choice9]\n\q[◇没事了,Choice2]\x'
-		}
-		elseif AutoShellChangeflag[0]==1{
-			AutoShellChangeflag[0]=0
-			if ghostuptime/60%60<1
-				'\![raise,OnBoot,return]'
 		}
 		else{
 			'\0\s[0]…嗯、\w9\w9\s[5]这样子如何呢？'

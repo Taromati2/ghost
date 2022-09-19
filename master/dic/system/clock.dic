@@ -148,29 +148,8 @@ OnMinuteChange{
 		AgendaMonitor
 		--
 		if AutoShellChange[0]{
-			if TOINT(AutoShellChange[1])==5&&(hour-AutoShellChangeflag[3])%4==0&&minute==0{
-				AutoShellChangeflag[5]=1
-			}
-			elseif TOINT(AutoShellChange[1])==6&&(hour-AutoShellChangeflag[3])%2==0&&minute==0{
-				AutoShellChangeflag[5]=1
-			}
-			elseif TOINT(AutoShellChange[1])==7&&minute==0{
-				AutoShellChangeflag[5]=1
-			}
-			if AutoShellChangeflag[5]==1{
-				if !tshellid {
-					OnAutoChangeShell
-					tshellid=shellID
-				}
-				--
-				if tshellid!=shellID{
-					AutoShellChangeflag[5]=1
-					OnChangeShell(tshellid)
-				}
-				else{
-					tshellid=NULL
-					AutoShellChangeflag[5]=NULL
-				}
+			if TOINT(AutoShellChange[1])==2{
+				OnAutoChangeShell
 			}
 		}
 	}

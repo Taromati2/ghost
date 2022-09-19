@@ -1,6 +1,6 @@
 //by steve
 
-#define VERSION_NOW 7
+#define VERSION_NOW 8
 
 VERSION_INIT:void{
 	VERSION = VERSION_NOW
@@ -179,7 +179,7 @@ VERSION_UPGRADE_7:void{
 	money+=crystalnum*25000
 	ERASEVAR('crystalnum')
 }
-VERSION_UPGRADE_8:void{//building
+VERSION_UPGRADE_8:void{
 	ERASEVAR('ShioriReloading')
 	ERASEVAR('SHIORI_FW.IsTalking')
 	ERASEVAR('btmLeft')
@@ -192,4 +192,8 @@ VERSION_UPGRADE_8:void{//building
 	ERASEVAR('Up')
 	ERASEVAR('Down')
 	ERASEVAR('closetouchmode')
+	ERASEVAR('tshellid')
+	ERASEVAR('shellori')
+	AutoShellChangeflag=(month,day,hour)
+	AutoShellChange=(1,0)
 }
