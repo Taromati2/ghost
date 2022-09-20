@@ -259,7 +259,7 @@ OnBoot.aboutTime{
 	_phase = GetPhase
 	_timeslot = GetTimeSlot
 	if AutoShellChange[0]
-		OnAutoChangeShell
+		SHIORI_FW.PushNotifyResult(OnAutoChangeShell)
 	--
 	//-------------------------------------------------------------------
 	if elapsetime >= 36000 && elapsetime < 86400{
