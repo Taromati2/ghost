@@ -276,8 +276,11 @@ OnAutoChangeShell{
 			}
 		}
 		AutoShellChangeflag=(month,day,hour)
-		if __shellid!=shellID
+		if __shellid!=shellID{
+			'\0\w9\w9\s[26]啊，\w8请稍等一下哦。\w9\w9\s[-1]\1\s[-1]'
+			--
 			OnSilentChangeShell(__shellid)
+		}
 	}
 }
 HaveShellCount{
