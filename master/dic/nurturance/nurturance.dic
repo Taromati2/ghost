@@ -406,7 +406,7 @@ KikkaGrow{
 			kikkaangry = 0
 		}
 	}
-	if kikkatick % 30 == 0 && kikkastm > 0 && _class != '休息' {
+	if kikkatick % 30 == 0 && kikkastm && kikkamood && _class != '休息' {
 		case _class {
 			when '枪械' {
 				KikkaStatusChange("pow=%(3 * _lvl),mood=-%(TOINT(_lvl/3))")
@@ -427,13 +427,6 @@ KikkaGrow{
 				KikkaStatusChange("chm=-%(_lvl),money=%(kikkachm),mood=-%(_lvl)")
 			}
 		}
-	}
-	if kikkamood > kikkamoodmax {
-		kikkamood = kikkamoodmax
-	}
-	if kikkamood <-kikkamoodmax {
-		kikkamood=-kikkamoodmax
-		intimacy--
 	}
 }
 OnKikkaReset:void{
