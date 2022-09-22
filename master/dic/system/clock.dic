@@ -128,7 +128,9 @@ OnMinuteChange{
 				'\0\v\s[33]电脑卡死了，\w9\w9少开点窗口。\n\q[◇打开任务管理器,OnOpenTaskmgr]\![set,trayballoon,--icon=info,--timeout=10,--title=任务繁忙,--text=电脑卡死了，少开点窗口。]'
 			}
 			elseif minute == 13 && !InUpdate && AutoUpdate == 1{//电脑不卡的情况下每时13分四分之一概率自动更新//选13是因为13不吉利:)
-				if !RAND(4)
+				if QuickStartVersion && !FullDataPackInstalled
+					do_nothing
+				elseif !RAND(4)
 					OnSilentUpdate
 			}
 		}

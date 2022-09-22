@@ -111,7 +111,8 @@ OnFirstBoot{//改动于2020 by steve02081504
 		--
 		SHIORI_FW.PushNotifyResult(GetUsernameFirst)
 		SHIORI_FW.PushNotifyResult(GetPasswordFirst)
-		SHIORI_FW.PushNotifyResult(UpdateFirst)
+		if QuickStartVersion
+			SHIORI_FW.PushNotifyResult(UpdateFirst)
 		--
 		if InTimeError
 			SHIORI_FW.PushNotifyResult(OnTimeError)

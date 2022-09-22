@@ -156,17 +156,17 @@ OpenMenuTalk{
 	_phase = GetPhase
 	if _phase >= 2 {
 		click=TOINT(click)+1
-		"\0\s[5]\b[2]%(username)%(Timejud)好，什么事呢"
+		"\0\s[5]%(username)%(Timejud)好，什么事呢"
 		if _phase >= 3
-			"\0\s[5]\b[2]最喜欢%(username)了，什么事呢"
-		"\0\s[26]\b[2]什么事呢、%(username)？"
-		'\0\s[41]\b[2]啊…好的。'
-		'\0\s[5]\b[2]要做什么呢？\s[40]'
-		'\0\s[26]\b[2]啊…是的。'
+			"\0\s[5]最喜欢%(username)了，什么事呢"
+		"\0\s[26]什么事呢、%(username)？"
+		'\0\s[41]啊…好的。'
+		'\0\s[5]要做什么呢？\s[40]'
+		'\0\s[26]啊…是的。'
 		if nurturance.Darkness>=200
-			'\0\s[27]\b[2]需要帮忙吗。'
+			'\0\s[27]需要帮忙吗。'
 		if nurturance.Moeness>=200
-			'\0\s[22]\b[2]橘花待命。'
+			'\0\s[22]橘花待命。'
 		if nurturance.Darkness>nurturance.Dependency
 			'\0\s[32]碍事的东西通通见鬼去吧……'
 		elseif nurturance.Darkness>=250
@@ -179,22 +179,22 @@ OpenMenuTalk{
 		}
 	}
 	elseif !_phase {
-		'\0\s[0]\b[2]？'
-		'\0\s[6]\b[2]干嘛'
-		'\0\s[7]\b[2]什么事。'
-		'\0\s[25]\b[2]有何贵干。'
+		'\0\s[0]？'
+		'\0\s[6]干嘛'
+		'\0\s[7]什么事。'
+		'\0\s[25]有何贵干。'
 	}
 	elseif _phase < 0 {
-		'\0\s[0]\b[2]？'
-		'\0\s[6]\b[2]干嘛'
-		'\0\s[7]\b[2]什么事。'
+		'\0\s[0]？'
+		'\0\s[6]干嘛'
+		'\0\s[7]什么事。'
 		--
 		'\e'
 	}
 	else {
-		'\0\s[26]\b[2]好的、什么事呢？'
-		"\0\s[26]\b[2]什么事呢、%(username)？"
-		'\0\s[26]\b[2]要做什么呢？'
+		'\0\s[26]好的、什么事呢？'
+		"\0\s[26]什么事呢、%(username)？"
+		'\0\s[26]要做什么呢？'
 	}
 }
 Select.otherserv{

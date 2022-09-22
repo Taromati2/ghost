@@ -1,6 +1,6 @@
 //by steve
 
-#define VERSION_NOW 8
+#define VERSION_NOW 9
 
 VERSION_INIT:void{
 	VERSION = VERSION_NOW
@@ -196,4 +196,12 @@ VERSION_UPGRADE_8:void{
 	ERASEVAR('shellori')
 	AutoShellChangeflag=(month,day,hour)
 	AutoShellChange=(1,0)
+}
+VERSION_UPGRADE_9:void{
+	_tmp=ARRAYDEDUP(SPLIT(Haveshellinfo,'*'))
+	Haveshellinfo=''
+	foreach _tmp;_i{
+		if _i
+			Haveshellinfo+=_i+'*'
+	}
 }
