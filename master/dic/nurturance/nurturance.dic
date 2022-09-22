@@ -406,25 +406,27 @@ KikkaGrow{
 			kikkaangry = 0
 		}
 	}
-	if kikkatick % 30 == 0 && kikkastm && kikkamood && _class != '休息' {
-		case _class {
-			when '枪械' {
-				KikkaStatusChange("pow=%(3 * _lvl),mood=-%(TOINT(_lvl/3))")
-			}
-			when '语言' {
-				KikkaStatusChange("wiz=%(3 * _lvl),mood=-%(TOINT(_lvl/3))")
-			}
-			when '艺术' {
-				KikkaStatusChange("chm=%(3 * _lvl),mood=-%(TOINT(_lvl/3))")
-			}
-			when '外卖' {
-				KikkaStatusChange("pow=-%(_lvl),money=%(kikkapow),mood=-%(_lvl)")
-			}
-			when '翻译' {
-				KikkaStatusChange("wiz=-%(_lvl),money=%(kikkawiz),mood=-%(_lvl)")
-			}
-			when '广告' {
-				KikkaStatusChange("chm=-%(_lvl),money=%(kikkachm),mood=-%(_lvl)")
+	if kikkatick % 30 == 0 && kikkastm && _class != '休息' {
+		if kikkamood || intimacy>512{
+			case _class {
+				when '枪械' {
+					KikkaStatusChange("pow=%(3 * _lvl),mood=-%(TOINT(_lvl/3))")
+				}
+				when '语言' {
+					KikkaStatusChange("wiz=%(3 * _lvl),mood=-%(TOINT(_lvl/3))")
+				}
+				when '艺术' {
+					KikkaStatusChange("chm=%(3 * _lvl),mood=-%(TOINT(_lvl/3))")
+				}
+				when '外卖' {
+					KikkaStatusChange("pow=-%(_lvl),money=%(kikkapow),mood=-%(_lvl)")
+				}
+				when '翻译' {
+					KikkaStatusChange("wiz=-%(_lvl),money=%(kikkawiz),mood=-%(_lvl)")
+				}
+				when '广告' {
+					KikkaStatusChange("chm=-%(_lvl),money=%(kikkachm),mood=-%(_lvl)")
+				}
 			}
 		}
 	}
