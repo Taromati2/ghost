@@ -177,7 +177,6 @@ VERSION_UPGRADE_7:void{
 	Userspitemtime=(Userspitemtime[0])
 	void gift
 	money+=crystalnum*25000
-	ERASEVAR('crystalnum')
 }
 VERSION_UPGRADE_8:void{
 	ERASEVAR('ShioriReloading')
@@ -204,4 +203,5 @@ VERSION_UPGRADE_9:void{
 		if _i
 			Haveshellinfo+=_i+'*'
 	}
+	ERASEVAR('crystalnum')
 }
