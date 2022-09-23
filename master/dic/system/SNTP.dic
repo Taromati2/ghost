@@ -115,7 +115,7 @@ OnSNTPFailure{
 //
 TimeErrorCheck{
 	if GETSECCOUNT
-		year < 2021 || (GETSECCOUNT - CloseTime) < 0
+		year < 2022 || (GETSECCOUNT - CloseTime) < 0
 }
 OnTimeError{
 	'\0\s[20]时间出错了哦？\n/

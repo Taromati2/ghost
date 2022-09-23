@@ -51,7 +51,9 @@ OnKeyPress{
 			}
 			temp = _step
 		}
-		elseif _step
+		elseif (_step < 2) && (reference0 == _match_keys[0])//仍然在匹配"up"
+			do_nothing
+		else
 			temp = 0
 	}
 	if reference1 == 229 {//steve02081504：我也不知道为什么是这个值，试出来的
