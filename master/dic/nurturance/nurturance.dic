@@ -382,6 +382,7 @@ OnKikkaTitle{
 	_txt
 }
 KikkaGrow{
+	intimacy_historic_max=MAX(intimacy_historic_max,intimacy)
 	kikkatick ++//309553
 	KikkaStatusChange('exp=1')
 	_class = kikkaclass[weekday]
@@ -407,7 +408,11 @@ KikkaGrow{
 		}
 	}
 	if kikkatick % 30 == 0 && kikkastm && _class != '休息' {
-		if kikkamood || intimacy>512{
+		if kikkamood || intimacy>(nurturance.moodlowing.intimacyinstart/4){
+			if !kikkamood
+				nurturance.moodlowing.intimacyinstart = intimacy
+			else
+				ERASEVAR('nurturance.moodlowing.intimacyinstart')
 			case _class {
 				when '枪械' {
 					KikkaStatusChange("pow=%(3 * _lvl),mood=-%(TOINT(_lvl/3))")
