@@ -277,6 +277,10 @@ OnAutoChangeShell{
 		}
 	}
 }
+OnAutoChangeShell.boot{
+	if AutoShellChange[0]
+		OnAutoChangeShell
+}
 HaveShellCount{
 	SETDELIM(Haveshellinfo,'*')
 	MAX(ARRAYSIZE(Haveshellinfo)-1,0)

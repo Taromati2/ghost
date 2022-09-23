@@ -203,10 +203,17 @@ OnWeatherUpdate.menu{
 	OnWeatherUpdate
 }
 OnWeatherUpdate.boot{
-	FromWeatherUpdate.boot=1
-	OnWeatherUpdate
+	if setting.WeatherReminder{
+		FromWeatherUpdate.boot=1
+		OnWeatherUpdate
+	}
 }
 OnWeatherUpdate.Success.boot.Talk{
+	if mode=='1'
+		'\1'
+	else
+		'\0\s[0]'
+	--
 	"/
 	今天%(weather.lastcity)的天气：\n/
 	白天 %(weather.day)  %(weather.daytemp)℃\n/
