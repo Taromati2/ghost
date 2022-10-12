@@ -1121,9 +1121,9 @@ OnDisplayPowerStatus{
 			}
 			elseif _displaypowerofftime>3*60{
 				if mode == '1'
-					SHIORI_FW.PushNotifyResult("\1\s[%(specialmode != 'mealtime')10]呦。\n")
+					SHIORI_FW.PushNoBreakNotifyResult("\1\s[%(specialmode != 'mealtime')10]呦。\n")
 				else
-					SHIORI_FW.PushNotifyResult('\0\s[26]欢迎回来。\n')
+					SHIORI_FW.PushNoBreakNotifyResult('\0\s[26]欢迎回来。\n')
 			}
 		}
 		ERASEVAR('displaypoweroff.starttime')
@@ -1388,10 +1388,10 @@ OnSysResume{
 	ERASEVAR('InSystemSuspend')
 	BaseGhostStart.aboutTime
 	if !InMinimize{
-		SHIORI_FW.PushNotifyResult(OnSysResume.base)
-		SHIORI_FW.PushNotifyResult(OnAutoChangeShell.boot)
-		SHIORI_FW.PushNotifyResult(OnBoot.aboutTime)
-		SHIORI_FW.PushNotifyResult(OnWeatherUpdate.boot)
+		SHIORI_FW.PushNoBreakNotifyResult(OnSysResume.base)
+		SHIORI_FW.PushNoBreakNotifyResult(OnAutoChangeShell.boot)
+		SHIORI_FW.PushNoBreakNotifyResult(OnBoot.aboutTime)
+		SHIORI_FW.PushNoBreakNotifyResult(OnWeatherUpdate.boot)
 	}
 }
 //资源不足

@@ -67,7 +67,7 @@ OpenDocForRuntime.string{
 	'\![open,browser,https://github.com/Taromati2/Taromati2/blob/master/docs/runtime/'+_argv[0]+'.md]'
 }
 OpenDocForRuntime{
-	SHIORI_FW.PushNotifyResult(OpenDocForRuntime.string(_argv[0]))
+	SHIORI_FW.PushNoBreakNotifyResult(OpenDocForRuntime.string(_argv[0]))
 }
 OnEraseVar{
 	ERASEVAR(reference0)

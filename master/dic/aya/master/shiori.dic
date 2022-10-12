@@ -232,13 +232,13 @@ load {
 	CALLALLFUNCTIONBEGINAS('Init.')
 
 	if SHIORI_FW.EmergencyMode
-		SHIORI_FW.PushNotifyResult('\![raise,OnEmergencyMode]')
+		SHIORI_FW.PushNoBreakNotifyResult('\![raise,OnEmergencyMode]')
 	elseif FILEEXIST('SHIORI_PATH\SHIORI_NAME_emerg.txt'){
 		foreach _DIC_DIRS_; _dir{
 			void DIRSync(_dir,'EMERGENCYMODEDICDIR'+'\'+_dir)
 		}
 		if SHIORI_FW.LastBootInEmergencyMode
-			SHIORI_FW.PushNotifyResult('\![raise,OnEmergencyModeEnd]')
+			SHIORI_FW.PushNoBreakNotifyResult('\![raise,OnEmergencyModeEnd]')
 	}
 }
 
@@ -406,13 +406,17 @@ request {
 }
 
 SHIORI_FW.NoMatchingEvent{
-	SHIORI_FW.PushNotifyResult(OnNoMatchingEvent)
+	SHIORI_FW.PushNoBreakNotifyResult(OnNoMatchingEvent)
 	SHIORI_FW.MakeBadResponse
 }
 
 SHIORI_FW.PushNotifyResult:void{//Notify返回值积压
 	if _argv[0]
 		SHIORI_FW.DelayNotifyResults,=_argv[0]
+}
+SHIORI_FW.PushNoBreakNotifyResult:void{//Notify返回值积压，并保证执行时不会被中断
+	if _argv[0]
+		SHIORI_FW.PushNotifyResult('\t'+_argv[0])
 }
 SHIORI_FW.ClearNotifyResult:void{
 	SHIORI_FW.DelayNotifyResults = IARRAY
@@ -1627,7 +1631,7 @@ SHIORI_EV.On_enable_log : void {
 		SHIORI_FW.LogMode = TOINT(reference[0])
 	if SHIORI_FW.LogMode != TOINT(reference[0]){
 		SHIORI_FW.LogMode = TOINT(reference[0])
-		SHIORI_FW.PushNotifyResult(OnLogModeChange)
+		SHIORI_FW.PushNoBreakNotifyResult(OnLogModeChange)
 	}
 }
 
@@ -1640,21 +1644,21 @@ SHIORI_EV.On_enable_debug : void {
 		SHIORI_FW.DebugMode = TOINT(reference[0])
 	if SHIORI_FW.DebugMode != TOINT(reference[0]){
 		SHIORI_FW.DebugMode = TOINT(reference[0])
-		SHIORI_FW.PushNotifyResult(OnDebugModeChange)
+		SHIORI_FW.PushNoBreakNotifyResult(OnDebugModeChange)
 	}
 }
 
 shiori.OnMemoryError:void{
-	SHIORI_FW.PushNotifyResult(OnShioriMemoryError)
+	SHIORI_FW.PushNoBreakNotifyResult(OnShioriMemoryError)
 }
 shiori.OnLoopLimit:void{
-	SHIORI_FW.PushNotifyResult(OnshioriLimit('loop',_argv))
+	SHIORI_FW.PushNoBreakNotifyResult(OnshioriLimit('loop',_argv))
 }
 shiori.OnCallLimit:void{
-	SHIORI_FW.PushNotifyResult(OnshioriLimit('call',_argv))
+	SHIORI_FW.PushNoBreakNotifyResult(OnshioriLimit('call',_argv))
 }
 shiori.OnMemoryLimit:void{
-	SHIORI_FW.PushNotifyResult(OnshioriLimit('memory',_argv))
+	SHIORI_FW.PushNoBreakNotifyResult(OnshioriLimit('memory',_argv))
 }
 
 //******************************************************************************
