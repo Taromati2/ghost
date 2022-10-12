@@ -63,13 +63,6 @@ OnMinuteChange{
 		}
 		UsualUserName.Time=GETSECCOUNT+1314871
 	}
-	--
-	if RAND(60)==0 || hitokoto==''
-		OnHitokotoUpdate//更新一言
-	--
-	if RAND(30+60*!setting.WeatherReminder)==0
-		OnWeatherUpdate//更新天气
-	--
 	elapsedtimetotal += 1//计算人格起动总时间/单位分
 	elapsedtime = elapsedtimetotal * 60
 	KikkaGrow
@@ -133,6 +126,10 @@ OnMinuteChange{
 				elseif !RAND(4)
 					OnSilentUpdate
 			}
+			elseif RAND(60)==0 || hitokoto==''
+				OnHitokotoUpdate//更新一言
+			elseif setting.WeatherReminder && (RAND(60*3)==0)
+				OnWeatherUpdate//更新天气
 		}
 		elseif specialmode == 'smoking' && _boottime%3600/60 > 4{//最短4
 			if !RAND(4) || _boottime%3600/60 > 20//最多20分
