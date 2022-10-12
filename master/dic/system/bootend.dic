@@ -841,6 +841,8 @@ OnWindowStateMinimize{
 }
 //**** 最小化から复帰 *************************************************************************************************
 OnWindowStateRestore{
+	'\t'
+	--
 	DiscordCustomSet.LargeImageKey('kikka_eye_open')
 	--
 	DiscordCustomSet.CustomDetail('从最小化中回来')
