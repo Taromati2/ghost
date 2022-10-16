@@ -158,9 +158,20 @@ OnUserNameConfirmed{
 OnUserName.Set:void{
 	username = REPLACE(_argv[0],'\','\\')
 }
-OnUserName.IsMazo{
-	_name = reference.raw[0]
-	_simplified_name = TOLOWER(TOSIMPLIFIED(_name))
+//用户名判定
+IsUsername.Empty{
+	_simplified_name = TOLOWER(TOSIMPLIFIED(_argv[0]))
+	case _simplified_name{
+		when 'administrator','user','guest','system','admin','管理员','root','autobvt','microsoft','test',''{
+			1
+		}
+		others{
+			0
+		}
+	}
+}
+IsUsername.Mazo{
+	_simplified_name = TOLOWER(TOSIMPLIFIED(_argv[0]))
 	case _simplified_name {
 		when '垃圾','豚','猪','垃圾虫','クズ','クソムシ','笨蛋','白痴','呆子','蠢猪','傻逼','废物','蠢货','阳痿','阳痿男','丑男','猪头男','猪头','二愣子','二傻子','弱智','脑残'{
 			1
@@ -169,9 +180,8 @@ OnUserName.IsMazo{
 	}
 	0
 }
-OnUserName.IsTooClose{
-	_name = reference.raw[0]
-	_simplified_name = TOLOWER(TOSIMPLIFIED(_name))
+IsUsername.TooClose{
+	_simplified_name = TOLOWER(TOSIMPLIFIED(_argv[0]))
 	case _simplified_name {
 		when '亲爱的','老公','老公大人','相公','宝贝','爸爸','父','父亲','爸','マスター','主人大人','主人','ごしゅじんさま','honey','だぁりん','宝宝','小宝宝','baby','little baby','darling'{
 			1
@@ -179,6 +189,17 @@ OnUserName.IsTooClose{
 		}
 	}
 	0
+}
+IsUserName.Special{
+	IsUsername.Empty(_argv[0]) || IsUsername.Mazo(_argv[0]) || IsUsername.TooClose(_argv[0])
+}
+OnUserName.IsMazo{
+	_name = reference.raw[0]
+	IsUsername.Mazo(_name)
+}
+OnUserName.IsTooClose{
+	_name = reference.raw[0]
+	IsUsername.TooClose(_name)
 }
 OnUserName.SpecialCheck{
 	_name = reference.raw[0]

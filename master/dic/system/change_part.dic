@@ -2,6 +2,7 @@ OnChangeShell{
 	_t=reference0
 	if _argv[0]
 		_t=_argv[0]
+	ChangingShell=1
 	'\![change,shell,'+_t+']'
 }
 OnSilentChangeShell{

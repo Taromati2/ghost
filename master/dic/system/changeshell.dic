@@ -9,6 +9,7 @@
 OnShellChanging{
 	if NeedsUpdateSurfaceDump
 		UpdateSurfaceDump
+	ChangingShell=1
 	--
 	if IsHShell(reference0) && !CanH{
 		"\0\s[7]真是的，%(username)都在想些什么？\n我们的关系还没有好到可以做H的事的程度吧\w[1000]"
@@ -323,6 +324,7 @@ HasSurfaceDump{
 }
 //---- SHELL更替完毕 -----------------------------------------------------------------
 OnShellChanged{
+	ERASEVAR('ChangingShell')
 	if IsHShell(reference0) && !CanH{
 		if IsHShell(shellID)
 			shellID='预设'

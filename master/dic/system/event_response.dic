@@ -45,16 +45,8 @@ OnNotifySelfInfo:void{
 }
 //缺省信息补全&同步信息更新 by steve02081504
 OnNotifyUserInfo.WhenEmpty.username:void{
-	if _argv[0]{
-		_simplified_name = TOLOWER(TOSIMPLIFIED(_argv[0]))
-		case _simplified_name{
-			when 'administrator','user','guest','system','admin','管理员','root','autobvt','microsoft','test'{
-				do_nothing
-			}
-			others{
-				OnUserName.Set(_argv[0])
-			}
-		}
+	if !IsUserName.Special(_argv[0]){
+		OnUserName.Set(_argv[0])
 	}
 }
 OnNotifyUserInfo.WhenEmpty.birthday:void{
@@ -81,6 +73,8 @@ OnNotifyUserInfo{
 		_username=reference1
 	}
 	_birthday_changed=birthday != reference2 && Baseware.Config.birthday != reference2 && reference2
+	if IsUsername.Empty(_username)
+		_name_changed = 0
 	if _name_changed || _birthday_changed{
 		"同步%Baseware设定中的"
 		--
