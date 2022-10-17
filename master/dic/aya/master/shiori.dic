@@ -479,7 +479,7 @@ SHIORI_FW.MakeResponse{
 				return
 			}
 			else{
-				if SHIORI_FW.DelayNotifyResults[0] && SHIORI_FW.Eventid == 'OnSecondChange' && !ChangingShell{//在空OnSecondChange环境下返回积压的Notify
+				if SHIORI_FW.DelayNotifyResults[0] && SHIORI_FW.Eventid == 'OnSecondChange'{//在空OnSecondChange环境下返回积压的Notify
 					_result = SHIORI_FW.DelayNotifyResults[0]
 					SHIORI_FW.DelayNotifyResults[0] = IARRAY
 					SHIORI_FW.MakeResponse(_result)
