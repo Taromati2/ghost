@@ -229,7 +229,7 @@ OnBoot.base{
 	}
 	elseif LOADED_FROM_MAGIC{//数据来自MAGICSAVE
 		intimacy -= 1
-		'\0\s[35]\w9.\w9.\w9.\w9\w9\w9\n\s[0]啊\w9\w9\s[6]，很抱歉\n\w9\w9\w9我做了个恶梦\w9\w9\w9\n\x'
+		SHIORI_FW.PushNoBreakNotifyResultToTop('\0\s[35]\w9.\w9.\w9.\w9\w9\w9\n\s[0]啊\w9\w9\s[6]，很抱歉\n\w9\w9\w9我做了个恶梦\w9\w9\w9\n\x')
 		return
 	}
 	--

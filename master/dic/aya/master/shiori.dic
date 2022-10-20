@@ -418,6 +418,14 @@ SHIORI_FW.PushNoBreakNotifyResult:void{//Notify返回值积压，并保证执行
 	if _argv[0]
 		SHIORI_FW.PushNotifyResult('\t'+_argv[0])
 }
+SHIORI_FW.PushNotifyResultToTop:void{//Notify返回值积压，但是优先级最高
+	if _argv[0]
+		SHIORI_FW.DelayNotifyResults=(_argv[0],SHIORI_FW.DelayNotifyResults)
+}
+SHIORI_FW.PushNoBreakNotifyResultToTop:void{//Notify返回值积压，但是优先级最高并保证执行时不会被中断
+	if _argv[0]
+		SHIORI_FW.PushNotifyResultToTop('\t'+_argv[0])
+}
 SHIORI_FW.ClearNotifyResult:void{
 	SHIORI_FW.DelayNotifyResults = IARRAY
 }
