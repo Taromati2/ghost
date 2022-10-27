@@ -17,11 +17,6 @@ OpenMenu{
 		OnRpgGame
 		return
 	}
-	if !haveshell {
-		SilentShellChange=1
-		'\![change,shell,预设]'
-		return
-	}
 	RunningReset
 	_submenu = 0
 	_submenuex=0

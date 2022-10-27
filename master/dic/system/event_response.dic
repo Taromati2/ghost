@@ -38,10 +38,13 @@ OnBasewareUpdated{
 		'
 }
 //Get自我信息
-OnNotifySelfInfo:void{
+OnNotifySelfInfo{
 	ghostname=reference0
 	selfname=reference1
 	keroname=reference2
+	haveshell = (judgeshell(reference3)!='0|' || Userspitem[0][2]==1)
+	if !haveshell
+		OnSilentChangeShell('预设')
 }
 //缺省信息补全&同步信息更新 by steve02081504
 OnNotifyUserInfo.WhenEmpty.username:void{

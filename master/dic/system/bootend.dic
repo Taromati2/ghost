@@ -180,6 +180,13 @@ OnBoot{
 		SHIORI_FW.PushNoBreakNotifyResult(OnAutoChangeShell.boot)
 	--
 	SHIORI_FW.PushNoBreakNotifyResult(OnBoot.base(_argv))
+	--
+	if AutoUpdate{
+		if QuickStartVersion && !FullDataPackInstalled
+			SHIORI_FW.PushNoBreakNotifyResult(OnInstallFullDataPack)
+		else
+			SHIORI_FW.PushNoBreakNotifyResult(OnSilentUpdate)
+	}
 }
 OnBoot.base{
 	if mode == '1'{
@@ -252,13 +259,6 @@ OnBoot.base{
 	}
 	--
 	OnWeatherUpdate.boot
-	--
-	if AutoUpdate{
-		if QuickStartVersion && !FullDataPackInstalled
-			OnInstallFullDataPack
-		else
-			OnSilentUpdate
-	}
 }
 OnBoot.aboutTime{
 	_phase = GetPhase
@@ -307,9 +307,11 @@ OnBoot.aboutTime{
 	}
 	--
 	if acjeachday{
-		Onautojeachday
-		--
-		'\x'
+		if (_t=Onautojeachday)!='' {
+			_t
+			--
+			'\x'
+		}
 	}
 	--
 	//--------------------设置节日提醒--------------------

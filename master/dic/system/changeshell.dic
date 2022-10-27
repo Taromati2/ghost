@@ -14,14 +14,11 @@ OnShellChanging{
 		"\0\s[7]真是的，%(username)都在想些什么？\n我们的关系还没有好到可以做H的事的程度吧\w[1000]"
 		return
 	}
-	if judgeshell(reference0)=='0|'&& Userspitem[0][2]!=1{
-		haveshell=0
-		'\0\s[-1]\b[-1]'
-	}
-	else{
-		haveshell=1
+	haveshell = (judgeshell(reference3)!='0|' || Userspitem[0][2]==1)
+	if haveshell
 		OnChangeShellTalk(reference0)
-	}
+	else
+		'\0\s[-1]\b[-1]'
 }
 OnAutoChangeShell{
 	if TOINT(AutoShellChange[1])==0&&month==AutoShellChangeflag[0]&&day==AutoShellChangeflag[1]//'每天初见更换'
@@ -289,7 +286,6 @@ OnBuyShell{
 	if money>=5000{
 		haveshell=1
 		money-=5000
-		ERASEVAR('SilentShellChange')
 		"\1\s[10]\0\s[0]花费￥5000金钱激活%(reference0)。\w9\w9\x\![change,shell,%(reference0)]]"
 	}
 	else{
@@ -359,10 +355,8 @@ OnShellChanged{
 			'\0\s[0]…嗯、\w9\w9\s[5]这样子如何呢？'
 		}
 	}
-	elseif !haveshell {
-		SilentShellChange=1
+	elseif !haveshell
 		"\1\s[10]\0\s[0]…嗯、\w9\w9橘花还没有激活这套衣服呢,要给橘花购买能量水晶激活吗?花费￥30000金钱.\n\n\q[◇是的,OnBuyShell,%(shellID),%(_temp)]\n\q[◇不了,OnSilentChangeShell,%(_temp)]"
-	}
 }
 //**************************************************************************************************************
 OnFittingRoom:all{

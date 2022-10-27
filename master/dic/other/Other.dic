@@ -2173,10 +2173,10 @@ autojeachday{
 				_buff = FREAD(_file)
 			}
 		}
+		FCLOSE(_file)
+		_txt
 	}
-	FCLOSE(_file)
 	FCHARSET.default
-	_txt
 }
 Onacjeachday{
 	_i=reference0
