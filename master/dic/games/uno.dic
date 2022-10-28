@@ -4,7 +4,7 @@
 //UNO图片存放路径
 #define		UNOPATH		DATA_PATH\Game\UNO
 OnUNORules{
-	'\c\0\s[18]\b[2]好的，那么要听哪一部份呢？\n[150]\_q/
+	'\c\0\s[5]\b[2]好的，那么要听哪一部份呢？\n[150]\_q/
 	\![*]\q[牌面讲解,OnUNOR1]\n/
 	\![*]\q[基本规则,OnUNOR2]\n/
 	\![*]\q[计分方法,OnUNOR6]\n/
@@ -92,7 +92,6 @@ OnUnoUser{
 	"\![raise,OnUnoUserInit,%(reference0),%(reference1)]"
 }
 OnUnoUserInit{//二人游戏入口函数
-	UnFinished
 	UnoUserInit(reference0,reference1)
 }
 UnoUserInit{//用户界面
