@@ -368,21 +368,17 @@ OnBoot.aboutTime{
 		'\n\x'
 	}
 	elseif month == 10 && day == 31{
-		if bootcount_inthisday > 1{
-			'\1\s[10]\0\s[27]Trick Or Treat!!\w9\w9...\n'
-			--
-			'…\w9…\w9…\n'
-			--
-			'…\w9有糖果吗？\w9没有糖果吗...\w9\n'
-			--
-			'不过我准备了点糖果哦，几乎都是芥末味，请 务 必 要 \w9尝尝看哦!'
+		if bootcount_inthisday == 1{
+			'\1\s[10]\0\s[27]Trick Or Treat!!\w9\w9...\n/
+			…\w9…\w9…\n/
+			…\w9有糖果吗？\w9没有糖果吗...\w9\n/
+			不过我准备了点糖果哦，几乎都是芥末味，请 务 必 要 \w9尝尝看哦!'
 		}
 	}
 	elseif month == 11 && day == 1{
-		if bootcount_inthisday > 1{
-			'\1\s[10]\0\s[27]今天是万圣节哦，万圣节快乐！\w9\w9...\n'
-			--
-			'来找我的鬼怪可能会比较多，我会妥善处理好的。'
+		if bootcount_inthisday == 1{
+			'\1\s[10]\0\s[27]今天是万圣节哦，万圣节快乐！\w9\w9...\n/
+			来找我的鬼怪可能会比较多，我会妥善处理好的。'
 		}
 	elseif month == 11 && day == 11{
 		if giftmode!=1{
