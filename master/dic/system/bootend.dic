@@ -35,6 +35,11 @@ BaseGhostStart.aboutTime{
 	Lunartime
 	elapsetime = GETSECCOUNT - CloseTime
 	CloseTime = GETSECCOUNT
+	if (lastbootdate != (year,month,day)){
+		bootcount_inthisday=0
+		lastbootdate=(year,month,day)
+	}
+	bootcount_inthisday++
 }
 OnInitialize{
 	if reference0=='reload'{
