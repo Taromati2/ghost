@@ -377,10 +377,10 @@ OnBoot.aboutTime{
 		}
 	}
 	elseif month == 11 && day == 1{
-		if bootcount_inthisday == 1{
+		if bootcount_inthisday == 1
 			'\1\s[10]\0\s[27]今天是万圣节哦，万圣节快乐！\w9\w9...\n/
 			来找我的鬼怪可能会比较多，我会妥善处理好的。'
-		}
+	}
 	elseif month == 11 && day == 11{
 		if giftmode!=1{
 			"\1\s[10]\0\s[28]那个…\w9\w9\n我为%(username)买了点东西。\n\n\n\q[◇打开看看,Ongift,6]"
