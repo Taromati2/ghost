@@ -369,17 +369,89 @@ OnBoot.aboutTime{
 	}
 	elseif month == 10 && day == 31{
 		if bootcount_inthisday == 1{
-			'\0\s[10]\0\s[27]Trick Or Treat!!\w9\w9...\n/
-			…\w9…\w9…\n/
-			…\w9有糖果吗？\w9没有糖果吗...\w9\n/
-			不过我准备了点糖果哦，几乎都是芥末味，请 务 必 要 \w9尝尝看哦!\n/
-			\1你本打算用这种东西招待邻居吗？？'
+			'\0\s[27]\_sTrick Or Treat！\_s！\_s\n/
+			\w7.\w7.\w7.\w9\n\_s/
+			\1\_q没有\0有\_q\_s糖果\_s\_q吗？\1吗\_q\w7.\w7.\w7.\w9\_s\n\_s/
+			\0\s[5]不过我准备了点糖果哦，'
+			--
+			_candy_list=IARRAY
+			_candy_exp_list=IARRAY
+			if GetPhase>=3{
+				if nurturance.Darkness > 72{
+					_candy_list,='特制红糖夹心巧克力'//其实掺了血
+					_candy_exp_list,='love,blood,notfortowa'
+				}
+				else{
+					_candy_list,='巧克力味'
+					_candy_exp_list,='love'
+				}
+			}
+			if nurturance.Darkness > 100{
+				_candy_list,='铁锈味'//掺了更多的血
+				_candy_exp_list,='blood,bad'
+			}
+			if nurturance.Moeness > 10 && nurturance.Darkness > 10{
+				_candy_list,='蒜蓉味'
+				_candy_exp_list,='bad'
+			}
+			if nurturance.Moeness > 15 && nurturance.Darkness > 15{
+				_candy_list,='五仁味'
+				_candy_exp_list,='bad'
+			}
+			if nurturance.Moeness > 20 && nurturance.Darkness > 20{
+				_candy_list,='芥末味'
+				_candy_exp_list,=''
+			}
+			if nurturance.Moeness > 100 && nurturance.Darkness > 100{
+				_candy_list,='魔鬼辣椒味'
+				_candy_exp_list,='bad'
+			}
+			SETDELIM(_candy_list,'、\w7')
+			if ARRAYSIZE(_candy_list)==0{
+				'\s[8]虽然几乎都是商店里买的糖果\w9\n/
+				\1\嘛，\w7也不错吧。'
+			}
+			if ARRAYSIZE(_candy_list)==1{
+				'\s[8]虽然几乎都是'+TOSTR(_candy_list)
+				--
+				if 'love' _in_ _candy_exp_list[0]
+					'，\s[1]但是请务必尝尝看'
+				else
+					'\w7.\w7.\w7.\w9\n/
+					\1你本打算用这种东西招待邻居吗？？\n\x'
+			}
+			else{
+				'有'+TOSTR(_candy_list)
+				--
+				if 'love' _in_ TOSTR(_candy_exp_list)
+					'\n，\w9请 \w9 务\w9 必\w9 要\w9尝尝看哦!\n'
+				else
+					'。'
+				--
+				'\1'
+				--
+				if 'bad' _in_ TOSTR(_candy_exp_list){
+					'\s[11]你打算用这种东西招待邻居吗？？'
+					'啊，\s[13]\w7我今天肚子不好先算了'
+				}
+				if 'love' _in_ TOSTR(_candy_exp_list)
+					'\s[13]年轻真好啊。\n/
+					\0\s[8]欸？'
+			}
+			--
+			'\n\x'
 		}
 	}
 	elseif month == 11 && day == 1{
-		if bootcount_inthisday == 1
-			'\1\s[10]\0\s[27]今天是万圣节哦，万圣节快乐！\w9\w9...\n/
-			来找我的鬼怪可能会比较多，我会妥善处理好的。'
+		if bootcount_inthisday == 1{
+			'\1\s[10]\0\s[27]今天是万圣节哦，\w9\s[5]万圣节快乐！\w9\w9\n'
+			--
+			if nurturance.Darkness > 20
+				'\s[27]来找我的鬼怪可能会比较多，我会妥善处理好的。\w9\n/
+				\1.\w7.\w7.？'
+			--
+			'\n\x'
+		}
 	}
 	elseif month == 11 && day == 11{
 		if giftmode!=1{
