@@ -369,10 +369,11 @@ OnBoot.aboutTime{
 	}
 	elseif month == 10 && day == 31{
 		if bootcount_inthisday == 1{
-			'\1\s[10]\0\s[27]Trick Or Treat!!\w9\w9...\n/
+			'\0\s[10]\0\s[27]Trick Or Treat!!\w9\w9...\n/
 			…\w9…\w9…\n/
 			…\w9有糖果吗？\w9没有糖果吗...\w9\n/
-			不过我准备了点糖果哦，几乎都是芥末味，请 务 必 要 \w9尝尝看哦!'
+			不过我准备了点糖果哦，几乎都是芥末味，请 务 必 要 \w9尝尝看哦!\n/
+			\1你本打算用这种东西招待邻居吗？？'
 		}
 	}
 	elseif month == 11 && day == 1{
