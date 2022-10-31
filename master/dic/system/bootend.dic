@@ -367,7 +367,7 @@ OnBoot.aboutTime{
 		--
 		'\n\x'
 	}
-	elseif month == 10 && day == 30{
+	elseif month == 10 && day == 31{
 		if bootcount_inthisday > 1{
 			'\1\s[10]\0\s[27]Trick Or Treat!!\w9\w9...\n'
 			--
