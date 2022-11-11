@@ -633,7 +633,7 @@ Onusergift{
 	}
 	foreach Useritem; _i {
 		if _i[2] > 0{
-			_txt += "\_l[0,-]%(_i[1]) \_l[80,-]%(_i[2])  \_l[100,-]%(_i[3])\n"
+			_txt += "\_l[0,-]%(UseritemDisplayName[TOINT(_i[0])]) \_l[80,-]%(_i[2])  \_l[100,-]%(_i[3])\n"
 		}
 	}
 	foreach Useriteminfo;_i{

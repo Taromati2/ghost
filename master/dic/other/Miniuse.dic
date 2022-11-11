@@ -405,7 +405,7 @@ Ongift{
 	gift
 	_N=ARRAYSIZE(Useritem)-2
 	_G=RAND(_N)
-	while _G==19{
+	while _G==19 || _G==5{
 		_G=RAND(_N)
 	}
 	UseritemNum[_G]=TOINT(UseritemNum[_G])+1
@@ -450,20 +450,9 @@ Ongift{
 gift{
 	//UseritemNum=(0,0,0,0,0,0,0,0,0,0)
 	//Useritemtime=(0,0,0,0,0,0,0,0,0,0)
-	Useritem=("0,高级腕表,%(UseritemNum[0]),%(Useritemtime[0])","1,瑞士军刀,%(UseritemNum[1]),%(Useritemtime[1])","2,时尚钱包,%(UseritemNum[2]),%(Useritemtime[2])","3,芝宝打火机,%(UseritemNum[3]),%(Useritemtime[3])","4,便携酒壶,%(UseritemNum[4]),%(Useritemtime[4])","5,IPOD4,%(UseritemNum[5]),%(Useritemtime[5])","6,HIFI随身听,%(UseritemNum[6]),%(Useritemtime[6])","7,Iphone7,%(UseritemNum[7]),%(Useritemtime[7])","8,HIFI耳机,%(UseritemNum[8]),%(Useritemtime[8])","9,橘花抱枕,%(UseritemNum[9]),%(Useritemtime[9])","10,钻戒,%(UseritemNum[10]),%(Useritemtime[10])","11,铂金项链,%(UseritemNum[11]),%(Useritemtime[11])","12,星之砂,%(UseritemNum[12]),%(Useritemtime[12])","13,幸运星瓶,%(UseritemNum[13]),%(Useritemtime[13])","14,水晶八音盒,%(UseritemNum[14]),%(Useritemtime[14])","15,星空恋人,%(UseritemNum[15]),%(Useritemtime[15])","16,金色怀表,%(UseritemNum[16]),%(Useritemtime[16])","17,演唱会门票两张,%(UseritemNum[17]),%(Useritemtime[17])","18,音乐厅门票两张,%(UseritemNum[18]),%(Useritemtime[18])",Userspitem[1],"20,电影院门票两张,%(UseritemNum[20]),%(Useritemtime[20])")
 	Userspitem=("0,K.I.K.K.A,%(UserspitemNum[0]),%(Userspitemtime[0]),散发出神秘光茫的红宝石项链，作用未知，红宝石上面刻着五个大写英文字母：K.I.K.K.A")
-	/*
-	'高级腕表'
-	'瑞士军刀'
-	'时尚钱包'
-	'芝宝打火机'
-	'便携酒壶'
-	'IPOD4'
-	'Sony NWZ-Z1080'
-	'Iphone7'
-	'HIFI耳机'
-	'橘花抱枕'
-	*/
+	Useritem=("0,高级腕表,%(UseritemNum[0]),%(Useritemtime[0])","1,瑞士军刀,%(UseritemNum[1]),%(Useritemtime[1])","2,时尚钱包,%(UseritemNum[2]),%(Useritemtime[2])","3,芝宝打火机,%(UseritemNum[3]),%(Useritemtime[3])","4,便携酒壶,%(UseritemNum[4]),%(Useritemtime[4])","5,IPOD4,%(UseritemNum[5]),%(Useritemtime[5])","6,HIFI随身听,%(UseritemNum[6]),%(Useritemtime[6])","7,Iphone%(year-2008),%(UseritemNum[7]),%(Useritemtime[7])","8,HIFI耳机,%(UseritemNum[8]),%(Useritemtime[8])","9,橘花抱枕,%(UseritemNum[9]),%(Useritemtime[9])","10,钻戒,%(UseritemNum[10]),%(Useritemtime[10])","11,铂金项链,%(UseritemNum[11]),%(Useritemtime[11])","12,星之砂,%(UseritemNum[12]),%(Useritemtime[12])","13,幸运星瓶,%(UseritemNum[13]),%(Useritemtime[13])","14,水晶八音盒,%(UseritemNum[14]),%(Useritemtime[14])","15,星空恋人,%(UseritemNum[15]),%(Useritemtime[15])","16,金色怀表,%(UseritemNum[16]),%(Useritemtime[16])","17,演唱会门票两张,%(UseritemNum[17]),%(Useritemtime[17])","18,音乐厅门票两张,%(UseritemNum[18]),%(Useritemtime[18])",Userspitem[1],"20,电影院门票两张,%(UseritemNum[20]),%(Useritemtime[20])")
+	UseritemDisplayName=("高级腕表","瑞士军刀","时尚钱包","芝宝打火机","便携酒壶","IPOD4","HIFI随身听","Iphone","HIFI耳机","橘花抱枕","钻戒","铂金项链","星之砂","幸运星瓶","水晶八音盒","星空恋人","金色怀表","演唱会门票两张","音乐厅门票两张","红宝石项链","电影院门票两张")
 }
 Onmoneyadd{
 	_num = TOINT(reference0)
@@ -762,7 +751,7 @@ CalculatorShow{
 	_txt
 }
 OnInputExp{
-	m_exp=REPLACE(m_exp,'\.','.')
+	m_exp=REPLACE(TOSTR(m_exp),'\.','.')
 	"\b[2]\![set,autoscroll,false]\![set,balloontimeout,0]请输入你要计算的表达式：\![open,inputbox,OnInputExpOver,-1,%(m_exp)]\n[150]/
 	\_qTips：\n/
 	\_l[0]符号\_l[76]功能\_l[180]示例\n/
