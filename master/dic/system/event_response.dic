@@ -698,6 +698,10 @@ OnInstallFullDataPack{
 	--
 	"\![execute,install,url,%(FullDataPackUrl),nar]"
 }
+OnUpdateProcessExec{
+	if QuickStartVersion
+		OnInstallFullDataPack
+}
 OnSilentUpdate{
 	DiscordCustomSet.CustomDetail('眼睛在脉动')
 	--
