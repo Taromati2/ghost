@@ -959,7 +959,7 @@ OnWindowStateRestore{
 			"\0\s[9]\w9.\w9.\w9.\w9\w9\w9我可是等了你整整%(TOINT(MinimizeTime/(60*60*24)))天哦？"
 		}
 		if MinimizeTime >= 60*60*5{
-			DiscordCustomSet.CustomDetail('让人等了'+TOINT(MinimizeTime/(60*60))+'天的屑')
+			DiscordCustomSet.CustomDetail('让人等了'+TOINT(MinimizeTime/(60*60))+'小时的屑')
 			--
 			'\0\s[9]\w9.\w9.\w9.\w9\w9\w9\s[6]\n把我忘掉了吧?\w9\w9\w9\w9\n\s[35]绝对\w9.\w9.\w9.'
 			"\0\s[9]\w9.\w9.\w9.\w9\w9\w9我可是等了你整整%(TOINT(MinimizeTime/(60*60)))小时哦？"
