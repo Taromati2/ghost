@@ -2193,7 +2193,7 @@ TWO.dicpart{
 		"%(Seasonzone)"
 	}
 	elseif '秘密服务' _in_ reference1 && '忘了' _in_ reference1{
-		"\0\s[40]秘密服务的密码是：“%(password)”"
+		"\0\s[40]秘密服务的密码是：“%(REPLACE(password,'\','\\'))”"
 	}
 	//----------------------------------------橘花关怀------------------------------------------------------------------
 	elseif '辛苦' _in_ reference1 || '麻烦' _in_ reference1{

@@ -87,7 +87,7 @@ OnNotifyUserInfo{
 			else
 				'用户名'
 			--
-			"『%(_username)』"
+			"『%(REPLACE(_username,'\','\\'))』"
 		}
 		--
 		if _birthday_changed{

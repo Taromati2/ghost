@@ -326,7 +326,7 @@ OnHitokotoUpdate{
 	'\![execute,http-get,https://v1.hitokoto.cn/,encode=text,--nofile,--async=hitokoto]'//更新一言
 }
 OnHitokotoUpdate.Success{
-	hitokoto=reference3
+	hitokoto=REPLACE(reference3,'\','\\')
 	--
 	DiscordCustomSet.CustomDetail(hitokoto)
 	--

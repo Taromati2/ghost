@@ -168,7 +168,7 @@ OnSakuraScript.Forment{
 
 On_ShioriEcho.GetName:void {
 	SHIORI_FW.Make_X_SSTP_PassThru('GhostName',ghostname)
-	SHIORI_FW.Make_X_SSTP_PassThru('UserName',username)
+	SHIORI_FW.Make_X_SSTP_PassThru('UserName',REPLACE(username,'\\','\'))
 }
 On_ShioriEcho {
 	ClearShioriEchoVar
