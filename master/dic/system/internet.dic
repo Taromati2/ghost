@@ -254,7 +254,7 @@ OnWeatherUpdate.Success{
 			OnWeatherUpdate.Success.boot.Talk
 		}
 	}
-	else{
+	elseif city{
 		ERASEVAR('city')
 		OnWeatherUpdate
 	}
