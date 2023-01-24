@@ -8,8 +8,6 @@
 #globaldefine	}}CHAIN		} CHAIN.Index++ }
 
 #define			CHAIN_DELIM		':chain='
-#define			EVAL_DELIM		':eval='
-
 
 ERASEALLVARBEGINAS {
 	_L= GETVARLIST(_argv[0])
@@ -689,7 +687,7 @@ SHIORI_FW.RaiseIDEvent {
 
 	if _result != '' {//トークあり
 		//遅延EVAL
-		_talk = RE_SPLIT(_result,'(' + EVAL_DELIM + '|' + CHAIN_DELIM + ')')
+		_talk = RE_SPLIT(_result,'(' + CHAIN_DELIM + ')')
 		_delim = RE_GETSTR
 		_n = ARRAYSIZE(_delim)
 
@@ -709,11 +707,7 @@ SHIORI_FW.RaiseIDEvent {
 
 		//後から遅延設定
 		for _i = 0 ; _i < _n ; _i += 1 {
-			if _delim[_i] == EVAL_DELIM {
-				//遅延EVAL
-				void EVAL(_talk[_i + 1])
-			}
-			elseif _delim[_i] == CHAIN_DELIM {
+			if _delim[_i] == CHAIN_DELIM {
 				//チェイン処理
 				SHIORI_FW.StartChainTalk(_talk[_i + 1])
 			}
