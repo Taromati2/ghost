@@ -381,9 +381,9 @@ OnMusicPlayer:all{
 	_status =('play]\f[color,108,129,182]◇播放','pause]\f[color,229,134,82]◇暂停','resume]\f[color,108,129,182]◇继续')[playingmusic]
 	"\_l[60,-]\f[color,93,188,91]\q[◄上一首,OnLastMusic]  \_l[120,-]\q[►下一首,OnNextMusic]\f[color,default]       %(_now)%(_totol)\n/
 	\__q[OnMusicPlayerCmd,%(_status)\f[color,default]\__q"
-	"    \f[color,238,50,95]\q[◇停止,OnMusicPlayerCmd,stop]\f[color,default]    /
-	\f[color,93,188,91]\q[◇播放列表,OnMusicPlayerList,openlist]\f[color,default]    /
-	\f[color,128,66,255]\q[◇音量,OnMusicPlayerVolume]  \q[△,OnMusicVolumeChange,1]\q[▲,OnMusicVolumeChange,10] %(musicvolume)\_l[255]\q[▼,OnMusicVolumeChange,-10]\q[▽,OnMusicVolumeChange,-1]\f[color,default]\n"
+	"   \f[color,238,50,95]\q[◇停止,OnMusicPlayerCmd,stop]\f[color,default]  /
+	\f[color,93,188,91]\q[◇播放列表,OnMusicPlayerList,openlist]\f[color,default]  /
+	\f[color,128,66,255]\q[◇音量,OnMusicPlayerVolume] \q[△,OnMusicVolumeChange,1]\q[▲,OnMusicVolumeChange,10]%(musicvolume)\_l[255]\q[▼,OnMusicVolumeChange,-10]\q[▽,OnMusicVolumeChange,-1]\f[color,default]\n"
 	"\q[◇模式:%(_mode),OnMusicPlayMode]    \_l[110]\q[◇歌词卡:,OnMusicLrc]\q[%(_lrcenable),OnMusicSetLrc]\_l[195]\q[◇歌词目录,OnLrcfolder]\n"
 	'\s[10]\0'
 	if musicplayerlist
