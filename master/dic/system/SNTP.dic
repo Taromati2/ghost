@@ -114,8 +114,14 @@ OnSNTPFailure{
 
 //
 TimeErrorCheck{
-	if GETSECCOUNT
-		year < 2023 || (GETSECCOUNT - CloseTime) < 0
+	if GETSECCOUNT{
+		if year < LAST_BUILD_TIME.YEAR || (GETSECCOUNT - CloseTime) < 0
+			ture
+		elseif year == LAST_BUILD_TIME.YEAR && month < LAST_BUILD_TIME.MONTH
+			ture
+		else
+			false
+	}
 }
 OnTimeError{
 	'\0\s[20]时间出错了哦？\n/
