@@ -278,38 +278,7 @@ OnBoot.aboutTime{
 		giftmode = 0
 	}
 	--
-	birthdayflag=0
-	if year - 1 == nextbirthday[0]{
-		nextbirthday=NextBirthDay(birthday[0],birthday[1],birthday[2])
-	}
-	if nextbirthday && year == nextbirthday[0] && month == nextbirthday[1] && day == nextbirthday[2] && birthdaygiftmode != 1{
-		"\0\s[28]今天是%(username)%(TOINT(nextbirthday[0]) - birthday[0])岁生日，橘花给%(username)准备了礼物\n\n\n\q[◇打开看看,birthdaygift]"
-		--
-		'\n\x'
-	}
-	--
-	if !friendbirthdaymode {
-		for _i=0;_i<friendID;_i++{
-			if year-1==friendbirthday[_i*9+5]||year==friendbirthday[_i*9+5]&&month-1==friendbirthday[_i*9+6]||year==friendbirthday[_i*9+5]&&month==friendbirthday[_i*9+6]&&day-1==friendbirthday[_i*9+7]{
-				_next_birthday=NextBirthDay(friendbirthday[_i*9+2],friendbirthday[_i*9+3],friendbirthday[_i*9+4])
-				friendbirthday[_i*9+5]=_next_birthday[0]
-				friendbirthday[_i*9+6]=_next_birthday[1]
-				friendbirthday[_i*9+7]=_next_birthday[2]
-			}
-			friendbirthday[_i*9+8]=OnFriendNextBirthDay(friendbirthday[_i*9+5],friendbirthday[_i*9+6],friendbirthday[_i*9+7])
-			if friendbirthday[_i*9+8]==10
-				"\0\s[40]还有10天就是%(username)的好友%(friendbirthday[_i*9+1])的生日\n\x"
-			--
-			if friendbirthday[_i*9+8]==5
-				"\0\s[40]还有5天就是%(username)的好友%(friendbirthday[_i*9+1])的生日\n\x"
-			--
-			if friendbirthday[_i*9+8]==1
-				"\0\s[40]明天是%(username)的好友%(friendbirthday[_i*9+1])的生日\n\x"
-			--
-			if year == friendbirthday[_i*9+5] && month == friendbirthday[_i*9+6] && day == friendbirthday[_i*9+7]
-				"\0\s[40]今天是%(username)的好友%(friendbirthday[_i*9+1])的生日，快送去生日祝福吧！\n\x"
-		}
-	}
+	BirthDay.BootRemind
 	--
 	if acjeachday{
 		if (_t=Onautojeachday)!='' {
