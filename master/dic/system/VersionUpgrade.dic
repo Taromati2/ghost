@@ -1,6 +1,6 @@
 //by steve
 
-#define VERSION_NOW 9
+#define VERSION_NOW 10
 
 VERSION_INIT:void{
 	VERSION = VERSION_NOW
