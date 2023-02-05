@@ -152,6 +152,7 @@ OnInitLinkWnd{//新游戏入口
 	link_timemax=link_timebase+GETTICKCOUNT
 	_txt+=OnDrawLinkWnd
 	_txt+=LinkWndMenu
+	_txt+=BGMusic
 	_txt
 }
 m_MapSeed.Load{//地图种子读取
@@ -309,7 +310,8 @@ OnDrawLinkWnd{//绘图
 	if link_timebar<0
 		link_timebar=0
 	if LinkWndFlag=='optionchange'{
-		OnLinkWnd;return
+		OnLinkWnd
+		return
 	}
 	_PIC='PATH\bmp130.png'
 	if LinkWndMode==1
@@ -333,9 +335,6 @@ OnDrawLinkWnd{//绘图
 		}
 	}
 	_txt+=LinkWndMenu
-	if !linkwndmusic {
-		_txt+=BGMusic
-	}
 	_txt
 }
 OnResort{//重排入口
@@ -851,12 +850,12 @@ Onremind{//提醒
 			rm_X=hint[2]
 			rm_Y=hint[3]
 			if linkwndmusic!=2
-				_txt+=PlayLinkWndMusic('play','PATH\select.wav')//避免连连看禁用背景音乐导致游戏稍卡顿的问题的关键
+				PlayLinkWndMusic.SoundEffect('select.wav')
 		}
 		elseif rm_x==hint[0]&&rm_y==hint[1]&&rm_X==hint[2]&&rm_Y==hint[3]{
 			_txt+=ClearTwo(hint[0],hint[1],hint[2],hint[3])
 			if linkwndmusic!=2
-				_txt+=PlayLinkWndMusic('play','PATH\match.wav')
+				PlayLinkWndMusic.SoundEffect('match.wav')
 			_rm=''
 		}
 	}
@@ -907,7 +906,7 @@ OnLButtonDown{//鼠标操作
 				if link_timemode==1
 					link_timemax+=3000
 				if linkwndmusic!=2
-					_txt+=PlayLinkWndMusic('play','PATH\match.wav')
+					PlayLinkWndMusic.SoundEffect('match.wav')
 				m_nY1 = -1
 				m_nX1 = -1
 				select=-1
@@ -918,7 +917,7 @@ OnLButtonDown{//鼠标操作
 				m_nX1 = _x
 				select=m_nY1*m_nCol+m_nX1
 				if linkwndmusic!=2
-					_txt+=PlayLinkWndMusic('play','PATH\select.wav')
+					PlayLinkWndMusic.SoundEffect('select.wav')
 			}
 		}
 		else{
@@ -927,7 +926,7 @@ OnLButtonDown{//鼠标操作
 			m_nX1 = _x
 			select=m_nY1*m_nCol+m_nX1
 			if linkwndmusic!=2
-				_txt+=PlayLinkWndMusic('play','PATH\select.wav')
+				PlayLinkWndMusic.SoundEffect('select.wav')
 		}
 	}
 	else{
@@ -935,7 +934,7 @@ OnLButtonDown{//鼠标操作
 		m_nX1 =_x
 		select=m_nY1*m_nCol+m_nX1
 		if linkwndmusic!=2
-			_txt+=PlayLinkWndMusic('play','PATH\select.wav')
+			PlayLinkWndMusic.SoundEffect('select.wav')
 	}
 	_txt+=WinCheck
 	_txt+=OnDrawLinkWnd
@@ -2356,4 +2355,9 @@ LinkBar{
 }
 PlayLinkWndMusic{
 	"\![sound,%(_argv[0]),%(_argv[1])]"
+}
+PlayLinkWndMusic.SoundEffect:void{
+	CALLSAORI('mciaudior', 'stop')
+	CALLSAORI('mciaudior', 'load', 'PATH\'+_argv[0])
+	CALLSAORI('mciaudior', 'play')
 }
