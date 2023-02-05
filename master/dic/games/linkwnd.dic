@@ -152,7 +152,8 @@ OnInitLinkWnd{//新游戏入口
 	link_timemax=link_timebase+GETTICKCOUNT
 	_txt+=OnDrawLinkWnd
 	_txt+=LinkWndMenu
-	_txt+=BGMusic
+	if !linkwndmusic
+		_txt+=BGMusic
 	_txt
 }
 m_MapSeed.Load{//地图种子读取
