@@ -70,11 +70,11 @@ CheckLinkWnd{//参数检查
 	if !ISVAR('LinkWndnd')
 		LinkWndnd=0
 	if LinkWndnd==0
-		难度='简单'
+		LinkWnd.Difficulty='简单'
 	elseif LinkWndnd==1
-		难度='普通'
+		LinkWnd.Difficulty='普通'
 	elseif LinkWndnd==2
-		难度='困难'
+		LinkWnd.Difficulty='困难'
 	_timemode=0
 	if link_timemode==0||link_timemode==1
 		_timemode=link_timemode+1
@@ -776,9 +776,7 @@ ClearLinkWndVar{//变量消除
 	ERASEVAR('xx')
 	ERASEVAR('y')
 	ERASEVAR('yy')
-	ERASEVAR('模式')
-	ERASEVAR('难度')
-	ERASEVAR('花式模式')
+	ERASEVAR('LinkWnd.Difficulty')
 	ERASEVAR('shiftmode')
 	ERASEVAR('levelmax')
 	ERASEVAR('LinkWndMapNum')

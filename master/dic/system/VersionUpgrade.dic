@@ -210,4 +210,6 @@ VERSION_UPGRADE_10:void{
 		ERASEVAR('friendbirthday')
 		FriendBirthDay.IDmax=0
 	}
+	ERASEVAR('模式')
+	ERASEVAR('花式模式')
 }
