@@ -245,7 +245,7 @@ Loadm_map{//加载地图
 		_nElemID[_i * 2 + 1]=RAND(MatchNum)+1
 		_nElemID[_i * 2] = _nElemID[_i * 2 + 1]
 	}
-	Clearm_map
+	Clean_map
 	//将方块填入地图
 	for _i=1; _i<m_nRow-1; _i++{
 		for _j=1; _j<m_nCol-1; _j++{
@@ -269,7 +269,7 @@ Loadm_map{//加载地图
 		return
 	}
 }
-Clearm_map{//地图清空
+Clean_map{//地图清空
 	m_map=IARRAY
 	for _i=0; _i<m_nRow; _i++{
 		for _j=0; _j<m_nCol; _j++{
