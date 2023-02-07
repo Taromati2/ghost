@@ -754,18 +754,33 @@ SHIORI_FW.MakeBadResponse.OneCRLF {
 SHIORI_FW.MakeEmptyResponse{SHIORI_FW.MakeEmptyResponse.OneCRLF+C_CRLF}
 SHIORI_FW.MakeEmptyResponse.OneCRLF {
 	case SHIORI_FW.Eventid {
-		when 'OnFirstBoot', 'OnBoot', 'OnWindowStateRestore', 'OnGhostChanged'
-			//スコープ0/1の基本サーフィスを出す必要があるイベント
-			"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
-			Value: \0\s[0]\1\s[10]\e%(C_CRLF)"
+		when 'OnFirstBoot', 'OnGhostChanged'
+			SHIORI_FW.MakeEmptyResponse.OneCRLF.BootEvent
+		when 'OnBoot', 'OnWindowStateRestore'
+			SHIORI_FW.MakeEmptyResponse.OneCRLF.SurfaceReset
 		when 'OnClose'
 			//終了指示を出す必要があるイベント
-			"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
-			Value: \0\-\e%(C_CRLF)"
+			SHIORI_FW.MakeEmptyResponse.OneCRLF.WithSakura('\0\-\e')
 		others
 			//上記以外では204を返送して良い
-			"SHIORI/3.0 204 No Content%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)"
+			SHIORI_FW.MakeEmptyResponse.OneCRLF.Default
 	}
+}
+SHIORI_FW.MakeEmptyResponse.OneCRLF.Default{"SHIORI/3.0 204 No Content%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)"}
+SHIORI_FW.MakeEmptyResponse.OneCRLF.WithSakura{
+	"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
+	Value: %(_argv[0])%(C_CRLF)"
+}
+SHIORI_FW.MakeEmptyResponse.OneCRLF.SurfaceReset{
+	//スコープ0/1の基本サーフィスを出す必要があるイベント
+	SHIORI_FW.MakeEmptyResponse.OneCRLF.WithSakura('\0\s[0]\1\s[10]\e')
+}
+SHIORI_FW.MakeEmptyResponse.OneCRLF.BootEvent{
+	if ISFUNC(SHIORI_FW.TranslateEvent('OnBoot'))
+		//SSP側でフォールバックするのでここでは204を返す
+		SHIORI_FW.MakeEmptyResponse.OneCRLF.Default
+	else
+		SHIORI_FW.MakeEmptyResponse.OneCRLF.SurfaceReset
 }
 
 //------------------------------------------------------------------------------
