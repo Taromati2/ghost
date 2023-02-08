@@ -2357,6 +2357,6 @@ PlayLinkWndMusic{
 }
 PlayLinkWndMusic.SoundEffect:void{
 	CALLSAORI('mciaudior', 'stop')
-	CALLSAORI('mciaudior', 'load', 'PATH\'+_argv[0])
+	CALLSAORI('mciaudior', 'load', 'UN_SAORI_path\PATH\'+_argv[0])
 	CALLSAORI('mciaudior', 'play')
 }
