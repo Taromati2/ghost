@@ -327,11 +327,11 @@ OnDrawLinkWnd{//绘图
 			_y = _i*(LinkWndHigh-1)
 			if m_map[_i*m_nCol+_j] >0{
 				_sort=m_map[_i*m_nCol+_j]
-				_txt+="\_l[%(_x+LinkWnd_LEFT),%(LinkWnd_TOP+_y)]\__q[OnLButtonDown,%(_j),%(_i)]\_b[%(_PIC),inline,--clipping=1 %((_sort-1)*LinkWndHigh+1) %(LinkWndWIDTH) %((_sort)*LinkWndHigh)]\__q"
+				_txt+="\_l[%(_x+LinkWnd_LEFT),%(LinkWnd_TOP+_y)]\__q[OnLButtonDown,%(_j),%(_i)]\_b[%(_PIC),inline,--option=use_self_alpha,--clipping=1 %((_sort-1)*LinkWndHigh+1) %(LinkWndWIDTH) %((_sort)*LinkWndHigh)]\__q"
 			}
 			if m_map[_i*m_nCol+_j] >0 && select==_i*m_nCol+_j{
 				_sort=m_map[_i*m_nCol+_j]
-				_txt+="\_l[%(_x+LinkWnd_LEFT),%(LinkWnd_TOP+_y)]\__q[OnLButtonDown,%(_j),%(_i)]\_b[%(_PIC),inline,--clipping=%(LinkWndWIDTH+1) %((_sort-1)*LinkWndHigh+1) %(LinkWndWIDTH*2) %((_sort)*LinkWndHigh)]\__q"
+				_txt+="\_l[%(_x+LinkWnd_LEFT),%(LinkWnd_TOP+_y)]\__q[OnLButtonDown,%(_j),%(_i)]\_b[%(_PIC),inline,--option=use_self_alpha,--clipping=%(LinkWndWIDTH+1) %((_sort-1)*LinkWndHigh+1) %(LinkWndWIDTH*2) %((_sort)*LinkWndHigh)]\__q"
 			}
 		}
 	}
