@@ -27,13 +27,29 @@ OnFileDrop{
 		'更新tama？\n/
 		\q[◇确定,OnUpdateTama,'+SakuraScriptArgConverter(reference0)+']\n/
 		\q[◇无用,Cancel]'
+	}	
+	elseif ISDIR(_file){//若是文件夹
+		if mode=='0'
+			'\0\s[0]要'
+		else{
+			'\1'
+		}
+		--
+		'怎么做？\n'
+		--
+		if IsMusicDir(_file)
+			"\q[◇作为音乐目录添加,OnMusicFileDrop,%(SakuraScriptArgConverter(reference0))]\n"
+		--
+		"\q[◇创建快捷方式,OnShortcutFileDrop,%(SakuraScriptArgConverter(reference0))]\n/
+		\q[◇直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]\n/
+		\q[◇无用,Cancel]"
 	}
 	else{
 		case _fileext {
 			when '.m3u', '.m3u8', '.mid', '.wav', '.mp3', '.au', '.m4a', '.ogg', '.wma','.ape','.flac','.avi','.wmv','.rm','.rmvb','.mp4','.mkv','.flv','.mpg'{
-				MusicFileDrop(reference0)
+				OnMusicFileDrop(reference0)
 			}
-			when '.exe','.lnk',''{
+			when '.exe','.lnk'{
 				OnShortcutFileDrop
 			}
 			when '.png', '.jpg', '.jpeg', '.bmp'{
@@ -50,9 +66,8 @@ OnFileDrop{
 					temp = reference0
 					if mode=='0'
 						'\0\s[0]要怎么做？'
-					else{
+					else
 						'\1怎么做？'
-					}
 					--
 					"\n/
 					\q[◇作为辞书打开,OnDicDrop]\n/
@@ -84,6 +99,31 @@ OnFileDrop{
 			}
 		}
 	}
+}
+IsMusicFlie{
+	if ISDIR(_argv[0]){
+		0
+		return
+	}
+	_file = _argv[0]
+	_fileext = TOLOWER(SPLITPATH(_file)[3])
+	case _fileext {
+		when '.m3u', '.m3u8', '.mid', '.wav', '.mp3', '.au', '.m4a', '.ogg', '.wma','.ape','.flac','.avi','.wmv','.rm','.rmvb','.mp4','.mkv','.flv','.mpg'
+			1
+		others
+			0
+	}
+}
+IsMusicDir{//判断是否是音乐目录，不进行递归因为正常的音乐目录都是一层下就有音乐文件
+	_dir = _argv[0]
+	_files = FENUM(_dir)
+	foreach _files;_file{
+		if IsMusicFlie(_file){
+			1
+			return
+		}
+	}
+	0
 }
 GetSHIORInameFromDicExt{
 	case _argv[0]{

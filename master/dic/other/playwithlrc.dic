@@ -1463,8 +1463,10 @@ MusicLoadFolder{
 }
 //拖放音乐文件
 //---------------------------------------------------
-MusicFileDrop{
+OnMusicFileDrop{
 	_buff = _argv[0]
+	if !_buff
+		_buff = reference0
 	foreach _buff; _ref {
 		_fileext = TOLOWER(SPLITPATH(_ref)[3])
 		if ISDIR(_ref) {
