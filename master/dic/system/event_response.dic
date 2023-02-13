@@ -701,6 +701,11 @@ OnInstallFullDataPack{
 OnUpdateProcessExec{
 	if QuickStartVersion
 		OnInstallFullDataPack
+	elseif SHIORI_FW.DebugMode
+		'\0\s[0]当前处于开发者模式，真的需要更新吗？\n/
+		\q[◇是,OnUpdate]\n/
+		\q[◇否,Cancel]\n/
+		'
 }
 OnSilentUpdate{
 	DiscordCustomSet.CustomDetail('眼睛在脉动')
