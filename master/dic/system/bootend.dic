@@ -70,7 +70,7 @@ OnFirstBoot{//改动于2020 by steve02081504
 	BaseGhostStart
 	CLEARERRORLOG//未进行变量值恢复错误忽略
 	--
-	if !ISVAR('FirstBootCount'){
+	if !ISVAR('FirstBootCount') || _argc{
 		mode = '0'
 		aitalkinterval = 180
 		if !username
