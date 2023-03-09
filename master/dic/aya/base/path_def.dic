@@ -1,4 +1,51 @@
 //by steve02081504
+/*
+						   N..,,,.N
+						 .,,,,,,,,,.
+					   ...,,,,,,,,,....
+					  .......,..,?.....
+					 +, ?:...=. +.~..?..:
+					 ...I,...?I?,++..~7,~
+					 +,,7II:.?II~=+=,,??:~
+					II.=$$$?~7?=NDZN=,?I~=
+					7?.:$+8DI,7,OOI?::+$~7
+					?I::7=ZD.=...I7I:++$:$
+					?77,+7?,.. ..=:=?$$$:
+					  7+~7$$:...,=I~?+$
+					  887~7D ??..,IZ8 8
+						N OZO$O..7NOD
+						8ZZZO$8=.Z$Z8
+						D8OOOZ8ZOZZZO
+						Z88D8O8N8O8N
+					   8ZOD8OO8OZZ
+					  8OZODOZ8Z8ZD
+					 NZZO88ZDZZO8N~O
+					 Z$ZZZND8OZZOO,:
+					ODN88~DD8ZZO878OD
+				   O8D,.,..,.OO88OZ8ON
+				  ?OO8.,.D: .=O 8ZZDD8O
+				  NZO88=,O,:, ND8O8DOD8
+				   8$$8O7+88DOZ8NOO8ID
+					 Z=~NZ8ZDZZZZ,D
+					   N88D	   8ND
+						 NNN   DDDN
+						N88D   D88D
+						 88D   ND8D
+						 N8DN	D8DN
+						 D88N	N88D
+						 N88D	 D88
+						 N88D	 D88N
+						  88D	 N88N
+						  D8D	  D8D
+						.ONN ND	 8NDN D
+						ZZZ88OD DDZZO8N
+						IZOD,:	 N:8OZ,
+						ZZO8OO	  8ZZZ8
+					  $ZZZZOD8N	  ZO.DZD
+					 88OO88N~:	  O$Z$OD
+					 N... ,8		  ?NDDD,
+									8N
+*/
 //
 #globaldefine SHIORI_NAME			aya
 #globaldefine _DIC_DIRS_			'dic'
