@@ -227,3 +227,23 @@ InVM{
 	else
 		1
 }
+GETSIZEUNIT{
+	_table=('B','KB','MB','GB','TB','PB','EB','ZB','YB')
+	_size=_argv[0]
+	_i=0
+	while _size>1024{
+		_size/=1024
+		_i++
+	}
+	_table[_i]
+}
+UNITSIZE{
+	_table=('B','KB','MB','GB','TB','PB','EB','ZB','YB')
+	_size=_argv[0]
+	_i=0
+	while _size>1024{
+		_size/=1024
+		_i++
+	}
+	_size+_table[_i]
+}

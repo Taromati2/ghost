@@ -67,7 +67,7 @@ SubMenu{
 			'\q[◇播放音乐,OnMusicPlayer]	\_l[100,-]\q[◇魔法时钟,OnAnalogClock]\n/
 			\q[◇闹钟,OnAlarmMenu]			\_l[100,-]\q[◇课程表,OnClassTable] \n/
 			\q[◇记事本,Onnotebook]			\_l[100,-]\q[◇截屏,OnScreenShot]\n/
-			\q[◇更换壁纸,OnWallPaper]		\_l[100,-]\q[◇清空垃圾箱,TrashClean]\n/
+			\q[◇更换壁纸,OnWallPaper]		\_l[100,-]\q[◇清空垃圾箱,OnTrashClean]\n/
 			\q[◇英汉互查字典,dictionary]	\_l[100,-]\q[◇日历,OnCalendar]\n/
 			\q[◇天气预报,OnCheckWeather]	\_l[100,-]\q[◇日程提醒,OnAgenda]\n/
 			\q[◇IP查询,OnCheckIp]			\_l[100,-]\q[◇计算器,OnCalculator]\n/
@@ -1044,16 +1044,48 @@ OnOpenMasterMenu{
 	'\![open,file,ghost\master]'
 }
 //---- ごみ箱を空に ---------------------------------------------------------------------------------------------------
-Select.TrashClean{
-	OnTrashClean
+Init.RecycleBinStatus{
+	RecycleBinStatus.Succees = 0
+	RecycleBinStatus.FileNum = 0
+	RecycleBinStatus.TotalSize = 0
+}
+UpdateRecycleBinStatus{
+	RecycleBinStatus.FileNum = reference0
+	RecycleBinStatus.TotalSize = reference1
+}
+OnRecycleBinStatusUpdate.Talk{
+	_NumDiff = reference2
+	_SizeDiff = reference3
+	if _NumDiff > 9 || _SizeDiff > 1024*1024*1024*2
+		"\0\s[0]嗯\w8，有%(_NumDiff)个文件\w9，共%(UNITSIZE(_SizeDiff))被添加到了回收站。"
+	elseif _NumDiff > 0{
+		if RecycleBinStatus.FileNum > 720
+			"\0\s[8]嗯.\w8\w8.\w8.\n/
+			回收站里现在已经有%(RecycleBinStatus.FileNum)个文件了哦？"
+		elseif RecycleBinStatus.TotalSize > 1024*1024*1024*2
+			"\0\s[8]嗯.\w8\w8.\w8.\n/
+			回收站里现在已经有%(UNITSIZE(RecycleBinStatus.TotalSize))的文件了哦？"
+	}
+	elseif _NumDiff < 0 && RecycleBinStatus.TotalSize
+		'\0\s[26]需要我帮忙吗？'
+}
+OnRecycleBinStatusUpdate{
+	RecycleBinStatus.Succees = reference4
+	UpdateRecycleBinStatus
+
+	_t=OnRecycleBinStatusUpdate.Talk
+	if _t
+		_t+'\n/
+			\q[◇清空回收站,OnTrashClean]\n/
+			\q[◇无用,Cancel]\n/
+			'
 }
 OnTrashClean{
 	DiscordCustomSet.CustomDetail('打扫卫生')
 	--
-	_gomicheck = CALLSAORI('gomi', '-n')
-	if _gomicheck == 0{
+	if RecycleBinStatus.FileNum == 0{
 		if nurturance.Moeness>200||nurturance.Darkness>200||nurturance.Moeness>nurturance.Darkness{
-			'\0\s[0]接受任务！！\w9\s[-1]\b[-1]\w9\w9\w9\w9\w9\w9\s[0]\c嗯，啊勒，无法确定敌人？\w9\n好像敌人已经被歼灭了哦~'
+			'\0\s[0]接受任务！！\w9\s[-1]\b[-1]\w9\w9\w9\w9\w9\w9\s[0]\c\w8\s[20]嗯，啊勒，无法确定敌人？\w9\n好像敌人已经被歼灭了哦~'
 			'\0\s[0]嗯。\n那么，橘花去消灭敌人！！\w9\s[-1]\b[-1]\w9\w9\w9\w9\w9\w9\s[0]\c目标、无法确认。\w9\w9\s[3]\n有点可惜呢。\w9\1\s[10]………'
 		}
 		else{
@@ -1061,24 +1093,24 @@ OnTrashClean{
 			'\0\s[0]好的。\n那么、请稍微等一下。\w9\s[-1]\b[-1]\w9\w9\w9\w9\w9\w9\s[0]\c目标、无法确认。\w9\w9\s[3]\n有点可惜呢。\w9\1\s[10]………'
 		}
 	}
-	elseif _gomicheck > 0{
-		trashnum=_gomicheck
+	elseif RecycleBinStatus.Succees{
 		'\0\s[0]任务接受。\w9\s[-1]\b[-1]\w9\w9\w9'
 		'\0\s[0]好的。\n那么、请稍微等一下。\w9\s[-1]\b[-1]\w9\w9\w9'
 		--
 		if !silent
 			'\![sound,play,SOUND_PATH\shot.wav]'
 		--
-		'\![raise,OnTrashClean_s]'
+		'\![execute,emptyrecyclebin]'
 	}
 	else{
 		'\1\s[10]不…把自己像垃圾一样的丢掉吧。\w9\0\s[8]………'
 	}
 }
-OnTrashClean_s{
-	_gomisute = CALLSAORI('gomi', '-ef')
-	if _gomisute {
-		_t=MIN(kikkamoodmax,LOG(nurturance.Darkness*trashnum,2.718281)*kikkamood)
+OnRecycleBinEmpty{
+	UpdateRecycleBinStatus
+	if reference4 {
+		_trashnum = -reference2
+		_t=MIN(kikkamoodmax,LOG(nurturance.Darkness*_trashnum,2.718281)*kikkamood)
 		if _t<=0
 			_t=kikkamoodmax
 		kikkamood=MIN(kikkamoodmax,_t+kikkamood)
@@ -1098,8 +1130,6 @@ OnTrashClean_s{
 		'\w9\w9\0\s[3]抱歉、失败了。'
 		'\w9\w9\0\s[3]意料外的状况发生。\w9\n抱歉。'
 	}
-	--
-	ERASEVAR('trashnum')
 }
 //更换壁纸
 //----------------------------------------------------------------
