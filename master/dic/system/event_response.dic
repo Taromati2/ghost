@@ -1226,16 +1226,22 @@ OnURLQuery{
 	if shortcut==1{
 		temp=reference0
 		"\![excute,http-get,%(reference0),--param-charset=UTF-8,--file=url.html,--timeout=50,--async=OnLoadUrlTitle]"
-	}elseif RE_GREP(reference0,'.nar$'){
-		"\![execute,install,url,%(reference0),nar]"
-	}else{
+		return
+	}
+	elseif reference3=='unknown' || !reference3{
 		"\0\s[6]未知URL，请使用下载器下载\n\n[half]\_qURL:%(reference0)\_q\n"
-		--
-		"\q[◇打开URL,OnUrlOpen,%(reference0)]\n/
-		\q[◇复制URL,OnCopy,%(reference0)]\n/
-		\q[◇无用,Cancel]\n/
+	}
+	else{
+		"\0\s[0]自URL:%(reference0)\n/
+		下载并安装%(reference3)？\n/
+		\q[◇确认,script:""\![execute,install,%(reference0)]""]\n/
 		"
 	}
+	--
+	"\q[◇打开URL,OnUrlOpen,%(reference0)]\n/
+	\q[◇复制URL,OnCopy,%(reference0)]\n/
+	\q[◇无用,Cancel]\n/
+	"
 }
 OnLoadUrlTitle{
 	_file='VAR_PATH\\url.html'
