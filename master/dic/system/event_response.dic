@@ -1225,7 +1225,7 @@ ClearNetworkStatusVar{
 OnURLQuery{
 	if shortcut==1{
 		temp=reference0
-		"\![excute,http-get,%(reference0),--param-charset=UTF-8,--file=url.html,--timeout=50,--async=OnLoadUrlTitle]"
+		"\![excute,http-get,%(reference0),--param-charset=UTF-8,--file=VAR_PATH/url.html,--timeout=50,--async=OnLoadUrlTitle]"
 		return
 	}
 	elseif reference3=='unknown' || !reference3{
@@ -1244,7 +1244,7 @@ OnURLQuery{
 	"
 }
 OnLoadUrlTitle{
-	_file='VAR_PATH\\url.html'
+	_file='VAR_PATH/url.html'
 	_title=''
 	_charset=''
 	_url=temp
