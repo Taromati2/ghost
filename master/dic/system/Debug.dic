@@ -545,28 +545,8 @@ GetResourceEventRealName{
 	else
 		_argv[0]
 }
-IsResourceEvent{
-	if SUBSTR(_argv[0],0,3) != 'On_'{
-		0
-		return
-	}
-	case SUBSTR(_argv[0],3,STRLEN(_argv[0])){
-		when 'basewareversion','hwnd','uniqueid','capability','ownerghostname','otherghostname','installedghostname','installedshellname','installedballoonname','installedheadlinename','installedplugin','configuredbiffname','ghostpathlist','balloonpathlist','headlinepathlist','pluginpathlist','calendarskinpathlist','calendarpluginpathlist','rateofusegraph','inputbox.autocomplete'
-			0
-		others
-			1
-	}
-}
 Get_UKADOC_ofEvent{
-	'http://ssp.shillest.net/ukadoc/manual/'
-	--
-	if IsResourceEvent(_argv[0])
-		'list_shiori_resource'
-	else
-		'list_shiori_event'
-	--
-	_argv[0]=GetResourceEventRealName(_argv[0])
-	".html#%(_argv[0])"
+	"http://ssp.shillest.net/ukadoc/manual/?event_name=%(_argv[0])"
 }
 Get_AYA_Function_Doc{
 	'http://emily.shillest.net/ayaya/?%E3%83%9E%E3%83%8B%E3%83%A5%E3%82%A2%E3%83%AB/%E9%96%A2%E6%95%B0/'+_argv[0]
