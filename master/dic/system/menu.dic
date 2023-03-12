@@ -1070,15 +1070,16 @@ OnRecycleBinStatusUpdate.Talk{
 		'\0\s[26]需要我帮忙吗？'
 }
 OnRecycleBinStatusUpdate{
+	if RecycleBinStatus.Succees{
+		_t=OnRecycleBinStatusUpdate.Talk
+		if _t
+			_t+'\n/
+				\q[◇清空回收站,OnTrashClean]\n/
+				\q[◇无用,Cancel]\n/
+				'
+	}
 	RecycleBinStatus.Succees = reference4
 	UpdateRecycleBinStatus
-
-	_t=OnRecycleBinStatusUpdate.Talk
-	if _t
-		_t+'\n/
-			\q[◇清空回收站,OnTrashClean]\n/
-			\q[◇无用,Cancel]\n/
-			'
 }
 OnTrashClean{
 	DiscordCustomSet.CustomDetail('打扫卫生')
