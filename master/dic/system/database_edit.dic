@@ -280,7 +280,7 @@ OnUserDatabase.Page{
 OnUserDatabase.PageIndex{
 	_m=SQLite('-f',"SELECT ID FROM %(EXT_Table)")
 	_tola=(TOINT(_m)+9)/10
-	"\0\s[0]\_q\![set,choicetimeout,20000]请输入页数（半角数字）,共有 %(_tola)页!\n[200]\![*]\q[取消,OnUserDatabase.PageST]\![open,inputbox,OnUserDatabase.PageST,20000]"
+	"\0\s[0]\_q\![set,choicetimeout,20000]请输入页数（半角数字）,共有%(_tola)页!\n[200]\![*]\q[取消,OnUserDatabase.PageST]\![open,sliderinput,OnUserDatabase.PageST,20000,1,1,%(_tola)]"
 }
 OnUserDatabase.PageST{
 	_a=CUTSPACE(reference0)

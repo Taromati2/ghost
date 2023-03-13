@@ -434,7 +434,7 @@ OnAIdbPage{
 }
 Onselepag{
 	_a=(TOINT(SQLite.total('KikkaAIdb'))+9)/10
-	"\0\s[0]\_q\![set,choicetimeout,20000]请输入页数（半角数字）,共有 %(_a)页!\n[200]\![*]\q[取消,OnoverTeach,Onsp]\![open,inputbox,Onsp,20000]"
+	"\0\s[0]\_q\![set,choicetimeout,20000]请输入页数（半角数字）,共有 %(_a)页!\n[200]\![*]\q[取消,OnoverTeach,Onsp]\![open,inputbox,Onsp,20000,%(reference0),1,%(_a)]"
 }
 Onsp{//选页
 	_a=CUTSPACE(reference0)

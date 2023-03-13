@@ -605,7 +605,7 @@ OnMusicListPageTxt{
 }
 OnInputMusicPage{
 	_id=TOINT(_argv[0])
-	"\C\![open,inputbox,OnMusicListPage,-1,%(music_listpage[_id]+1)]"
+	"\C\![open,sliderinput,OnMusicListPage,-1,%(music_listpage[_id]+1),1,%(musicfile[0]/100+1)]"
 	temp='input'
 }
 OnMusicListPage{

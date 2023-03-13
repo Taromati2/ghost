@@ -2222,7 +2222,7 @@ Onacjeachday{
 	_txt
 }
 Oninputsentence{
-	"\![set,choicetimeout,0]共有210句，要看第几句？\![open,inputbox,Onacjeachday,%(reference0)]\n/
+	"\![set,choicetimeout,0]共有210句，要看第几句？\![open,sliderinput,Onacjeachday,-1,%(reference0),1,210]\n/
 	\n[150]/
 	\q[◇返回,Onacjeachday,%(reference0)]"
 }
