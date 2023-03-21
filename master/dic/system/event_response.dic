@@ -300,7 +300,8 @@ OnTextDrop{
 		if SUBSTR(CUTSPACE(temp),0,2) == 'On'
 			"\q[◇查看事件文档,OnUrlOpen,%(Get_UKADOC_ofEvent(CUTSPACE(temp)))]\n"
 		--
-		'\q[◇Sakura Script执行,OnTextDrop.SakuraScript]\n'
+		if IsSakuraScript(temp)
+			'\q[◇Sakura Script执行,OnTextDrop.SakuraScript]\n'
 		--
 		if ISEVALUABLE(temp)
 			'\q[◇表达式求值,OnTextDrop.EVAL]\n'

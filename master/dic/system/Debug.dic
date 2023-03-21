@@ -11,6 +11,9 @@ IsUrl{
 	else
 		0
 }
+IsSakuraScript{
+	RE_GREP(_argv[0],'\\_{0,2}[a-zA-Z0-9*!&\-+](\d|\[("([^"]|\\")+?"|([^\]]|\\\])+?)+?\])?')
+}
 OnShioriMemoryError{
 	_stack=GETCALLSTACK
 	_func=_stack[ARRAYSIZE(_stack)-2]
@@ -89,7 +92,7 @@ ValueTOstring{
 		elseif "'" !_in_ _argv[0]
 			"'"+_argv[0]+"'"
 		else
-			REPLACE(RE_REPLACE(RE_REPLACE('"'+REPLACE(_argv[0],'"','"+'+"'"+'"'+"'"+'+"')+'"','^\"\"\+',''),'\+\"\"$',''),'"'+"'+'"+'"','')
+			'"'+REPLACE(_argv[0],'"','""')+'"'
 	}
 	elseif GETTYPE(_argv[0])==5{
 		'map'
@@ -98,6 +101,52 @@ ValueTOstring{
 		'NULL'
 	else
 		TOSTR(_argv[0])
+}
+//用虚拟终端序列色彩化的ValueTOstring
+ValueTOstring.Coloured{
+	_red=CHR(27)+'[31m'
+	_green=CHR(27)+'[32m'
+	_yellow=CHR(27)+'[33m'
+	_blue=CHR(27)+'[34m'
+	_magenta=CHR(27)+'[35m'
+	_cyan=CHR(27)+'[36m'
+	_white=CHR(27)+'[37m'
+	_reset=CHR(27)+'[0m'
+	//
+	if _argc > 1{
+		_cyan
+		--
+		_t='('
+		foreach _argv;_i{
+			_t+=ValueTOstring.Coloured(_i)+_cyan+','
+		}
+		RE_REPLACE(_t,'\,$',_cyan+')')
+		--
+		_reset
+	}
+	elseif ISSTR(_argv[0]){
+		_magenta
+		--
+		if '"' !_in_ _argv[0]
+			'"'+_argv[0]+'"'
+		elseif "'" !_in_ _argv[0]
+			"'"+_argv[0]+"'"
+		else
+			'"'+REPLACE(_argv[0],'"','""')+'"'
+		--
+		_reset
+	}
+	elseif GETTYPE(_argv[0])==5{
+		_green
+		--
+		'map'
+		--
+		_reset
+	}
+	elseif TOSTR(_argv[0])==''
+		_white+'NULL'+_reset
+	else
+		_yellow+TOSTR(_argv[0])+_reset
 }
 ValueTOstring.SakuraScript{
 	REPLACE(ValueTOstring(_argv),'\','\\')
@@ -252,7 +301,7 @@ On_ShioriEcho.GetResult {
 	}
 	else{
 		if ISVAR('ShioriEcho.Result'){
-			SHIORI_FW.Make_X_SSTP_PassThru('Result',ValueTOstring(ShioriEcho.Result))
+			SHIORI_FW.Make_X_SSTP_PassThru('Result',ValueTOstring.Coloured(ShioriEcho.Result))
 			SHIORI_FW.Make_X_SSTP_PassThru('Type',GETTYPE.string((ShioriEcho.Result)))
 		}
 	}
