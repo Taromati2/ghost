@@ -213,7 +213,7 @@ OnDicDrop{
 		'辞书文件，用于提供ghost机能\n'
 		--
 		'要怎么做？\n/
-		\q[◇联系人格维护者，请求追加机能,OnUrlOpen,https://github.com/Taromati2/Taromati2/issues/new?assignees=steve02081504&labels=enhancement&template=feature-request.md&title=a+feature+request]\n/
+		\q[◇联系人格维护者，请求追加机能,OnUrlOpen,https://github.com/Taromati2/Taromati2/issues/new?assignees=steve02081504&labels=enhancement&template=feature-request.yaml&title=a+feature+request]\n/
 		\q[◇教练，我想学伪春菜,OnUrlOpen,https://github.com/Taromati2/Taromati2/blob/master/docs/entry_guidance.md]\n/
 		\q[◇我是老手，打开master目录，我自己动,OnOpenMasterMenu]\n/
 		'
