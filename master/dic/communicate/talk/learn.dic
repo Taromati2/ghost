@@ -120,7 +120,7 @@ OnTeach{
 			if _b==0
 				"\0\s[0]\b[2]记录完毕,现共有%(SQLite.Size('KikkaAIdb'))条教学对话...\n这次增加的为:\n[200]提问: %(formattemp(temp02))\n[150]回答: %(formattemp(temp03))\n[200]\![set,choicetimeout,0]\![*]\q[继续教橘花对话,教学]\n\![*]\q[暂时就这样了,OnoverTeach]"
 			else
-				BUGNow
+				BUGNow('SQL操作失败')
 		}
 	}
 }
@@ -463,7 +463,7 @@ OnAIdbUpdate{
 		if !_a
 			"\0\s[0]删除成功!现共有%(SQLite.Size('KikkaAIdb'))条教学对话喔~\n[200]\![*]\q[返回,TalkDelete]\n\![*]\q[取消,OnoverTeach]"
 		else
-			BUGNow
+			BUGNow('SQL操作失败')
 	}
 	elseif temp01=='修改该词条' {
 		temp01=NULL
@@ -526,7 +526,7 @@ OnAIdbUpdate{
 			\![set,choicetimeout,0]\![*]\q[返回继续修改,OnAIdbUpdate,%(_b)]   \![*]\q[返回列表,TalkAllAmend]     \![*]\q[不用了,OnoverTeach]"
 		}
 		else {
-			BUGNow
+			BUGNow('SQL操作失败')
 		}
 	}
 }
