@@ -422,7 +422,7 @@ request {
 			status = _value
 		}
 
-		if SHIORI_FW.SecurityLevel == 'External' && SHIORI_FW.Eventid != 'OnXUkagakaLinkOpen' {
+		if TOLOWER(SHIORI_FW.SecurityLevel) == 'external' && SHIORI_FW.Eventid != 'OnXUkagakaLinkOpen' {
 			SHIORI_FW.MakeBadResponse
 			return
 		}
