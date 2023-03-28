@@ -1643,7 +1643,16 @@ Is_Defened_Event{
 		0
 }
 SHIORI_EV.On_Has_Event : void {
-	SHIORI_FW.Make_X_SSTP_PassThru('Result',ISFUNC(reference0)||ISFUNC('On_'+reference0)||ISFUNC('SHIORI_EV.'+reference0)||ISFUNC('SHIORI_EV.On_'+reference0))
+	_event_name=reference0
+	if SUBSTR(_event_name,0,2) != 'On'
+		_event_name='On_'+_event_name
+	_result=0
+	if TOLOWER(SHIORI_FW.SecurityLevel) == 'external'
+		_event_name='ExternalEvent.'+_event_name
+	_result=ISFUNC(_event_name)
+	if !_result
+		_result=ISFUNC('SHIORI_EV.'+_event_name)
+	SHIORI_FW.Make_X_SSTP_PassThru('Result',_result)
 }
 
 //---- SHIORI 関連情報 ------------------------------------------------------------------
