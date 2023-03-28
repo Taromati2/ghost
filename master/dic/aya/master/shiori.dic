@@ -345,9 +345,6 @@ request {
 	var.req.value	= IARRAY
 	var.req.rawvalue= IARRAY
 
-	_linenum = 0
-	_idparsed = 0
-
 	status = ''
 	SHIORI_FW.Eventid=''
 	SHIORI_FW.SecurityLevel='Internal'//互換性のためデフォルトはInternal
@@ -360,15 +357,6 @@ request {
 		//空行もしくはみつからなかった
 		if _lineend <= _linestart {
 			break
-		}
-
-		_linenum += 1
-		if SHIORI_FW.REQUEST_LINES_LIMIT {
-			if _linenum > SHIORI_FW.REQUEST_LINES_LIMIT {
-				if _idparsed {
-					break
-				}
-			}
 		}
 
 		_lin = SUBSTR(_reqdata,_linestart,(_lineend - _linestart))
@@ -395,15 +383,6 @@ request {
 			SHIORI_FW.Eventid = _value
 			if SUBSTR(SHIORI_FW.Eventid, 0, 2) != 'On'
 				SHIORI_FW.Eventid = 'On_' + SHIORI_FW.Eventid
-
-			SHIORI_FW.EventidTranslate = SHIORI_FW.TranslateEvent(SHIORI_FW.Eventid)
-
-			//ハンドラが無い場合は即返る
-			if !ISFUNC(SHIORI_FW.EventidTranslate) && !SHIORI_FW.IsImportantEvent {
-				SHIORI_FW.NoMatchingEvent
-				return
-			}
-			_idparsed = 1
 		}
 		//セキュリティレベル
 		elseif _key == 'SecurityLevel' {
@@ -422,11 +401,6 @@ request {
 			status = _value
 		}
 
-		if TOLOWER(SHIORI_FW.SecurityLevel) == 'external' && SHIORI_FW.Eventid != 'OnXUkagakaLinkOpen' {
-			SHIORI_FW.MakeBadResponse
-			return
-		}
-
 		//キーと値を記憶
 		var.req.rawvalue ,= _value
 
@@ -441,6 +415,17 @@ request {
 		else {
 			var.req.value ,= TOAUTOEX(_value)
 		}
+	}
+	
+	if TOLOWER(SHIORI_FW.SecurityLevel) == 'external'
+		SHIORI_FW.Eventid = 'ExternalEvent.'+SHIORI_FW.Eventid
+
+	SHIORI_FW.EventidTranslate = SHIORI_FW.TranslateEvent(SHIORI_FW.Eventid)
+
+	//ハンドラが無い場合は即返る
+	if !ISFUNC(SHIORI_FW.EventidTranslate) && !SHIORI_FW.IsImportantEvent {
+		SHIORI_FW.NoMatchingEvent
+		return
 	}
 
 	OnRequest

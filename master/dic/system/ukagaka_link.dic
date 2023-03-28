@@ -1,4 +1,4 @@
-OnXUkagakaLinkOpen{
+ExternalEvent.OnXUkagakaLinkOpen{
 	_action_type=reference0[0,':']
 	_action_info=reference0
 	_action_info[0,':']=IARRAY
