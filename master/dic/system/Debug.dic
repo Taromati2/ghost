@@ -759,7 +759,7 @@ On_tamaExit{
 	SETTAMAHWND(0)
 	--
 	if SHIORI_FW.DebugMode
-		DiscordCustomSet.SmallImageKey('simple_hollow_red_heart')
+		DiscordCustomSet.SmallImageKey('simple_hollow_red_heart')//这是在恢复tama的小图标设置，别乱删。
 	else
 		DiscordCustomSet.SmallImageKey('')
 	--
