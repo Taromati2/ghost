@@ -347,7 +347,7 @@ request {
 
 	status = ''
 	SHIORI_FW.Eventid=''
-	SHIORI_FW.SecurityLevel='Internal'//互換性のためデフォルトはInternal
+	SHIORI_FW.SecurityLevel='local'//互換性のためデフォルトはlocal
 
 	while _lineend > _linestart {
 		//行分割
@@ -416,8 +416,8 @@ request {
 			var.req.value ,= TOAUTOEX(_value)
 		}
 	}
-	
-	if TOLOWER(SHIORI_FW.SecurityLevel) == 'external'
+
+	if SHIORI_FW.SecurityLevel == 'external'
 		SHIORI_FW.Eventid = 'ExternalEvent.'+SHIORI_FW.Eventid
 
 	SHIORI_FW.EventidTranslate = SHIORI_FW.TranslateEvent(SHIORI_FW.Eventid)
