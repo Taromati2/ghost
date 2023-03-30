@@ -12,7 +12,29 @@ IsUrl{
 		0
 }
 IsSakuraScript{
-	RE_GREP(_argv[0],'\\_{0,2}[a-zA-Z0-9*!&\-+](\d|\[("([^"]|\\")+?"|([^\]]|\\\])+?)+?\])?')
+	_str=_argv[0]
+	if _argc>1 || GETTYPE(_str)!=3
+		0
+	elseif RE_GREP(_str,'\\_{0,2}[a-zA-Z0-9*!&\-+](\d|\[("([^"]|\\")+?"|([^\]]|\\\])+?)+?\])?'){
+		//对于每个"\"后面的tag，检查是否是合法的SakuraScript
+		//直到遇到不合法的tag或者检查完所有tag为止
+		SETDELIM(_str,'\')
+		_intr=0
+		_end=ARRAYSIZE(_str)
+		while _intr < _end{
+			_sub=_str[_intr++]
+			//首先，_sub为空时代表下一个tag是转义的，跳过
+			if !_sub{_intr+=1;continue}
+			//然后，检查是否是合法的tag
+			if !RE_GREP(_sub,'^[0|1|s|i|\!|4|5|b|_b|n|_n|c|_l|C|_\!|_\?|__v|_b|f|w|_w|__w|x|t|_q|_s|q|z|__q|\*|_a|e|\-|a|6|7|+|_+|v|8|_v|V|j|__t|__c|_u|_m|m|\&]'){
+				//不合法，返回0
+				0
+				return
+			}
+		}
+		1
+	}
+	0
 }
 OnShioriMemoryError{
 	_stack=GETCALLSTACK
@@ -442,7 +464,7 @@ OnCalculateVar{
 		\q[◇复制表达式,OnCopy,'+SakuraScriptArgConverter(reference0)+']\n/
 		'
 		--
-		if IsSakuraScript(_Result) && GETTYPE(_Result) == 3
+		if IsSakuraScript(_Result)
 			'\q[◇结果作Sakura Script执行,OnSakuraScript,'+SakuraScriptArgConverter(_Result)+']\n'
 		--
 		'\n/
