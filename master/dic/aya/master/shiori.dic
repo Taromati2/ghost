@@ -1617,27 +1617,25 @@ SHIORI_EV.OnBalloonChange : void {
 	SHIORI_FW.OnChangeSelfInfo
 }
 Get_Full_Defened_Event_Name{
-	if ISFUNC(_argv[0])
-		_argv[0]
-	elseif ISFUNC('On_'+_argv[0])
-		'On_'+_argv[0]
-	elseif ISFUNC('SHIORI_FW.'+_argv[0])
-		'SHIORI_FW.'+_argv[0]
-	elseif ISFUNC('SHIORI_EV.'+_argv[0])
-		'SHIORI_EV.'+_argv[0]
-	elseif ISFUNC('SHIORI_EV.On_'+_argv[0])
-		'SHIORI_EV.On_'+_argv[0]
+	_event_name=_argv[0]
+	if SUBSTR(_event_name,0,2) != 'On'
+		_event_name='On_'+_event_name
+	if ISFUNC(_event_name)
+		_event_name
+	elseif ISFUNC('SHIORI_FW.'+_event_name)
+		'SHIORI_FW.'+_event_name
+	elseif ISFUNC('SHIORI_EV.'+_event_name)
+		'SHIORI_EV.'+_event_name
 }
 Is_Defened_Event{
-	if ISFUNC(_argv[0])
+	_event_name=_argv[0]
+	if SUBSTR(_event_name,0,2) != 'On'
+		_event_name='On_'+_event_name
+	if ISFUNC(_event_name)
 		1
-	elseif ISFUNC('On_'+_argv[0])
+	elseif ISFUNC('SHIORI_FW.'+_event_name)
 		1
-	elseif ISFUNC('SHIORI_FW.'+_argv[0])
-		1
-	elseif ISFUNC('SHIORI_EV.'+_argv[0])
-		1
-	elseif ISFUNC('SHIORI_EV.On_'+_argv[0])
+	elseif ISFUNC('SHIORI_EV.'+_event_name)
 		1
 	else
 		0

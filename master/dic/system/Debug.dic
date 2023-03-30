@@ -441,6 +441,7 @@ OnCalculateVar{
 		\q[◇复制结果,OnCopy,'+SakuraScriptArgConverter(_Result)+']\n/
 		\q[◇复制表达式,OnCopy,'+SakuraScriptArgConverter(reference0)+']\n/
 		'
+		--
 		if IsSakuraScript(_Result) && GETTYPE(_Result) == 3
 			'\q[◇结果作Sakura Script执行,OnSakuraScript,'+SakuraScriptArgConverter(_Result)+']\n'
 		--
