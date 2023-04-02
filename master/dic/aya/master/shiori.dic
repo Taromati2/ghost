@@ -417,7 +417,7 @@ request {
 		}
 	}
 
-	if SHIORI_FW.SecurityLevel == 'external'
+	if TOLOWER(SHIORI_FW.SecurityLevel) == 'external'
 		SHIORI_FW.Eventid = 'ExternalEvent.'+SHIORI_FW.Eventid
 
 	SHIORI_FW.EventidTranslate = SHIORI_FW.TranslateEvent(SHIORI_FW.Eventid)
