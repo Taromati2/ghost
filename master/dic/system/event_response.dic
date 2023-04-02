@@ -252,11 +252,11 @@ OnTextDrop{
 			内容：%(GetGlobalDefine.SakuraScript(_t))\n/
 			\q[◇复制定义内容,OnCopy,"+GetGlobalDefine.SakuraArg(_t)+']\n/
 			'
-		elseif Is_Defened_Event(_t)||Is_Defened_Event(_t+'Ex'){
-			_EXfunc=!Is_Defened_Event(_t)
+		elseif Is_Defened_Event_Or_Func(_t)||Is_Defened_Event(_t+'Ex'){
+			_EXfunc=!Is_Defened_Event_Or_Func(_t)
 			if _EXfunc
 				_t=_t+'Ex'
-			_t=Get_Full_Defened_Event_Name(_t)
+			_t=Get_Func_Or_Full_Defened_Event_Name(_t)
 			_info=GETFUNCINFO(_t)
 			_path=SPLITPATH(_info[0])
 			if _path

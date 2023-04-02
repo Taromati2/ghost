@@ -1627,6 +1627,12 @@ Get_Full_Defened_Event_Name{
 	elseif ISFUNC('SHIORI_EV.'+_event_name)
 		'SHIORI_EV.'+_event_name
 }
+Get_Func_Or_Full_Defened_Event_Name{
+	if ISFUNC(_argv[0])
+		_argv[0]
+	else
+		Get_Full_Defened_Event_Name(_argv[0])
+}
 Is_Defened_Event{
 	_event_name=_argv[0]
 	if SUBSTR(_event_name,0,2) != 'On'
@@ -1639,6 +1645,9 @@ Is_Defened_Event{
 		1
 	else
 		0
+}
+Is_Defened_Event_Or_Func{
+	ISFUNC(_argv[0]) || Is_Defened_Event(_argv[0])
 }
 SHIORI_EV.On_Has_Event : void {
 	_event_name=reference0
