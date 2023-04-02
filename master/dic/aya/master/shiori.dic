@@ -1259,7 +1259,11 @@ FUNCTIONEX {
 //引数　：_argv[0] SAORIファイル名
 //------------------------------------------------------------------------------
 SHIORI_FW.SendGETVersion {
-	SHIORI_FW.RequestLib(_argv[0], "GET Version SAORI/1.0%(C_CRLF)Charset: %(CHARSETLIBEX(_argv[0]))%(C_CRLF)Sender: AYA%(C_CRLF2)")
+	SHIORI_FW.RequestLib(_argv[0], "/
+	GET Version SAORI/1.0%(C_CRLF)/
+	Charset: %(CHARSETLIBEX(_argv[0]))%(C_CRLF)/
+	Sender: AYA%(C_CRLF2)/
+	")
 
 	LIB.STATUSCODE
 }
