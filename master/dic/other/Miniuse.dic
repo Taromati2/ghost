@@ -95,11 +95,11 @@ ClearSecondVar{
 	ERASEVAR('SecondWatch.sso')
 }
 //**********************C盘清理***************************************************************************
-Select.ClearC{
-	"\0\s[40]C盘垃圾清理能让%(username)的电脑变得更快哦。确定要清理吗？\n\n\q[◇确定,OnClearC]\n\q[◇不用了,OnOpenMenu,3]"
+Select.ClearDisk{
+	"\0\s[40]磁盘垃圾清理能让%(username)的电脑变得更快哦。确定要清理吗？\n\n\q[◇确定,OnClearDisk]\n\q[◇不用了,OnOpenMenu,3]"
 }
-OnClearC{
-	'\![open,file,SAORI_PATH\drivecleaner.bat]'
+OnClearDisk{
+	'\![open,file,cleanmgr.exe]'
 }
 //**********************************计算生日*************************************************
 Select.birthday{

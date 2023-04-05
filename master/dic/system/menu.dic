@@ -107,7 +107,7 @@ SubMenu{
 				when 0{
 					'\q[◇软件快捷,OnShortcutMenu]			\_l[138,-]\q[◇计算器,OnCalculator] \n/
 					\q[◇倒数计时,count]						\_l[138,-]\q[◇秒表,OnSecondWatch,inter]\n/
-					\q[◇C盘垃圾文件清理,ClearC]				\_l[138,-]\q[◇股票,OnKikkaStockMenu]\n/
+					\q[◇磁盘垃圾文件清理,ClearDisk]				\_l[138,-]\q[◇股票,OnKikkaStockMenu]\n/
 					\q[◇简繁转换,OnChangeChineseCode]		\_l[138,-]\q[◇校准时间,OnSNTPmenu]\n/
 					\q[◇收取邮件,ALLMAIL]					\_l[138,-]\q[◇开启邮箱,OPENMAILER]\n/
 					\q[◇RSS盒子,HEADLINE]					\_l[138,-]\q[◇数据备份,OnGhostBackup]\n/
