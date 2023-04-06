@@ -127,6 +127,9 @@ RandomTalk.others{
 	if talkSwitch.poesy{
 		TalkPoesyShow
 	}
+	//以下内容期待用户交互，所以不在InSessionLock时进行
+	if InSessionLock
+		return
 	//-------讲笑话---------------------------------------
 	if talkSwitch.story{
 		Onstoryok

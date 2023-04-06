@@ -1432,3 +1432,9 @@ OnGhostTermsDecline{
 	else
 		'\0\s[3]…\w9如果需要的话\w9，可以把我卸载掉的。'
 }
+OnSessionLock{
+	InSessionLock = 1
+}
+OnSessionUnlock{
+	ERASEVAR('InSessionLock')
+}

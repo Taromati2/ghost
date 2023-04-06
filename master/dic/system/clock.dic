@@ -86,6 +86,8 @@ OnMinuteChange{
 			return
 		}
 	}
+	if InSessionLock
+		return
 	if mode == '0'{
 		_boottime = ghostuptime
 		if !specialmode{
