@@ -2448,6 +2448,7 @@ TranslateWithDictionary{//TranslateWithDictionary("%(username)被欺负了")
 		_str=TOSTR(_argv)
 	_found=_str
 	_found=REPLACE(_found,username,'%(username)')
+	FCHARSET(1)
 	if FOPEN(_file,'r'){
 		for _buff = FREAD(_file); _buff != -1; _buff = FREAD(_file){
 			_temp="%(_buff[0,'|'])"
@@ -2456,6 +2457,7 @@ TranslateWithDictionary{//TranslateWithDictionary("%(username)被欺负了")
 		}
 	}
 	FCLOSE(_file)
+	FCHARSET.default
 	_found=REPLACE(_found,'%(username)',username)
 	_found
 }
