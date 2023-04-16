@@ -3,7 +3,7 @@ basepath, ..
 charset, UTF-8
 charset.dic, UTF-8
 charset.file, UTF-8
-charset.extension, default
+charset.extension, UTF-8
 
 iolog.filter.keyword, OnSecondChange	//OnSecondChange無視
 iolog.filter.keyword, OnMouse			//OnMouse系無視
