@@ -138,7 +138,7 @@ OnKeyPress{
 			if QuickStartVersion
 				'\![open,inputbox,OnCalculateVar]'
 			else
-				'\![open,file,SAORI_PATH/ghost_terminal.exe,-g Taromati2]'
+				'\![open,file,SAORI_PATH/ghost_terminal.exe,-g Taromati2 -rwt]'
 		}
 	}
 	elseif reference0 == 'f8' {

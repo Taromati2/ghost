@@ -121,30 +121,35 @@ ValueTOstring{
 	else
 		TOSTR(_argv[0])
 }
+Init.AnsiColors{
+	ansi_red=CHR(27)+'[31m'
+	ansi_green=CHR(27)+'[32m'
+	ansi_yellow=CHR(27)+'[33m'
+	ansi_blue=CHR(27)+'[34m'
+	ansi_magenta=CHR(27)+'[35m'
+	ansi_cyan=CHR(27)+'[36m'
+	ansi_gray=CHR(27)+'[37m'
+	ansi_white=CHR(27)+'[37m'
+	ansi_reset=CHR(27)+'[0m'
+}
+ClearAnsiColorsVar{
+	ERASEALLVARBEGINAS('ansi_')
+}
 //用虚拟终端序列色彩化的ValueTOstring
 ValueTOstring.Coloured{
-	_red=CHR(27)+'[31m'
-	_green=CHR(27)+'[32m'
-	_yellow=CHR(27)+'[33m'
-	_blue=CHR(27)+'[34m'
-	_magenta=CHR(27)+'[35m'
-	_cyan=CHR(27)+'[36m'
-	_white=CHR(27)+'[37m'
-	_reset=CHR(27)+'[0m'
-	//
 	if _argc > 1{
-		_cyan
+		ansi_cyan
 		--
 		_t='('
 		foreach _argv;_i{
-			_t+=ValueTOstring.Coloured(_i)+_cyan+','
+			_t+=ValueTOstring.Coloured(_i)+ansi_cyan+','
 		}
-		RE_REPLACE(_t,'\,$',_cyan+')')
+		RE_REPLACE(_t,'\,$',ansi_cyan+')')
 		--
-		_reset
+		ansi_reset
 	}
 	elseif ISSTR(_argv[0]){
-		_magenta
+		ansi_magenta
 		--
 		if '"' !_in_ _argv[0]
 			'"'+_argv[0]+'"'
@@ -153,22 +158,155 @@ ValueTOstring.Coloured{
 		else
 			'"'+REPLACE(_argv[0],'"','""')+'"'
 		--
-		_reset
+		ansi_reset
 	}
 	elseif GETTYPE(_argv[0])==5{
-		_green
+		ansi_green
 		--
 		'map'
 		--
-		_reset
+		ansi_reset
 	}
 	elseif TOSTR(_argv[0])==''
-		_white+'NULL'+_reset
+		ansi_white+'NULL'+ansi_reset
 	else
-		_yellow+TOSTR(_argv[0])+_reset
+		ansi_yellow+TOSTR(_argv[0])+ansi_reset
 }
 ValueTOstring.SakuraScript{
 	REPLACE(ValueTOstring(_argv),'\','\\')
+}
+//用虚拟终端序列色彩化的任意表达式
+ColorizeExpression{
+	_tokens=TokenizeExpression(_argv[0])
+	_i=0
+	_end=ARRAYSIZE(_tokens)
+	_ret=''
+	while _i<_end{
+		_token=_tokens[_i]
+		if ISFUNC(_token)
+			_ret+=ansi_green+_token+ansi_reset
+		elseif ISVAR(_token)
+			_ret+=ansi_magenta+_token+ansi_reset
+		elseif ISINTSTR(_token)||ISREALSTR(_token)
+			_ret+=ansi_yellow+_token+ansi_reset
+		elseif _token=='('{
+			_count=1
+			_check=_i+1
+			//找到与之匹配的右括号
+			_has_right=0
+			while _check<_end{
+				if _tokens[_check]=='('
+					_count++
+				elseif _tokens[_check]==')'{
+					_count--
+					if _count==0{
+						_has_right=1
+						break
+					}
+				}
+				_check++
+			}
+			if _has_right
+				_ret+=ansi_cyan+_token+ansi_reset
+			else
+				_ret+=ansi_red+_token+ansi_reset
+		}
+		elseif _token==')'{
+			_count=1
+			_check=_i-1
+			//找到与之匹配的左括号
+			_has_left=0
+			while _check>=0{
+				if _tokens[_check]==')'
+					_count++
+				elseif _tokens[_check]=='('{
+					_count--
+					if _count==0{
+						_has_left=1
+						break
+					}
+				}
+				_check--
+			}
+			if _has_left
+				_ret+=ansi_cyan+_token+ansi_reset
+			else
+				_ret+=ansi_red+_token+ansi_reset
+		}
+		elseif RE_GREP(_token,'^\".*\"$')
+			_ret+=ansi_magenta+_token+ansi_reset
+		elseif RE_GREP(_token,"^\'.*\'$")
+			_ret+=ansi_magenta+_token+ansi_reset
+		elseif RE_GREP(_token,'[\+\-\*\/\%\&\|\^\~\!\=\<\>\?\:\,\(\)\[\]\{\}\;]')
+			_ret+=ansi_cyan+_token+ansi_reset
+		elseif RE_GREP(_token,'^[\w\d_\.]+$')
+			_ret+=ansi_white+_token+ansi_reset
+		else
+			_ret+=ansi_red+_token+ansi_reset
+		_i++
+	}
+	_ret
+}
+TokenizeExpression{
+	_tokens=IARRAY
+	_str=_argv[0]
+	while _str{
+		_token=''
+		if SUBSTR(_str,0,1)=='"'{
+			_i=1
+			_t=SPLIT(_str,'"')
+			_end=ARRAYSIZE(_t)
+			while _i<_end{
+				_token+='"'+_t[_i]+'"'
+				_i++
+				if _t[_i]
+					break
+				else
+					_i++
+			}
+			_tokens,= SUBSTR(_token,0,STRLEN(_str))
+			_str=SUBSTR(_str,STRLEN(_token),STRLEN(_str))
+			continue
+		}
+		elseif SUBSTR(_str,0,1)=="'"{
+			_i=1
+			_t=SPLIT(_str,"'")
+			_end=ARRAYSIZE(_t)
+			while _i<_end{
+				_token+="'"+_t[_i]+"'"
+				_i++
+				if _t[_i]
+					break
+				else
+					_i++
+			}
+			_tokens,= SUBSTR(_token,0,STRLEN(_str))
+			_str=SUBSTR(_str,STRLEN(_token),STRLEN(_str))
+			continue
+		}
+		//以正则匹配运算符，并分割字符串
+		elseif RE_GREP(SUBSTR(_str,0,1),'[\+\-\*\/\%\&\|\^\~\!\=\<\>\?\:\,\(\)\[\]\{\}\; \t]'){
+			_tokens,= SUBSTR(_str,0,1)
+			_str=SUBSTR(_str,1,STRLEN(_str))
+			continue
+		}
+		else{
+			_token_table=RE_SPLIT(_str,'[\+\-\*\/\%\&\|\^\~\!\=\<\>\?\:\,\(\)\[\]\{\}\; \t]');
+			_j=0
+			while _j<ARRAYSIZE(_token_table){
+				_token+=_token_table[_j]
+				_j++
+				if _token_table[_j]
+					break
+				else
+					_j++
+			}
+			_tokens,=_token
+			_str=SUBSTR(_str,STRLEN(_token),STRLEN(_str))
+			continue
+		}
+	}
+	_tokens
 }
 GetVarValue{
 	EVAL(_argv[0])
@@ -250,6 +388,9 @@ On_ShioriEcho {
 			OnErrorLog
 			ShioriEcho.Result=GETERRORLOG
 		}
+		when 'exit'{
+			ShioriEcho.Status='End'
+		}
 		others{
 			if RE_GREP(reference0,'^\s*(help|openfunc)\s+'){
 				if RE_GREP(reference0,'^\s*help\s+'){
@@ -296,11 +437,18 @@ On_ShioriEcho {
 		}
 	}
 }
+On_ShioriEcho.CommandUpdate{
+	SHIORI_FW.Make_X_SSTP_PassThru('CommandForDisplay',ColorizeExpression(reference.raw[0]))
+}
 On_ShioriEcho.TabPress{
-	_lastname=RE_REPLACE(reference0,'^[\s\S]*[\[\]\(\)\+\-\*\/\=\'+"'"+'\" ]','')
+	_before=SUBSTR(reference.raw[0],0,reference1)
+	_after=SUBSTR(reference.raw[0],reference1,STRLEN(reference.raw[0]))
+	_tabnum=reference2
+	_lastname=RE_REPLACE(_before,'^[\s\S]*[\[\]\(\)\+\-\*\/\=\'+"'"+'\" ]','')
+	_after=RE_REPLACE(_after,'^[a-zA-Z0-9._]+','')
 	_possible_names=IARRAY
 	if !reference0[1,' ']
-		_possible_names,=ARRAY.BeginAs(_lastname,'reload','errorlog','openfunc','help')
+		_possible_names,=ARRAY.BeginAs(_lastname,'reload','errorlog','openfunc','help','exit')
 	if reference0[0,' '] == 'help'
 		_possible_names=GETSYSTEMFUNCLIST(_lastname)
 	elseif reference0[0,' '] == 'openfunc'
@@ -308,8 +456,9 @@ On_ShioriEcho.TabPress{
 	else
 		_possible_names,=(GETVARLIST(_lastname),GETFUNCLIST(_lastname),GETSYSTEMFUNCLIST(_lastname))
 	if ARRAYSIZE(_possible_names){
-		_name_after_tab=_possible_names[reference1%ARRAYSIZE(_possible_names)]
-		SHIORI_FW.Make_X_SSTP_PassThru('Command',RE_REPLACE(reference0,_lastname+'$',_name_after_tab))
+		_name_after_tab=_possible_names[_tabnum%ARRAYSIZE(_possible_names)]
+		_before=RE_REPLACE(_before,_lastname+'$',_name_after_tab)
+		SHIORI_FW.Make_X_SSTP_PassThru('Command',_before+_after)
 	}
 }
 On_ShioriEcho.GetResult {
@@ -324,6 +473,8 @@ On_ShioriEcho.GetResult {
 			SHIORI_FW.Make_X_SSTP_PassThru('Type',GETTYPE.string((ShioriEcho.Result)))
 		}
 	}
+	if ISVAR('ShioriEcho.Status')
+		SHIORI_FW.Make_X_SSTP_PassThru('Status',ShioriEcho.Status)
 	ClearShioriEchoVar
 }
 ClearShioriEchoVar:void {
@@ -453,7 +604,7 @@ OnCalculateVar{
 		if _Result == ''
 			'什么都没有'
 		else
-			REPLACE(TOSTR(_Result),'\','\\')
+			ValueTOstring.SakuraScript(_Result)
 		--
 		_Type=GETTYPE.string((_Result))
 		'\n/
