@@ -9,7 +9,7 @@
 				"Taromati2",
 				"-r"
 			],
-			"icon": "terminal-cmd"
+			"icon": "repl"
 		}
 	}
 }
