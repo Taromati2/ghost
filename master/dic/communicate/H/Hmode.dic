@@ -546,20 +546,24 @@ OnHnormalget
 		when '爱抚'{
 			"\b[2]%(h.target.name)在你的爱抚之下,身体仿佛火烧起来一般\n"
 			--
-			if h._place[15] = '女'{
-				h.exp[8] += 1
+			if h.target._place[14] = '女'{
+				h.target.exp[8] += 1
 				'百合经验+1\n'
 			}
 			--
-			h._status[19] += 7
+			h.target._status[0] += 1
+			h.target._status[1] += 1
+			h.target._status[2] += 1
+			h.target._status[3] += 1
 			intimacy += 1
+			h._atomosphere += (h.target._status[1] + h.target._status[2] + h.target._status[3] + h.target._status[4] + h.target._status[0])
 			'<爱抚效果>\n/
 			H氛围增加了\n/
-			好感度上升了1\n'
+			好感度上升了1\n/'
 			--
 			HCountinueCheck
 			--
-			_check = h._status[0] + h.status[1] + h.status[2]
+			_check = h._status[0] + h.status[1] + h.status[2] + h.status[3]
 			if _check <= 100{
 				if ASEARCH('反抗心',h.tellen) != -1{
 					"%(h.target.name)虽然被爱抚着，但是故意板着脸一副不配合的表情"
@@ -602,6 +606,49 @@ OnHnormalget
 			'\n/
 			\f[color,green]\q[◇继续,OnDoing,0]'
 		}
+		when '舔阴'{
+			"%(username)突然将头埋在%(h.target.name)的股间"
+			if h._atomosphere <= 200 || h.target.level[0] + h.target.level[1] + h.target.level[11] <= 50
+				"%(h.target.name)虽然有些抗拒，身子却在半推半就中软了下来。"
+			else
+				"你能听到从大腿中传来涌动在脉搏中的兴奋。"
+			--
+			if h.target._place[14] = '女'{
+				h.target.exp[8] += 1
+				'百合经验+1\n'
+			}
+			--
+			h.target._status[0] += 1
+			h.target._status[1] += 1
+			h.target._status[2] += 1
+			intimacy += 1
+			h._atomosphere += (h.target._status[1] + h.target._status[2] + h.target._status[3] + h.target._status[4] + h.target._status[0])
+			'<爱抚效果>\n/
+			H氛围增加了\n/
+			好感度上升了1\n'
+			--
+			HCountinueCheck
+			--
+			_check = h._status[0] + h.status[1] + h.status[2]
+			if _check <=100{
+				"%(h.target.name)紧闭着的那里逐渐变得有些湿润了，或许已经有些快乐的感觉了吧。"
+			if _check > 100 && _check <= 1000
+				"%(h.target.name)一直忍受着舔阴带来的刺激，明确的感受到快感了。"
+			if _check > 1000 && _check <= 3000
+				"%(h.target.name)敏感的的小豆豆被被舌头擦拭着，
+				if ASEARCH(害羞,h.tallent) != -1{
+					"%(h.target.name)将害羞的脸歪到一侧，用手掌轻轻地捂着自己的嘴，享受着身下传来的阵阵快感。"
+				elseif ASEARCH('承认快感',h.tallent) != -1 || ASEARCH('解放自我',h.tallent) != -1
+					"%(h.target.name)一边吐着热情的叹息，一边品味着身体的快乐。"
+				elseif ASEARCH('否认快感',h.tallent) != -1 || ASEARCH('压抑自我',h.tallent) != -1
+					"%(h.target.name)一边摇头一边忍耐，一边咬紧牙关不让喘息从口中溜出来。"
+				else
+					"%(h.target.name)秘处的爱液随着%(h.target.name)的喘息垂了下来。"
+			if _check >3000 && _check <= 6000
+				"%(h.target.name)的小豆豆在舌头的包裹下颤抖着。"
+				if ASEARCH('害羞',h.tallent) != -1
+					"%(h.target.name)的脸被羞耻染成通红，使劲的含着自己的手指。"
+				if
 		when '肛门爱抚'{
 			'\b[2]口口口肛门爱抚\n\x'
 			--
