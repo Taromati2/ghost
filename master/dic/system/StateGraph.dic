@@ -12,11 +12,11 @@ On_GetAIStateEX{
 	case reference0{
 		when 0{
 			"/
-			%(亲密度),/
-			%(腹黑度),/
-			%(依赖度),/
-			%(萌度),/
-			%(幸福度)/
+			%(nurturance.Closeness),/
+			%(nurturance.Darkness),/
+			%(nurturance.Dependency),/
+			%(nurturance.Moeness),/
+			%(nurturance.Happiness)/
 			%(CHR(1))/
 			亲密度,/
 			腹黑度,/
@@ -50,11 +50,11 @@ On_GetAIStateEX{
 		}
 		when 2{
 			"/
-			%(智力),/
-			%(力量),/
-			%(意志),/
-			%(敏捷),/
-			%(幸运)/
+			%(nurturance.subvar.Intelligence),/
+			%(nurturance.subvar.Strength),/
+			%(nurturance.subvar.Willpower),/
+			%(nurturance.subvar.Agile),/
+			%(nurturance.subvar.Luck)/
 			%(CHR(1))/
 			智力,/
 			力量,/
@@ -94,13 +94,13 @@ On_GetAIStateEX{
 			"
 		}
 		when 5{
-			_能量=TOREAL(亲密度+依赖度+萌度+幸福度+腹黑度)
+			_Energy=TOREAL(nurturance.Closeness+nurturance.Dependency+nurturance.Moeness+nurturance.Happiness+nurturance.Darkness)
 			"/
-			%(SUBSTR(100*腹黑度/_能量,0,5)),/
-			%(SUBSTR(100*依赖度/_能量,0,5)),/
-			%(SUBSTR(100*亲密度/_能量,0,5)),/
-			%(SUBSTR(100*萌度/_能量,0,5)),/
-			%(SUBSTR(100*幸福度/_能量,0,5))/
+			%(SUBSTR(100*nurturance.Darkness/_Energy,0,5)),/
+			%(SUBSTR(100*nurturance.Dependency/_Energy,0,5)),/
+			%(SUBSTR(100*nurturance.Closeness/_Energy,0,5)),/
+			%(SUBSTR(100*nurturance.Moeness/_Energy,0,5)),/
+			%(SUBSTR(100*nurturance.Happiness/_Energy,0,5))/
 			%(CHR(1))/
 			金,/
 			木,/

@@ -107,7 +107,6 @@ LoadQuest{
 	_file = 'DATA_PATH\other\happyquest.txt'
 	_quest = ''
 	_buff = ''
-	_count = 0
 	if FOPEN(_file,'r') {
 		_buff = FREAD(_file)
 		while _buff != -1 && SUBSTR(_buff, 0, 1) != '#' {

@@ -152,31 +152,31 @@ TalkSakuraFacePat.0{
 	'\0\s[6]嗯。\w9\w9\s[0]\n怎么了？'
 }
 TalkSakuraFacePat.1{
-	'\0\s[2]嗯?\w9\w9[0]怎麼了？'
-	'\0\s[2]嗯?\w9\w9[0]什麼事？'
+	'\0\s[2]嗯?\w9\w9\s[0]怎么了？'
+	'\0\s[2]嗯?\w9\w9\s[0]什么事？'
 }
 TalkSakuraFacePat.2{
 	intimacy += 1
 	kikkamood+=1
-	"\0\s[2]嗯。\w9\w9\0\s[1]%(username)怎麼了？"
+	"\0\s[2]嗯。\w9\w9\0\s[1]%(username)怎么了？"
 	"\0\s[2]嗯…\w9\w9\0\s[9]%(username)…？"
-	"\0\s[9]唔嗯…\w9\w9那個、\w9%(username)怎麼了？"
-	"\0\s[2]嗯？\w9\w9\0\s[20]那個、\w9%(username)我臉上有什麼東西嗎？"
-	'\0\s[21]好癢喔。'
+	"\0\s[9]唔嗯…\w9\w9那个、\w9%(username)怎么了？"
+	"\0\s[2]嗯？\w9\w9\0\s[20]那个、\w9%(username)我脸上有什么东西吗？"
+	'\0\s[21]好痒喔。'
 	'\0\s[21]唔…\w9\w9…\w9…\w9…'
 }
 TalkSakuraFacePat.3{
 	intimacy += 2
 	kikkamood+=2
-	"\0\s[2]嗯。\w9\w9\0\s[1]%(username)怎麼了？"
+	"\0\s[2]嗯。\w9\w9\0\s[1]%(username)怎么了？"
 	"\0\s[2]嗯…\w9\w9\0\s[9]%(username)…？"
-	"\0\s[9]唔嗯…\w9\w9那個、\w9%(username)怎麼了？"
-	"\0\s[2]嗯？\w9\w9\0\s[20]那個、\w9%(username)我臉上有什麼東西嗎？"
-	'\0\s[21]好癢喔。'
+	"\0\s[9]唔嗯…\w9\w9那个、\w9%(username)怎么了？"
+	"\0\s[2]嗯？\w9\w9\0\s[20]那个、\w9%(username)我脸上有什么东西吗？"
+	'\0\s[21]好痒喔。'
 	'\0\s[9]唔…\w9\w9…\w9…\w9…'
 	"\0\s[21]%(username)…\w9\w9…\w9…\w9…"
-	"\0\s[2]%(username)…\w9\w9摸我的臉……\w9…"
-	"\0\s[21]唔…\w9\w9…\0\s[9]臉被%(username)摸了…\w9…"
+	"\0\s[2]%(username)…\w9\w9摸我的脸……\w9…"
+	"\0\s[21]唔…\w9\w9…\0\s[9]脸被%(username)摸了…\w9…"
 }
 //---- 胸抚で ---------------------------------------------------------------------------------------------------------
 TalkSakuraBustPat.0{
@@ -207,8 +207,8 @@ TalkSakuraHandPat.1{
 	intimacy += 1
 	'\0\s[29]…\w9…\w9…'
 	'\0\![raise,OnPlaySound,se_01.wav]\s[29]啊…'
-	'\0\s[29]啊…\w9這…\w9…'
-	'\0\s[1]啊…\w9這…\w9這個……\w9…'
+	'\0\s[29]啊…\w9这…\w9…'
+	'\0\s[1]啊…\w9这…\w9这个……\w9…'
 	'\0\s[29]嗯……\w9嗯…'
 }
 TalkSakuraHandPat.2{
@@ -216,8 +216,8 @@ TalkSakuraHandPat.2{
 	'\0\s[29]…\w9…\w9…'
 	'\0\![raise,OnPlaySound,se_01.wav]\s[29]啊…'
 	"\0\s[2]嗯?…\w9\0\s[1]%(username)??"
-	"\0\s[1]那個……\w9%(username)?"
-	"\0\s[29]這個……\w9%(username)……"
+	"\0\s[1]那个……\w9%(username)?"
+	"\0\s[29]这个……\w9%(username)……"
 	"\0\s[2]啊……\w9\0\s[29]%(username)…"
 }
 TalkSakuraHandPat.3{
@@ -225,24 +225,24 @@ TalkSakuraHandPat.3{
 	'\0\s[29]…\w9…\w9…'
 	'\0\![raise,OnPlaySound,se_01.wav]\s[29]啊…'
 	"\0\s[2]嗯?…\w9\0\s[1]%(username)??"
-	"\0\s[1]那個……\w9%(username)?"
-	"\0\s[29]這個……\w9%(username)……"
+	"\0\s[1]那个……\w9%(username)?"
+	"\0\s[29]这个……\w9%(username)……"
 	"\0\s[2]啊……\w9\0\s[29]%(username)…"
-	"\0\s[26]啊……\w9\0\s[21]%(username)…\w9\w9人家有點害羞……"
-	"\0\s[2]這個……\w9\0\s[29]%(username)想牽我的手……?"
+	"\0\s[26]啊……\w9\0\s[21]%(username)…\w9\w9人家有点害羞……"
+	"\0\s[2]这个……\w9\0\s[29]%(username)想牵我的手……?"
 }
 TalkSakuraHandPat.4{
 	intimacy += 4
 	'\0\s[29]…\w9…\w9…'
 	'\0\![raise,OnPlaySound,se_01.wav]\s[29]啊…'
 	"\0\s[2]嗯?…\w9\0\s[1]%(username)??"
-	"\0\s[1]那個……\w9%(username)?"
-	"\0\s[29]這個……\w9%(username)……"
+	"\0\s[1]那个……\w9%(username)?"
+	"\0\s[29]这个……\w9%(username)……"
 	"\0\s[2]啊……\w9\0\s[29]%(username)…"
-	"\0\s[26]啊……\w9\0\s[21]%(username)…\w9\w9人家會害羞……"
-	"\0\s[2]這個……\w9\0\s[29]%(username)這麼想牽我的手……?"
-	"\0\s[26]嗯……?\w9\0\s[21]%(username)想帶我去什麼地方嗎……?"
-	"\0\s[29]這……?\w9\0\s[21]%(username)要帶我去約會嗎……?"
+	"\0\s[26]啊……\w9\0\s[21]%(username)…\w9\w9人家会害羞……"
+	"\0\s[2]这个……\w9\0\s[29]%(username)这么想牵我的手……?"
+	"\0\s[26]嗯……?\w9\0\s[21]%(username)想带我去什么地方吗……?"
+	"\0\s[29]这……?\w9\0\s[21]%(username)要带我去约会吗……?"
 }
 //---- 猫抚で ---------------------------------------------------------------------------------------------------------
 TalkKeroHeadPat{

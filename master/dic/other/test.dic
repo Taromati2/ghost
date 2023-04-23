@@ -188,7 +188,7 @@ OnExamTestSelect{
 		_A++
 	}
 	*/
-	if _n<=_0
+	if _n<=0
 		_n=testitemnum
 	_A=_n
 	_l=0
@@ -792,7 +792,7 @@ LoadExamTest{
 			}
 			while _buff != -1 &&_testend !_in_ _buff{
 				if _buff != ''
-					_test += _buff + '\n';_
+					_test += _buff + '\n'
 				_buff = FREAD(_file)
 			}
 		}
@@ -804,7 +804,6 @@ LoadExamTest{
 	_test
 }
 ClearTestVar{
-	ERASEVAR('kikkaknowl')
 	ERASEVAR('testpaper')
 	ERASEVAR('examtest')
 	ERASEVAR('trueanswer')

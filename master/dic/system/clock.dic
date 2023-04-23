@@ -52,7 +52,7 @@ OnSecondChange{
 OnHourChange{
 }
 OnMinuteChange{
-	if RAND(20160)==0{
+	if UsualUserName.Time<=GETSECCOUNT{
 		if UsualUserName.InPush!=username
 			UsualUserName.InPush=username
 		else{//连续一个月使用同一个用户名
@@ -61,8 +61,8 @@ OnMinuteChange{
 			if ARRAYSIZE(UsualUserName) > 960//记录近80年内的常用用户名
 				UsualUserName[TOINT(SQRT(1.0/RAND(990))*990-30)] = IARRAY//[1,960]，数值越低出现概率越大
 		}
+		UsualUserName.Time=GETSECCOUNT+1314871
 	}
-	--
 	elapsedtimetotal += 1//计算人格起动总时间/单位分
 	elapsedtime = elapsedtimetotal * 60
 	KikkaGrow
@@ -86,9 +86,11 @@ OnMinuteChange{
 			return
 		}
 	}
+	if InSessionLock
+		return
 	if mode == '0'{
+		_boottime = ghostuptime
 		if !specialmode{
-			_boottime = ghostuptime
 			if minute == 0{
 				if timerm == 0{
 					Hourlychime
@@ -109,7 +111,7 @@ OnMinuteChange{
 			elseif (_boottime % 3600 <= 60) && _boottime >= 3600{//每启动满一小时时开头一分钟，第一小时除外
 				{
 					_worktime = _boottime / 3600
-					"\1\s[10]我们连续工作了%_worktime小时啊。\w9\s[12]\n把薪水交出来。\w9\w9\0\s[30]不是什么都没做吗。"
+					"\1\s[10]我们连续工作了%(_worktime)小时啊。\w9\s[12]\n把薪水交出来。\w9\w9\0\s[30]不是什么都没做吗。"
 					--
 					''
 					'\w9\w9\1\s[10]\n\n[half]装可爱就是猫的工作啊。\w9\w9\0\s[6]\n\n[half]既然如此、快点开始工作吧。\w9\w9\1\n\n[half]…\w9…\w9…'
@@ -121,9 +123,15 @@ OnMinuteChange{
 				'\0\v\s[33]电脑卡死了，\w9\w9少开点窗口。\n\q[◇打开任务管理器,OnOpenTaskmgr]\![set,trayballoon,--icon=info,--timeout=10,--title=任务繁忙,--text=电脑卡死了，少开点窗口。]'
 			}
 			elseif minute == 13 && !InUpdate && AutoUpdate == 1{//电脑不卡的情况下每时13分四分之一概率自动更新//选13是因为13不吉利:)
-				if !RAND(4)
+				if QuickStartVersion && !FullDataPackInstalled
+					do_nothing
+				elseif !RAND(4)
 					OnSilentUpdate
 			}
+			elseif RAND(60)==0 || hitokoto==''
+				OnHitokotoUpdate//更新一言
+			elseif setting.WeatherReminder && (RAND(60*3)==0)
+				OnWeatherUpdate//更新天气
 		}
 		elseif specialmode == 'smoking' && _boottime%3600/60 > 4{//最短4
 			if !RAND(4) || _boottime%3600/60 > 20//最多20分
@@ -141,29 +149,8 @@ OnMinuteChange{
 		AgendaMonitor
 		--
 		if AutoShellChange[0]{
-			if TOINT(AutoShellChange[1])==5&&(hour-AutoShellChangeflag[3])%4==0&&minute==0{
-				AutoShellChangeflag[5]=1
-			}
-			elseif TOINT(AutoShellChange[1])==6&&(hour-AutoShellChangeflag[3])%2==0&&minute==0{
-				AutoShellChangeflag[5]=1
-			}
-			elseif TOINT(AutoShellChange[1])==7&&minute==0{
-				AutoShellChangeflag[5]=1
-			}
-			if AutoShellChangeflag[5]==1{
-				if !tshellid {
-					OnAutoChangeShell
-					tshellid=shellid
-				}
-				--
-				if tshellid!=shellID{
-					AutoShellChangeflag[5]=1
-					OnChangeShell(tshellid)
-				}
-				else{
-					tshellid=NULL
-					AutoShellChangeflag[5]=NULL
-				}
+			if TOINT(AutoShellChange[1])==2{
+				OnAutoChangeShell
 			}
 		}
 	}
@@ -173,9 +160,12 @@ ClassMonitor{
 	if _classrm{
 		if InNotify
 			OnPlayAlarm
-		_classrm
+		_classrm+'\n/
+		\q[◇稍后提醒,Cancel]\n/
+		\q[◇我知道了,OnClassMonitorTempClose]\n/
+		'
 		--
-		_trayballoon="\![set,trayballoon,--icon=info,--timeout=10,--title=课程提醒,--text=%(_classrm),--text=（点击气泡关闭提醒）]"
+		_trayballoon="\![set,trayballoon,--icon=info,--timeout=10,--title=课程提醒,--text=%(_classrm),--text=（点击气泡稍后提醒）]"
 		if InNotify
 			SHIORI_FW.MakeValueNotify(_trayballoon)
 		else
@@ -216,7 +206,7 @@ AlarmMonitor{
 OnBalloonClose{
 	if alarmstart && '闹钟提醒' _in_ reference0 {
 		alarmstart = 0
-		'\![sound,stop]'
+		OnAlarmEnd
 	}
 }
 OnTrayBalloonClick{
@@ -232,7 +222,7 @@ OnTrayBalloonClick{
 		agendastart = 0
 		eventtemp=NULL
 	}
-	elseif reference0 == '整点报时'{
+	elseif reference0 == '整点报时' {
 		if minute>=5 {
 			username
 			--
@@ -248,8 +238,17 @@ OnTrayBalloonClick{
 			'好的～'
 		}
 	}
+	elseif reference0 == '课程提醒' {
+		OnAlarmEnd
+		'嗯嗯～'
+		'好的～'
+	}
 	elseif SHIORI_FW.DebugMode{
 		"未注册的气泡标题“%(reference0)”被触发了"
+	}
+	else{
+		'嗯嗯～'
+		'好的～'
 	}
 }
 OnAlarmMenu{
@@ -293,7 +292,7 @@ AlarmMenu{
 	--
 	"闹钟铃声：\__q[OnSetAlarmFile]%(SPLITPATH.roughly(alarmfile)[1])\__q"
 	--
-	'\n[150]\q[◇返回上一层,OnOpenMenu]    \q[◇终了,OnAlarmEnd]'
+	'\n[150]\q[◇返回上一层,OnOpenMenu]    \q[◇终了,Cancel]'
 }
 OnSetAlarmFile{
 	'\![open,dialog,open,--id=alarmfile,--title=请选择音乐文件,--dir=__system_mymusic__,--filter=音乐文件(mid;wav;mp3;au;ogg;wma)|*.mid;*.wav;*.mp3;*.au;*.ogg;*.wma]'
@@ -310,7 +309,8 @@ OnPlayAlarm:void{
 	CALLSAORI('mciaudior', 'load',_argv[0])
 	CALLSAORI('mciaudior', 'play')
 }
-OnAlarmEnd{
+OnAlarmEnd:void{
+	CALLSAORI('mciaudior', 'stop')
 }
 OnAlarmSet{
 	alarmset[reference0] = reference1
@@ -349,9 +349,14 @@ Hourlychime{
 		_trayballoon
 }
 OnTrayBalloonTimeout{
-	"%(username)不理橘花呢？"
-	"%(username)？"
-	"%(username)在做别的事吗？"
+	if reference0 == '课程提醒' {
+		do_nothing
+	}
+	else {
+		"%(username)不理橘花呢？"
+		"%(username)？"
+		"%(username)在做别的事吗？"
+	}
 }
 OnPlayBell:void{
 	CALLSAORI('mciaudior', 'stop')
@@ -370,9 +375,9 @@ Hourlychime.Text{
 Hourlychime.Common{
 	ANY('', '', '', "%(username).", GreetingPhrase + '..' )
 	--
-	"现在时间%(Timejud)%(hour12)点喔"
+	"现在时间%(Timejud)%(hour12ex)点喔"
 	"现在时间已经%(hour)点了喔"
-	"已经%(Timejud)%(hour12)点了"
+	"已经%(Timejud)%(hour12ex)点了"
 	"现在%(hour)点了"
 	--
 	'？'
@@ -402,19 +407,19 @@ Hourlychime.Special{
 			"呼哈～唔..%(hour)点了？"
 		}
 		when 7-8{
-			"%(hour)点了.还沒清醒的话赶快打起精神喔？"
+			"%(hour)点了.还没清醒的话赶快打起精神喔？"
 		}
 		when 9-11{
-			"%(hour)点了..据说是人一天中记忆能力最好的時段呢，要好好利用喔？"
+			"%(hour)点了..据说是人一天中记忆能力最好的时段呢，要好好利用喔？"
 		}
 		when 12{
 			'12点了.午餐时间～'
 		}
 		when 13-14{
-			"下午%(hour12)点了…總是很想睡的时间呢？"
+			"下午%(hour12)点了…总是很想睡的时间呢？"
 		}
 		when 15-16{
-			"%(hour)点了.要不要來杯下午茶呢？"
+			"%(hour)点了.要不要来杯下午茶呢？"
 		}
 		when 17-18{
 			"下午%(hour12)点.晚餐时间～"
@@ -423,7 +428,7 @@ Hourlychime.Special{
 			"%(hour)点了.."
 			"晚上%(hour12)点了呢.."
 			--
-			'接下來该做什么事呢？'
+			'接下来该做什么事呢？'
 			"%(username)在做什么呢？"
 			"这个时间%(username)应该都在电脑前吧？"
 		}
@@ -663,7 +668,7 @@ GetGMTDateTime{
 OnAnalogClock{
 	'\0\s[5]打开时钟'
 	--
-	_result=CALLSAORI('AnalogClock2_0\AnalogClock','show','clock',100,-200,'sakura')
+	void CALLSAORI('AnalogClock2_0\AnalogClock','show','clock',100,-200,'sakura')
 }
 OnClockTime{
 	"\0\s[5]现在是%(reference0):%(reference1):%(reference2)"
@@ -673,7 +678,7 @@ OnClockClose{
 	'\0\s[5]关闭时钟'
 }
 //**** 设定关机时间 ***********************************************************************************
-OnSetShutdownMenu{
+OnSetShutdownMenu:all{
 	if !ISVAR('shutdownset') {
 		shutdownset = IARRAY
 		shutdownset[0] = 'OFF'
@@ -689,17 +694,17 @@ OnSetShutdownMenu{
 	\q[◇倒计时关机,OnCountShutdown]\n"
 	--
 	if shutdownset[0] == 'ON' {
-		_txt += '自动关机开关：\q[◎ON,OnShutdownSet,0,ON]\_l[180]\q[○OFF,OnShutdownSet,0,OFF]\n'
+		'自动关机开关：\q[◎ON,OnShutdownSet,0,ON]\_l[180]\q[○OFF,OnShutdownSet,0,OFF]\n'
 	}
 	else {
-		_txt += '自动关机开关：\q[○ON,OnShutdownSet,0,ON]\_l[180]\q[◎OFF,OnShutdownSet,0,OFF]\n'
+		'自动关机开关：\q[○ON,OnShutdownSet,0,ON]\_l[180]\q[◎OFF,OnShutdownSet,0,OFF]\n'
 	}
 	--
 	if shutdownset[1] == '当天' {
-		_txt += '自动关机频率：\q[◎当天自动关机,OnShutdownSet,1,当天]\_l[180]\q[○每天自动关机,OnShutdownSet,1,每天]\n'
+		'自动关机频率：\q[◎当天自动关机,OnShutdownSet,1,当天]\_l[180]\q[○每天自动关机,OnShutdownSet,1,每天]\n'
 	}
 	else {
-		_txt += '自动关机频率：\q[○当天自动关机,OnShutdownSet,1,当天]\_l[180]\q[◎每天自动关机,OnShutdownSet,1,每天]\n'
+		'自动关机频率：\q[○当天自动关机,OnShutdownSet,1,当天]\_l[180]\q[◎每天自动关机,OnShutdownSet,1,每天]\n'
 	}
 	--
 	'\n[half]\q[◇返回上一层,OnOpenMenu,3]    \q[◇终了,Cancel]'
@@ -767,7 +772,8 @@ ShutdownMonitor{
 	}
 	--
 	if shutdownstart > 0{
-		"即将自动关机，请%(username)保存资料"
+		_txt="即将自动关机，请%(username)保存资料"
+		_txt
 		--
 		_trayballoon="\![set,trayballoon,--icon=info,--timeout=10,--title=关机提醒,--text=现在是%(hour)点%(minute)分,--text=%(_txt)！,--text=（点击气泡关闭提醒）]"
 		if InNotify
@@ -792,8 +798,6 @@ AgendaMonitor{
 	SETDELIM(_events,'|')
 	foreach _events;_event{
 		_eventrepeat=TOINT(_event[19,'	'])
-		_eventbegindate=(_event[1,'	'],_event[2,'	'],_event[3,'	'],_event[4,'	'],_event[5,'	'])
-		_eventenddate=(_event[7,'	'],_event[8,'	'],_event[9,'	'],_event[10,'	'],_event[11,'	'])
 		if _eventrepeat
 			_eventtemp+=_event+'|'
 	}

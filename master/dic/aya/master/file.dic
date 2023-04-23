@@ -139,8 +139,9 @@ FULLNAMEFCOPY{
 		void FUNHIDDEN(_argv[0])
 	_p1=SPLITPATH.roughly(_argv[1])
 	_p2=SPLITPATH.roughly(_argv[0])
-	FCOPY(_argv[0],_p1[0])
-	FRENAME(_p1[0]+_p2[1],_argv[1])
+	void FCOPY(_argv[0],_p1[0])
+	void FRENAME(_p1[0]+_p2[1],_argv[1])
+	void FDEL(_p1[0]+_p2[1])
 	if _h{
 		void FHIDDEN(_argv[0])
 		void FHIDDEN(_argv[1])
@@ -219,4 +220,30 @@ DUMP_references_to:void{
 		_i++
 	}
 	FCLOSE(_file)
+}
+InVM{
+	if FILEEXIST('SAORI_PATH/VMDetect.dll')
+		CALLSAORI('VMDetect')
+	else
+		1
+}
+GETSIZEUNIT{
+	_table=('B','KB','MB','GB','TB','PB','EB','ZB','YB')
+	_size=_argv[0]
+	_i=0
+	while _size>1024{
+		_size/=1024
+		_i++
+	}
+	_table[_i]
+}
+UNITSIZE{
+	_table=('B','KB','MB','GB','TB','PB','EB','ZB','YB')
+	_size=_argv[0]
+	_i=0
+	while _size>1024{
+		_size/=1024
+		_i++
+	}
+	_size+_table[_i]
 }

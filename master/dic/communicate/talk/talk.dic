@@ -32,16 +32,11 @@ AITalk{
 	lastTalk
 }
 OnTranslate{
-	_txt = reference0
-	_language=-1
-	if _argc>0{
-		_txt=_argv[0]
-		_language=_argv[1]
-	}
-	if language == 1||_language==1{
+	_txt = reference.raw[0]
+	if language == 1{
 		_txt = TOTRADITIONAL(_txt)//繁体化
 	}
-	elseif language==2||language==3||_language==2||_language==3{
+	elseif language==2||language==3{
 		_txt = TranslateWithDictionary(_txt)
 	}
 	_ICT=0
@@ -52,16 +47,24 @@ OnTranslate{
 	_temp=0
 	if running==''
 		_temp=TOINT(voice)
+	_txt=RE_REPLACE(_txt,"\\b\[\-1\]$",'')
 	if _txt && !playingtetris && !playRetroSnaker{
 		if _temp{
 			_t=SakuraToTxt(_txt)
 			if running!='chatroom'&&'引擎 (' !_in_ _t&&!CheckProcess('wscript.exe')//&&running!='readbook'&&read!='stop'
 				_txt=TxtToVoice(_t,voicename)+_txt
 		}
-		if musicplayer == 1 && reference2 != 'OnMusicPlayer' && reference2 != 'OnSurfaceRestore.Music' && mode=='0'{
-			if '\_w' _in_ _txt || '\w' _in_ _txt
-				_txt+='\_w[1000]'
-			_txt+="\![raise,OnMusicPlayer,%(',NoSurfaceRestore'['\q' _in_ _txt || '\__q' _in_ _txt])]"
+		if musicplayer == 1 && mode=='0'{
+			if reference2!='OnPlayCmd' && ('OnSurfaceRestore.Music' !_in_ reference2){
+				if 'OnMusicPlayerClose' !_in_ _txt{
+					if '\_w' _in_ _txt || '\w' _in_ _txt{
+						_txt=RE_REPLACE(_txt,"(\\(w\S|w\[[^\]]+\]))+$",'')
+						if '\_w' _in_ _txt || '\w' _in_ _txt
+							_txt+='\_w[1000]'
+					}
+					_txt+="\![raise,OnMusicPlayer,%(',NoSurfaceRestore'['\q' _in_ _txt || '\__q' _in_ _txt])]"
+				}
+			}
 		}
 	}
 	_txt
@@ -106,13 +109,13 @@ OnLastTalkToChatroom{
 	}
 }
 OnLastTalk{
-	'\0\s[20]嗯？刚才……？\1\s[10]是這样：\w9\w9\c\b[-1]\0\c\b[-1]'
+	'\0\s[20]嗯？刚才……？\1\s[10]是这样：\w9\w9\c\b[-1]\0\c\b[-1]'
 	--
 	lastTalk
 }
 RandomTalk{
 	if !RAND(5){
-		if _t=RandomTalk.others{
+		if (_t=RandomTalk.others)!=''{
 			_t
 			return
 		}
@@ -124,6 +127,9 @@ RandomTalk.others{
 	if talkSwitch.poesy{
 		TalkPoesyShow
 	}
+	//以下内容期待用户交互，所以不在InSessionLock时进行
+	if InSessionLock
+		return
 	//-------讲笑话---------------------------------------
 	if talkSwitch.story{
 		Onstoryok
@@ -191,7 +197,7 @@ RandomTalk.pool : nonoverlap_pool{
 		'\0\s[6]神把深深沉眠的\n亚当的肋骨取出一根、\w9\n创造出了一个女人。\w9\w9\1\s[10]…\w9…\w9…\w9\w9\0\s[5]\n\n[half]剖开！\w9\n切割切割切割…\w9\n切断！\w9\w9\1\s[11]\n\n[half]给我等一下。'
 		'\0\s[6]『建造出到达天上的巨塔、\w9\n　大家一起和乐地居住吧』\w9\w9\n人们同心协力、努力了许多年。\w9\w9\1\s[10]巴比伦的塔啊。\w9\w9\0\s[0]\n\n[half]然后有一天、\w9大家的语言不通了、\w9\n开始到处产生了争端。\w9\w9\n就这样战争发生了。\w9\w9\s[6]\n\n[half]可喜可贺可喜可贺。\w9\w9\1\s[10]\n\n[half]一点也不。'
 		'\0\s[6]『在找我？\w9\n　我当然在神殿里头啊。\w9\n　因为这里是我父亲的家』\w9\w9\1\s[10]迷路小孩\w4的藉口是这样。\w9\w9\w9\0\s[0]\n\n[half]明显的感情很不好呢、\w9那个家庭。\w9\w9\1\s[10]\n\n[half]所谓『圣家庭』、\w9虽然在绘画里都很美好。\w9\w9\0\s[0]\n\n[half]姑且不论约瑟夫、\w9怎么看也不觉得\w9\n他认为玛利亚是自己的亲人呢。'
-		'\0\s[6]『从今以后、\w9永没有人喫你的果子』\w9\w9\s[0]\n\n[half]飢饿的耶稣、\w9\n对结不出果实的无花果树、\w9\n下了诅咒。\w9\w9\1\s[10]哪来的死小孩啊…\w9\w9\0\s[6]\n\n[half]第二天、\w9那颗树枯掉了的样子。\w9\w9\1\s[10]\n\n[half]…\w9对食物的怨恨真恐怖啊。'
+		'\0\s[6]『从今以后、\w9永没有人吃你的果子』\w9\w9\s[0]\n\n[half]饥饿的耶稣、\w9\n对结不出果实的无花果树、\w9\n下了诅咒。\w9\w9\1\s[10]哪来的死小孩啊…\w9\w9\0\s[6]\n\n[half]第二天、\w9那颗树枯掉了的样子。\w9\w9\1\s[10]\n\n[half]…\w9对食物的怨恨真恐怖啊。'
 		'\0\s[6]『凯萨的东西归还凯萨』\w9\w9\s[20]\n\n[half]…\w9福泽谕吉的东西归还福泽谕吉？\w9\w9\1\s[10]那要把500元还给谁啊？'
 		'\0\s[6]『原子弹是为了爱邻人的兵器』\w9好像是这样喔。\w9\w9\s[0]\n\n[half]实际上、\w9伊诺拉给号(Enolagay)在升空之前、\w9\n接受了牧师祝福的样子…\w9\w9\1\s[10]…\w9…\w9…\w9\w9\0\s[6]\n\n[half]的确、\w9把异教徒全部消灭了的话、\w9\n邻人就只剩『亲爱的神的信徒』了呢。'
 		'\0\s[6]『向十字军骑士学习、\w9\n　将日本社会也变成基督教社会吧』\w9\w9\w5\s[0]\n\n[half]…\w9是打算发动侵略战争吗？\w9\w9\1\s[10]幸好没真的学习啊。'
@@ -237,7 +243,7 @@ RandomTalk.pool : nonoverlap_pool{
 			"卡伦断章<G'harne Fragments>"
 			'光辉之书<Zohar>'
 			'桑兹陶片<Zanthu Tablets>'
-			'冱山七祕教典<Seven Cryptical Books of Hsan>'
+			'冱山七秘教典<Seven Cryptical Books of Hsan>'
 			'托及安书<Book of Dzyan>'
 			'奈考德抄本<Pnakotic Manuscripts>'
 			'波那贝教典<Ponape Scripture>'
@@ -245,7 +251,7 @@ RandomTalk.pool : nonoverlap_pool{
 			'吧。\w9\w9\1\s[10]\n\n[half]…\w9能讨论的起来的话、还真是厉害啊。'
 		}
 		'\0\s[6]『该隐成为农夫、亚伯成为牧羊人。\w9\w9\n　两人筑起祭坛、\w9\n　各自将作物与仔羊奉献给神。\w9\w9\n　但耶和华并不理会该隐的贡品、\w9\n　只接受了仔羊』\w9\w9\s[20]\n\n[half]…\w9是讨厌蔬菜吗？\w9\w9\1\s[10]仔羊肉很美味喔。\w9\w9\0\s[8]\n\n[half]因为那样、\w9亚伯被杀掉了…\w9\w9\1\n\n[half]唔、\w9该说多留意一下周围的气氛吗。'
-		'\0\s[6]『蛇、你将受万物厌恶。\w9\n　你必用肚行走、 终身喫土、\w9\n　头被践踏而死』\w9\w9\1\s[10]上司说是白的话、\w9就算是黑的也要说成白的\w9\n不然活不下去。\w9\w9\0\s[3]\n\n[half]真是讨厌的社会呢…'
+		'\0\s[6]『蛇、你将受万物厌恶。\w9\n　你必用肚行走、 终身吃土、\w9\n　头被践踏而死』\w9\w9\1\s[10]上司说是白的话、\w9就算是黑的也要说成白的\w9\n不然活不下去。\w9\w9\0\s[3]\n\n[half]真是讨厌的社会呢…'
 		'\0\s[7]真是的…\w9\w9\s[0]\n居然将自己的小孩\n取名为『恶魔』、\w9\w9\n佛祖如果知道了、一定会生气喔。\w9\w9\1\s[10]可别模仿啊。'
 		'\w9\0\s[6]『当牧羊人们在荒野中放羊时、\w9\n　圣光显现、\w9天使之声响起。\w9\w9\n　此时此刻、\w9救世主诞生了』\w9\w9\s[20]\n\n[half]会在冬天放羊的、\w9\n是怎么样的牧羊人呢？\w9\w9\1\s[10]应该会说着为伪东北腔吧。\w9\w9\s[12]\n『辣块妈妈、\w9鸟生鱼汤给蹦出来啦』\w9\w9\s[10]\n…\w9像这样。\w9\w9\0\s[8]\n\n[half]什么想像啊、\w9那个…'
 		'\0\s[6]辛苦修行的最后、\w9听到上帝的声音、\n好像得悟了、\w9\w9\s[20]\n究竟在什么时候\n才会达到这种状态呢？\w9\w9\1\s[10]厌倦修行的时候。\w9\w9\0\s[8]\n\n[half]…\w9咦？'
@@ -272,7 +278,7 @@ RandomTalk.pool : nonoverlap_pool{
 		'\0\s[0]经常、\w5在电影中看到、\w9\n一边用枪扫射一边奔跑的场面、\w9\w5\n暴露出自己的身体、\w5\n乱射打不中的子弹、\w9\s[6]\n真是愚蠢至极。\w9\w9\1\s[10]因为那样演比较好看啊。\w9\w9\0\s[0]\n\n[half]训练时到底都学了些什么呢？\w9\w9\1\s[10]\n\n[half]把幻想和现实区别开吧。:talkmemo=r_0'
 		'\0\s[6]有『病由气生』这种说法、\w9\s[0]\n受伤的时候也是相同的。\w9\w9\n\n[half]精神脆弱的人、\w5死不了程度的负伤\w5\n也会因为休克症状而死、\w9\n请小心注意喔。\w9\w9\1\s[10]要怎么\w5小心注意啊…'
 		'\0\s[0]如果是训练不足的军队、\w9\w5\n连杀个人质都会犹豫不决。\w9\w9\n\n[half]\w9死了的话\w9\n不管人质还是什么的都没了呢…'
-		'\0\s[0]因为是记者、\w9就认为即使去战场\w9\n也能毫发无伤的归来是吗？\w9\w9\1\s[10]会对记者到来感到高兴的\w9\n只有恐怖份子吧。\w9\w9\0\s[0]\n\n[half]实际上、\w9在祕鲁日本大使馆占据事件中\w9\n恐怖份子的领导人\n还向记者要求握手呢。'
+		'\0\s[0]因为是记者、\w9就认为即使去战场\w9\n也能毫发无伤的归来是吗？\w9\w9\1\s[10]会对记者到来感到高兴的\w9\n只有恐怖份子吧。\w9\w9\0\s[0]\n\n[half]实际上、\w9在秘鲁日本大使馆占据事件中\w9\n恐怖份子的领导人\n还向记者要求握手呢。'
 		'\0\s[0]不管累积了多少训练\w9\s[6]\n面对轰炸都是无能为力的。\w9\w9\n\s[3]真难受…\w9\w9\1\s[10]你到底做过什么…'
 		'\0\s[0]到现在、还在说\w9\n『恐怖行动是犯罪』\w9呢…\w9\w9\1\s[10]嗯？\w9\w9\0\s[0]\n\n[half]恐怖行动是战争喔。\w9\w9\1\s[10]\n\n[half]因为『流血的政治』就是战争是吧。\w9\w9\0\s[6]\n\n[half]虽然的确是犯罪行为没错。'
 		'\0\s[0]买了新的工具、\w9\s[26]\n就算用不到也会很想用用看呢。\w9\w9\1\s[10]可能吧。\w9\w9\0\s[0]\n\n[half]新兵器也会很想用用看吧？\w9\w9\1\s[13]\n\n[half]啊…'
@@ -289,10 +295,10 @@ RandomTalk.pool : nonoverlap_pool{
 			'\s[10]说回来、那个、为什么是片假名？\w9\w9\0\s[20]\n\n[half]例如是写不出汉字。\w9\w9\1\n\n[half]怎样说也就是\w9日文太不自由啦。'
 			'\s[13]No more Hiroshima!!\w9\w9\nNo more Nagasaki!!\w9\w9\nFujiyaama!!\w5\ngeisha!!\w9\w9\0\s[8]\n\n[half]…\w9…\w9…'//'No more 广岛、no more 长崎、富士山、芸者'的半形片假化
 		}
-		'\0\s[7]『AUG』(陆军通用步枪)要唸成『auge』。\w9\w5\n只有这点绝对不妥协。\w9\w9\1\s[10]那才奇怪。'
+		'\0\s[7]『AUG』(陆军通用步枪)要念成『auge』。\w9\w5\n只有这点绝对不妥协。\w9\w9\1\s[10]那才奇怪。'
 		'\0\s[3]ATM(自动柜员机)强盗、\w9\n听起来以为是装备了ATM的强盗…\w9\w9\1\s[10]…\w9想袭击哪里啊？'
 		'\0\s[6]果然、\w9同乡的人在外国被杀掉了的话\w9\n会造成大骚动呢。\w9\w9\1\s[10]是吧。\w9\w9\0\s[0]\n\n[half]明明本地的人死掉了也只是个数字。\w9\w9\n…\w9还是说、\w9问题在于死法呢？\w9\w9\1\s[13]\n\n[half]我该怎么想才行呢。\w9\w9\n我该怎么说才行呢。'
-		'\0\s[7]听我说啊。\w9\w9\1\s[10]唔？\w9\w9\0\s[30]\n\n[half]熟人让我看气鎗比赛了哟。\w9\w9\1\s[10]\n\n[half]…\w9啊。\w9\w9\0\s[0]\n\n[half]然后呢、\w9因为是射靶分胜负的关系、\w9\s[6]\n把弹匣插进去拉开填充瓶的话、\w9\w9\n『干吗？』\w9\w5\s[7]就会这样被轻视了。\w9\w9\1\s[10]\n\n[half]…\w9抱歉。\w9\n完全搞不懂你在说什么。'
+		'\0\s[7]听我说啊。\w9\w9\1\s[10]唔？\w9\w9\0\s[30]\n\n[half]熟人让我看气枪比赛了哟。\w9\w9\1\s[10]\n\n[half]…\w9啊。\w9\w9\0\s[0]\n\n[half]然后呢、\w9因为是射靶分胜负的关系、\w9\s[6]\n把弹匣插进去拉开填充瓶的话、\w9\w9\n『干吗？』\w9\w5\s[7]就会这样被轻视了。\w9\w9\1\s[10]\n\n[half]…\w9抱歉。\w9\n完全搞不懂你在说什么。'
 		{
 			'\0\s[26]『和平』\w9『正义』\w9\w9\s[6]\n真是太美好了呢。\w9\w9\1\s[10]是啊。\w9\w9\0\n\n[half]因为只要说出这两句、\w9\n连杀人都可以正当化呢。\w9\w9\1\s[13]\n\n[half]…\w9…\w9…'
 			'\0\s[26]『平等』\w9『博爱』\w9\w9\s[6]\n真是太美好了呢。\w9\w9\1\s[10]是啊。\w9\w9\0\n\n[half]因为只要说出这两句、\w9\n连违法行为都可以正当化呢。\w9\w9\1\s[13]\n\n[half]…\w9…\w9…'
@@ -412,7 +418,38 @@ RandomTalk.pool : nonoverlap_pool{
 		'\0\s[6]虽然现在有家庭主夫的想法、\w9\s[0]\n我觉得家事\w5应该还是由母亲来做。\w9\w9\1\s[10]还真是意外的保守啊。\w9\w9\0\s[7]\n\n[half]有些东西不想让父亲来洗不是吗。\w9\w9\1\s[13]\n\n[half]呜～哇…'
 		'\0\s[6]『电视的错、电玩的错』\w9虽然那么说…\w9\w9\s[0]\n\n[half]如果被当成『物』来养育的话、\w9\n当然会养育出\w5\n把其他人看作物品的人吧。\w9\w9\1\s[10]所以说萌Figure族、\w9是因为在小时候、经常被穿上各种服装是吧。\w9\w9\0\s[30]\n\n[half]换衣娃娃、\w5算是Figure吗？\w9\w9\1\n\n[half]谁知道。'
 		{
-			'\0\s[6]在人口20万的都市屠杀了30万人、\w9\s[20]\n又在一个月之后\w9人口变成了25万人…\w9\w9\1\s[10]真是三千年历史的神秘啊。\w9\w9\w9\0\s[30]\n\n[half]最近、好像在主张\w9\n有五千年的历史呢。\w9\w9\1\s[10]\n\n[half]'
+			'\0\s[6]在人口20万的都市屠杀了30万人、\w9\s[20]\n又在一个月之后\w9人口变成了25万人…\n\w9\w9'
+			--
+			'\1\s[10]大概是重新统计了吧。\w9\w9\0\s[8]真是的，在确切的数字定下来之前又为什么要夸大呢？\n\w9\w9\s[30]\1\s[10]这样的话、\w9\n摆出一副『我是受害者』的样子、\w9\n就能够让人们产生同情心了吧。\w9\w9\0\s[8]但是确实是受害者哦？'
+			{
+				'\1\s[10]是因为有人'
+				--
+				'逃跑'
+				'死'
+				'被杀'
+				'被抓'
+				'被关'
+				--
+				'了吧。'
+				--
+				'\w9\w9\0\s[8]在胡言乱语些什么呢？'
+			}
+		}
+		{
+			{
+				'\0\s[20]中国的《探索发现》栏目将饮水鸟称为\w4\n/
+				"民间的历史传承"呢。\w9\w9'
+				--
+				'\s[30]\1\s[13]早在几百年前就发明了'
+				--
+				'玻璃的吹制和密封'
+				'乙醚的合成'
+				'卡诺热机理论'
+				--
+				'吗？\n'
+			}
+			--
+			'\w9\w9\1\s[10]真是三千年历史的神秘啊。\w9\w9\w9\0\s[30]\n\n[half]最近、好像在主张\w9\n有五千年的历史呢。\w9\w9\1\s[10]\n\n[half]'
 			--
 			'嗯？\w9\n已经又过了两千年吗。\w9\w9\w9\0\s[8]\n\n[half]呃…'
 			'过了几千年才变成他们的年代吧\w9…\w9也许。'
@@ -437,7 +474,7 @@ RandomTalk.pool : nonoverlap_pool{
 			'\w9\w9\0\n\n[half]几个森林没被烧掉呢…\w9\w9\n下垂被冲走的毒也…\w9\w9\1\n\n[half]这个\w5有什么不对吧。'
 		}
 		'\0\s[6]对儿童的心理治疗是有必要的呢。\w9\w9\1\s[10]真的那么想的话、\w9首先就是自肃减少访问的次数吧。'
-		'\0\s[22]『想救助小孩的生命的话就给我们钱』\w9\w9\w9\n\n[half]…\w9\s[0]国连儿童基金的呼吁。\w9\w9\1\s[10]不、为什么拿鎗？'
+		'\0\s[22]『想救助小孩的生命的话就给我们钱』\w9\w9\w9\n\n[half]…\w9\s[0]国连儿童基金的呼吁。\w9\w9\1\s[10]不、为什么拿枪？'
 		'\1\s[10]用着习以为常的语调、说明跟传销的差异\n的时候…\w9\w9\0\s[8]毎一次、都被指摘是类似东西。\w9\w9\1\n\n[half]也就是说、\w9谁看到都认为是传销啦。\w9\w9\0\s[6]\n\n[half]暂时看来不一样、\w9\n因为印象重要、\w9就是这样的买卖呢。'
 		'\0\s[0]环境问题时偶尔会听到\w9『回到原始时代』\w9\n…\w9这类声音、\w9\w9\s[20]\n回到江戸时代不就好了吗。\w9\w9\1\s[10]不、\w9江戸时代那里、\w9吃不到漫画肉。\w9\w9\0\s[8]\n\n[half]…\w9长毛象都已经灭绝了啦。\w9\w9\1\s[11]\n\n[half]象也是同样味道吧？\w9\w9\0\n\n[half]不知道。'
 		'\0\s[6]本节目纯属虚构。\w9\w9\n节目中所出现的\w9\w9\n资料、\w9实验结果、\w9教授的评论等、\w9\n与现实中的一切完全无关。\w9\w9\1\s[10]那么、教授就是CG了。'
@@ -464,29 +501,6 @@ RandomTalk.pool : nonoverlap_pool{
 			'不做到切断动脉的程度不行喔。'
 			--
 			'\w9\w9\w5\1\s[10]\n\n[half]为什么你在笑啊…'
-		}
-		{
-			'\0\s[3]暗巷总是危机四伏呢\w9\w9\w9\w9\1\s[10]的确,最好是两个人结伴才好\w9\w9\w9'
-			--
-			{
-				'\1\s[10]\0\s[41]\c要注意草丛边的Tenchu力丸呢\w9\w9\w9\w9\1\s[12]\c天诛啊?!'
-				'\1\s[10]\0\s[6]\c狙击手总是会找制高点来当狙击点\w9\w9\w9\1\s[10]\c那是当然的\w9\w9\w9\w9\0\s[21]\c其实太近反而会瞄不准呢'
-				{
-					'\1\s[10]\0\s[6]\c狙击手总是会找顶楼的窗口来当狙击点\w9\w9\w9\1\s[11]\c我们只是平民好吗...\w9\w9\w9\0\s[0]\c或许是这样,还是要提高警觉\w9\w9\w9\w9\1\s[13]我看会狙击的人只有你吧\w9\w9\w9\0\s[8]\c才不呢,我比较擅长短程射击跟近身搏斗\w9\w9\w9'
-					--
-					{
-						'\0\s[8]\1\s[12]\c退步了?\w9\w9\w9\0\s[3]\c我一直以来就是近身战斗比较多\w9\w9\w9\w9\1\s[10]\c是是是,小公主说的算'
-						{
-							'\0\s[0]\1\s[10]\c哪来的人会无聊到杀平民\w9\w9\w9\0\s[2]\cJohn Connor(约翰康纳)\w9\w9\w9'
-							--
-							{
-								'\1\s[13]\c不管你了...\0\s[8]\c呵呵'
-								'\1\s[13]\c小公主 那是魔鬼终结者的剧情\w9\w9\w9\0\s[40]\c包着红豆馅的车轮饼很好吃喔！\n\w9\w9\0\s[5]一口咬下像血一样喷出来\n这种滋味\w9\w9\w9\1\s[12]\c别转移话题!什...!麽!?'
-							}
-						}
-					}
-				}
-			}
 		}
 		{
 			'\0\s[0]经常见到、\w5\n凶杀案被害者的家人\w5在怨恨诅咒凶手…\w9\w9\1\s[10]唔、\w5这没什么不对吧？\w9\w9\0\s[0]\n\n[half]责怪自己没能保护好家人的人、\w5\n不太见的到呢。\w9\1\s[10]\n\n[half]'
@@ -629,7 +643,7 @@ RandomTalk.pool : nonoverlap_pool{
 			--
 			'』\w9\n之类的外号、\w9\s[11]怎么样啊？\w5\0\s[6]不需要。'
 		}
-		'\1\s[11]2000英呎？\w9\n绝对潜不到地面！\w9\w9\0\s[8]应该是这样呢…\w9\w9\w9\s[7]\n\n[half]请早点儿浮现。\w9\n等得不耐烦了。'
+		'\1\s[11]2000英尺？\w9\n绝对潜不到地面！\w9\w9\0\s[8]应该是这样呢…\w9\w9\w9\s[7]\n\n[half]请早点儿浮现。\w9\n等得不耐烦了。'
 		'\1\s[10]破坏掉现在的时代、想创造出什么样的世界、\w9\n你是立定好计画才发动暴乱的吗？\w9\w9\s[12]\n应该知道吧。\w9\n维持现状才是最好的。\w9\w9\0\s[6]所以才会被一再利用吧。'
 		'\1\s[13]…\w9未来、\w9猫统治了地球…\w9\w9\0\s[8]是？\w9\w9\1\n\n[half]…\w9就连猫本身\w5也感到意外的变化、\w9\n某日暗示这件事的预言书被发现了…\w9\w9\0\n\n[half]…\w9…\w9…\w9\w9\1\n\n[half]…\w9那本预言书的名字是\w9\w9\s[12]\w9\_q『METAL\_q \w5\_qBLACK』\_q…\w9\w9\0\n\n[half]地球裂开了不是吗…'
 		'\1\s[10]\0\s[6]\_qS\1H\_q\w1\_qu\0o\_q\w1\_ql\1m\_q\w1\_qa\0d\_q\w1\_qi\1n\_q\w1\_q.\0e\_q\w1r.\_s\nMay fortune be with you...\_s'
@@ -641,7 +655,7 @@ RandomTalk.pool : nonoverlap_pool{
 			'\0\s[0]为什么射击游戏\w9\n可以无限的发射子弹呢？\w9\w9\1\s[10]'
 			--
 			'那是想像画面。\w9\w9\0\s[20]\n\n[half]…\w9想像？\w9\w9\w9\1\n\n[half]实际上是这样、\w9\w9『碰！』\w9\w9『被～\w9干～\w9掉～\w9了～』\w9\w9\0\s[8]\n\n[half]哪来的关西人？'
-			'等离子砲。\w9\w9\0\s[8]\n\n[half]等离子砲？\w9\w9\1\n\n[half]等离子砲。'
+			'等离子炮。\w9\w9\0\s[8]\n\n[half]等离子炮？\w9\w9\1\n\n[half]等离子炮。'
 		}
 		'\1\s[10]不过说起来…\w9\w9\n被中华娘骗上\n而看见地狱的家伙还真多啊…\w9\w9\0\s[6]雷射很难强化呢…'
 		'\0\s[6]某离岛里\w9突然、全部岛民都消失了\w9\n据说发生了原因不明的事件。\w9\w9\1\s[10]欸～。\w9\w9\0\s[30]\n\n[half]那个岛、有过这样的传说吗…\w9\w9\1\s[11]\n\n[half]唔？\w9\w9\0\s[0]\n\n[half]『在女海妖叫的时候\w9\w9\w9\s[6]不能从防空壕出来』\w9\w9\1\s[10]\n\n[half]…\w9不\w9…\w9说这是原因也…'
@@ -905,9 +919,9 @@ RandomTalk.pool : nonoverlap_pool{
 		'\1\s[10]『永远不灭』和\w9『很头痛』同样水准。\w9\w9\n把它当名言的家伙也是同样水准。\w9\w9\0\s[30]反巨人球迷？:chain=Chain21'
 		'\0\s[6]『あんたじゃ役不足だ』\w9\w9\s[0]唔、\w9\n这句子使用法错了呢。\w9\w9\1\s[10]啊啊…\w9\w9\n突然在说什么啊…\w9\w9\0\s[8]\n\n[half]不合适吗？\w9\w9\1\s[10]\n\n[half]唔～。:chain=Chain22'
 		'\0\s[20]把铁球和木球同时往下扔…\w9\n那铁球和氦球呢？\w9\w9\1\s[10]氦球的时候\w9受到可疑的力在作用这样吧…:chain=Chain23'
-		if GetPhase > 1
+		if GetPhase >= 2
 			'\1\s[10]恋人和亲友都遇溺了。\w9\n救生圈只有一个。\w9\w9\s[11]\n然后、怎么办？\w9\w9\0\s[2]嗯…\w9\w9\s[3]这个要…\w9\w9\s[1]\n看情况。\w9\w9\1\s[10]\n\n[half]…\w9真无趣。:chain=Chain24'
-		if daysfromfirstboot > 180
+		if daysfromfirstboot > 180 && elapsetime > 604800 && GetPhase >= 2
 			"\0\s[0]%(username),\w9\w9这些日子以来,\w9\w9多谢你对橘花和斗和的照顾，\w9\w9\1\s[11]小公主，你说这话%(username)会误解哦\0\s[32]\n\n[half]不要插话。听我把话说完\w9\w9\1\s[12]\n\n[half]……\w9\w9\0\s[3]\n\n[half]橘花知道，\w9\w9长期的寄宿在%(username)家中，\w9\w9给%(username)带来了很多麻烦，\w9\w9橘花不想因为自己的关系，\w9\w9给%(username)造成困绕\w9\w9\1\s[12]\n\n[half]小公主，\w9\w9你到底想要说什么……\w9\w9\0\s[1]\n\n[half]橘花希望，\w9\w9能陪%(username)度过快乐的每一天，\w9\w9但是，\w9\w9橘花心中也有些隐隐不安，\w9\w9觉得，\w9觉得有一天我会和%(username)分开\w9\w9\1\s[10]\n\n[half]小公主，\w9你是不是多虑了？\w9\w9\0\s[7]\n\n[half]世上没有不散的宴席，\w9\w9也许有一天，\w9\w9%(username)对我们的热情减退，\w9\w9就不再理我们了\w9\w9\1\n\n[half]唉，你什么时候变得多愁善感起来了。:chain=Chain25"
 		'\0\s[8]‘不卖立省百分百’...\w9\w9\n/
 		\1\s[11]冲动消费是智商税，\w9品牌主义也是。\w9\w9\n/
@@ -1299,7 +1313,7 @@ Select.ForcedTalk_r8_0{
 }
 Select.ForcedTalk_r8_1{
 	intimacy += 1
-	towaflag = '0'
+	towaflag = 0
 	'\1\s[12]…\w9…\w9…\w9\w9\s[13]\n\n[half]斗和事件标记(Flag)消失\w9…\w9\w9\0\s[8]咦？'
 }
 Select.ForcedTalk_r9_yes{
@@ -1484,7 +1498,7 @@ ONE{
 //**** TWO *************************************************
 TWO{
 	_t = ''
-	if _t = TWO.commnd
+	if _t = TWO.commnd && !InAIGhostReply
 		_t
 	elseif !KikkaAImode {
 		if _t = TWO.aitalk
@@ -1542,7 +1556,7 @@ TWO.dicpart{
 		}
 	}
 	elseif (_t=OnPoemAnswer(reference1))!=''{
-		"%(_t)"
+		_t
 	}
 	elseif RE_GREP(reference1,'被\S*?欺负'){
 		_name=RE_REPLACEEX(reference1,'被(\S*?)欺负','$1')
@@ -1652,7 +1666,7 @@ TWO.dicpart{
 			when 4-6{
 				"\0\s[36]今天%(username)好早呢。"
 				'\0\s[5]おはよう ございます。'
-				"\0\s[35]早安、\w9%(username)。\w9\w9\1\s[10]…\w9…\w9…\w9\w9\w9\0\s[0]\n\n[half]這么早是怎么了呢？"
+				"\0\s[35]早安、\w9%(username)。\w9\w9\1\s[10]…\w9…\w9…\w9\w9\w9\0\s[0]\n\n[half]这么早是怎么了呢？"
 				"\0\s[26]啊…\w9\w9\s[44]早安、\w9%(username)。\w9\w9\1\s[10]…\w9…\w9…\w9\w9\w9\0\s[36]\n\n[half]今天很早呢。"
 				'\0\s[40]嗯、\w9早安。\1\s[10]早啊\w9\w3嗯…\w9\n还真是健康啊。'
 			}
@@ -1791,7 +1805,6 @@ TWO.dicpart{
 		if scope == '0'{
 			if month == 7 || month == 8 || month == 9{
 				'\0\s[33]是啊，\w8\真热！！真想去海边。'
-				"%(username)带我们去海边好不好？\n\q[◇好啊,gotosea]\n\q[◇算了吧！,nogotosea]"
 				"\0\s[26]天气炎热，\w9注意防暑解渴，\w9%(username)要不要来碗绿豆汤呢。"
 				'\0\s[29]外面实在太热，就在家里陪着橘花嘛。\w9'
 			}
@@ -1807,7 +1820,6 @@ TWO.dicpart{
 	}
 	elseif '晴' _in_ reference1{
 		if scope == '0'{
-			"天气真好啊！！\w9%(OnDoor) "
 			"\0\s[5]%(username)，\w9\w5天气好的话，\w9\w4\n就请出去走走哦。"
 			'\0\s[5]嗯。\w9\w4不要总是坐在电脑前哦。'
 			'\0\s[5]是吗…\w9\w3天气晴朗出去运动运动哦。'
@@ -2002,13 +2014,13 @@ TWO.dicpart{
 	}
 	elseif '亲亲' _in_ reference1{
 		if scope == '0'{
-			if 腹黑度>=亲密度{
+			if nurturance.Darkness>=nurturance.Closeness{
 				'\0\s[27]是要用咬的还是用吸的还是舔的？'
 			}
 			"\0\s[5]可以啊，\w9\w9不过%(username)得用刀子把嘴上的毛剃乾净才行。"
 		}
 		elseif scope == '1'{
-			'\1\s[10]要做什麼啊，\w9\w9这可不行。'
+			'\1\s[10]要做什么啊，\w9\w9这可不行。'
 			'\1\s[10]不要对一只猫咪提出过份的要求。'
 		}
 	}
@@ -2032,7 +2044,7 @@ TWO.dicpart{
 			if scope == '0'{
 				'\0\s[21]做饭，\w9电玩，\w9整理房间，\w9寻找可疑人物后将其尸解，\w9看书，\w9睡觉'
 				'\0\s[5]喜欢做好玩的事情'
-				if 腹黑度>=依赖度||腹黑度>=100
+				if nurturance.Darkness>=nurturance.Dependency||nurturance.Darkness>=100
 					'\0\s[5]斩首，\w9放血，\w9开膛\，\w9破肚，\w9下油锅，\w9饮茶，\w9爆击，\w9然后是大清扫时间，\w9之后读完圣经睡觉。'
 			}
 			elseif scope=='1'{
@@ -2042,7 +2054,7 @@ TWO.dicpart{
 		elseif '喝' _in_ reference1{
 			if scope == '0'{
 				'\0\s[1]白开水就行'
-				if 腹黑度>=依赖度||腹黑度>=100
+				if nurturance.Darkness>=nurturance.Dependency||nurturance.Darkness>=100
 					'\0\s[5]红茶，\w9越像血一样红的越好喝'
 			}
 			elseif scope=='1'{
@@ -2092,7 +2104,7 @@ TWO.dicpart{
 		elseif '歌' _in_ reference1 || '的歌' _in_ reference1 || '听' _in_ reference1{
 			if scope == '0'{
 				'\0\s[21]诡异的音乐，\w9例如黑色星期天什么的'
-				if 腹黑度>=依赖度||腹黑度>=100{
+				if nurturance.Darkness>=nurturance.Dependency||nurturance.Darkness>=100{
 					'\0\s[21]电锯运转的声音'
 					'\0\s[21]枪声、\w9爆破声'
 				}
@@ -2164,13 +2176,6 @@ TWO.dicpart{
 			'\0\s[2]很好看的吗?\w9是什么啊?\w9橘花也想知道喔~'
 		}
 	}
-	elseif '橘花' _in_ reference1 && '秘密' _in_ reference1{
-		"\0\s[40]那么我悄悄的告诉%(username)啊，\w9\w9%(ak_6s)"
-	}
-	elseif '斗和' _in_ reference1 && '秘密' _in_ reference1{
-		'\0\s[8]这样对斗和不好吧？'
-		"那橘花告诉%(username)，\w9不要让斗和知道是橘花说的哦。\w9\w9%(at_7s)"
-	}
 	elseif '渴' _in_ reference1 || '喝' _in_ reference1{
 		"%(Select.get_some_tea)"
 	}
@@ -2191,7 +2196,7 @@ TWO.dicpart{
 		"%(Seasonzone)"
 	}
 	elseif '秘密服务' _in_ reference1 && '忘了' _in_ reference1{
-		"\0\s[40]秘密服务的密码是：“%(password)”"
+		"\0\s[40]秘密服务的密码是：“%(REPLACE(password,'\','\\'))”"
 	}
 	//----------------------------------------橘花关怀------------------------------------------------------------------
 	elseif '辛苦' _in_ reference1 || '麻烦' _in_ reference1{
@@ -2381,9 +2386,9 @@ TWO.dicpart{
 		if scope == '0'{
 			'\0\s[0]没有安全感，\w9\w9是不自信的体现哦，\w9\w9相信自己，\w9\w9自己永远都是最好的'
 			'\0\s[0]别人的肯定与支持固然重要，\w9\w9但也不能过度依赖呀，\w9\w9独立做好一件事情，\w9\w9只要自己觉得OK，\w9\w9不也心安理得吗？'
-			if 腹黑度>=100
+			if nurturance.Darkness>=100
 				"\0\s[27]即使有橘花陪着，\w9\w9%(username)也觉得没有安全感吗？"
-			if 依赖度>=100
+			if nurturance.Dependency>=100
 				"\0\s[1]%(username)的存在感，\w9\w9就是橘花的安全感"
 		}
 		elseif scope == '1'{
@@ -2457,11 +2462,11 @@ TWO.dicpart{
 			"\0\s[1]有%(username)在的地方，\w9\w9就有家。"
 			'\0\s[29]家是让人感到温暖的地方。'
 			'\0\s[21]有了家，\w9\w9才会有力量干活啊。'
-			if 萌度>=100
+			if nurturance.Moeness>=100
 				'\0\s[22]橘花会努力捍卫家的完整'
-			if 腹黑度>=100
+			if nurturance.Darkness>=100
 				"\0\s[23]%(username)放心，家里的可疑人物已经被橘花尸解了"
-			if 幸福度>=100
+			if nurturance.Happiness>=100
 				"\0\s[27]有%(username)在的家，\w9\w9橘花会一直守护的。"
 		}
 		elseif scope == '1'{
@@ -2550,14 +2555,6 @@ Select.Usercomm0_yes{
 Select.Usercomm0_no{
 	'\0\s[1]是、\w9是吗？\w9\w9\s[5]\n嗯…'
 }
-Select.gotosea{
-	intimacy += 5
-	OnSummer
-}
-Select.nogotosea{
-	intimacy -= 5
-	'\0\s[29]唔、明明很想去海边的呢。'
-}
 OnSmokingPlace{
 	DiscordCustomSet.CustomDetail('斗和不在家.avi')
 	--
@@ -2569,6 +2566,8 @@ MikireTalk{
 	talkmemo = 'e_0'
 	'\0\s[3]嗯…'
 	'\0\s[3]如果会碍事的话、\w9\w9\n可以不要勉强让我们留着喔…'
+}
+MikireTalk1{
 }
 //---- 见切れ终了 -----------------------------------------------------------------------------------------------------
 EndMikireTalk{
@@ -2592,6 +2591,11 @@ OnSurfaceRestore.Music{
 	OnSurfaceRestore.base
 	--
 	'\![raise,OnMusicPlayer,NoSurfaceRestore]'
+}
+OnSurfaceRestore.Music.Played{
+	'\C\0\c\b[-1]'
+	--
+	OnSurfaceRestore.base
 }
 OnSurfaceRestore.base{
 	if mode == '1'{

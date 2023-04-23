@@ -15,7 +15,9 @@ AIGet{
 		_found=_temp[_i]
 		SETDELIM(_found,'|')
 		_count=ARRAYSIZE(_found)-1
-		_id=RAND(_count)
+		_id=_count
+		if _count
+			_id=RAND(_count)
 		_found=_found[_id]
 		if '<think>' _in_ _found{
 			AILoad.Think(_found)
@@ -30,8 +32,11 @@ AIGet{
 	}
 	SETDELIM(_txt,'|')
 	_count=ARRAYSIZE(_txt)-1
-	_id=RAND(_count)
-	_txt=_txt[_id]
+	_id=_count
+	if _count{
+		_id=RAND(_count)
+		_txt=_txt[_id]
+	}
 	_txt
 }
 AITextReplace{
@@ -160,7 +165,6 @@ AILoad{//AILoad('你好','aiml')  AILoad('你好，喜欢什么')
 	qnum=0
 	anum=0
 	_search=''
-	_length=0
 	num=0
 	talkflag=''
 	talkflagid=0
@@ -177,13 +181,11 @@ AILoad{//AILoad('你好','aiml')  AILoad('你好，喜欢什么')
 	//_tfiles='other.ai,'+_tfiles
 	for _a=0;_a<strnum;_a++{
 		_str=string[_a]
-		_g=IARRAY
 		e=0
 		aimode=''
 		_txt=''
-		_lastm=0
+		_t=''
 		foreach _tfiles; _file{
-			_filename=TOUPPER(SPLITPATH(_file)[2])
 			_file = _path +'/'+ _file
 			_fileext = TOLOWER(SPLITPATH(_file)[3])
 			case _fileext{
@@ -307,34 +309,29 @@ AILoad.KeyMatch{
 		SETDELIM(_Qs,'&')
 		_n=ARRAYSIZE(_Qs)
 		_k+=_n-1
+		_m=1
 		for _l=0,_m=1;_l<_n && _m==1;_l++{
 			_m=(_Qs[_l] _in_ _str)
 			_k+=STRLEN(_Qs[_l])
 		}
 		if _m==1 && _k==_E && _lastm==1{
-			//_dexori,=_buff2[1,'|']
-			//_dexnum++
 			//anum+=_Anum-1
 		}
 		elseif _m==1 && _k>=_E{
 			_lastm=1
 			_E=_k
-			_dexnum=1
 		}
 	}
 	if _Q _in_ _str && STRLEN(_Q)==_E && _lastm==0{
-		_dexori,=_buff2[1,'|']
-		_dexnum++
 		_match=1
 	}
 	elseif _Q _in_ _str && STRLEN(_Q)>=_E{//当上次最大长度匹配＞这次,不管是何种保留都放弃
 		_lastm=0
 		_E=STRLEN(_Q)
 		_match=1
-		_dexnum=1
 	}
-	_match
 	i=_E
+	_match
 }
 AILoad.InfFile{//AILoad.InfFile('PSEUDO_AI_PATH\common.ai','你好')
 	_file=_argv[0]
@@ -375,7 +372,7 @@ AILoad.InfFile{//AILoad.InfFile('PSEUDO_AI_PATH\common.ai','你好')
 					_newmd5=''
 			}
 			else
-				coutinue
+				continue
 			if _filename!='USER'{
 				if '|' _in_ _buff2
 					qnum++
@@ -429,6 +426,7 @@ AILoad.InfFile{//AILoad.InfFile('PSEUDO_AI_PATH\common.ai','你好')
 					_Qs=_Q
 					_k=0
 					_n=0
+					_m=1
 					if '&' _in_ _Q{
 						SETDELIM(_Qs,'&')
 						_n=ARRAYSIZE(_Qs)
@@ -553,6 +551,8 @@ AILoad.AIFile{
 		return
 	}
 	FCHARSET(1)
+	_looplimit = GETSETTING('looplimit')
+	void SETSETTING('looplimit',MAX(FSIZE(_file),7))
 	if FOPEN(_file,'rb'){
 		_table=0
 		_buff=''
@@ -722,6 +722,7 @@ AILoad.AIFile{
 				if TflagTxt!=''
 					_answer=TflagTxt
 				_answer=REPLACE(_answer,'。','')
+				_t=''
 				if aimode!='return'&&'记住' !_in_ _str
 					_t=AILoad.AnswerTxt(_str,_answer)
 				if _t!=''
@@ -816,6 +817,7 @@ AILoad.AIFile{
 					_Qs=_Q
 					_k=0
 					_n=0
+					_m=1
 					if '&' _in_ _Q{
 						SETDELIM(_Qs,'&')
 						_n=ARRAYSIZE(_Qs)
@@ -880,6 +882,7 @@ AILoad.AIFile{
 	}
 	FCLOSE(_file)
 	FCHARSET.default
+	void SETSETTING('looplimit',_looplimit)
 	if _found{
 		if '<srai>' _in_ _txt&&'记住' !_in_ _str{
 			if '<think>' _in_ _txt
@@ -1511,13 +1514,10 @@ ReplaceStarTxt{
 	_txt
 }
 ExcelTxtToAI{
-	if _argc=2{
-		_file=_argv[0]
-		_file2=_argv[1]
-	}
-	else{
+	_file=_argv[0]
+	_file2=_argv[1]
+	if _argc!=2
 		return
-	}
 	FCHARSET(1)
 	_txt=''
 	if FOPEN(_file,'r'){
@@ -1870,7 +1870,6 @@ OnChatRoom{
 	else
 		_l=_n
 	for _i=_j;_i<_l;_i++{
-		_temp=chatroomtxt[_i]
 		_t=chatroomtxt[_i]
 		_t=REPLACE(_t,"%(username)","\f[color,%(ColorIdx(3))]%(username)\f[color,default]")
 		_txt+=_t[0,'|']
@@ -1918,7 +1917,7 @@ OnChatRoom{
 	elseif _j>0 &&_j+_talknum>=_n
 		_Page+="\_l[90]\q[一<<,OnChatRoom,,%(_j-_talknum)]"
 	else
-		_Page+="\_l[90]\q[<<一,OnChatRoom,,%(_j-_talknum),%(_file)]  \_l[170]\q[一>>,OnChatRoom,,%(_j+_talknum)]"
+		_Page+="\_l[90]\q[<<一,OnChatRoom,,%(_j-_talknum)]  \_l[170]\q[一>>,OnChatRoom,,%(_j+_talknum)]"
 	if _n<=_talknum
 		_Page=''
 	elseif _j==0 && _n>_talknum
@@ -1926,7 +1925,7 @@ OnChatRoom{
 	elseif _j>0 &&_j+_talknum>=_n
 		_Page+="\_l[60]\q[五<<,OnChatRoom,,%(_j-_talknum*5)]"
 	else
-		_Page+="\_l[60]\q[<<五,OnChatRoom,,%(_j-_talknum*5),%(_file)]  \_l[200]\q[五>>,OnChatRoom,,%(_j+_talknum*5)]"
+		_Page+="\_l[60]\q[<<五,OnChatRoom,,%(_j-_talknum*5)]  \_l[200]\q[五>>,OnChatRoom,,%(_j+_talknum*5)]"
 	if _n<=_talknum
 		_Page=''
 	elseif _j==0 && _n>_talknum
@@ -1934,10 +1933,10 @@ OnChatRoom{
 	elseif _j>0 &&_j+_talknum>=_n
 		_Page+="\_l[30]\q[十<<,OnChatRoom,,%(_j-_talknum*10)]"
 	else
-		_Page+="\_l[30]\q[<<十,OnChatRoom,,%(_j-_talknum*10),%(_file)]  \_l[230]\q[十>>,OnChatRoom,,%(_j+_talknum*10)]"
+		_Page+="\_l[30]\q[<<十,OnChatRoom,,%(_j-_talknum*10)]  \_l[230]\q[十>>,OnChatRoom,,%(_j+_talknum*10)]"
 	_txt+=_Page
 	_txt+='\0\n\q[◇清空记录,OnChatRoomClear]  \q[◇打开记录文件,OnChatRoomTxt]  \q[◇返回,OnOpenMenu,1]  \q[◇结束,OnChatRoomOver]  \q[◇Top,OnChatRoom,top]\n'
-	_txt+="\![*]\q[停止语音,OnStopSpVoice.vbs]  \![*]\q[搜索数量：,OnClickOption,%(_submenu),chatroom_num,0] %(TOINT(chatroom_num))   "
+	_txt+="\![*]\q[停止语音,OnStopSpVoice.vbs]  \![*]\q[搜索数量：,OnClickOption,%(submenu),chatroom_num,0] %(TOINT(chatroom_num))   "
 	_txt+='\![set,choicetimeout,0]'
 	if option
 		_txt+=option
@@ -2072,33 +2071,18 @@ Greetings{
 	}
 }
 WeatherState{
-	_txt='\s[0]'
-	_weather=Weather
-	if _weather!=-1{
-		_txt+="天气：%(_weather[2])～%(_weather[4])，气温：%(_weather[3])℃～%(_weather[5])℃\n"
-		if '晴' _in_ _weather[2]
-			_txt+='今天天气还好啦，因为是晴天呢。\n'
-		elseif '雨' _in_ _weather[2]
-			_txt+='今天是雨天，天气不好啊\n'
-		elseif '雪' _in_ _weather[2]
-			_txt+='今天下雪了吗，好好玩\n'
-		if TOINT(_weather[3])<16
-			_txt+='天气比较冷，要注意保重身体哦。\n'
-		elseif TOINT(_weather[3])>38
-			_txt+='天气太热了，还是少呆在外面比较好。\n'
-		elseif TOINT(_weather[3])>33
-			_txt+='今天天气比较热，要注意降温解暑哦。\n'
-		if '雨' _in_ _weather[4]
-			_txt+='晚上可能有雨，记得收衣服关好门窗哦。\n'
-		elseif '雪' _in_ _weather[4]
-			_txt+='外面应该很冷吧，还是呆在家里比较好。\n'
-		if TOINT(_weather[5])<10
-			_txt+='晚上睡觉要注意保暖哦，不要冻着身子。\n'
+	'\s[0]'
+	--
+	if weather.lastcity{
+		"天气：%(weather.day)～%(weather.night)，气温：%(weather.daytemp)℃～%(weather.nighttemp)℃\n"
+		--
+		Weather.Talks
 	}
 	else{
-		_txt+="这个，%(selfname)也不知道呢，因为不能获得天气信息。"
+		"这个，%(selfname)也不知道呢，因为不能获得天气信息。"
 	}
-	_txt
+	--
+	'\n'
 }
 HtmlToAI{//HtmlToAI('D:\CHM','meal')
 	_path=_argv[0]
@@ -2386,7 +2370,7 @@ WriteSpVoice.vbs{
 }
 CheckProcess{//CheckProcess('wscript.exe')
 	_processname=TOLOWER(_argv[0])
-	_t=CALLSAORI('Process')
+	void CALLSAORI('Process')
 	_ProcessData=TOLOWER(valueex0)
 	_found=0
 	if _processname _in_ _ProcessData
@@ -2463,8 +2447,8 @@ TranslateWithDictionary{//TranslateWithDictionary("%(username)被欺负了")
 	if _argc>0
 		_str=TOSTR(_argv)
 	_found=_str
-	_cha='%'
 	_found=REPLACE(_found,username,'%(username)')
+	FCHARSET(1)
 	if FOPEN(_file,'r'){
 		for _buff = FREAD(_file); _buff != -1; _buff = FREAD(_file){
 			_temp="%(_buff[0,'|'])"
@@ -2473,6 +2457,7 @@ TranslateWithDictionary{//TranslateWithDictionary("%(username)被欺负了")
 		}
 	}
 	FCLOSE(_file)
+	FCHARSET.default
 	_found=REPLACE(_found,'%(username)',username)
 	_found
 }

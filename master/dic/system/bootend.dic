@@ -6,12 +6,14 @@ BaseGhostStart{//改动于2020 by steve02081504
 	OnOptionSet
 	--
 	FCHARSET(1)
-	lastTalk = '\0\s[20]咦？分明才刚启动的說…\1\s[10]喵，刚才什么都没说'
+	lastTalk = '\0\s[20]咦？分明才刚启动的说…\1\s[10]喵，刚才什么都没说'
 	if TimeErrorCheck
 		InTimeError = 1
 	if !InTimeError
 		BaseGhostStart.aboutTime
 	playingmusic = 0
+	displaypowerstatus = 1
+	infomode = 0
 	OnSQLLoad
 	OnAILoad
 	--
@@ -33,21 +35,31 @@ BaseGhostStart.aboutTime{
 	Lunartime
 	elapsetime = GETSECCOUNT - CloseTime
 	CloseTime = GETSECCOUNT
+	if (lastbootdate != (year,month,day)){
+		bootcount_inthisday=0
+		lastbootdate=(year,month,day)
+	}
+	bootcount_inthisday++
 }
-UpdateFirstBootCount:void{
-	_save_dir=GETENV('USERPROFILE')
-	if _save_dir{
-		_save_dir+='\AppData\Local\Taromati'
-		_save_file=_save_dir+'\FirstBootCount'
-		MKDIR(_save_dir)
-		if FOPEN(_save_file,'r'){
-			_tFirstBootCount=TOINT(FREAD(_save_file))
-			FCLOSE(_save_file)
+OnInitialize{
+	if reference0=='reload'{
+		OnSQLLoad.Fixer//非中文环境编码问题再修复
+		SETTAMAHWND(TamaHwnd)
+		if ReloadFromTerminal{
+			ShioriEcho.Special='重载完成'
+			ERASEVAR('ReloadFromTerminal')
 		}
-		FirstBootCount=MAX(_tFirstBootCount,FirstBootCount)
-		if FOPEN(_save_file,'w'){
-			FWRITE(_save_file,TOSTR(FirstBootCount))
-			FCLOSE(_save_file)
+		if SHIORI_FW.LastBootInEmergencyMode
+			return
+		if mode == '1'{
+			"\1\s[%(specialmode != 'mealtime')10]唔…\n重载完了。"
+			return
+		}
+		if !SHIORI_FW.EmergencyMode{
+			'\0\s[0]重载成功，没有语法错误'
+			'\0\s[0]重载完成'
+			if GetPhase >= 2
+				'\0\s[5]重载成功，没有出错哦'
 		}
 	}
 }
@@ -56,6 +68,7 @@ OnFirstBoot{//改动于2020 by steve02081504
 	MAGICLOCK
 	VERSION_INIT
 	BaseGhostStart
+	CLEARERRORLOG//未进行变量值恢复错误忽略
 	--
 	if !ISVAR('FirstBootCount'){
 		mode = '0'
@@ -76,15 +89,20 @@ OnFirstBoot{//改动于2020 by steve02081504
 		OnKikkaReset
 		InitPassword
 		--
-		'\![open,readme]\v'
-		--
 		if ISINTEGER(reference0)
 			FirstBootCount = reference0
 		elseif ISINTEGER(_argv[0])
 			FirstBootCount = _argv[0]
 		else
 			FirstBootCount = 0
-		UpdateFirstBootCount
+		--
+		if FirstBootCount >= 4{
+			OnDDLCend
+			return
+		}
+		--
+		'\![create,shortcut]\![create,shortcut,startup]\![open,readme]\v'
+		--
 		if FirstBootCount == 0{
 			'\1\s[10]\0\s[26]啊、\w9\w9那个…\w9\w9\w9'
 		}else{
@@ -94,14 +112,15 @@ OnFirstBoot{//改动于2020 by steve02081504
 		--
 		'\n\n[half]暂时、\w9要在此处打扰您了。'
 		--
-		SHIORI_FW.PushNotifyResult(DiscordCustomSet.CustomDetail('初次见面'))
+		SHIORI_FW.PushNoBreakNotifyResult(DiscordCustomSet.CustomDetail('初次见面'))
 		--
-		SHIORI_FW.PushNotifyResult(GetUsernameFirst)
-		SHIORI_FW.PushNotifyResult(GetPasswordFirst)
-		SHIORI_FW.PushNotifyResult(UpdateFirst)
+		SHIORI_FW.PushNoBreakNotifyResult(GetUsernameFirst)
+		SHIORI_FW.PushNoBreakNotifyResult(GetPasswordFirst)
+		if QuickStartVersion
+			SHIORI_FW.PushNoBreakNotifyResult(UpdateFirst)
 		--
 		if InTimeError
-			SHIORI_FW.PushNotifyResult(OnTimeError)
+			SHIORI_FW.PushNoBreakNotifyResult(OnTimeError)
 	}else{
 		OnBoot('FromFirstBoot')
 	}
@@ -124,13 +143,15 @@ UpdateFirst{
 	OpenDocForRuntime('welcome')
 	--
 	'\w9\w9\0\s[6]\c/
-	现在开始初次启动时的自动更新\w9\n/
-	现有人格功能在更新期间仍然可用\w9\n/
-	其余功能在更新成功后会获得补全\w9\n/
+	现在开始初次启动时的联网补全\w9\n/
+	现有人格功能在此期间仍然可用\w9\n/
+	其余功能在成功后会获得补全\w9\n/
 	可能会突然重启人格\w9\n/
 	请不必担心\w9\w9'
 	--
-	OnSilentUpdate
+	MAGICSAVE
+	--
+	OnInstallFullDataPack
 }
 //**** 时间帯判定 *****************************************************************************************************
 GetTimeSlot{
@@ -158,6 +179,21 @@ OnBoot{
 	MAGICLOCK
 	BaseGhostStart
 	--
+	if LOADED_FROM_MAGIC
+		OnSilentChangeShell(shellID)
+	else
+		SHIORI_FW.PushNoBreakNotifyResult(OnAutoChangeShell.boot)
+	--
+	SHIORI_FW.PushNoBreakNotifyResult(OnBoot.base(_argv))
+	--
+	if AutoUpdate{
+		if QuickStartVersion && !FullDataPackInstalled
+			SHIORI_FW.PushNoBreakNotifyResult(OnInstallFullDataPack)
+		else
+			SHIORI_FW.PushNoBreakNotifyResult(OnSilentUpdate)
+	}
+}
+OnBoot.base{
 	if mode == '1'{
 		if specialmode == 'mealtime'
 			mealendtime=60
@@ -168,16 +204,12 @@ OnBoot{
 		void Onmealfin
 	}
 	if uninstall || (_argv[0]=='FromFirstBoot' && elapsetime > 172800){
-		SilentShellChange=1
-		"\![change,shell,%(shellID)]"
-		--
 		ERASEVAR('uninstall')
 		money = 0//重装惩罚
 		if elapsetime > 86400//卸载时长超过一天惩罚
 			intimacy -= 3
 		if elapsetime > 172800{//卸载时长超过两天：有效卸载
 			FirstBootCount++
-			UpdateFirstBootCount
 			if FirstBootCount >= 4{//三次有效卸载后惩罚
 				{//自我销毁
 					void DELDIR('PROFILE_PATH')//清除用户数据
@@ -186,13 +218,7 @@ OnBoot{
 					FirstBootCount=13//再也不见
 					MAGICSAVE//永久生效
 				}
-				'\1\s[-1]\0\s[-1]请不要玩弄我的心，我不会回来的'//致敬ddlc
-				--
-				SilentVanish = 1
-				topmode=1
-				TopModeChanged
-				--
-				'\![vanishbymyself]'
+				OnDDLCend
 				return
 			}elseif FirstBootCount == 3{//这是第三次重装警告
 				'\0\s[35]\w9.\w9.\w9.\w9\w9\w9\n\s[8]最后一次了。\w9\w9\w9\w9\n'
@@ -203,7 +229,10 @@ OnBoot{
 			'\x'
 		}else{
 			MAGICSAVE
-			"\0\s[26]再次见面，%(username)。\s[8]\w9\1\s[10]\什么啊，虚惊一场么\w9\w9\w9\n\x"
+			"\0\s[26]再次见面，%(username)。"
+			--
+			if uninstall
+				'\s[8]\w9\1\s[10]\什么啊，虚惊一场么\w9\w9\w9\n\x'
 		}
 	}
 	elseif SHIORI_FW.InVarFileMiss{//完全失忆
@@ -212,7 +241,7 @@ OnBoot{
 	}
 	elseif LOADED_FROM_MAGIC{//数据来自MAGICSAVE
 		intimacy -= 1
-		'\0\s[35]\w9.\w9.\w9.\w9\w9\w9\n\s[0]啊\w9\w9\s[6]，很抱歉\n\w9\w9\w9我做了个恶梦\w9\w9\w9\n\x'
+		SHIORI_FW.PushNoBreakNotifyResultToTop('\0\s[35]\w9.\w9.\w9.\w9\w9\w9\n\s[0]啊\w9\w9\s[6]，很抱歉\n\w9\w9\w9我做了个恶梦\w9\w9\w9\n\x')
 		return
 	}
 	--
@@ -234,27 +263,11 @@ OnBoot{
 		\x"
 	}
 	--
-	/*
-	if TOINT(autoastro)==0
-		temp='autoastro'
-	if TOINT(autoweather)==0
-		OnWeatherFoundAuto
-	elseif TOINT(autoastro)==0
-		OnAstroFoundAuto
-	*/
-	--
-	if AutoUpdate
-		OnSilentUpdate
+	OnWeatherUpdate.boot
 }
 OnBoot.aboutTime{
 	_phase = GetPhase
-	_laststart=0
 	_timeslot = GetTimeSlot
-	if reference0!='return'{
-		if AutoShellChange[0]
-			OnAutoChangeShell
-	}
-	--
 	//-------------------------------------------------------------------
 	if elapsetime >= 36000 && elapsetime < 86400{
 		HolidayRemindFlag = 0
@@ -265,43 +278,14 @@ OnBoot.aboutTime{
 		giftmode = 0
 	}
 	--
-	birthdayflag=0
-	if year - 1 == nextbirthday[0]{
-		nextbirthday=NextBirthDay(birthday[0],birthday[1],birthday[2])
-	}
-	if nextbirthday && year == nextbirthday[0] && month == nextbirthday[1] && day == nextbirthday[2] && birthdaygiftmode != 1{
-		"\0\s[28]今天是%(username)%(TOINT(nextbirthday[0]) - birthday[0])岁生日，橘花给%(username)准备了礼物\n\n\n\q[◇打开看看,birthdaygift]"
-		--
-		'\n\x'
-	}
-	--
-	if !friendbirthdaymode {
-		for _i=0;_i<friendID;_i++{
-			if year-1==friendbirthday[_i*9+5]||year==friendbirthday[_i*9+5]&&month-1==friendbirthday[_i*9+6]||year==friendbirthday[_i*9+5]&&month==friendbirthday[_i*9+6]&&day-1==friendbirthday[_i*9+7]{
-				_next_birthday=NextBirthDay(friendbirthday[_i*9+2],friendbirthday[_i*9+3],friendbirthday[_i*9+4])
-				friendbirthday[_i*9+5]=_next_birthday[0]
-				friendbirthday[_i*9+6]=_next_birthday[1]
-				friendbirthday[_i*9+7]=_next_birthday[2]
-			}
-			friendbirthday[_i*9+8]=OnFriendNextBirthDay(friendbirthday[_i*9+5],friendbirthday[_i*9+6],friendbirthday[_i*9+7])
-			if friendbirthday[_i*9+8]==10
-				"\0\s[40]还有10天就是%(username)的好友%(friendbirthday[_i*9+1])的生日\n\x"
-			--
-			if friendbirthday[_i*9+8]==5
-				"\0\s[40]还有5天就是%(username)的好友%(friendbirthday[_i*9+1])的生日\n\x"
-			--
-			if friendbirthday[_i*9+8]==1
-				"\0\s[40]明天是%(username)的好友%(friendbirthday[_i*9+1])的生日\n\x"
-			--
-			if year == friendbirthday[_i*9+5] && month == friendbirthday[_i*9+6] && day == friendbirthday[_i*9+7]
-				"\0\s[40]今天是%(username)的好友%(friendbirthday[_i*9+1])的生日，快送去生日祝福吧！\n\x"
-		}
-	}
+	BirthDay.BootRemind
 	--
 	if acjeachday{
-		Onautojeachday
-		--
-		'\x'
+		if (_t=Onautojeachday)!='' {
+			_t
+			--
+			'\x'
+		}
 	}
 	--
 	//--------------------设置节日提醒--------------------
@@ -351,6 +335,92 @@ OnBoot.aboutTime{
 		}
 		--
 		'\n\x'
+	}
+	elseif month == 10 && day == 31{
+		if bootcount_inthisday == 1{
+			'\0\s[27]\_sTrick Or Treat！\_s！\_s\n/
+			\w7.\w7.\w7.\w9\n\_s/
+			\1\_q没有\0有\_q\_s糖果\_s\_q吗？\1吗\_q\w7.\w7.\w7.\w9\_s\n\_s/
+			\0\s[5]不过我准备了点糖果哦，'
+			--
+			_candy_list=IARRAY
+			_candy_exp_list=IARRAY
+			if GetPhase>=3{
+				if nurturance.Darkness > 72{
+					_candy_list,='特制红糖夹心巧克力'//其实掺了血
+					_candy_exp_list,='love,blood,notfortowa'
+				}
+				else{
+					_candy_list,='巧克力味'
+					_candy_exp_list,='love'
+				}
+			}
+			if nurturance.Darkness > 100{
+				_candy_list,='铁锈味'//掺了更多的血
+				_candy_exp_list,='blood,bad'
+			}
+			if nurturance.Moeness > 10 && nurturance.Darkness > 10{
+				_candy_list,='蒜蓉味'
+				_candy_exp_list,='bad'
+			}
+			if nurturance.Moeness > 15 && nurturance.Darkness > 15{
+				_candy_list,='五仁味'
+				_candy_exp_list,='bad'
+			}
+			if nurturance.Moeness > 20 && nurturance.Darkness > 20{
+				_candy_list,='芥末味'
+				_candy_exp_list,=''
+			}
+			if nurturance.Moeness > 100 && nurturance.Darkness > 100{
+				_candy_list,='魔鬼辣椒味'
+				_candy_exp_list,='bad'
+			}
+			SETDELIM(_candy_list,'、\w7')
+			if ARRAYSIZE(_candy_list)==0{
+				'\s[8]虽然几乎都是商店里买的糖果\w9\n/
+				\1\嘛，\w7也不错吧。'
+			}
+			if ARRAYSIZE(_candy_list)==1{
+				'\s[8]虽然几乎都是'+TOSTR(_candy_list)
+				--
+				if 'love' _in_ _candy_exp_list[0]
+					'，\s[1]但是请务必尝尝看'
+				else
+					'\w7.\w7.\w7.\w9\n/
+					\1你本打算用这种东西招待邻居吗？？\n\x'
+			}
+			else{
+				'有'+TOSTR(_candy_list)
+				--
+				if 'love' _in_ TOSTR(_candy_exp_list)
+					'\n，\w9请 \w9 务\w9 必\w9 要\w9尝尝看哦!\n'
+				else
+					'。'
+				--
+				'\1'
+				--
+				if 'bad' _in_ TOSTR(_candy_exp_list){
+					'\s[11]你打算用这种东西招待邻居吗？？'
+					'啊，\s[13]\w7我今天肚子不好先算了'
+				}
+				if 'love' _in_ TOSTR(_candy_exp_list)
+					'\s[13]年轻真好啊。\n/
+					\0\s[8]欸？'
+			}
+			--
+			'\n\x'
+		}
+	}
+	elseif month == 11 && day == 1{
+		if bootcount_inthisday == 1{
+			'\1\s[10]\0\s[27]今天是万圣节哦，\w9\s[5]万圣节快乐！\w9\w9\n'
+			--
+			if nurturance.Darkness > 20
+				'\s[27]来找我的鬼怪可能会比较多，我会妥善处理好的。\w9\n/
+				\1.\w7.\w7.？'
+			--
+			'\n\x'
+		}
 	}
 	elseif month == 11 && day == 11{
 		if giftmode!=1{
@@ -428,18 +498,18 @@ OnBoot.aboutTime{
 		intimacy--
 		HolidayRemindFlag = 0
 		birthdaygiftmode = 0
-		"\0\s[21]\w6\s[0]好久不见啊，%(username)。\1\s[10]至少有一个礼拜沒见了吧。\x"
+		"\0\s[21]\w6\s[0]好久不见啊，%(username)。\1\s[10]至少有一个礼拜没见了吧。\x"
 		"\1\s[117]%(username)把我们给忘了吗,\w9这么久才回来。\w9\w9\0\s[0]%(username)，好久不见啊。\x"
-		"\1\s[10]\0\s[21]\w6\s[5]%(username) ，好久不见\1\s[10]至少有一个礼拜沒见了吧。\x"
+		"\1\s[10]\0\s[21]\w6\s[5]%(username) ，好久不见\1\s[10]至少有一个礼拜没见了吧。\x"
 	}
 	//超过一月半小于半年
 	elseif elapsetime >= 3628800 && elapsetime < 15768000{
 		intimacy-=5
 		HolidayRemindFlag = 0
 		birthdaygiftmode = 0
-		"\0\s[21]\w6\s[0]好久不见啊，%(username)。\1\s[10]至少有一个月沒见了吧。\x"
+		"\0\s[21]\w6\s[0]好久不见啊，%(username)。\1\s[10]至少有一个月没见了吧。\x"
 		"\1\s[117]%(username)把我们给忘了吗,\w9这么久才回来。\w9\w9\0\s[0]%(username)，好久不见啊。\x"
-		"\1\s[10]\0\s[21]\w6\s[5]%(username) ，好久不见\1\s[10]至少有一个月沒见了吧。\x"
+		"\1\s[10]\0\s[21]\w6\s[5]%(username) ，好久不见\1\s[10]至少有一个月没见了吧。\x"
 	}
 	//超过半年
 	elseif elapsetime >= 15768000{
@@ -447,10 +517,10 @@ OnBoot.aboutTime{
 		HolidayRemindFlag = 0
 		birthdaygiftmode = 0
 		_years = TOINT(FLOOR(elapsetime / 31536000))
-		if _years=0{
-			"\0\s[21]\w6\s[0]好久不见啊，%(username)。\1\s[10]至少有半年沒见了吧。\x"
+		if _years==0{
+			"\0\s[21]\w6\s[0]好久不见啊，%(username)。\1\s[10]至少有半年没见了吧。\x"
 			"\1\s[117]%(username)把我们给忘了吗,\w9这么久才回来。\w9\w9\0\s[0]%(username)，好久不见啊。\x"
-			"\1\s[10]\0\s[21]\w6\s[5]%(username) ，好久不见\1\s[10]至少有半年沒见了吧。\x"
+			"\1\s[10]\0\s[21]\w6\s[5]%(username) ，好久不见\1\s[10]至少有半年没见了吧。\x"
 		}else{
 			"\0\s[3]%(username)\w8，%(_years)年未见\n\1\s[10]过得还好吗？\w6\n小公主可是一直都在等你哦？\x"
 		}
@@ -486,7 +556,7 @@ OnBoot.aboutTime{
 			when 'Day'{
 				if _phase >= 2{
 					if weekday == '0'
-						'\0\s[26]早安。\w9\w9\n…\w9嗯、\w9\s[8]已經中午了喔。\w9\w9\1\s[10]反正是禮拜天嘛。\w9\w9\n有好好休息嗎？\x'
+						'\0\s[26]早安。\w9\w9\n…\w9嗯、\w9\s[8]已经中午了喔。\w9\w9\1\s[10]反正是礼拜天嘛。\w9\w9\n有好好休息吗？\x'
 					else{
 						"\1\s[10]\0\s[2]啊。\w9\w9\s[40]\n午安、\w9%(username)。\x"
 						"\1\s[10]\0\s[40]午安、\w9%(username)。\1\s[10]哟。\x"
@@ -563,7 +633,6 @@ ClearVar{
 	ERASEVAR('ix')
 	ERASEVAR('jd')
 	ERASEVAR('jx')
-	ERASEVAR('ii')
 	ERASEVAR('jj')
 	ERASEVAR('ll')
 	ERASEVAR('kk')
@@ -601,7 +670,6 @@ ClearVar{
 	ERASEVAR('t6')
 	ERASEVAR('t2')
 	ERASEVAR('operand')
-	ERASEVAR('m_point')
 	ERASEVAR('file')
 	ERASEVAR('tempright')
 	ERASEVAR('headpatflag')
@@ -630,7 +698,6 @@ ClearVar{
 	ERASEVAR('B')
 	ERASEVAR('b')
 	ERASEVAR('com')
-	ERASEVAR('ball_')
 	ERASEVAR('ball1')
 	ERASEVAR('bs')
 	ERASEVAR('v')
@@ -657,7 +724,6 @@ ClearVar{
 	ERASEVAR('arrPuzzle')
 	ERASEVAR('ShowPuzzleMap')
 	ERASEVAR('buffnum')
-	ERASEVAR('buffnums')
 	ERASEVAR('SecondWatch.m')
 	ERASEVAR('SecondWatch.s')
 	ERASEVAR('SecondWatch.ss')
@@ -700,7 +766,6 @@ ClearVar{
 	ERASEVAR('say')
 	ERASEVAR('Acount')
 	ERASEVAR('runjr')
-	ERASEVAR('tt')
 	ERASEVAR('ttt')
 	ERASEVAR('s')
 	ERASEVAR('ss')
@@ -728,7 +793,6 @@ ClearTempVar:void{
 	S_CHARSET = GETSETTING('charset.output')
 }
 OnClose.base:void{
-	OnCloseCalled=1
 	if reference0 == 'system'
 		inshutdown=1
 	if !TimeErrorCheck
@@ -749,6 +813,11 @@ OnClose.base:void{
 OnClose{
 	OnClose.base
 	--
+	OnClose.talk
+	--
+	'\-'
+}
+OnClose.talk{
 	if mode == '1'{
 		OnClose1
 	}
@@ -788,7 +857,7 @@ OnClose0{
 		}
 	}
 	--
-	'\w9\w9\-'
+	'\w9\w9'
 }
 //**** フェーズ *******************************************************************************************************
 GetPhase{
@@ -824,21 +893,26 @@ OnWindowStateMinimize{
 		DiscordCustomSet.CustomState('但是放着歌')
 	--
 	minimizestarttime = systemuptime
+	InMinimize = 1
 	if mode != '1'{
 		'\0\s[3]……'
 		'\0\s[6]……知道了。'
-		if 依赖度 > 50
+		if nurturance.Dependency > 50
 			'\0\s[9]请不要把我忘了哦？'
 	}
 	'\1又要被隐藏了么？'
 }
 //**** 最小化から复帰 *************************************************************************************************
 OnWindowStateRestore{
+	'\t'
+	--
 	DiscordCustomSet.LargeImageKey('kikka_eye_open')
 	--
 	DiscordCustomSet.CustomDetail('从最小化中回来')
 	--
 	OnSurfaceRestore.base
+	--
+	ClassMonitor
 	--
 	if topmode/2
 		topmode-=2
@@ -854,7 +928,7 @@ OnWindowStateRestore{
 			"\0\s[9]\w9.\w9.\w9.\w9\w9\w9我可是等了你整整%(TOINT(MinimizeTime/(60*60*24)))天哦？"
 		}
 		if MinimizeTime >= 60*60*5{
-			DiscordCustomSet.CustomDetail('让人等了'+TOINT(MinimizeTime/(60*60))+'天的屑')
+			DiscordCustomSet.CustomDetail('让人等了'+TOINT(MinimizeTime/(60*60))+'小时的屑')
 			--
 			'\0\s[9]\w9.\w9.\w9.\w9\w9\w9\s[6]\n把我忘掉了吧?\w9\w9\w9\w9\n\s[35]绝对\w9.\w9.\w9.'
 			"\0\s[9]\w9.\w9.\w9.\w9\w9\w9我可是等了你整整%(TOINT(MinimizeTime/(60*60)))小时哦？"
@@ -875,6 +949,7 @@ OnWindowStateRestore{
 	"\_w[%(MAX(MIN(MinimizeTime/60*1000,9000),500))]"
 	--
 	ERASEVAR('minimizestarttime')
+	ERASEVAR('InMinimize')
 }
 MinimizeTime{
 	TOINT(systemuptime) - TOINT(minimizestarttime)
@@ -882,7 +957,6 @@ MinimizeTime{
 //**** ゴースト/シェル切り替え **********************************************************
 //**** 他のゴーストに交代 *********************************************************************************************
 OnGhostChanging{
-	elapsedtime = TOINT(elapsedtime) + TOINT(ghostuptime)
 	if mode == '1'{
 		OnGhostChanging1
 	}

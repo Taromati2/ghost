@@ -1,6 +1,10 @@
 OnKeyCodeTest{
-	InKeyCodeTest=1
-	'\0\s[0]已进入键位码测试模式\n'
+	if InKeyCodeTest
+		OnExitKeyCodeTest
+	else{
+		InKeyCodeTest=1
+		'\0\s[0]已进入键位码测试模式\n'
+	}
 }
 OnExitKeyCodeTest{
 	ERASEVAR('InKeyCodeTest')
@@ -25,18 +29,38 @@ OnKeyPress{
 		'\_q'
 		--
 		if mode == '1'
-			"\1\s[%(specialmode != 'mealtime')10]%(reference0)，編碼%(reference1)。"
+			"\1\s[%(specialmode != 'mealtime')10]%(reference0)，编码%(reference1)。"
 		else
-			"\0\s[0]你按了%(reference0)。編碼是%(reference1)。"
+			"\0\s[0]你按了%(reference0)。编码是%(reference1)。"
 		--
 		'\n\q[◇退出键位码测试,OnExitKeyCodeTest]\_q\n'
 		return
 	}
+	//匹配特定字符串输入：↑↑↓↓←→←→BA
+	{
+		_match_keys=('up','up','down','down','left','right','left','right','b','a')
+		_step=TOINT(temp)
+		_match_keys_len=ARRAYSIZE(_match_keys)
+		if reference0 == _match_keys[_step]{
+			_step++
+			if _step == _match_keys_len{
+				DiscordCustomSet.CustomDetail('你被骗了！')
+				--
+				OnUrlOpen('https://taromati2.github.io/rickroll/')
+				return
+			}
+			temp = _step
+		}
+		elseif (_step < 2) && (reference0 == _match_keys[0])//仍然在匹配"up"
+			do_nothing
+		else
+			temp = 0
+	}
 	if reference1 == 229 {//steve02081504：我也不知道为什么是这个值，试出来的
 		if mode == '1'
-			"\1\s[%(specialmode != 'mealtime')10]使用熱鍵的話，好歹把输入法关了啊。"
+			"\1\s[%(specialmode != 'mealtime')10]使用热键的话，好歹把输入法关了啊。"
 		else
-			'\0\s[8]使用熱鍵的話，要關掉輸入法哦？'
+			'\0\s[8]使用热键的话，要关掉输入法哦？'
 		return
 	}
 	elseif playingbox {
@@ -44,7 +68,7 @@ OnKeyPress{
 	}
 	elseif playingtetris {
 		if ck!=2
-			FormKeyDown
+			OnTetris.KeyPress
 	}
 	elseif playingGobang {
 		OnGobangShow
@@ -80,11 +104,11 @@ OnKeyPress{
 		'\0\w9\w9\w9\w9\b[-1]'
 	}
 	elseif reference0 == 'f1' {
-		//---- 開啟readme.txt
+		//---- 开启readme.txt
 		'\![open,readme]'
 	}
 	elseif reference0 == 'f2' {
-		//---- 開始溝通
+		//---- 开始沟通
 		'\![open,communicatebox]'
 	}
 	elseif reference0 == 'f3' {
@@ -92,16 +116,16 @@ OnKeyPress{
 		OnChatRoom(j)
 	}
 	elseif reference0 == 'f4' {
-		//---- shell重新載入
+		//---- shell重新载入
 		if mode == '1'
 			"\1\s[%(specialmode != 'mealtime')10]唔"
 		else
 			'\0\s[0]嗯'
 		--
-		'…\n\w9\w9\![reload,shell]重新讀取SHELL……'
+		'…\n\w9\w9重新读取SHELL……\![reload,shell]'
 	}
 	elseif reference0 == 'f5' {
-		//---- shiori重新載入
+		//---- shiori重新载入
 		OnReloadShiori
 	}
 	elseif reference0 == 'f6' {
@@ -114,13 +138,21 @@ OnKeyPress{
 			if QuickStartVersion
 				'\![open,inputbox,OnCalculateVar]'
 			else
-				'\![open,file,SAORI_PATH/ghost_terminal.exe]'
+				'\![open,file,SAORI_PATH/ghost_terminal.exe,-g Taromati2 -rwt]'
 		}
 	}
 	elseif reference0 == 'f8' {
 		OnOpenMasterMenu
 	}
 	elseif reference0 == 'f9' {
+		if SHIORI_FW.DebugMode{
+			if FILEEXIST('SHIORI_PATH/tama.exe')
+				'\![open,file,SHIORI_PATH/tama.exe,-g Taromati2]'
+			else
+				'\0\s[0]未找到tama.exe，请前往github仓库补全开发文件'
+		}
+	}
+	elseif reference0 == 'f10' {
 		if SHIORI_FW.DebugMode{
 			'\![execute,createupdatedata]'
 		}
@@ -129,14 +161,11 @@ OnKeyPress{
 		OnScreenShot
 	}
 	elseif reference0 == 'm' {
-		showkikka=1
+		MenuMode=1
 		'\![raise,OnOpenMenu]'
 	}
 	elseif reference0 == 'w' {
-		OnWeatherFoundAuto
-	}
-	elseif reference0 == 'a' {
-		OnAstroFoundAuto
+		OnWeatherUpdate
 	}
 	elseif reference0 == 'u' {
 		UnoUserInit
@@ -203,9 +232,9 @@ OnKeyPress{
 	}
 	else {
 		if mode == '1'
-			"\1\s[%(specialmode != 'mealtime')10]%(reference0)，編碼%(reference1)。\n不是熱鍵。"
+			"\1\s[%(specialmode != 'mealtime')10]%(reference0)，编码%(reference1)。\n不是热键。"
 		else
-			"\0\s[0]你按了%(reference0)。編碼是%(reference1)。目前尚未被設定為熱鍵。"
+			"\0\s[0]你按了%(reference0)。编码是%(reference1)。目前尚未被设定为热键。"
 	}
 }
 Select.Multitask{
@@ -245,7 +274,7 @@ OnRuntime{
 		_running=_argv[0]
 	case _running{
 		when 'playingtetris'
-			OnTimer1Timer
+			OnTetris.Timer
 		when 'playRetroSnaker'
 			OnRetroSnakerTimer
 	}
@@ -284,9 +313,9 @@ OnMultitask{
 		}
 		when 'playingtetris'{
 			if ck!=2
-				FormKeyDown
+				OnTetris.KeyPress
 			else
-				OnTimer1Timer
+				OnTetris.Timer
 		}
 		when 'playingGobang'{
 			OnGobangShow

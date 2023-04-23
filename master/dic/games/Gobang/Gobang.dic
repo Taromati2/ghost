@@ -519,7 +519,8 @@ Ondownzi{//外部调用此函数下子
 ComputerThink{
 	_txt = '\C\![quicksession,true]\c'
 	if Whowincheck==1{
-		OnGobangShow;return
+		OnGobangShow
+		return
 	}
 	for _i=0;_i<15;_i++{
 		for _j=0;_j<15;_j++{
@@ -537,10 +538,10 @@ ComputerThink{
 		//wisex=-1
 	if state[wisex*15+wisey]==0 || state[wisex*15+wisey]==15 || wisex<0 || wisex>14 || wisey<0 || wisey>14{
 		while state[wisex*15+wisey]!=6{
-			wisex=rand%15
-			wisey=rand%15
-			//wisex=rand%15
-			//wisey=rand%15
+			wisex=RAND%15
+			wisey=RAND%15
+			//wisex=RAND%15
+			//wisey=RAND%15
 			k1=0.8
 			if fight-defense>12
 				k1=0.8
@@ -734,42 +735,42 @@ wise{
 	if Number==1{
 		_m=RAND(8)
 		case _m{
-			if _m==0{
+			when 0{
 				wisex=nowx+1
 				wisey=nowy+1
 				return
 			}
-			elseif _m==1{
+			when 1{
 				wisex=nowx-1
 				wisey=nowy-1
 				return
 			}
-			elseif _m==2{
+			when 2{
 				wisex=nowx+1
 				wisey=nowy
 				return
 			}
-			elseif _m==3{
+			when 3{
 				wisex=nowx-1
 				wisey=nowy
 				return
 			}
-			elseif _m==4{
+			when 4{
 				wisex=nowx+1
 				wisey=nowy-1
 				return
 			}
-			elseif _m==5{
+			when 5{
 				wisex=nowx-1
 				wisey=nowy+1
 				return
 			}
-			elseif _m==6{
+			when 6{
 				wisex=nowx
 				wisey=nowy+1
 				return
 			}
-			elseif _m==7{
+			when 7{
 				wisex=nowx
 				wisey=nowy-1
 				return
@@ -965,7 +966,7 @@ wise{
 	elseif fight-defense>=0
 		k1=0.6
 	elseif fight-defense>-5
-		k1=0.5f
+		k1=0.5
 	elseif fight-defense>-8
 		k1=0.45
 	else

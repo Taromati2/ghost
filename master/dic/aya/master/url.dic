@@ -9,3 +9,6 @@ OnUrlOpen{
 			OnCopy(_argv[2])
 	}
 }
+ToUrlParam{
+	STRENCODE(_argv[0])
+}

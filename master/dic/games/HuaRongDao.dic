@@ -118,7 +118,6 @@ ClearHuaRongDaoVar:void{
 	ERASEVAR('dest.x')
 	ERASEVAR('dest.y')
 	ERASEVAR('Role')
-	ERASEVAR('buff')
 	ERASEVAR('xStart')
 	ERASEVAR('yStart')
 	ERASEVAR('kind')
@@ -275,7 +274,6 @@ LoadHuaRongDaoMap{
 	_num ='#'
 	_mapfile = 'PATH\map.txt'
 	levelName=''
-	_txt = ''
 	Role=IARRAY
 	i=0
 	TotalLevel=0
@@ -299,7 +297,6 @@ LoadHuaRongDaoMap{
 			'error'
 		}
 		if '#' _in_ _buff{
-			buff=_buff
 			levelName=TextBetween(_buff,'#','@')
 			for i=0;i<TotalLevel;i++{
 				_buff = FREAD(_mapfile)
@@ -418,9 +415,9 @@ OncontrolMovement{
 		kind	 = TOINT(rolesInfo.k[role])
 	}
 	case role{
-		if role==0{
+		when 0{
 			case direct{
-				if direct==0{
+				when 0{
 					if yStart - 1>=0 && xStart + 1<4 && currentMap[(yStart - 1)*4+xStart] == -1&& currentMap[(yStart - 1)*4+xStart + 1] == -1{
 						currentMap[(yStart - 1)*4+xStart] = 0
 						currentMap[(yStart - 1)*4+xStart + 1] = 0
@@ -432,7 +429,7 @@ OncontrolMovement{
 					else
 						role = -1
 				}
-				elseif direct==1{
+				when 1{
 					if xStart - 1 >=0 && yStart + 1<5 && currentMap[yStart*4+xStart - 1] == -1&& currentMap[(yStart + 1)*4+xStart - 1] == -1{
 						currentMap[yStart*4+xStart - 1] = 0
 						currentMap[(yStart + 1)*4+xStart - 1] = 0
@@ -444,7 +441,7 @@ OncontrolMovement{
 					else
 						role = -1
 				}
-				elseif direct==2{
+				when 2{
 					if xStart + 2<4 && yStart + 1<5 && currentMap[yStart*4+xStart + 2] == -1  && currentMap[(yStart + 1)*4+xStart + 2] == -1{
 						currentMap[yStart*4+xStart + 2] = 0
 						currentMap[(yStart + 1)*4+xStart + 2] = 0
@@ -455,7 +452,7 @@ OncontrolMovement{
 					else
 						role = -1
 				}
-				elseif direct==3{
+				when 3{
 					if yStart + 2<5 &&  xStart + 1<4 && currentMap[(yStart + 2)*4+xStart] == -1  &&currentMap[(yStart + 2)*4+xStart + 1] == -1{
 						currentMap[(yStart + 2)*4+xStart] = 0
 						currentMap[(yStart + 2)*4+xStart + 1] = 0
@@ -469,9 +466,9 @@ OncontrolMovement{
 				}
 			}
 		}
-		elseif role==1||role==2||role==3||role==4||role==5{
+		when 1-5{
 			case direct{
-				if direct==0{
+				when 0{
 					if yStart - 1>=0 && xStart + 1 - kind<4 && currentMap[(yStart - 1)*4+xStart] == -1  &&	currentMap[(yStart - 1)*4+xStart + 1 - kind] == -1{
 						currentMap[(yStart - 1)*4+xStart] = role
 						currentMap[(yStart - 1)*4+xStart + 1 - kind] = role
@@ -483,7 +480,7 @@ OncontrolMovement{
 					else
 						role = -1
 				}
-				elseif direct==1{
+				when 1{
 					if xStart - 1>=0 && yStart + kind <5 && currentMap[yStart*4+xStart - 1] == -1 &&	currentMap[(yStart + kind)*4+xStart - 1] == -1{
 						currentMap[yStart*4+xStart - 1] = role
 						currentMap[(yStart + kind)*4+xStart - 1] = role
@@ -495,7 +492,7 @@ OncontrolMovement{
 					else
 						role = -1
 				}
-				elseif direct==2{
+				when 2{
 					if yStart + kind<5 && xStart + 2 - kind<4 && currentMap[yStart*4+xStart + 2 - kind] == -1 &&	currentMap[(yStart + kind)*4+xStart + 2 - kind] == -1{
 						currentMap[yStart*4+xStart + 2 - kind] = role
 						currentMap[(yStart + kind)*4+xStart + 2 - kind] = role
@@ -507,7 +504,7 @@ OncontrolMovement{
 					else
 						role = -1
 				}
-				elseif direct==3{
+				when 3{
 					if yStart + 1 + kind<5 && xStart + 1 - kind<4 && currentMap[(yStart + 1 + kind)*4+xStart] == -1 &&	currentMap[(yStart + 1 + kind)*4+xStart + 1 - kind] == -1{
 						currentMap[(yStart + 1 + kind)*4+xStart] = role
 						currentMap[(yStart + 1 + kind)*4+xStart + 1 - kind] = role
@@ -521,9 +518,9 @@ OncontrolMovement{
 				}
 			}
 		}
-		elseif role==6||role==7||role==8||role==9{
+		when 6-9{
 			case direct{
-				if direct==0{
+				when 0{
 					if 	yStart - 1>=0 && currentMap[(yStart - 1)*4+xStart] == -1{
 						currentMap[(yStart - 1)*4+xStart] = role
 						currentMap[yStart*4+xStart] = -1
@@ -533,7 +530,7 @@ OncontrolMovement{
 					else
 						role = -1
 				}
-				elseif direct==1{
+				when 1{
 					if xStart - 1>=0 && currentMap[yStart*4+xStart - 1] == -1{
 						currentMap[yStart*4+xStart - 1] = role
 						currentMap[yStart*4+xStart] = -1
@@ -543,7 +540,7 @@ OncontrolMovement{
 					else
 						role = -1
 				}
-				elseif direct==2{
+				when 2{
 					if xStart + 1<4 && currentMap[yStart*4+xStart + 1] == -1{
 						currentMap[yStart*4+xStart + 1] = role
 						currentMap[yStart*4+xStart] = -1
@@ -553,7 +550,7 @@ OncontrolMovement{
 					else
 						role = -1
 				}
-				elseif direct==3{
+				when 3{
 					if yStart + 1<5 && currentMap[(yStart + 1)*4+xStart] == -1{
 						currentMap[(yStart + 1)*4+xStart] = role
 						currentMap[yStart*4+xStart] = -1
@@ -574,13 +571,13 @@ CheckBlank{
 	yStart	 = TOINT(rolesInfo.y[role])
 	kind	 = TOINT(rolesInfo.k[role])
 	case role{
-		if role==0{
+		when 0{
 			if yStart - 1>=0 && xStart + 1<4 && currentMap[(yStart - 1)*4+xStart] == -1&& currentMap[(yStart - 1)*4+xStart + 1] == -1 || xStart - 1 >=0 && yStart + 1<5 && currentMap[yStart*4+xStart - 1] == -1&& currentMap[(yStart + 1)*4+xStart - 1] == -1 || xStart + 2<4 && yStart + 1<5 && currentMap[yStart*4+xStart + 2] == -1  && currentMap[(yStart + 1)*4+xStart + 2] == -1 || yStart + 2<5 &&  xStart + 1<4 && currentMap[(yStart + 2)*4+xStart] == -1  &&currentMap[(yStart + 2)*4+xStart + 1] == -1{1;return}
 		}
-		elseif role==1||role==2||role==3||role==4||role==5{
+		when 1-5{
 			if yStart - 1>=0 && xStart + 1 - kind<4 && currentMap[(yStart - 1)*4+xStart] == -1  &&	currentMap[(yStart - 1)*4+xStart + 1 - kind] == -1||xStart - 1>=0 && yStart + kind <5 && currentMap[yStart*4+xStart - 1] == -1 &&	currentMap[(yStart + kind)*4+xStart - 1] == -1||yStart + kind<5 && xStart + 2 - kind<4 && currentMap[yStart*4+xStart + 2 - kind] == -1 &&	currentMap[(yStart + kind)*4+xStart + 2 - kind] == -1||yStart + 1 + kind<5 && xStart + 1 - kind<4 && currentMap[(yStart + 1 + kind)*4+xStart] == -1 &&	currentMap[(yStart + 1 + kind)*4+xStart + 1 - kind] == -1{1;return}
 		}
-		elseif role==6||role==7||role==8||role==9{
+		when 6-9{
 			if 	yStart - 1>=0 && currentMap[(yStart - 1)*4+xStart] == -1||xStart - 1>=0 && currentMap[yStart*4+xStart - 1] == -1||xStart + 1<4 && currentMap[yStart*4+xStart + 1] == -1||yStart + 1<5 && currentMap[(yStart + 1)*4+xStart] == -1{1;return}
 		}
 	}

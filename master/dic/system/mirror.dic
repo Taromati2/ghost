@@ -5,7 +5,7 @@ On_homeurl{
 	mirror_url
 }
 default_mirror_url{
-	'https://cdn.jsdelivr.net/gh/Taromati2/stable-mirror@master/Taromati2/'
+	'https://raw.githubusercontent.com/Taromati2/stable-mirror/master/Taromati2/'
 }
 mirror_url.for_show{
 	REPLACE(mirror_url,'\','\\')

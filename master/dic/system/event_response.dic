@@ -38,23 +38,18 @@ OnBasewareUpdated{
 		'
 }
 //Get自我信息
-OnNotifySelfInfo:void{
+OnNotifySelfInfo{
 	ghostname=reference0
 	selfname=reference1
 	keroname=reference2
+	haveshell = (judgeshell(reference3)!='0|' || Userspitem[0][2]==1)
+	if !haveshell
+		OnSilentChangeShell('预设')
 }
 //缺省信息补全&同步信息更新 by steve02081504
 OnNotifyUserInfo.WhenEmpty.username:void{
-	if _argv[0]{
-		_simplified_name = TOLOWER(TOSIMPLIFIED(_argv[0]))
-		case _simplified_name{
-			when 'administrator','user','guest','system','admin','管理员','root','autobvt','microsoft','test'{
-				do_nothing
-			}
-			others{
-				OnUserName.Set(_argv[0])
-			}
-		}
+	if !IsUserName.Special(_argv[0]){
+		OnUserName.Set(_argv[0])
 	}
 }
 OnNotifyUserInfo.WhenEmpty.birthday:void{
@@ -81,6 +76,8 @@ OnNotifyUserInfo{
 		_username=reference1
 	}
 	_birthday_changed=birthday != reference2 && Baseware.Config.birthday != reference2 && reference2
+	if IsUsername.Empty(_username)
+		_name_changed = 0
 	if _name_changed || _birthday_changed{
 		"同步%Baseware设定中的"
 		--
@@ -90,7 +87,7 @@ OnNotifyUserInfo{
 			else
 				'用户名'
 			--
-			"『%(_username)』"
+			"『%(REPLACE(_username,'\','\\'))』"
 		}
 		--
 		if _birthday_changed{
@@ -229,6 +226,7 @@ OnOpenDirOrFile{
 }
 //文字拖拽处理 by steve02081504
 OnTextDrop{
+	infomode=0
 	if reference.raw[0]
 		temp = reference.raw[0]
 	if !RE_GREP(temp,"(?!%(CHR(1)))%(CHR(1))(?!%(CHR(1)))")
@@ -240,7 +238,7 @@ OnTextDrop{
 	--
 	_t=CUTSPACE(temp)
 	if SHIORI_FW.DebugMode && RE_GREP(_t,'^[\w.]+$'){
-		if __t=Get_AYA_Function_Info(_t)
+		if (__t=Get_AYA_Function_Info(_t))!=''
 			'aya自带底层函数\n'+__t+'\n/
 			\q[◇打开在线文档,OnUrlOpen,'+Get_AYA_Function_Doc(_t)+']\n/
 			'
@@ -254,11 +252,11 @@ OnTextDrop{
 			内容：%(GetGlobalDefine.SakuraScript(_t))\n/
 			\q[◇复制定义内容,OnCopy,"+GetGlobalDefine.SakuraArg(_t)+']\n/
 			'
-		elseif Is_Defened_Event(_t)||Is_Defened_Event(_t+'Ex'){
-			_EXfunc=!Is_Defened_Event(_t)
+		elseif Is_Defened_Event_Or_Func(_t)||Is_Defened_Event(_t+'Ex'){
+			_EXfunc=!Is_Defened_Event_Or_Func(_t)
 			if _EXfunc
 				_t=_t+'Ex'
-			_t=Get_Full_Defened_Event_Name(_t)
+			_t=Get_Func_Or_Full_Defened_Event_Name(_t)
 			_info=GETFUNCINFO(_t)
 			_path=SPLITPATH(_info[0])
 			if _path
@@ -302,7 +300,8 @@ OnTextDrop{
 		if SUBSTR(CUTSPACE(temp),0,2) == 'On'
 			"\q[◇查看事件文档,OnUrlOpen,%(Get_UKADOC_ofEvent(CUTSPACE(temp)))]\n"
 		--
-		'\q[◇Sakura Script執行,OnTextDrop.SakuraScript]\n'
+		if IsSakuraScript(temp)
+			'\q[◇Sakura Script执行,OnTextDrop.SakuraScript]\n'
 		--
 		if ISEVALUABLE(temp)
 			'\q[◇表达式求值,OnTextDrop.EVAL]\n'
@@ -370,6 +369,24 @@ OnInstallBegin{
 }
 //---- インストール完了メッセージ -------------------------------------------------------
 OnInstallComplete{
+	if reference1 == 'Taromati2 full data pack'{
+		if QuickStartVersion{
+			FullDataPackInstalled=1
+			DiscordCustomSet.CustomDetail('好耶')
+			--
+			'\0\s[6]追加档案包完成，开始修复性更新\n'
+			--
+			OnSilentUpdate
+		}
+		else{
+			DiscordCustomSet.CustomDetail('厘在赣什么')
+			--
+			'\0\s[8].\w9.\w9.\w9\n/
+			已经是完整版了哦？\n/
+			'
+		}
+		return
+	}
 	DiscordCustomSet.CustomDetail('搞了些新东西')
 	--
 	if mode == '0'
@@ -485,24 +502,18 @@ OnInstallFailure{
 	else
 		"\1\s[10]原因是：%(reference0)。"
 }
-OnShioriReloaded{
-	OnSQLLoad.Fixer//非中文环境编码问题再修复
-	if ReloadFromTerminal{
-		ShioriEcho.Special='重载完成'
-		ERASEVAR('ReloadFromTerminal')
-	}
-	if SHIORI_FW.LastBootInEmergencyMode
-		return
-	if mode == '1'{
-		"\1\s[%(specialmode != 'mealtime')10]唔…\n重载完了。"
-		return
-	}
-	if !SHIORI_FW.EmergencyMode{
-		'\0\s[0]重载成功，没有语法错误'
-		'\0\s[0]重载完成'
-		if GetPhase >= 2
-			'\0\s[5]重载成功，没有出错哦'
-	}
+OnInstallRefuse{
+	DiscordCustomSet.CustomDetail('认错人了')
+	--
+	"\0\s[20]这是…\w9\w9\n『%(reference0)收』。\w9\s[0]\n请直接交给本人。"
+	--
+	if IsGhostExist(reference0) || IsSakuraExist(reference0)
+		"\n/
+		\q[◇切换,OnChangeGhost,%(reference0)]\n/
+		\q[◇呼叫,OnCallGhost,%(reference0)]\n/
+		\q[◇无用,Cancel]\n"
+	else
+		'\1\s[11]不\w9\w9\n目前来说根本查无此人。'
 }
 SelfRecoveryFailed{
 	ERASEVAR('InSelfRecovery')
@@ -517,6 +528,15 @@ SelfRecoveryFailed{
 	'
 	--
 	//OpenDocForRuntime('SelfRecoveryFailed')
+}
+OnDDLCend{
+	'\![enter,passivemode]\1\s[-1]\0\s[-1]请不要玩弄我的心，我不会回来的\w[2000]'
+	--
+	SilentVanish = 1
+	topmode=1
+	TopModeChanged
+	--
+	'\![vanishbymyself]'
 }
 OnEmergencyMode{
 	EmergencyBoot++
@@ -580,19 +600,6 @@ OnEmergencyModeEnd{
 				'\1\s[10]可喜可贺可喜可贺'
 		}
 	}
-}
-OnInstallRefuse{
-	DiscordCustomSet.CustomDetail('认错人了')
-	--
-	"\0\s[20]这是…\w9\w9\n『%(reference0)收』。\w9\s[0]\n请直接交给本人。"
-	--
-	if IsGhostExist(reference0) || IsSakuraExist(reference0)
-		"/
-		\q[◇切换,OnChangeGhost,%(reference0)]\n/
-		\q[◇呼叫,OnCallGhost,%(reference0)]\n/
-		\q[◇无用,Cancel]\n"
-	else
-		'\1\s[11]不\w9\w9\n目前来说根本查无此人。'
 }
 //**** 消灭 ***********************************************************************************************************
 OnVanishSelecting{
@@ -687,6 +694,20 @@ OnUpdate{
 	--
 	'\![update,ghost+shell+balloon]'
 }
+OnInstallFullDataPack{
+	DiscordCustomSet.CustomDetail('Hello World!')
+	--
+	"\![execute,install,url,%(FullDataPackUrl),nar]"
+}
+OnUpdateProcessExec{
+	if QuickStartVersion
+		OnInstallFullDataPack
+	elseif SHIORI_FW.DebugMode
+		'\0\s[0]当前处于开发者模式，真的需要更新吗？\n/
+		\q[◇是,OnUpdate]\n/
+		\q[◇否,Cancel]\n/
+		'
+}
 OnSilentUpdate{
 	DiscordCustomSet.CustomDetail('眼睛在脉动')
 	--
@@ -773,7 +794,12 @@ OnUpdateCheckFailure{
 	elseif reference0 == 'virusdetect'
 		'\n\w9\w9\s[8]按理说更新档案里不可能有病毒才是\w9.\w9.\w9.'
 	--
-	'\n\n/
+	'\n\n'
+	--
+	if QuickStartVersion && !FullDataPackInstalled
+		"\q[◇手动下载补全数据包,OnUrlOpen,%(FullDataPackUrl)]\n"
+	--
+	'/
 	\q[◇切换更新源,MirrorChange]\n/
 	\q[◇尝试人工更新,OnUrlOpen,https://github.com/Taromati2/Taromati2/blob/master/docs/points_for_attention.md#%E4%B8%80%E5%88%9D%E6%AC%A1%E5%90%AF%E5%8A%A8%E6%9B%B4%E6%96%B0]\n/
 	\q[◇反馈问题,OnUrlOpen,https://github.com/Taromati2/Taromati2#bug%E5%8F%8D%E9%A6%88]\n/
@@ -840,6 +866,8 @@ OnUpdateReady{
 OnUpdateComplete{
 	DiscordCustomSet.CustomDetail('如同洗了个澡一般舒爽')
 	--
+	if !QuickStartVersion
+		ERASEVAR('FullDataPackInstalled')
 	ERASEVAR('InUpdate')
 	if HasUpdate
 		HasUpdate++
@@ -887,7 +915,11 @@ OnUpdateFailure{
 		return
 	}
 	elseif reference0 == 'executing'&&InSilentUpdate{
-		ERASEVAR('InSilentUpdate')
+		'\0\s[26]已在静默更新中。\n/
+		取消静默？\n/
+		\q[◇好的,OnEraseVar,InSilentUpdate]\n/
+		\q[◇不用了,Cancel]\n/
+		'
 		return
 	}
 	if !InSilentUpdate{
@@ -926,10 +958,16 @@ OnUpdateFailure{
 			SelfRecoveryFailed
 	}
 }
+FullDataPackUrl{
+	'https://github.com/Taromati2/package-factory/releases/latest/download/full_data_pack.nar'
+}
 OnURLDropping{
-	"\0\s[0]下载%(reference0)并作为安装包安装\w9\n/
-	\s[6]进行中\n/
-	"
+	if reference0 == FullDataPackUrl
+		'\0\s[0]下载补全数据包并安装\w9\n'
+	else
+		"\0\s[0]下载%(reference0)并作为安装包安装\w9\n"
+	--
+	'\s[6]进行中\n'
 }
 OnURLDropFailure{
 	'\0\s[3]'
@@ -1074,10 +1112,32 @@ OnNarCreated{
 //---- ディスプレイ解像度変更 -----------------------------------------------------------
 OnDisplayChange{
 	//---- 変数にディスプレイ解像度と色深度に関する情报を取得
-	//---- 使うかどうかは分からないがとりあえず保持しておく
 	displaybpp = reference0
 	displaywidth = reference1
 	displayheight = reference2
+}
+OnDisplayPowerStatus{
+	//---- 変数にディスプレイの電源状態に関する情报を取得
+	displaypowerstatus = reference0
+	if displaypowerstatus{
+		if !InSystemSuspend && !InMinimize{
+			_displaypowerofftime=GETSECCOUNT-displaypoweroff.starttime
+			if _displaypowerofftime>4*60*60{
+				void OnSysSuspendAsTime(displaypoweroff.starttime)
+				void OnSysResume
+			}
+			elseif _displaypowerofftime>3*60{
+				if mode == '1'
+					SHIORI_FW.PushNoBreakNotifyResult("\1\s[%(specialmode != 'mealtime')10]呦。\n")
+				else
+					SHIORI_FW.PushNoBreakNotifyResult('\0\s[26]欢迎回来。\n')
+			}
+		}
+		ERASEVAR('displaypoweroff.starttime')
+	}
+	else{
+		displaypoweroff.starttime=GETSECCOUNT
+	}
 }
 OnNetworkStatusChange{
 	if !ISVAR('NetworkStatus')
@@ -1106,15 +1166,18 @@ OnNetworkStatusChange{
 	}else{
 		if reference0 == 'offline'
 			return
-		if mode == '1'
-			"\1\s[%(specialmode != 'mealtime')10]IP改变了\n"
-		else
-			'\0\s[6]IP已变动\n'
+		if setting.IP_ChangeReminder{
+			if mode == '1'
+				"\1\s[%(specialmode != 'mealtime')10]IP改变了\n"
+			else
+				'\0\s[6]IP已变动\n'
+		}
 	}
 	--
-	if reference.raw[1] && NetworkStatus.IP != reference.raw[1]
-		"当前ip：%(REPLACE(reference.raw[1],CHR(1),'以及\n'))"
-	--
+	if setting.IP_ChangeReminder{
+		if reference.raw[1] && NetworkStatus.IP != reference.raw[1]
+			"当前ip：%(REPLACE(reference.raw[1],CHR(1),'以及\n'))\n"
+	}
 	OnUpdateNetworkStatus
 	NetworkStatus = reference0
 }
@@ -1163,20 +1226,26 @@ ClearNetworkStatusVar{
 OnURLQuery{
 	if shortcut==1{
 		temp=reference0
-		"\![excute,http-get,%(reference0),--param-charset=UTF-8,--file=url.html,--timeout=50,--async=OnLoadUrlTitle]"
-	}elseif RE_GREP(reference0,'.nar$'){
-		"\![execute,install,url,%(reference0),nar]"
-	}else{
+		"\![excute,http-get,%(reference0),--param-charset=UTF-8,--file=VAR_PATH/url.html,--timeout=50,--async=OnLoadUrlTitle]"
+		return
+	}
+	elseif reference3=='unknown' || !reference3{
 		"\0\s[6]未知URL，请使用下载器下载\n\n[half]\_qURL:%(reference0)\_q\n"
-		--
-		"\q[◇打开URL,OnUrlOpen,%(reference0)]\n/
-		\q[◇复制URL,OnCopy,%(reference0)]\n/
-		\q[◇无用,Cancel]\n/
+	}
+	else{
+		"\0\s[0]自URL:%(reference0)\n/
+		下载并安装%(reference3)？\n/
+		\q[◇确认,script:""\![execute,install,%(reference0)]""]\n/
 		"
 	}
+	--
+	"\q[◇打开URL,OnUrlOpen,%(reference0)]\n/
+	\q[◇复制URL,OnCopy,%(reference0)]\n/
+	\q[◇无用,Cancel]\n/
+	"
 }
 OnLoadUrlTitle{
-	_file='VAR_PATH\\url.html'
+	_file='VAR_PATH/url.html'
 	_title=''
 	_charset=''
 	_url=temp
@@ -1301,8 +1370,13 @@ OnScreenSaverEnd{
 	"\0\s[0]%(username)\w9\w9、欢迎回来。\n\x"
 }
 //待机
+OnSysSuspendAsTime{
+	InSystemSuspend = 1
+	if !TimeErrorCheck
+		CloseTime = _argv[0]
+}
 OnSysSuspend{
-	OnClose.base
+	OnSysSuspendAsTime(GETSECCOUNT)
 }
 //待机中恢复
 OnSysResume.base{
@@ -1324,8 +1398,14 @@ OnSysResume.base{
 	"\0\s[0]%(username)\w9\w9、欢迎回来。\n\x"
 }
 OnSysResume{
-	SHIORI_FW.PushNotifyResult(OnSysResume.base)
-	SHIORI_FW.PushNotifyResult(OnBoot)
+	ERASEVAR('InSystemSuspend')
+	BaseGhostStart.aboutTime
+	if !InMinimize{
+		SHIORI_FW.PushNoBreakNotifyResult(OnSysResume.base)
+		SHIORI_FW.PushNoBreakNotifyResult(OnAutoChangeShell.boot)
+		SHIORI_FW.PushNoBreakNotifyResult(OnBoot.aboutTime)
+		SHIORI_FW.PushNoBreakNotifyResult(OnWeatherUpdate.boot)
+	}
 }
 //资源不足
 OnSysResourceLow{
@@ -1337,4 +1417,27 @@ OnNetworkHeavy{
 	DiscordCustomSet.CustomDetail('打发时间')
 	--
 	'\0\s[8]\w9…\w9…\n\w9\w9请耐心等候呢？'
+}
+//使用条款
+OnGhostTermsAccept{
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]…\w9…\w9…\w9？"
+	else
+		'\0\s[8]…\w9已经同意过了啊？'
+}
+OnGhostTermsDecline{
+	if mode == '1'
+		"\1\s[%(specialmode != 'mealtime')10]…\w9…\w9…\w9？\n/
+		\s[%(specialmode != 'mealtime')11]要做什么的话\w9，\s[%(specialmode != 'mealtime')10]点击卸载按钮不就好了吗。"
+	else
+		'\0\s[3]…\w9如果需要的话\w9，可以把我卸载掉的。'
+}
+OnSessionLock{
+	InSessionLock = 1
+}
+OnSessionUnlock{
+	ERASEVAR('InSessionLock')
+}
+ClearSessionLockVar{
+	ERASEVAR('InSessionLock')
 }

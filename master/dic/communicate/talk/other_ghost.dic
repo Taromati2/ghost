@@ -3,7 +3,7 @@
 /////////KikkaAIdb
 //**** 人格主动对话 *************************************************************
 StartCommunicate{
-	//---- 決定对话的对象人格
+	//---- 决定对话的对象人格
 	if ghostexcount > 0{
 		//从人格列表中取得对话人格名字
 		res_reference0 = ghostexlist[RAND(ghostexcount)]
@@ -24,6 +24,10 @@ StartCommunicate{
 				"\0\s[0]你好、%(res_reference0)。"
 			EVAL(_varname_NumOfTry+'++')
 		}
+		elseif RAND(MIN(EVAL(_varname_NumOfTry),100))==0{
+			"\0\s[0]你好、%(res_reference0)。"
+			EVAL(_varname_NumOfTry+'++')
+		}
 		else{
 			ERASEVAR('res_reference0')
 			RandomTalk
@@ -34,7 +38,7 @@ StartCommunicate{
 		RandomTalk
 	}
 }
-//**** 人格被動對話 *******************************************************************************
+//**** 人格被动对话 *******************************************************************************
 //其他人格销毁
 OnOtherGhostVanished{
 	"\0\s[3]再见\w9\w9，%(reference0)\w9.\w9.\w9.\w9.\w9.\w9.\n"
@@ -56,7 +60,13 @@ OnVanished{
 ReplyToGhost{
 	if ghostname _in_ reference1 || selfname _in_ reference1 || keroname _in_ reference1{
 		_varname_NumOfTry='OtherGhostTalk.'+STRDIGEST(reference0)+'.NumOfTry'
-		ERASEVAR(_varname_NumOfTry)
+		_varname_LastTalk='OtherGhostTalk.'+STRDIGEST(reference0)+'.LastTalk'
+		if EVAL(_varname_LastTalk)==reference1
+			EVAL(_varname_NumOfTry+'++')
+		else{
+			EVAL(_varname_LastTalk+'=reference1')
+			ERASEVAR(_varname_NumOfTry)
+		}
 	}
 	_t=1
 	res_reference0 = reference0
@@ -98,10 +108,8 @@ ReplyToGhost{
 			_t=1
 		}
 	}
-	if _t{
-		//'\0\s[0]嗯、是啊～。'
+	if _t
 		REPLACE(OnAIGhostReply,username,'你')
-	}
 }
 OnAIGhostReply{
 	InAIGhostReply = 1

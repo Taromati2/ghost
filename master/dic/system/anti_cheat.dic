@@ -8,7 +8,7 @@ AntiCheatWatcher{
 		if ISVAR(_CanaryValueName){
 			if !EVAL('CheattedTrigging.'+_varname){
 				LETTONAME('CheattedTrigging.'+_varname,1)
-				SHIORI_FW.PushNotifyResult("\![raise,OnValueCheatted,%(_varname),%(_CanaryValue),%(_var)]")
+				SHIORI_FW.PushNoBreakNotifyResult("\![raise,OnValueCheatted,%(_varname),%(_CanaryValue),%(_var)]")
 			}
 			_CanaryValue
 			return
@@ -31,7 +31,7 @@ AntiCheatSetter{
 		if ISVAR(_CanaryValueName){
 			if !EVAL('CheattedTrigging.'+_varname){
 				LETTONAME('CheattedTrigging.'+_varname,1)
-				SHIORI_FW.PushNotifyResult("\![raise,OnValueCheatted,%(_varname),%(_CanaryValue),%(_var_before)]")
+				SHIORI_FW.PushNoBreakNotifyResult("\![raise,OnValueCheatted,%(_varname),%(_CanaryValue),%(_var_before)]")
 			}
 			_CanaryValue//恢复值内容
 			return
@@ -52,6 +52,9 @@ AntiCheat{
 Init.AntiCheatIniter{
 	AntiCheat('money')
 	AntiCheat('intimacy')
+}
+ClearAntiCheatVar{
+	ERASEALLVARBEGINAS('CheattedTrigging.')
 }
 OnValueCheatted{
 	_varname=reference0
@@ -119,11 +122,15 @@ OnValueCheatted{
 					when 1
 						'\0\s[26]啊，\w9那个\w9—\w9—\w9\n/
 						\s[8]把好感改低，\w9是什么意思呢？'
-					when 0
-						'\s[7]是抖m么?\w9\w9\n/
+					when 0{
+						intimacy-=2
+						'\0\s[7]是抖m么?\w9\w9\n/
 						\s[6]真是没救的阳痿猪头男呢\w9'
-					when -1
-						bsod('0xc000007F')
+					}
+					when -1{
+						intimacy-=3
+						'\0\s[7]\w9\![raise,OntriggerBSOD,0xc000007F]'
+					}
 				}
 			}
 		}

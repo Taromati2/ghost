@@ -200,32 +200,36 @@ OnClassDetailTimeCheck{
 	for _j = 0;_j < _times;_j++ {
 		for _i = 0;_i < _days;_i++ {
 			if classdetail[_j * 7 + _i] != '' &&DayofWeek_w==_week[ _i]{
-				ct=1
 				_classdetail=SPLIT(classdetail[_j * 7 + _i],',')
-				ct=_classdetail
 				if ':' _in_ _classdetail[0] {
 					_time=SPLIT(_classdetail[0],':')
 					_hour=_time[0]
 					_minute=_time[1]
 					_second=_time[2]
 					_timeleft=secondnowtime(_hour,_minute,_second)
-					if ABS(_timeleft-_timetick) <= classtimerm*60 && _timeleft - _timetick>0{
-						CT=_timeleft
+					if (ABS(_timeleft-_timetick) <= classtimerm*60) && (_timeleft - _timetick>0){
 						_rmflag=1
-						_txt+='马上开始上课咯。科目：'+classdata[_j * 7 + _i]+'，备注：'+classdetail[_j * 7 + _i]+''
+						_txt='马上开始上课咯。科目：'+classdata[_j * 7 + _i]+'，备注：'+classdetail[_j * 7 + _i]
 					}
-					elseif ABS(_timeleft-_timetick) <= classtimerm*60&& _timeleft - _timetick<=0{
-						CT=_timeleft
+					elseif (ABS(_timeleft-_timetick) <= classtimerm*60) && (_timeleft - _timetick<=0){
 						_rmflag=1
-						_txt+='已经开始上课咯。科目：'+classdata[_j * 7 + _i]+'，备注：'+classdetail[_j * 7 + _i]+''
+						_txt='已经开始上课咯。科目：'+classdata[_j * 7 + _i]+'，备注：'+classdetail[_j * 7 + _i]
 					}
 				}
 			}
 		}
 	}
-	if _rmflag==1{
-		_txt
+	if _rmflag{
+		if !ClassMonitorTempClose
+			_txt
+		else
+			''
 	}
+	else
+		ERASEVAR('ClassMonitorTempClose')
+}
+OnClassMonitorTempClose{
+	ClassMonitorTempClose=1
 }
 secondnowtime{
 	_hour=TOINT(_argv[0])

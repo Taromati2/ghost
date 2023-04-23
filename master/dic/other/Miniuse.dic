@@ -95,11 +95,11 @@ ClearSecondVar{
 	ERASEVAR('SecondWatch.sso')
 }
 //**********************C盘清理***************************************************************************
-Select.ClearC{
-	"\0\s[40]C盘垃圾清理能让%(username)的电脑变得更快哦。确定要清理吗？\n\n\q[◇确定,OnClearC]\n\q[◇不用了,OnOpenMenu,3]"
+Select.ClearDisk{
+	"\0\s[40]磁盘垃圾清理能让%(username)的电脑变得更快哦。确定要清理吗？\n\n\q[◇确定,OnClearDisk]\n\q[◇不用了,OnOpenMenu,3]"
 }
-OnClearC{
-	'\![open,file,SAORI_PATH\drivecleaner.bat]'
+OnClearDisk{
+	'\![open,file,cleanmgr.exe]'
 }
 //**********************************计算生日*************************************************
 Select.birthday{
@@ -131,8 +131,6 @@ Onlunarbirth{
 	_d=_argv[2]
 	//_m=REPLACE(_m,'腊','十二')
 	_mon=(31,28,31,30,31,30,31,31,30,31,30,31)
-	_mm=1
-	_dd=1
 	for _i = 1;_i <= 12;_i++{
 		//Onlunarbirth(2015,'十一','廿一')
 		for _j = 1;_j <= _mon[_i-1];_j++{
@@ -267,11 +265,11 @@ Onfriendbirthday{
 	\q[◇新建好友,OnFriendBirthDay.Creat]\n/
 	\q[◇查看好友,OnFriendBirthDay.Inform]\n/
 	\n\n\n\n\n\q[◇返回上一层,birthday]     \q[◇结束,Cancel]"
-	if !friendID
-		friendID=0
+	if !FriendBirthDay.IDmax
+		FriendBirthDay.IDmax=0
 }
 OnFriendBirthDay.Creat{
-	if friendID>=20
+	if FriendBirthDay.IDmax>=20
 		'已经存在20位好友记录，如要添加新好友，请从查看好友中修改'
 	else
 		'请输入好友名字\![open,inputbox,OnFriendNameTeach,-1]'
@@ -280,29 +278,29 @@ OnFriendNameTeach{
 	if reference0==''
 		'好友名字不能为空，请输入请输入好友名字\![open,inputbox,OnFriendNameTeach,-1]'
 	else{
-		friendbirthday[friendID*9]=friendID
-		friendbirthday[friendID*9+1]=reference0
+		friendbirthday[FriendBirthDay.IDmax*9]=FriendBirthDay.IDmax
+		friendbirthday[FriendBirthDay.IDmax*9+1]=reference0
 		"您输入的好友名字为%(reference0),请继续输入好友生日\![open,dateinput,OnFriendBirthDayInput,60000,%(year),%(month),%(day)]"
 	}
 }
 OnFriendBirthDayInput{
-	friendbirthday[friendID*9+2]=reference0[0]
-	friendbirthday[friendID*9+3]=reference0[1]
-	friendbirthday[friendID*9+4]=reference0[2]
-	Lunardata(friendbirthday[friendID*9+2],friendbirthday[friendID*9+3],friendbirthday[friendID*9+4])
-	_next_birthday=NextBirthDay(friendbirthday[friendID*9+2],friendbirthday[friendID*9+3],friendbirthday[friendID*9+4])
-	friendbirthday[friendID*9+5]=_next_birthday[0]
-	friendbirthday[friendID*9+6]=_next_birthday[1]
-	friendbirthday[friendID*9+7]=_next_birthday[2]
-	"\0\s[5]橘花已经记下了。%(friendbirthday[friendID*9+1])的出生日期是%(friendbirthday[friendID*9+2])年%(friendbirthday[friendID*9+3])月%(friendbirthday[friendID*9+4])日\n\n\q[◇返回,Onfriendbirthday]"
-	friendID++
+	friendbirthday[FriendBirthDay.IDmax*9+2]=reference0[0]
+	friendbirthday[FriendBirthDay.IDmax*9+3]=reference0[1]
+	friendbirthday[FriendBirthDay.IDmax*9+4]=reference0[2]
+	Lunardata(friendbirthday[FriendBirthDay.IDmax*9+2],friendbirthday[FriendBirthDay.IDmax*9+3],friendbirthday[FriendBirthDay.IDmax*9+4])
+	_next_birthday=NextBirthDay(friendbirthday[FriendBirthDay.IDmax*9+2],friendbirthday[FriendBirthDay.IDmax*9+3],friendbirthday[FriendBirthDay.IDmax*9+4])
+	friendbirthday[FriendBirthDay.IDmax*9+5]=_next_birthday[0]
+	friendbirthday[FriendBirthDay.IDmax*9+6]=_next_birthday[1]
+	friendbirthday[FriendBirthDay.IDmax*9+7]=_next_birthday[2]
+	"\0\s[5]橘花已经记下了。%(friendbirthday[FriendBirthDay.IDmax*9+1])的出生日期是%(friendbirthday[FriendBirthDay.IDmax*9+2])年%(friendbirthday[FriendBirthDay.IDmax*9+3])月%(friendbirthday[FriendBirthDay.IDmax*9+4])日\n\n\q[◇返回,Onfriendbirthday]"
+	FriendBirthDay.IDmax++
 }
 OnFriendBirthDay.Inform{
 	_txt='\b[2]\![quicksession,1]\![set,choicetimeout,0]'
 	_txt+='■好友生日列表：■         \![*]\q[刷新,OnFriendBirthDay.Inform,刷新]\n'
 	_txt+='姓名    出生日期   农历生日  生日日期  生日天数\n[150]'
 	days=IARRAY
-	for _i=0;_i<friendID;_i++{
+	for _i=0;_i<FriendBirthDay.IDmax;_i++{
 		Lunardata(friendbirthday[_i*9+2],friendbirthday[_i*9+3],friendbirthday[_i*9+4])
 		_yy=lunardata[11]
 		_mm=lunardata[5]
@@ -322,32 +320,32 @@ OnFriendBirthDay.Inform{
 		_friendbirthdayinfo[_i]="距离%(friendbirthday[_i*9+1])%(friendbirthday[_i*9+5]-_yy)岁生日还有%(friendbirthday[_i*9+8])天"
 		if BirthdayMode
 			_friendbirthdayinfo[_i]="距离%(friendbirthday[_i*9+1])%(friendbirthday[_i*9+5]-friendbirthday[_i*9+2])岁生日还有%(friendbirthday[_i*9+8])天"
-		_txt+="\__q[OnFriendName.UpdataFirst,%(_i)]%(friendbirthday[_i*9+1])\__q   \_l[35,-]\__q[OnFriendBirthDay.UpdataFirst,%(_i)]%(friendbirthday[_i*9+2])年%(friendbirthday[_i*9+3])月%(friendbirthday[_i*9+4])日\__q \_l[120,-]%(_mm)月%(_dd)  \_l[185,-]%(friendbirthday[_i*9+5])年%(friendbirthday[_i*9+6])月%(friendbirthday[_i*9+7])日 \_l[270,-]\q[%(friendbirthday[_i*9+8]),OnFriendBirthDay.Inform,age,%(_friendbirthdayinfo[_i])]\n"
+		_txt+="\__q[OnFriendName.UpdateFirst,%(_i)]%(friendbirthday[_i*9+1])\__q   \_l[35,-]\__q[OnFriendBirthDay.UpdateFirst,%(_i)]%(friendbirthday[_i*9+2])年%(friendbirthday[_i*9+3])月%(friendbirthday[_i*9+4])日\__q \_l[120,-]%(_mm)月%(_dd)  \_l[185,-]%(friendbirthday[_i*9+5])年%(friendbirthday[_i*9+6])月%(friendbirthday[_i*9+7])日 \_l[270,-]\q[%(friendbirthday[_i*9+8]),OnFriendBirthDay.Inform,age,%(_friendbirthdayinfo[_i])]\n"
 	}
 	birthdayflag=1
 	_txt+='\_l[0,340]\q[◇返回,Onfriendbirthday]     \q[◇结束,Cancel]'
 	_txt
 }
-OnFriendName.UpdataFirst{
+OnFriendName.UpdateFirst{
 	friendID=reference0
-	"将好友名字%(friendbirthday[friendID*9+1])更改为？\![open,inputbox,OnFriendName.Updata,-1]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]"
+	"将好友名字%(friendbirthday[friendID*9+1])更改为？\![open,inputbox,OnFriendName.Update,-1]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]"
 }
-OnFriendName.Updata{
+OnFriendName.Update{
 	if reference0==''
-		'好友名字不为为空，请输入请输入好友名字\![open,inputbox,OnFriendName.Updata,-1]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]'
+		'好友名字不为为空，请输入请输入好友名字\![open,inputbox,OnFriendName.Update,-1]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]'
 	else{
 		friendbirthday[friendID*9+1]=reference0
 		"您输入的好友名字为%(reference0)\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]"
 	}
 }
-OnFriendBirthDay.UpdataFirst{
+OnFriendBirthDay.UpdateFirst{
 	friendID=reference0
 	_year=friendbirthday[friendID*9+2]
 	_month=friendbirthday[friendID*9+3]
 	_day=friendbirthday[friendID*9+4]
-	"要把%(friendbirthday[friendID*9+1])的生日改成？\![open,dateinput,OnFriendBirthDay.Updata,60000,%(_year),%(_month),%(_day)]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]"
+	"要把%(friendbirthday[friendID*9+1])的生日改成？\![open,dateinput,OnFriendBirthDay.Update,60000,%(_year),%(_month),%(_day)]\n\n\q[◇返回,OnFriendBirthDay.Inform]     \q[◇结束,Cancel]"
 }
-OnFriendBirthDay.Updata{
+OnFriendBirthDay.Update{
 	friendbirthday[friendID*9+2]=reference0[0]
 	friendbirthday[friendID*9+3]=reference0[1]
 	friendbirthday[friendID*9+4]=reference0[2]
@@ -357,6 +355,45 @@ OnFriendBirthDay.Updata{
 	friendbirthday[friendID*9+6]=_next_birthday[1]
 	friendbirthday[friendID*9+7]=_next_birthday[2]
 	"\0\s[5]橘花已经记下了。%(friendbirthday[friendID*9+1])的出生日期是%(friendbirthday[friendID*9+2])年%(friendbirthday[friendID*9+3])月%(friendbirthday[friendID*9+4])日\n\n\q[◇返回,OnFriendBirthDay.Inform]"
+}
+OnFriendBirthDay.BootRemind{
+	if !friendbirthdaymode{
+		_txt=''
+		for _i=0;_i<friendID;_i++{
+			if year-1==friendbirthday[_i*9+5]||year==friendbirthday[_i*9+5]&&month-1==friendbirthday[_i*9+6]||year==friendbirthday[_i*9+5]&&month==friendbirthday[_i*9+6]&&day-1==friendbirthday[_i*9+7]{
+				_next_birthday=NextBirthDay(friendbirthday[_i*9+2],friendbirthday[_i*9+3],friendbirthday[_i*9+4])
+				friendbirthday[_i*9+5]=_next_birthday[0]
+				friendbirthday[_i*9+6]=_next_birthday[1]
+				friendbirthday[_i*9+7]=_next_birthday[2]
+			}
+			friendbirthday[_i*9+8]=OnFriendNextBirthDay(friendbirthday[_i*9+5],friendbirthday[_i*9+6],friendbirthday[_i*9+7])
+			if friendbirthday[_i*9+8]==10
+				_txt+="\0\s[40]还有10天就是%(username)的好友%(friendbirthday[_i*9+1])的生日\n\x"
+			--
+			if friendbirthday[_i*9+8]==5
+				_txt+="\0\s[40]还有5天就是%(username)的好友%(friendbirthday[_i*9+1])的生日\n\x"
+			--
+			if friendbirthday[_i*9+8]==1
+				_txt+="\0\s[40]明天是%(username)的好友%(friendbirthday[_i*9+1])的生日\n\x"
+			--
+			if year == friendbirthday[_i*9+5] && month == friendbirthday[_i*9+6] && day == friendbirthday[_i*9+7]
+				_txt+="\0\s[40]今天是%(username)的好友%(friendbirthday[_i*9+1])的生日，快送去生日祝福吧！\n\x"
+		}
+		_txt
+	}
+}
+BirthDay.BootRemind{
+	birthdayflag=0
+	if year - 1 == nextbirthday[0]{
+		nextbirthday=NextBirthDay(birthday[0],birthday[1],birthday[2])
+	}
+	if nextbirthday && year == nextbirthday[0] && month == nextbirthday[1] && day == nextbirthday[2] && birthdaygiftmode != 1{
+		"\0\s[28]今天是%(username)%(TOINT(nextbirthday[0]) - birthday[0])岁生日，橘花给%(username)准备了礼物\n\n\n\q[◇打开看看,birthdaygift]"
+		--
+		'\n\x'
+	}
+	--
+	OnFriendBirthDay.BootRemind
 }
 OnFriendNextBirthDay{
 	_days=0
@@ -371,14 +408,14 @@ OnFriendNextBirthDay{
 			_days+=_mon[_fm-2]
 			_fm--
 		}
-		_days=_days-day+_fd;ss=0
+		_days=_days-day+_fd
 	}
 	elseif year<_fy{
 		while _fm>1{
 			_days+=_mon[_fm-2]
 			_fm--
 		}
-		_days=_days-1+_fd;       ss=1
+		_days=_days-1+_fd
 		_fm = 12;_fd = 31
 		while _fm>month{
 			_days+=_mon[_fm-2]
@@ -407,15 +444,8 @@ Ongift{
 	gift
 	_N=ARRAYSIZE(Useritem)-2
 	_G=RAND(_N)
-	_spitemflag=0
-	if _G==19&&UserspitemNum[1]!=1{
-		UserspitemNum[1]=1
-		_spitemflag=1
-	}
-	else{
-		while _G==19{
-			_G=RAND(_N)
-		}
+	while _G==19 || _G==5{
+		_G=RAND(_N)
 	}
 	UseritemNum[_G]=TOINT(UseritemNum[_G])+1
 	if reference0==0{
@@ -450,8 +480,6 @@ Ongift{
 		Useritemtime[_G]="%(year)年%(month)月%(day)日橘花送的%(year-firstboottime[0])周年相遇礼物"
 		Useriteminfo=("%(year)年%(month)月%(day)日%(hour)时%(minute)分收到%(year-firstboottime[0])周年相遇%(Useritem[_G][1])。" , Useriteminfo)
 	}
-	if _spitemflag==1
-		'红色水晶项链“绯红之眼”获得。'
 	--
 	"\0\s[5]是%(Useritem[_G][1])哦，%(username)喜欢吗？\n\n/
 	\q[◇喜欢,likegift]\n/
@@ -461,20 +489,9 @@ Ongift{
 gift{
 	//UseritemNum=(0,0,0,0,0,0,0,0,0,0)
 	//Useritemtime=(0,0,0,0,0,0,0,0,0,0)
-	Useritem=("0,高级腕表,%(UseritemNum[0]),%(Useritemtime[0])","1,瑞士军刀,%(UseritemNum[1]),%(Useritemtime[1])","2,时尚钱包,%(UseritemNum[2]),%(Useritemtime[2])","3,芝宝打火机,%(UseritemNum[3]),%(Useritemtime[3])","4,便携酒壶,%(UseritemNum[4]),%(Useritemtime[4])","5,IPOD4,%(UseritemNum[5]),%(Useritemtime[5])","6,HIFI随身听,%(UseritemNum[6]),%(Useritemtime[6])","7,Iphone7,%(UseritemNum[7]),%(Useritemtime[7])","8,HIFI耳机,%(UseritemNum[8]),%(Useritemtime[8])","9,橘花抱枕,%(UseritemNum[9]),%(Useritemtime[9])","10,钻戒,%(UseritemNum[10]),%(Useritemtime[10])","11,铂金项链,%(UseritemNum[11]),%(Useritemtime[11])","12,星之砂,%(UseritemNum[12]),%(Useritemtime[12])","13,幸运星瓶,%(UseritemNum[13]),%(Useritemtime[13])","14,水晶八音盒,%(UseritemNum[14]),%(Useritemtime[14])","15,星空恋人,%(UseritemNum[15]),%(Useritemtime[15])","16,金色怀表,%(UseritemNum[16]),%(Useritemtime[16])","17,演唱会门票两张,%(UseritemNum[17]),%(Useritemtime[17])","18,音乐厅门票两张,%(UseritemNum[18]),%(Useritemtime[18])",Userspitem[1],"20,电影院门票两张,%(UseritemNum[20]),%(Useritemtime[20])")
-	Userspitem=("0,K.I.K.K.A,%(UserspitemNum[0]),%(Userspitemtime[0]),散发出神秘光茫的红宝石项链，作用未知，红宝石上面刻着五个大写英文字母：K.I.K.K.A","1,绯红之眼,%(UserspitemNum[1]),%(Userspitemtime[1]),橘花特制的红色水晶项链，好像充满能量的样子")
-	/*
-	'高级腕表'
-	'瑞士军刀'
-	'时尚钱包'
-	'芝宝打火机'
-	'便携酒壶'
-	'IPOD4'
-	'Sony NWZ-Z1080'
-	'Iphone7'
-	'HIFI耳机'
-	'橘花抱枕'
-	*/
+	Userspitem=("0,K.I.K.K.A,%(UserspitemNum[0]),%(Userspitemtime[0]),散发出神秘光茫的红宝石项链，作用未知，红宝石上面刻着五个大写英文字母：K.I.K.K.A")
+	Useritem=("0,高级腕表,%(UseritemNum[0]),%(Useritemtime[0])","1,瑞士军刀,%(UseritemNum[1]),%(Useritemtime[1])","2,时尚钱包,%(UseritemNum[2]),%(Useritemtime[2])","3,芝宝打火机,%(UseritemNum[3]),%(Useritemtime[3])","4,便携酒壶,%(UseritemNum[4]),%(Useritemtime[4])","5,IPOD4,%(UseritemNum[5]),%(Useritemtime[5])","6,HIFI随身听,%(UseritemNum[6]),%(Useritemtime[6])","7,Iphone%(year-2008),%(UseritemNum[7]),%(Useritemtime[7])","8,HIFI耳机,%(UseritemNum[8]),%(Useritemtime[8])","9,橘花抱枕,%(UseritemNum[9]),%(Useritemtime[9])","10,钻戒,%(UseritemNum[10]),%(Useritemtime[10])","11,铂金项链,%(UseritemNum[11]),%(Useritemtime[11])","12,星之砂,%(UseritemNum[12]),%(Useritemtime[12])","13,幸运星瓶,%(UseritemNum[13]),%(Useritemtime[13])","14,水晶八音盒,%(UseritemNum[14]),%(Useritemtime[14])","15,星空恋人,%(UseritemNum[15]),%(Useritemtime[15])","16,金色怀表,%(UseritemNum[16]),%(Useritemtime[16])","17,演唱会门票两张,%(UseritemNum[17]),%(Useritemtime[17])","18,音乐厅门票两张,%(UseritemNum[18]),%(Useritemtime[18])",Userspitem[1],"20,电影院门票两张,%(UseritemNum[20]),%(Useritemtime[20])")
+	UseritemDisplayName=("高级腕表","瑞士军刀","时尚钱包","芝宝打火机","便携酒壶","IPOD4","HIFI随身听","Iphone","HIFI耳机","橘花抱枕","钻戒","铂金项链","星之砂","幸运星瓶","水晶八音盒","星空恋人","金色怀表","演唱会门票两张","音乐厅门票两张","红宝石项链","电影院门票两张")
 }
 Onmoneyadd{
 	_num = TOINT(reference0)
@@ -528,7 +545,7 @@ OnBackup{
 	_w+='■数据备份■\n\n[half]'
 	_txt=''
 	if !ISDIR('SHIORI_BACKUP_PATH')
-		_temp=MKDIR('SHIORI_BACKUP_PATH')
+		void MKDIR('SHIORI_BACKUP_PATH')
 	if reference0=='mem'{
 		if reference1==NULL
 			_txt+='要对_SAVE_file及profile文件夹进行备份操作吗？\n\n[half]/
@@ -738,7 +755,7 @@ OnCalculator{
 	_txt+CalculatorShow
 }
 CalculatorShow{
-	_txt='\C\![quicksession,1]\c\b[2]\![set,choicetimeout,0]\![set,autoscroll,disable]'
+	_txt='\C\![quicksession,1]\c\b[2]\![set,choicetimeout,0]\![set,autoscroll,false]'
 	_txt+= "\_l[0,-]%(m_exp)		\_l[100,-]%(m_res)\n/
 	\_l[0,-]\q[◇输入表达式,OnInputExp]	\_l[100,-]\q[◇从剪贴板复制,OnPasteToExp]	\_l[200,-]\q[◇复制结果,OnCopyDat,%(m_res)]\n"
 	_carry=IARRAY
@@ -773,7 +790,7 @@ CalculatorShow{
 	_txt
 }
 OnInputExp{
-	m_exp=REPLACE(m_exp,'\.','.')
+	m_exp=REPLACE(TOSTR(m_exp),'\.','.')
 	"\b[2]\![set,autoscroll,false]\![set,balloontimeout,0]请输入你要计算的表达式：\![open,inputbox,OnInputExpOver,-1,%(m_exp)]\n[150]/
 	\_qTips：\n/
 	\_l[0]符号\_l[76]功能\_l[180]示例\n/
@@ -1051,7 +1068,6 @@ Operate2{//二目运算
 todec{
 	_num=TOSTR(_argv[0])
 	_oldcarry=_argv[1]
-	_weight=_oldcarry
 	_l=STRLEN(_num)
 	if _oldcarry==10 || _num==0{_num;return;}
 	_neg=(SUBSTR(_num,0,1)=='-')
@@ -1094,7 +1110,7 @@ evaluate{//表达式求值主函数
 	_theta=''
 	_i=0.0;_optr_i=0.0;_opnd_i=0.0;_j=0.0;_zpart=0.0;_k=0.0
 	_operand=0.0;_weight=0.0;_a=0.0;_b=0.0;_xpart=0.0
-	//_index=0
+	_index=0
 	_num=1.0
 	_expression=_exp
 	_expression+='\0'
@@ -1114,7 +1130,7 @@ evaluate{//表达式求值主函数
 					_i++
 				}
 			}
-			_opnd[_opnd_i]=_operand;ii=_operand
+			_opnd[_opnd_i]=_operand
 			_opnd_i++
 		}
 		elseif SUBSTR(_expression,_i,1)=='-'&&IsNumber(SUBSTR(_expression,_i+1,1))&&(_i==0||SUBSTR(_expression,_i-1,1)=='('){
@@ -1237,8 +1253,6 @@ evaluate{//表达式求值主函数
 					_i++
 				}
 				when '>'{
-					if _temp=='+'
-						tt='>'
 					_optr_i--
 					_theta=_optr[_optr_i]
 					if _theta>='a'&&_theta<='t'{
@@ -1560,14 +1574,10 @@ Error{//以下为表达式出错处理函数
 	_str;return
 }
 result{
-	_temp=0
-	_m_error=''
 	//UpdateData(1)
 	_m_error=Error(m_exp)
 	if _m_error==''{
-		_temp=m_exp
 		_m_error=evaluate(m_exp)
-		m_point=_m_error
 	}
 	m_res=_m_error
 }
@@ -1805,8 +1815,6 @@ TXTREPLACE{
 	_ori=_argv[1]
 	_rep=_argv[2]
 	_case=TOINT(_argv[3])
-	_l=STRLEN(_str)
-	_o=STRLEN(_ori)
 	_result=''
 	if _case==0{
 		_ori=REPLACE(_ori,'?','.?')
@@ -1828,7 +1836,7 @@ POSREPLACE{
 	_temp=''
 	_result=''
 	_l=STRLEN(_str)
-	if _l-_start-len+1>0{
+	if _l-_start-_len+1>0{
 		_temp=SUBSTR(_str,0,_start-1)
 		_temp+=_txt+SUBSTR(_str,_start+_len-1,_l)
 	}
@@ -1847,7 +1855,6 @@ FIXREPLACE{
 	_num=''
 	_zero=''
 	_result=''
-	_temp=''
 	_len=STRLEN(_numbegin)
 	if _numbegin<POW(10,_numlen-1){
 		for _i=_numlen-_len;_i>0;_i--{
@@ -1859,11 +1866,10 @@ FIXREPLACE{
 	elseif _numlen>0
 		_num=_numbegin
 	if _fix==0
-		_temp=_add+_num+_str
+		_result=_add+_num+_str
 	else
-		_temp=_str+_add+_num
-	_sesult=_temp
-	_sesult
+		_result=_str+_add+_num
+	_result
 }
 FilesRenameMenu:all{
 	_submenu=0
@@ -1921,7 +1927,7 @@ OnClickOption{
 		_w+="\q[%(_num),OnClickOption,%(_submenu),%(_varname),%(_exp+_num)]"
 	}
 	_back=LEFT(_exp,STRLEN(_exp)-1)
-	_w+=" \q[Backspace,OnClickOption,%(_submenu),%(_varname),%(LEFT(_exp,STRLEN(_exp)-1))]"
+	_w+=" \q[Backspace,OnClickOption,%(_submenu),%(_varname),%(_back)]"
 	option=_w
 	if running=='rename'
 		_txt+=OnFilesRename(_submenu)
@@ -1983,7 +1989,6 @@ OnFilesRenameSet{
 		_state='editlist'
 	}
 	elseif reference1=='bottom'{
-		_total=ARRAYSIZE(filerenamelist)
 		_id=reference2
 		_temp=filerenamelist[_id]
 		filerenamelist[_id]=IARRAY
@@ -2439,6 +2444,8 @@ OnWindowsCmd{
 		DiscordCustomSet.LargeImageKey('kikka_eye_close')
 		--
 		DiscordCustomSet.CustomDetail('待机中')
+		--
+		OnClose.talk
 	}
 	--
 	_txt
@@ -2623,7 +2630,7 @@ OnBookChapter{
 	_txt+='\![*]\q[刷新章节信息,OnBookChapter,fresh]\n[150]'
 	_book_file=LoadChapterBookName
 	if _book_file!=book_file||reference0=='fresh'
-		_t=OnReadBookLoad(book_file,book_dexid,0,'chapter')
+		void OnReadBookLoad(book_file,book_dexid,0,'chapter')
 	_chapter=LoadChapter
 	SETDELIM(_chapter,'§')
 	_n=ARRAYSIZE(_chapter)-1
@@ -2632,7 +2639,7 @@ OnBookChapter{
 		_buff=_chapter[_i]
 		book_dexid=TOINT(_buff[0,'|'])
 		book_dex=_buff[1,'|']
-		_t=OnReadBookLoad(book_file,book_dexid,0,'recover')
+		void OnReadBookLoad(book_file,book_dexid,0,'recover')
 		_txt+='\![raise,OnReadBook]'
 		_txt
 		return
@@ -2649,7 +2656,7 @@ OnBookChapter{
 		_j=_n/20
 	for _i=_j*20;_i<_n&&_i<(_j+1)*20;_i++{
 		_buff=_chapter[_i]
-		_book_dex=_buff[1,'|']
+		//_book_dex=_buff[1,'|']
 		_book_percent=_buff[2,'|']
 		_book_txt=CUTSPACE(_buff[3,'|'])
 		if !RE_GREP(_book_txt,'[A-Za-z]')
@@ -2680,9 +2687,9 @@ OnBookmarkLoad{
 		book_dex=_buff[2,'|']
 		if book_file!=_book_file{
 			book_file=_book_file
-			_t=OnReadBookLoad(book_file,book_dexid,0,'fresh')
+			void OnReadBookLoad(book_file,book_dexid,0,'fresh')
 		}
-		_t=OnReadBookLoad(book_file,book_dexid,0,'recover')
+		void OnReadBookLoad(book_file,book_dexid,0,'recover')
 		_txt+='\![raise,OnReadBook]'
 		_txt
 		return
@@ -2697,7 +2704,7 @@ OnBookmarkLoad{
 		_book_file=REPLACE(_book_file,']','\]')
 		_book_filename=REPLACE(_book_filename,']','\]')
 		_book_dexid=TOINT(_buff[1,'|'])
-		_book_dex=_buff[2,'|']
+		//_book_dex=_buff[2,'|']
 		_book_txt=CUTSPACE(_buff[3,'|'])
 		_book_percent=TOINT(_buff[4,'|'])
 		//if !RE_GREP(_book_txt,'[A-Za-z]')
@@ -2829,8 +2836,8 @@ OnReadBookOption{
 OnReadBookUsage{
 	LETTONAME(reference0,reference1)
 	if reference0=='booklength'{
-		_t=OnReadBookLoad(book_file,book_dexid,0,'fresh')
-		_t=OnReadBookLoad(book_file,book_dexid,0,'recover')
+		void OnReadBookLoad(book_file,book_dexid,0,'fresh')
+		void OnReadBookLoad(book_file,book_dexid,0,'recover')
 	}
 	OnReadBookOption
 }
@@ -2843,7 +2850,7 @@ OnOpenBook{
 	book_dexid=0
 	if !ISVAR('booklength')
 		booklength=200
-	_t=OnReadBookLoad(_file,0,0,'fresh')
+	void OnReadBookLoad(_file,0,0,'fresh')
 	OnReadBook
 }
 OnReadBookStop{
@@ -2994,7 +3001,7 @@ IsChapterMenu{
 	_result=0
 	_txt=CUTSPACE(_txt)
 	_A=SUBSTR(_txt,0,3)
-	if RE_GREP(_txt,'[一二三四五六七八九十123456789]')&&!RE_GREP(_txt,'[\,\?，。？！!:“”]')&&(STRLEN(_txt)<25&&RE_GREP(_A,'[一二三四五六七八九十123456789]')||RE_GREP(_txt,'[章节部]')&&“第” _in_ _txt)||RE_GREP(TOLOWER(_txt),'chapter')
+	if RE_GREP(_txt,'[一二三四五六七八九十123456789]')&&!RE_GREP(_txt,'[\,\?，。？！!:“”]')&&(STRLEN(_txt)<25&&RE_GREP(_A,'[一二三四五六七八九十123456789]')||RE_GREP(_txt,'[章节部]')&&"第" _in_ _txt)||RE_GREP(TOLOWER(_txt),'chapter')
 		_result=1
 	_result
 }
@@ -3024,30 +3031,23 @@ OnFileRead{
 	if _argc
 		_file=_argv[0]
 	_strbegin='◇'
-	_str='abc'
 	_strend='#'
 	_txt=''
-	_found=''
 	if FOPEN(_file,'r'){
 		for _buff = FREAD(_file); _buff != -1; _buff = FREAD(_file){
 			while _strbegin !_in_  _buff  && _buff!= -1{
 				_buff = FREAD(_file)
 			}
 			while _strend !_in_  _buff && _buff!= -1{
-				if _str _in_ _buff&&_str!=''{
-					_found+=_str
-				}
 				_txt+=_buff
 				_buff = FREAD(_file)
 			}
 		}
 	}
 	FCLOSE(_file)
-	//_found
 	_txt
 }
 OnKikkaKnowl{
-	kikkaknowl=1
 	running='kikkaknowl'
 	_txt='\C\![quicksession,true]\c\0\b[2]\![set,choicetimeout,0]'
 	_txt+='■橘花知识库 - 文件列表■\n[150]'
@@ -3079,7 +3079,6 @@ OnKikkaKnowl{
 			_file = _path +'/'+ _file
 			_fileext = TOLOWER(SPLITPATH(_file)[3])
 			_txt+="\__q[OnKikkaKnowl.SelectFile,%(_file)]"+_n+'.'+_filename+_fileext+'\__q\n'
-			_m++
 		}
 		_n++
 	}
@@ -3224,7 +3223,6 @@ OnKikkaKnowl.ShowFile{
 }
 ClearKnowlVar{
 	ERASEVAR('knowltemp')
-	ERASEVAR('kikkaknowl')
 }
 OnNumberAddZero{
 	_nam=_argv[0]
@@ -3291,18 +3289,18 @@ OnOtherGhostClosed{
 	else{
 		if mode == '1'{
 			if ghostexcount > 0{
-				'\1\s[11]喵嗚~？'
+				'\1\s[11]喵呜~？'
 			}
 			else{
 				mode = '0'
-				'\1\s[18]哈啊……沒人在的話就好。\n/
-				真是麻煩。'
+				'\1\s[18]哈啊……没人在的话就好。\n/
+				真是麻烦。'
 			}
 		}
 		else{
 			if ghostexcount > 0{
 				mode = '1'
-				'\0\s[11]喵嗚~？'
+				'\0\s[11]喵呜~？'
 			}
 			else{
 				mode = '0'

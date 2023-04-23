@@ -2,3 +2,9 @@
 RUNCMD{
 	CALLSAORI('cmdrunner',_argv)
 }
+CPU_name{
+	CALLSAORI('cpuid','cpu.name')
+}
+CPU_usage{
+	MAX(CALLSAORI('cpuusage','get'),0)
+}

@@ -85,7 +85,7 @@ LoadTest{
 		if _testid _in_ _buff{
 			_buff = FREAD(_file)
 			while _buff != -1 && _buff != '' {
-				_test += _buff + '\n';_
+				_test += _buff + '\n'
 				_buff = FREAD(_file)
 			}
 		}

@@ -6,7 +6,7 @@ cd /d %~dp0
 del tmp
 ren aya.dll tmp
 copy %1 aya.dll
-..\saori\ghost_terminal.exe -c reload
+..\saori\ghost_terminal.exe -g Taromati2 -c reload
 timeout /t 7
 del tmp
 exit

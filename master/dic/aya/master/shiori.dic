@@ -1,3 +1,46 @@
+/*
+							,?I7II=,
+						III777777777777
+					  7I777777777777777777
+					=77777777777777777I7777
+				   777777777777777777777+777:
+				  7I77I777777I77777II7777=777?
+				 ~777777777777777777+77777=777,
+				 7=77=77I7777?=I77+I7+7777+=77?
+				77777=7I+7777+I7I77+=I=7777+III+
+				7=777=7++?777+I=~=~:==:?77??=II=
+				7=77I=I=??II7++?~+=??~=~77I7=+7?:
+			   :II7II~+==??I7+=+~=~+~==~I7II=~+?:
+			   ?+77+?~==~==I?==?? ,,,,~:I7??=~=+=
+			   ?~I7I?~~ ,,,:?~+77I:,:,+?77?++==I~
+			   +~I7I+~~?~:+~I=I7777+,,?~77+=+=~I
+			   +~?II+~?77+,?7+77777II77=I7++=~=
+			   +~??7==~II77I7I77777II??II?+?~=~
+			   =~+~+I+~~~?II77I==7777?~?I+~?
+				 ~,=+=~~~:=~+7777II=?++?==:~
+				   ~,?=~,::,,II7=77II??+~,?		 :::::,::::;														 ,:,,:::
+					~ +=:~:=,77~,+III,?:::=~,		 :,													 :,			::,	  ::
+					  :~~~~::77,~ 777=~:~~~~::		,,													:,,				 ,:
+					  ~~~:::~7:,~::7:~ ,~~::~~~		:											  ::,					:,
+					  ,~~:: 7::~~,:?7: :::::,,	   ,,	  ,:,				   ,	   ,  ,,,	  ,::,:,,:			  ,
+					   : ,	=:~~~,::,: :,,,,:,	   :	:::::,	::,:,  ::,	  ,:::,,,:, ::::,,	 ::	 , ,,			:
+						,::,,,::~:: ,, , ::::,	  ,		   ,:	::,	  ::  ,,  ,:  :,	   ,:	:,	   ,		   ,
+						::,, ,::~~~,,,,,  :,:,,	  ,		,, ,,	,,	 ::	  ,	 ,:	  ,	 :	,, ,,	::	  ,			 :
+					   :::?:,,,,: ,,,,:,:, ?I,,		   ,:,:::  ,,	  ,::,	 ,,	 :	 , ,:,,::  ::	  ,			,:::,,,
+						?,:,,~,,::::::: :,, =+,													,	  ,
+						+I, ::~,,:::::,,,,,,?=
+					   ,,?I7::~~~:::::,,,:7?I,:
+					  ::: +I::::::,::,7+II7~,::~
+					  :: ,,::::::::::,,, ,:::,:~,
+					 =:, :,::::::::~,,,:,,:::::, +
+					 ,,,::,:::::::~:,,,:: :,,::,,:
+					,,,,::,,:::::~:,,,,:: ,:,,:,,=
+					,:::: :,:::~~::,,,:~:,~,::,: ~
+					:::::,: ,,:~:,	,, ,,:~,:::,I
+					 :+:,~ ::::~ ::~:: :,,:~ ~:7
+					  :I::,,,~:~ ::~::,::,:~:~:
+*/
+
 //------------------------------------------------------------------------------
 //以下のdefineは基本的に弄らないで下さい
 //------------------------------------------------------------------------------
@@ -8,8 +51,6 @@
 #globaldefine	}}CHAIN		} CHAIN.Index++ }
 
 #define			CHAIN_DELIM		':chain='
-#define			EVAL_DELIM		':eval='
-
 
 ERASEALLVARBEGINAS {
 	_L= GETVARLIST(_argv[0])
@@ -91,6 +132,7 @@ ClearAyaTempVar {
 	ERASEVAR('displaybpp')
 	ERASEVAR('displaywidth')
 	ERASEVAR('displayheight')
+	ERASEVAR('displaypowerstatus')
 	ERASEVAR('uniqueid')
 	ERASEVAR('ghostboottime')
 	ERASEVAR('ghostbootmin')
@@ -101,6 +143,7 @@ ClearAyaTempVar {
 	ERASEVAR('sakurablnhwnd')
 	ERASEVAR('keroblnhwnd')
 	ERASEVAR('SHIORI_FW.Path')
+	ERASEVAR('SHIORI_FW.Status')
 	ERASEVAR('SHIORI_FW.LastAITalk')
 	ERASEVAR('SHIORI_FW.LastAITalkTime')
 	ERASEVAR('SHIORI_FW.LastTalk')
@@ -126,11 +169,9 @@ ClearAyaTempVar {
 	ERASEVAR('SHIORI_FW.LastBootInEmergencyMode')
 	ERASEVAR('SHIORI_FW.InVarFileMiss')
 
-	_n = ARRAYSIZE(tempvarname)
-	for _i = 0 ; _i < _n ; _i++ {
-		ERASEVAR(tempvarname[_i])
-	}
-	ERASEVAR('tempvarname')
+	if SHIORI_FW.tempvarname
+		ERASEVAR(SHIORI_FW.tempvarname)
+	ERASEVAR('SHIORI_FW.tempvarname')
 
 	SHIORI_FW.ClearChainVariable
 	SHIORI_FW.ClearReferenceVariable
@@ -188,7 +229,6 @@ load {
 	SHIORI_FW.LastAITalk	= ''
 	SHIORI_FW.LastAITalkTime= _sec
 	SHIORI_FW.TalkEndTime	= _sec
-	SHIORI_FW.IsTalking		= 0
 	SHIORI_FW.LastSurface	= (0,10)
 	SHIORI_FW.IsVisible		= (1,1)
 	SHIORI_FW.HWnd			= (0,0)
@@ -208,7 +248,7 @@ load {
 	S_CHARSET = GETSETTING('charset.output')
 
 	status = ''
-	tempvarname = IARRAY
+	SHIORI_FW.tempvarname = IARRAY
 
 	array_eventtranslate = ASORT('string,ascending',GETFUNCLIST('OnGhostEventTranslate'))
 	array_translateinternal = ASORT('string,ascending',GETFUNCLIST('OnTranslateInternal'))
@@ -233,18 +273,14 @@ load {
 	CALLALLFUNCTIONBEGINAS('Init.')
 
 	if SHIORI_FW.EmergencyMode
-		SHIORI_FW.PushNotifyResult('\![raise,OnEmergencyMode]')
+		SHIORI_FW.PushNoBreakNotifyResult('\![raise,OnEmergencyMode]')
 	elseif FILEEXIST('SHIORI_PATH\SHIORI_NAME_emerg.txt'){
 		foreach _DIC_DIRS_; _dir{
 			void DIRSync(_dir,'EMERGENCYMODEDICDIR'+'\'+_dir)
 		}
 		if SHIORI_FW.LastBootInEmergencyMode
-			SHIORI_FW.PushNotifyResult('\![raise,OnEmergencyModeEnd]')
+			SHIORI_FW.PushNoBreakNotifyResult('\![raise,OnEmergencyModeEnd]')
 	}
-
-	if ShioriReloading
-		SHIORI_FW.PushNotifyResult('\![raise,OnShioriReloaded]')
-	ERASEVAR('ShioriReloading')
 }
 
 //******************************************************************************
@@ -263,10 +299,6 @@ unload {
 	var.req.rawvalue = IARRAY
 
 	ghostupmin_last = MAX(ghostupmin_total,elapsedtimetotal)
-
-	if !OnCloseCalled && !BasewareUpdating
-		ShioriReloading=1
-	ERASEVAR('OnCloseCalled')
 
 	CALLALLFUNCTIONBEGINAS('Fin.')
 
@@ -313,12 +345,9 @@ request {
 	var.req.value	= IARRAY
 	var.req.rawvalue= IARRAY
 
-	_linenum = 0
-	_idparsed = 0
-
 	status = ''
 	SHIORI_FW.Eventid=''
-	SHIORI_FW.SecurityLevel='Internal'//互換性のためデフォルトはInternal
+	SHIORI_FW.SecurityLevel='local'//互換性のためデフォルトはlocal
 
 	while _lineend > _linestart {
 		//行分割
@@ -328,15 +357,6 @@ request {
 		//空行もしくはみつからなかった
 		if _lineend <= _linestart {
 			break
-		}
-
-		_linenum += 1
-		if SHIORI_FW.REQUEST_LINES_LIMIT {
-			if _linenum > SHIORI_FW.REQUEST_LINES_LIMIT {
-				if _idparsed {
-					break
-				}
-			}
 		}
 
 		_lin = SUBSTR(_reqdata,_linestart,(_lineend - _linestart))
@@ -363,15 +383,6 @@ request {
 			SHIORI_FW.Eventid = _value
 			if SUBSTR(SHIORI_FW.Eventid, 0, 2) != 'On'
 				SHIORI_FW.Eventid = 'On_' + SHIORI_FW.Eventid
-
-			SHIORI_FW.EventidTranslate = SHIORI_FW.TranslateEvent(SHIORI_FW.Eventid)
-
-			//ハンドラが無い場合は即返る
-			if !ISFUNC(SHIORI_FW.EventidTranslate) && !SHIORI_FW.IsImportantEvent {
-				SHIORI_FW.NoMatchingEvent
-				return
-			}
-			_idparsed = 1
 		}
 		//セキュリティレベル
 		elseif _key == 'SecurityLevel' {
@@ -390,11 +401,6 @@ request {
 			status = _value
 		}
 
-		if SHIORI_FW.SecurityLevel == 'External' && SHIORI_FW.Eventid != 'OnXUkagakaLinkOpen' {
-			SHIORI_FW.MakeBadResponse
-			return
-		}
-
 		//キーと値を記憶
 		var.req.rawvalue ,= _value
 
@@ -411,24 +417,40 @@ request {
 		}
 	}
 
-	OnRequest
-}
-SHIORI_FW.NoMatchingEvent{
-	SHIORI_FW.PushNotifyResult(OnNoMatchingEvent)
-	SHIORI_FW.MakeBadResponse
-}
-TOAUTOEX {
-	_v = _argv[0]
-	if TOSTR(TOAUTO(_v)) == _v {
-		TOAUTO(_v)
+	if TOLOWER(SHIORI_FW.SecurityLevel) == 'external'
+		SHIORI_FW.Eventid = 'ExternalEvent.'+SHIORI_FW.Eventid
+
+	SHIORI_FW.EventidTranslate = SHIORI_FW.TranslateEvent(SHIORI_FW.Eventid)
+
+	//ハンドラが無い場合は即返る
+	if !ISFUNC(SHIORI_FW.EventidTranslate) && !SHIORI_FW.IsImportantEvent {
+		SHIORI_FW.NoMatchingEvent
 		return
 	}
-	_v
+
+	OnRequest
+}
+
+SHIORI_FW.NoMatchingEvent{
+	SHIORI_FW.PushNoBreakNotifyResult(OnNoMatchingEvent)
+	SHIORI_FW.MakeBadResponse
 }
 
 SHIORI_FW.PushNotifyResult:void{//Notify返回值积压
 	if _argv[0]
 		SHIORI_FW.DelayNotifyResults,=_argv[0]
+}
+SHIORI_FW.PushNoBreakNotifyResult:void{//Notify返回值积压，并保证执行时不会被中断
+	if _argv[0]
+		SHIORI_FW.PushNotifyResult('\t'+_argv[0])
+}
+SHIORI_FW.PushNotifyResultToTop:void{//Notify返回值积压，但是优先级最高
+	if _argv[0]
+		SHIORI_FW.DelayNotifyResults=(_argv[0],SHIORI_FW.DelayNotifyResults)
+}
+SHIORI_FW.PushNoBreakNotifyResultToTop:void{//Notify返回值积压，但是优先级最高并保证执行时不会被中断
+	if _argv[0]
+		SHIORI_FW.PushNotifyResultToTop('\t'+_argv[0])
 }
 SHIORI_FW.ClearNotifyResult:void{
 	SHIORI_FW.DelayNotifyResults = IARRAY
@@ -651,8 +673,10 @@ SHIORI_FW.RaiseIDEvent {
 	SHIORI_FW.MakeReferenceAndPassThruInsVariable
 
 	_event = SHIORI_FW.EventidTranslate
+	_event_fallback = _event
 
 	_result_internal = ''
+
 	if SHIORI_FW.Eventid == 'OnSecondChange' {
 		//OnSecondChangeならランダムトーク関連処理
 		_event = SHIORI_FW.ControlAITalk(_event)
@@ -679,12 +703,19 @@ SHIORI_FW.RaiseIDEvent {
 		_result = TOSTR(EVAL(_event))
 	}
 	if _result == '' {
+		if _event != _event_fallback {
+			if ISFUNC(_event_fallback) {
+				_result = TOSTR(EVAL(_event_fallback))
+			}
+		}
+	}
+	if _result == '' {
 		_result = _result_internal
 	}
 
-	if _result != '' {
+	if _result != '' {//トークあり
 		//遅延EVAL
-		_talk = RE_SPLIT(_result,'(' + EVAL_DELIM + '|' + CHAIN_DELIM + ')')
+		_talk = RE_SPLIT(_result,'(' + CHAIN_DELIM + ')')
 		_delim = RE_GETSTR
 		_n = ARRAYSIZE(_delim)
 
@@ -704,11 +735,7 @@ SHIORI_FW.RaiseIDEvent {
 
 		//後から遅延設定
 		for _i = 0 ; _i < _n ; _i += 1 {
-			if _delim[_i] == EVAL_DELIM {
-				//遅延EVAL
-				void EVAL(_talk[_i + 1])
-			}
-			elseif _delim[_i] == CHAIN_DELIM {
+			if _delim[_i] == CHAIN_DELIM {
 				//チェイン処理
 				SHIORI_FW.StartChainTalk(_talk[_i + 1])
 			}
@@ -731,6 +758,12 @@ SHIORI_FW.RaiseIDEvent {
 			_talk[0]
 		}
 	}
+	else {//トークなし
+		if _event == 'OnAITalk' {
+			SHIORI_FW.LastAITalk = ''
+			SHIORI_FW.ResetAITalkInterval
+		}
+	}
 
 	//reference&PassThru_Ins 変数をクリア
 	SHIORI_FW.ClearReferenceAndPassThruInsVariable
@@ -738,7 +771,7 @@ SHIORI_FW.RaiseIDEvent {
 
 //------------------------------------------------------------------------------
 //関数名：SHIORI_FW.MakeEmptyResponse
-//機能　：'204を返してはいけないリクエスト'を判定して、
+//機能　：204を返してはいけないリクエストを判定して、
 //適正な応答文字列を作成します
 //引数　：_argv[0] イベント名
 //------------------------------------------------------------------------------
@@ -749,18 +782,33 @@ SHIORI_FW.MakeBadResponse.OneCRLF {
 SHIORI_FW.MakeEmptyResponse{SHIORI_FW.MakeEmptyResponse.OneCRLF+C_CRLF}
 SHIORI_FW.MakeEmptyResponse.OneCRLF {
 	case SHIORI_FW.Eventid {
-		when 'OnFirstBoot', 'OnBoot', 'OnWindowStateRestore', 'OnGhostChanged'
-			//スコープ0/1の基本サーフィスを出す必要があるイベント
-			"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
-			Value: \0\s[0]\1\s[10]\e%(C_CRLF)"
+		when 'OnFirstBoot', 'OnGhostChanged'
+			SHIORI_FW.MakeEmptyResponse.OneCRLF.BootEvent
+		when 'OnBoot', 'OnWindowStateRestore'
+			SHIORI_FW.MakeEmptyResponse.OneCRLF.SurfaceReset
 		when 'OnClose'
 			//終了指示を出す必要があるイベント
-			"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
-			Value: \0\-\e%(C_CRLF)"
+			SHIORI_FW.MakeEmptyResponse.OneCRLF.WithSakura('\0\-\e')
 		others
 			//上記以外では204を返送して良い
-			"SHIORI/3.0 204 No Content%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)"
+			SHIORI_FW.MakeEmptyResponse.OneCRLF.Default
 	}
+}
+SHIORI_FW.MakeEmptyResponse.OneCRLF.Default{"SHIORI/3.0 204 No Content%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)"}
+SHIORI_FW.MakeEmptyResponse.OneCRLF.WithSakura{
+	"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
+	Value: %(_argv[0])%(C_CRLF)"
+}
+SHIORI_FW.MakeEmptyResponse.OneCRLF.SurfaceReset{
+	//スコープ0/1の基本サーフィスを出す必要があるイベント
+	SHIORI_FW.MakeEmptyResponse.OneCRLF.WithSakura('\0\s[0]\1\s[10]\e')
+}
+SHIORI_FW.MakeEmptyResponse.OneCRLF.BootEvent{
+	if ISFUNC(SHIORI_FW.TranslateEvent('OnBoot'))
+		//SSP側でフォールバックするのでここでは204を返す
+		SHIORI_FW.MakeEmptyResponse.OneCRLF.Default
+	else
+		SHIORI_FW.MakeEmptyResponse.OneCRLF.SurfaceReset
 }
 
 //------------------------------------------------------------------------------
@@ -1118,7 +1166,8 @@ SHIORI_FW.GetGhostNameFromDir {
 	_ghostnames = IARRAY
 	_flag = 0
 	while _flag != 7 {
-		if (_line = FREAD(_filename)) == -1; break
+		_line = FREAD(_filename)
+		if _line == -1; break
 
 		case CUTSPACE(_line[0]) {
 			when 'charset'{
@@ -1185,8 +1234,12 @@ FUNCTIONEX {
 	}
 
 	//リクエスト文字列を作成
-	_reqheader = /
-	"EXECUTE SAORI/1.0%(C_CRLF)Charset: %(CHARSETLIBEX(_argv[0]))%(C_CRLF)Sender: AYA%(C_CRLF)SecurityLevel: Local%(C_CRLF)"
+	_reqheader = "/
+	EXECUTE SAORI/1.0%(C_CRLF)/
+	Charset: %(CHARSETLIBEX(_argv[0]))%(C_CRLF)/
+	Sender: AYA%(C_CRLF)/
+	SecurityLevel: local%(C_CRLF)/
+	"
 	for _i = 1; _i < _argc; _i++ {
 		_reqheader += "Argument%(_i - 1): %(_argv[_i])%(C_CRLF)"
 	}
@@ -1206,7 +1259,11 @@ FUNCTIONEX {
 //引数　：_argv[0] SAORIファイル名
 //------------------------------------------------------------------------------
 SHIORI_FW.SendGETVersion {
-	SHIORI_FW.RequestLib(_argv[0], "GET Version SAORI/1.0%(C_CRLF)Charset: %(CHARSETLIBEX(_argv[0]))%(C_CRLF)Sender: AYA%(C_CRLF2)")
+	SHIORI_FW.RequestLib(_argv[0], "/
+	GET Version SAORI/1.0%(C_CRLF)/
+	Charset: %(CHARSETLIBEX(_argv[0]))%(C_CRLF)/
+	Sender: AYA%(C_CRLF2)/
+	")
 
 	LIB.STATUSCODE
 }
@@ -1281,17 +1338,15 @@ SHIORI_FW.RequestLib {
 //------------------------------------------------------------------------------
 //関数名：SHIORI_FW.MakeValueexVariable
 //機能　：リクエストヘッダからvalueex*変数を作成します
-//引数　：_argv[0] SAORIファイル名
-//　　　　_argv[1] リクエスト文字列
 //------------------------------------------------------------------------------
 SHIORI_FW.MakeValueexVariable:void {
-	SHIORI_FW.ValueexList	= IARRAY
-	_sz						= ARRAYSIZE(var.lib.key)
+	SHIORI_FW.ClearValueexVariable
+	valueex = IARRAY
+	_sz = ARRAYSIZE(var.lib.key)
 	for _i = 0; _i < _sz; _i++ {
 		if SUBSTR(_keyname = var.lib.key[_i], 0, 5) == 'Value' {
 			_varname = "valueex%(SUBSTR(_keyname, 5, 3))"
 			LETTONAME(_varname, var.lib.value[_i])
-			SHIORI_FW.ValueexList ,= _varname
 			valueex[TOINT(SUBSTR(_keyname, 5, 3))] = var.lib.value[_i]
 		}
 	}
@@ -1302,8 +1357,12 @@ SHIORI_FW.MakeValueexVariable:void {
 //機能　：valueex*変数を削除します
 //------------------------------------------------------------------------------
 SHIORI_FW.ClearValueexVariable {
-	foreach SHIORI_FW.ValueexList; _exname { ERASEVAR(_exname) }
-	ERASEVAR('SHIORI_FW.ValueexList')
+	_valueexList = GETVARLIST('valueex')
+	foreach _valueexList; _exname {
+		if RE_MATCH(_exname, 'valueex[0-9]+') {
+			ERASEVAR(_exname)
+		}
+	}
 	ERASEVAR('valueex')
 }
 
@@ -1323,8 +1382,8 @@ SHIORI_FW.SaoriUnloadAll {
 //------------------------------------------------------------------------------
 SHIORI_FW.RegisterTempVar {
 	for _i = 0 ; _i < _argc ; _i++ {
-		if ASEARCH(_argv[_i],tempvarname) < 0 {
-			tempvarname ,= _argv[_i]
+		if ASEARCH(_argv[_i],SHIORI_FW.tempvarname) < 0 {
+			SHIORI_FW.tempvarname ,= _argv[_i]
 		}
 	}
 }
@@ -1336,7 +1395,7 @@ SHIORI_FW.RegisterTempVar {
 //------------------------------------------------------------------------------
 SHIORI_FW.RemoveAllTags
 {
-	_text = RE_REPLACE(_argv[0],'\\_{0,2}[a-zA-Z0-9*!&](\d|\[("([^"]|\\")+?"|([^\]]|\\\])+?)+?\])?','')
+	_text = RE_REPLACE(_argv[0],'\\_{0,2}[a-zA-Z0-9*!&\-+](\d|\[("([^"]|\\")+?"|([^\]]|\\\])+?)+?\])?','')
 	_text = REPLACE(_text,'\\','\')
 	_text
 }
@@ -1566,16 +1625,49 @@ SHIORI_EV.OnBalloonChange : void {
 	SHIORI_FW.OnChangeSelfInfo
 }
 Get_Full_Defened_Event_Name{
+	_event_name=_argv[0]
+	if SUBSTR(_event_name,0,2) != 'On'
+		_event_name='On_'+_event_name
+	if ISFUNC(_event_name)
+		_event_name
+	elseif ISFUNC('SHIORI_FW.'+_event_name)
+		'SHIORI_FW.'+_event_name
+	elseif ISFUNC('SHIORI_EV.'+_event_name)
+		'SHIORI_EV.'+_event_name
+}
+Get_Func_Or_Full_Defened_Event_Name{
 	if ISFUNC(_argv[0])
 		_argv[0]
 	else
-		'On_'+_argv[0]
+		Get_Full_Defened_Event_Name(_argv[0])
 }
 Is_Defened_Event{
-	ISFUNC(_argv[0])||ISFUNC('On_'+_argv[0])
+	_event_name=_argv[0]
+	if SUBSTR(_event_name,0,2) != 'On'
+		_event_name='On_'+_event_name
+	if ISFUNC(_event_name)
+		1
+	elseif ISFUNC('SHIORI_FW.'+_event_name)
+		1
+	elseif ISFUNC('SHIORI_EV.'+_event_name)
+		1
+	else
+		0
+}
+Is_Defened_Event_Or_Func{
+	ISFUNC(_argv[0]) || Is_Defened_Event(_argv[0])
 }
 SHIORI_EV.On_Has_Event : void {
-	SHIORI_FW.Make_X_SSTP_PassThru('Result',ISFUNC(reference0)||ISFUNC('On_'+reference0)||ISFUNC('SHIORI_EV.'+reference0)||ISFUNC('SHIORI_EV.On_'+reference0))
+	_event_name=reference0
+	if SUBSTR(_event_name,0,2) != 'On'
+		_event_name='On_'+_event_name
+	_result=0
+	if TOLOWER(SHIORI_FW.SecurityLevel) == 'external'
+		_event_name='ExternalEvent.'+_event_name
+	_result=ISFUNC(_event_name)
+	if !_result
+		_result=ISFUNC('SHIORI_EV.'+_event_name)
+	SHIORI_FW.Make_X_SSTP_PassThru('Result',_result)
 }
 
 //---- SHIORI 関連情報 ------------------------------------------------------------------
@@ -1608,7 +1700,7 @@ SHIORI_EV.On_enable_log : void {
 		SHIORI_FW.LogMode = TOINT(reference[0])
 	if SHIORI_FW.LogMode != TOINT(reference[0]){
 		SHIORI_FW.LogMode = TOINT(reference[0])
-		SHIORI_FW.PushNotifyResult(OnLogModeChange)
+		SHIORI_FW.PushNoBreakNotifyResult(OnLogModeChange)
 	}
 }
 
@@ -1621,18 +1713,21 @@ SHIORI_EV.On_enable_debug : void {
 		SHIORI_FW.DebugMode = TOINT(reference[0])
 	if SHIORI_FW.DebugMode != TOINT(reference[0]){
 		SHIORI_FW.DebugMode = TOINT(reference[0])
-		SHIORI_FW.PushNotifyResult(OnDebugModeChange)
+		SHIORI_FW.PushNoBreakNotifyResult(OnDebugModeChange)
 	}
 }
 
+shiori.OnMemoryError:void{
+	SHIORI_FW.PushNoBreakNotifyResult(OnShioriMemoryError)
+}
 shiori.OnLoopLimit:void{
-	SHIORI_FW.PushNotifyResult(OnshioriLimit('loop',_argv))
+	SHIORI_FW.PushNoBreakNotifyResult(OnshioriLimit('loop',_argv))
 }
 shiori.OnCallLimit:void{
-	SHIORI_FW.PushNotifyResult(OnshioriLimit('call',_argv))
+	SHIORI_FW.PushNoBreakNotifyResult(OnshioriLimit('call',_argv))
 }
 shiori.OnMemoryLimit:void{
-	SHIORI_FW.PushNotifyResult(OnshioriLimit('memory',_argv))
+	SHIORI_FW.PushNoBreakNotifyResult(OnshioriLimit('memory',_argv))
 }
 
 //******************************************************************************
@@ -1643,8 +1738,9 @@ month	{ GETTIME[1] }
 day		{ GETTIME[2] }
 weekday	{ GETTIME[3] }
 hour	{ GETTIME[4] }
-ampm	{ if hour >= 12; 1;			else; 0		}
-hour12	{ if ampm;		 hour - 12;	else; hour	}
+ampm	{ hour / 12 }
+hour12	{ hour % 12 }
+hour12ex{ if hour12 == 0; 12 ; else ; hour12 }
 minute	{ GETTIME[5] }
 second	{ GETTIME[6] }
 

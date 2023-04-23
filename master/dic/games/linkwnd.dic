@@ -70,11 +70,11 @@ CheckLinkWnd{//参数检查
 	if !ISVAR('LinkWndnd')
 		LinkWndnd=0
 	if LinkWndnd==0
-		难度='简单'
+		LinkWnd.Difficulty='简单'
 	elseif LinkWndnd==1
-		难度='普通'
+		LinkWnd.Difficulty='普通'
 	elseif LinkWndnd==2
-		难度='困难'
+		LinkWnd.Difficulty='困难'
 	_timemode=0
 	if link_timemode==0||link_timemode==1
 		_timemode=link_timemode+1
@@ -152,6 +152,8 @@ OnInitLinkWnd{//新游戏入口
 	link_timemax=link_timebase+GETTICKCOUNT
 	_txt+=OnDrawLinkWnd
 	_txt+=LinkWndMenu
+	if !linkwndmusic
+		_txt+=BGMusic
 	_txt
 }
 m_MapSeed.Load{//地图种子读取
@@ -244,7 +246,7 @@ Loadm_map{//加载地图
 		_nElemID[_i * 2 + 1]=RAND(MatchNum)+1
 		_nElemID[_i * 2] = _nElemID[_i * 2 + 1]
 	}
-	Clearm_map
+	Clean_map
 	//将方块填入地图
 	for _i=1; _i<m_nRow-1; _i++{
 		for _j=1; _j<m_nCol-1; _j++{
@@ -268,7 +270,7 @@ Loadm_map{//加载地图
 		return
 	}
 }
-Clearm_map{//地图清空
+Clean_map{//地图清空
 	m_map=IARRAY
 	for _i=0; _i<m_nRow; _i++{
 		for _j=0; _j<m_nCol; _j++{
@@ -309,7 +311,8 @@ OnDrawLinkWnd{//绘图
 	if link_timebar<0
 		link_timebar=0
 	if LinkWndFlag=='optionchange'{
-		OnLinkWnd;return
+		OnLinkWnd
+		return
 	}
 	_PIC='PATH\bmp130.png'
 	if LinkWndMode==1
@@ -324,18 +327,15 @@ OnDrawLinkWnd{//绘图
 			_y = _i*(LinkWndHigh-1)
 			if m_map[_i*m_nCol+_j] >0{
 				_sort=m_map[_i*m_nCol+_j]
-				_txt+="\_l[%(_x+LinkWnd_LEFT),%(LinkWnd_TOP+_y)]\__q[OnLButtonDown,%(_j),%(_i)]\_b[%(_PIC),inline,--clipping=1 %((_sort-1)*LinkWndHigh+1) %(LinkWndWIDTH) %((_sort)*LinkWndHigh)]\__q"
+				_txt+="\_l[%(_x+LinkWnd_LEFT),%(LinkWnd_TOP+_y)]\__q[OnLButtonDown,%(_j),%(_i)]\_b[%(_PIC),inline,--option=use_self_alpha,--clipping=1 %((_sort-1)*LinkWndHigh+1) %(LinkWndWIDTH) %((_sort)*LinkWndHigh)]\__q"
 			}
 			if m_map[_i*m_nCol+_j] >0 && select==_i*m_nCol+_j{
 				_sort=m_map[_i*m_nCol+_j]
-				_txt+="\_l[%(_x+LinkWnd_LEFT),%(LinkWnd_TOP+_y)]\__q[OnLButtonDown,%(_j),%(_i)]\_b[%(_PIC),inline,--clipping=%(LinkWndWIDTH+1) %((_sort-1)*LinkWndHigh+1) %(LinkWndWIDTH*2) %((_sort)*LinkWndHigh)]\__q"
+				_txt+="\_l[%(_x+LinkWnd_LEFT),%(LinkWnd_TOP+_y)]\__q[OnLButtonDown,%(_j),%(_i)]\_b[%(_PIC),inline,--option=use_self_alpha,--clipping=%(LinkWndWIDTH+1) %((_sort-1)*LinkWndHigh+1) %(LinkWndWIDTH*2) %((_sort)*LinkWndHigh)]\__q"
 			}
 		}
 	}
 	_txt+=LinkWndMenu
-	if !linkwndmusic {
-		_txt+=BGMusic
-	}
 	_txt
 }
 OnResort{//重排入口
@@ -621,7 +621,6 @@ OnLinkWndOption{//设定
 					_m_levels[_i]=" ◆%(_i+1) "
 				else
 					_m_levels[_i]=" ◇%(_i+1) "
-				_a=_关卡[_i]
 				_txt += "\_l[%((_i%6)*50)]"
 				if _i<=TOINT(ClearMode[levelsort])
 					_txt+="\f[color,108,129,182]\q[%(_m_levels[_i]),OnLinkWndOption,gk,%(_i),%(levelsort)]\f[color,default]"
@@ -778,9 +777,7 @@ ClearLinkWndVar{//变量消除
 	ERASEVAR('xx')
 	ERASEVAR('y')
 	ERASEVAR('yy')
-	ERASEVAR('模式')
-	ERASEVAR('难度')
-	ERASEVAR('花式模式')
+	ERASEVAR('LinkWnd.Difficulty')
 	ERASEVAR('shiftmode')
 	ERASEVAR('levelmax')
 	ERASEVAR('LinkWndMapNum')
@@ -852,12 +849,12 @@ Onremind{//提醒
 			rm_X=hint[2]
 			rm_Y=hint[3]
 			if linkwndmusic!=2
-				_txt+=PlayLinkWndMusic('play','PATH\select.wav')//避免连连看禁用背景音乐导致游戏稍卡顿的问题的关键
+				PlayLinkWndMusic.SoundEffect('select.wav')
 		}
 		elseif rm_x==hint[0]&&rm_y==hint[1]&&rm_X==hint[2]&&rm_Y==hint[3]{
 			_txt+=ClearTwo(hint[0],hint[1],hint[2],hint[3])
 			if linkwndmusic!=2
-				_txt+=PlayLinkWndMusic('play','PATH\match.wav')
+				PlayLinkWndMusic.SoundEffect('match.wav')
 			_rm=''
 		}
 	}
@@ -908,7 +905,7 @@ OnLButtonDown{//鼠标操作
 				if link_timemode==1
 					link_timemax+=3000
 				if linkwndmusic!=2
-					_txt+=PlayLinkWndMusic('play','PATH\match.wav')
+					PlayLinkWndMusic.SoundEffect('match.wav')
 				m_nY1 = -1
 				m_nX1 = -1
 				select=-1
@@ -919,7 +916,7 @@ OnLButtonDown{//鼠标操作
 				m_nX1 = _x
 				select=m_nY1*m_nCol+m_nX1
 				if linkwndmusic!=2
-					_txt+=PlayLinkWndMusic('play','PATH\select.wav')
+					PlayLinkWndMusic.SoundEffect('select.wav')
 			}
 		}
 		else{
@@ -928,7 +925,7 @@ OnLButtonDown{//鼠标操作
 			m_nX1 = _x
 			select=m_nY1*m_nCol+m_nX1
 			if linkwndmusic!=2
-				_txt+=PlayLinkWndMusic('play','PATH\select.wav')
+				PlayLinkWndMusic.SoundEffect('select.wav')
 		}
 	}
 	else{
@@ -936,7 +933,7 @@ OnLButtonDown{//鼠标操作
 		m_nX1 =_x
 		select=m_nY1*m_nCol+m_nX1
 		if linkwndmusic!=2
-			_txt+=PlayLinkWndMusic('play','PATH\select.wav')
+			PlayLinkWndMusic.SoundEffect('select.wav')
 	}
 	_txt+=WinCheck
 	_txt+=OnDrawLinkWnd
@@ -1639,12 +1636,6 @@ ClearTwo{
 	}
 	_txt
 }
-OnReputLinkWnd{
-	_txt=''
-	_txt+=ReputLinkWnd
-	_txt+=OnDrawLinkWnd
-	_txt
-}
 //
 //判断选中的两个方块是否可以消除
 //
@@ -1934,8 +1925,8 @@ LoadMapSeed{
 			_buff = FREAD(_mapfile)
 		}
 		if _buff == -1 {
-			_mapseed='error'
-			_mapseed;retrun
+			'error'
+			return
 		}
 		else {
 			LinkWndMode=_argv[0]
@@ -2363,4 +2354,9 @@ LinkBar{
 }
 PlayLinkWndMusic{
 	"\![sound,%(_argv[0]),%(_argv[1])]"
+}
+PlayLinkWndMusic.SoundEffect:void{
+	CALLSAORI('mciaudior', 'stop')
+	CALLSAORI('mciaudior', 'load', 'UN_SAORI_path\PATH\'+_argv[0])
+	CALLSAORI('mciaudior', 'play')
 }

@@ -60,9 +60,9 @@ DiscordCustom.DeveloperSet{
 		DiscordCustomSet.SmallImageText('Developer')
 	}
 	else{
-		DiscordCustomSet.SmallImageKey(' ')
+		DiscordCustomSet.SmallImageKey('')
 		--
-		DiscordCustomSet.SmallImageText(' ')
+		DiscordCustomSet.SmallImageText('')
 	}
 }
 DiscordCustom.LoggingSet{

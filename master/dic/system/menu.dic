@@ -13,26 +13,24 @@ OnOpenMenu{
 	}
 }
 OpenMenu{
-	if !haveshell {
-		SilentShellChange=1
-		'\![change,shell,预设]'
+	if battlemode!=0{
+		OnRpgGame
 		return
 	}
 	RunningReset
 	_submenu = 0
 	_submenuex=0
-	_message=''
 	if _argc > 0 {
 		_submenu = _argv[0]
 		_submenuex=_argv[1]
-		menu=_submenu
-		menuex=_submenuex
 	}
 	else {
-		_message=OpenMenuTalk
+		temp=OpenMenuTalk
 	}
+	menu=_submenu
+	menuex=_submenuex
 	_sub = '◆,◇,◇,◇,◇,◆,◇,◇,◇,◇,◆,◇,◇,◇,◇,◆,◇,◇,◇,◇,◆'
-	'\![quicksession,true]\0'+_message+"\b[2]/
+	'\![quicksession,true]\0'+temp+"\b[2]/
 	\_l[0,22]\q[%(_sub[_submenu])常用功能,OnSubMenu,0,%(_submenuex)]/
 	\_l[68]\q[%(_sub[_submenu + 4])休闲,OnSubMenu,1,%(_submenuex)]/
 	\_l[112]\q[%(_sub[_submenu + 8])游戏,OnSubMenu,2,%(_submenuex)]/
@@ -44,13 +42,19 @@ OpenMenu{
 	--
 	KikkaMenu
 	--
-	if _submenu == 0&&showkikka!=2{
+	if _submenu==0 && MenuMode!=2{
 		NotePadShow(178,44,4)//坐标x，坐标y，显示条数
 	}
 }
 OnSubMenu{
+	temp=RandomMenuMessage
 	click=NULL
 	OpenMenu(reference0,reference1)
+}
+RandomMenuMessage{
+	hitokoto
+	if weather.lastcity
+		SHIORI_FW.RemoveAllTags(Weather.Talks)
 }
 SubMenu{
 	_submenu = _argv[0]
@@ -63,12 +67,12 @@ SubMenu{
 			'\q[◇播放音乐,OnMusicPlayer]	\_l[100,-]\q[◇魔法时钟,OnAnalogClock]\n/
 			\q[◇闹钟,OnAlarmMenu]			\_l[100,-]\q[◇课程表,OnClassTable] \n/
 			\q[◇记事本,Onnotebook]			\_l[100,-]\q[◇截屏,OnScreenShot]\n/
-			\q[◇更换壁纸,OnWallPaper]		\_l[100,-]\q[◇清空垃圾箱,TrashClean]\n/
+			\q[◇更换壁纸,OnWallPaper]		\_l[100,-]\q[◇清空垃圾箱,OnTrashClean]\n/
 			\q[◇英汉互查字典,dictionary]	\_l[100,-]\q[◇日历,OnCalendar]\n/
 			\q[◇天气预报,OnCheckWeather]	\_l[100,-]\q[◇日程提醒,OnAgenda]\n/
 			\q[◇IP查询,OnCheckIp]			\_l[100,-]\q[◇计算器,OnCalculator]\n/
 			\q[◇放大镜,OnMagnify]			\_l[100,-]\q[◇录音机,OnRecorder]\n/
-			\q[◇星座运势,OnAstrofate]		\_l[100,-]\q[◇橘花行情,OnKikkaStockMenu]\n/
+			\q[◇橘花行情,OnKikkaStockMenu]	\n/
 			'
 		}
 		when 1 {
@@ -79,10 +83,10 @@ SubMenu{
 			\q[◇花语,OnFlowers]				\_l[100,-]\q[◇诞生花,OnBirthdayFlowerList]		\_l[200,-]\q[◇塔罗占卜,OnFUT]\n/
 			\q[◇趣味测试,Ontestmenu]		\_l[100,-]\q[◇橘花题库,OnExamTest]				\_l[200,-]\q[◇和橘花谈心,talktoheart]\n/
 			\q[◇查找诗歌,OnResearchPoesy]	\_l[100,-]\q[◇唐诗默写♪,OnPoesywrite]			\_l[200,-]\q[◇准备晚餐,Cookingtonight]\n/
-			\q[◇动漫列表,OnDHs]				\_l[100,-]\q[◇咖啡厅,get_some_tea]			\_l[200,-]%(Onmeal)\n/
+			\q[◇动漫列表,OnDHs]				\_l[100,-]\q[◇咖啡厅,get_some_tea]				\_l[200,-]%(Onmeal)\n/
 			"
 			--
-			if towaflag != '0'
+			if specialmode == 'smoking' || ( smoker=='1' && towaflag )
 				'\q[◇吸烟室,SmokingPlace]\_l[100,-]'
 			--
 			"\q[◇试衣间,OnFittingRoom]		\_l[200,-]\q[◇进寝室,Bedroom]\n/
@@ -92,9 +96,9 @@ SubMenu{
 			'\q[◇猜拳,OnHandGame]			\_l[80,-]扑克游戏：						\_l[168,-]\q[◇外出冒险,OnRpgGame] \n/
 			\q[◇猜数字,OnGuessNumber]		\_l[80,-]\q[◇21点,OnBlackjack0]			\_l[168,-]\q[◇伪春菜人格大乱斗,On战斗开始]\n/
 			\q[◇开心问答,OnQuestBegin]		\_l[80,-]\q[◇扎金花,OnGoldenFlower]		\_l[168,-]\q[◇华容道,OnHuaRongDao]\n/
-			\q[◇井字棋,OnPlayOX]													\_l[168,-]\q[◇五子棋,OnGobangInIt]\n/
+			\q[◇井字棋,OnPlayOX]			\_l[80,-]\q[◇UNO,OnUnoUserInit]			\_l[168,-]\q[◇五子棋,OnGobangInIt]\n/
 			\q[◇拼图游戏,OnPuzzleList]												\_l[168,-]\q[◇连连看,OnLinkWnd] \n/
-			\q[◇俄罗斯方块,OnNewGame]												\_l[168,-]\q[◇数字汉诺塔,OnHanoi]\n/
+			\q[◇俄罗斯方块,OnTetris.NewGame]										\_l[168,-]\q[◇数字汉诺塔,OnHanoi]\n/
 			\q[◇贪食蛇,OnRetroSnaker]												\_l[168,-]\q[◇橘花大乱斗,OnKikkaBattle] \n/
 			\q[◇双色球,OnDoubleColorBall]											\_l[168,-]\q[◇推箱子,OnBoxGame]\n[150]'
 		}
@@ -103,14 +107,14 @@ SubMenu{
 				when 0{
 					'\q[◇软件快捷,OnShortcutMenu]			\_l[138,-]\q[◇计算器,OnCalculator] \n/
 					\q[◇倒数计时,count]						\_l[138,-]\q[◇秒表,OnSecondWatch,inter]\n/
-					\q[◇C盘垃圾文件清理,ClearC]				\_l[138,-]\q[◇股票,OnKikkaStockMenu]\n/
+					\q[◇磁盘垃圾文件清理,ClearDisk]				\_l[138,-]\q[◇股票,OnKikkaStockMenu]\n/
 					\q[◇简繁转换,OnChangeChineseCode]		\_l[138,-]\q[◇校准时间,OnSNTPmenu]\n/
 					\q[◇收取邮件,ALLMAIL]					\_l[138,-]\q[◇开启邮箱,OPENMAILER]\n/
 					\q[◇RSS盒子,HEADLINE]					\_l[138,-]\q[◇数据备份,OnGhostBackup]\n/
 					\q[◇自动关机,OnSetShutdownMenu]			\_l[138,-]\q[◇吃货,OnReadyToEat]\n/
 					\q[◇批量文件重命名,OnInterFileRename]	\_l[138,-]\q[◇橘花阅读器,OnReadBook]\n'
 					--
-					if 腹黑度>=200//死机功能by steve02081504
+					if nurturance.Darkness>=200//死机功能by steve02081504
 						'\q[◇注销,OnLogOff]\_l[55,-]\q[◇重启,OnRebootComputer]\_l[110,-]\q[◇关机,OnShutdown]\_l[165,-]\q[◇死机,OnSystemHalte]\_l[220,-]\q[◇待机,OnStandby]\n'
 					else
 						'\q[◇注销,OnLogOff]\_l[73,-]\q[◇重启,OnRebootComputer]\_l[147,-]\q[◇关机,OnShutdown]\_l[220,-]\q[◇待机,OnStandby]\n'
@@ -147,44 +151,45 @@ OpenMenuTalk{
 	_phase = GetPhase
 	if _phase >= 2 {
 		click=TOINT(click)+1
-		"\0\s[5]\b[2]%(username)%(Timejud)好，什么事呢"
+		"\0\s[5]%(username)%(Timejud)好，什么事呢"
 		if _phase >= 3
-			"\0\s[5]\b[2]最喜欢%(username)了，什么事呢"
-		"\0\s[26]\b[2]什么事呢、%(username)？"
-		'\0\s[41]\b[2]啊…好的。'
-		'\0\s[5]\b[2]要做什么呢？\s[40]'
-		'\0\s[26]\b[2]啊…是的。'
-		if 腹黑度>=200
-			'\0\s[27]\b[2]需要帮忙吗。'
-		if 萌度>=200
-			'\0\s[22]\b[2]橘花待命。'
-		if 腹黑度>依赖度
+			"\0\s[5]最喜欢%(username)了，什么事呢"
+		"\0\s[26]什么事呢、%(username)？"
+		'\0\s[41]啊…好的。'
+		'\0\s[5]要做什么呢？\s[40]'
+		'\0\s[26]啊…是的。'
+		if nurturance.Darkness>=200
+			'\0\s[27]需要帮忙吗。'
+		if nurturance.Moeness>=200
+			'\0\s[22]橘花待命。'
+		if nurturance.Darkness>nurturance.Dependency
 			'\0\s[32]碍事的东西通通见鬼去吧……'
-		elseif 腹黑度>=250
+		elseif nurturance.Darkness>=250
 			"\0\s[27]%(username)要让橘花消灭谁呢"
 		if click>10{
-			"\0\s[21]讨厌，%(username)点这么快，当橘花是傻瓜吗\e:click=NULL"
-			if 腹黑度>依赖度
-				"\0\s[27]讨厌，%(username)想被锯上一锯吗？\e:click=NULL"
+			click=0
+			"\0\s[21]讨厌，%(username)点这么快，当橘花是傻瓜吗\e"
+			if nurturance.Darkness>nurturance.Dependency
+				"\0\s[27]讨厌，%(username)想被锯上一锯吗？\e"
 		}
 	}
 	elseif !_phase {
-		'\0\s[0]\b[2]？'
-		'\0\s[6]\b[2]干嘛'
-		'\0\s[7]\b[2]什么事。'
-		'\0\s[25]\b[2]有何贵干。'
+		'\0\s[0]？'
+		'\0\s[6]干嘛'
+		'\0\s[7]什么事。'
+		'\0\s[25]有何贵干。'
 	}
 	elseif _phase < 0 {
-		'\0\s[0]\b[2]？'
-		'\0\s[6]\b[2]干嘛'
-		'\0\s[7]\b[2]什么事。'
+		'\0\s[0]？'
+		'\0\s[6]干嘛'
+		'\0\s[7]什么事。'
 		--
 		'\e'
 	}
 	else {
-		'\0\s[26]\b[2]好的、什么事呢？'
-		"\0\s[26]\b[2]什么事呢、%(username)？"
-		'\0\s[26]\b[2]要做什么呢？'
+		'\0\s[26]好的、什么事呢？'
+		"\0\s[26]什么事呢、%(username)？"
+		'\0\s[26]要做什么呢？'
 	}
 }
 Select.otherserv{
@@ -236,11 +241,13 @@ TopModeChanged{
 			'\![set,windowstate,minimize]'
 	}
 }
+OnChoiceSelect.base{
+	infomode=0
+}
 //---- 无用 -----------------------------------------------------------------------------------------------------------
 Select.MenuCancel{
 	'\0\b[0]'
 	--
-	infomode=0
 	_phase = GetPhase
 	if _phase <= 0{
 		'\0\s[0]嗯。'
@@ -254,13 +261,13 @@ Select.MenuCancel{
 		"\0\s[3]%(username)..？"
 		'\0\s[3]唔，是么？'
 		'\0\s[9]找到想找的东西了吗？'
-		if 依赖度>=200{
+		if nurturance.Dependency>=200{
 			'\0\s[26]帮上忙了吗？橘花一直陪着你哦'
 			'\0\s[6]好吧，有事再找我哦~'
 		}
-		if 萌度>腹黑度
+		if nurturance.Moeness>nurturance.Darkness
 			'\0\s[3]啊，原来是这样啊...没有帮上你吗？'
-		if 腹黑度>萌度
+		if nurturance.Darkness>nurturance.Moeness
 			"\0\s[3]%(username)是不是只是拿橘花寻开心呢……？"
 	}
 	else{
@@ -268,7 +275,7 @@ Select.MenuCancel{
 		'\0\s[0]好的。'
 		'\0\s[0]…\s[7]怎么了？'
 		'\0\s[7]………'
-		if 依赖度>=200
+		if nurturance.Dependency>=200
 			'\0\s[0]…\s[7]咦？有什么事吗？'
 	}
 	--
@@ -282,7 +289,6 @@ RunningReset{
 	running=''
 	option=NULL
 	read=-1
-	temp=NULL
 	//Speech_Recognition=NULL
 }
 IgnoreChoiceTimeout{
@@ -292,7 +298,7 @@ OnChoiceTimeout{
 	if RE_GREP(reference0,"\%(IgnoreChoiceTimeout)$")
 		return
 	if playingtetris&&running=='playingtetris'
-		OnTimer1Timer
+		OnTetris.Timer
 	elseif playingGobang&&running=='playingGobang'{
 		if aiturn==1
 			ComputerThink
@@ -314,14 +320,14 @@ OnChoiceTimeout{
 	elseif playingplane
 		OnShowBackground
 	elseif infomode
-		OpenMenu(menu,menuex)
+		AntiFlicker(OpenMenu(menu,menuex))
 	elseif mode == '1'
 		"\1\s[%(specialmode != 'mealtime')10]…啧。"
 	else{
 		talkmemo = 'e_0'
 		'\0\s[7]…无视吗？'
 		'\0\s[0]…好的'
-		if 萌度>依赖度{
+		if nurturance.Moeness>nurturance.Dependency{
 			"\0\s[7]%(username)，你很忙吗，都没有听我说什么"
 			'\0\s[7]有在听我说吗？心不在焉的哦'
 			"\0\s[7]最讨厌%(username)这一点了，都不听人家说话"
@@ -555,7 +561,7 @@ Select.TaromatiCancel{
 Select.System{
 	Lunar
 	_ampm = TimeName
-	_hour=hour12
+	_hour=hour12ex
 	if !TOINT(timehour[0]) {
 		_ampm=''
 		_hour=(hour+timehour[1])%24
@@ -565,11 +571,13 @@ Select.System{
 		_color = '238,50,95'
 	}
 	_sysname=CALLSAORI('cpuid','os.name')
+	if InVM
+		_sysname+='  虚拟机'
 	"\*\0\s[0]\b[2]像这个样子。\n\_q\n/
 	%(year)年%(month)月%(day)日  \f[color,%(_color)]星期%(lunardata[3])\f[color,default]   %(_ampm)%(_hour)点%(minute)分\n/
 	农历 %(lunardata[4])年 %(lunardata[5])月%(lunardata[6])    \f[color,238,50,95]%(lunardata[10])\f[color,default]\n[150]/
 	\n[half]/
-	ＣＰＵ：%(CALLSAORI('cpuid','cpu.name'))\n/
+	ＣＰＵ：%(CPU_name)\n/
 	ＯＳ：%(_sysname)\n/
 	记忆体使用率：%(memoryload)\%\n/
 	记忆体(全体)：%(memorytotalphys/1048576) MB\n/
@@ -602,8 +610,12 @@ DayofWeek_w{
 }
 //---------- 人格设定 ----------------------------------------------------
 TheDefaultValue:void{
-	if !ISVAR(_argv[0])
-		LETTONAME(_argv[0],_argv[1])
+	_name=_argv[0]
+	_argv[0]=IARRAY
+	if _argc==2
+		_argv=_argv[0]
+	if !ISVAR(_name)
+		LETTONAME(_name,_argv)
 }
 OnOptionSet:void{
 	Select.Option
@@ -633,8 +645,8 @@ Select.Option{
 	--
 	'\n■提醒设定■\n'
 	--
-	TheDefaultValue('autoweather',1)
-	"天气提醒		\_l[120]\q[%(_t[1 - TOINT(autoweather)]) ON,Onusage,autoweather,0]  ・  \_l[180]\q[%(_t[TOINT(autoweather)]) OFF,Onusage,autoweather,1]\n"
+	TheDefaultValue('setting.WeatherReminder',1)
+	"天气提醒		\_l[120]\q[%(_t[1 - TOINT(setting.WeatherReminder)]) ON,Onusage,setting.WeatherReminder,1]  ・  \_l[180]\q[%(_t[TOINT(setting.WeatherReminder)]) OFF,Onusage,setting.WeatherReminder,0]\n"
 	--
 	TheDefaultValue('rmswitch',1)
 	"节日提醒		\_l[120]\q[%(_t[1 - TOINT(rmswitch)]) ON,Onusage,rmswitch,0]  ・  \_l[180]\q[%(_t[TOINT(rmswitch)]) OFF,Onusage,rmswitch,1]\n"
@@ -644,13 +656,13 @@ Select.Option{
 	--
 	"\q[◇任务繁忙提醒,OnMemoryBusySet]	\_l[120]\q[%(_t[1 - TOINT(memorybusyrm[0])]) ON,Onusage,memorybusyrm[0\],0]  ・  \_l[180]\q[%(_t[TOINT(memorybusyrm[0])]) OFF,Onusage,memorybusyrm[0\],1]\n"
 	--
-	TheDefaultValue('autoastro',1)
-	"星座运势提醒	\_l[120]\q[%(_t[1 - TOINT(autoastro)]) ON,Onusage,autoastro,0]  ・  \q[%(_t[TOINT(autoastro)]) OFF,Onusage,autoastro,1]\n"
-	--
 	TheDefaultValue('autobackupclosealert',1)
 	"自动备份关闭时提醒	\_l[120]\q[%(_t[TOINT(autobackupclosealert)]) ON,Onusage,autobackupclosealert,1]  ・  \_l[180]\q[%(_t[1 - TOINT(autobackupclosealert)]) OFF,Onusage,autobackupclosealert,0]\n"
 	--
 	'\n■其他设定■\n'
+	--
+	TheDefaultValue('setting.IP_ChangeReminder',1)
+	"IP变动提醒		\_l[120]\q[%(_t[TOINT(setting.IP_ChangeReminder)]) ON,Onusage,setting.IP_ChangeReminder,1]  ・  \_l[180]\q[%(_t[1 - TOINT(setting.IP_ChangeReminder)]) OFF,Onusage,setting.IP_ChangeReminder,0]\n"
 	--
 	TheDefaultValue('AllowInternetIPShowing',0)
 	"显示外网IP		\_l[120]\q[%(_t[TOINT(AllowInternetIPShowing)]) ON,Onusage,AllowInternetIPShowing,1]  ・  \_l[180]\q[%(_t[1 - TOINT(AllowInternetIPShowing)]) OFF,Onusage,AllowInternetIPShowing,0]\n"
@@ -696,6 +708,7 @@ Select.Option{
 	TheDefaultValue('voice',0)
 	"\q[◇语音朗读,OnVoiceName]		\_l[120]\q[%(_t[TOINT(voice)]) ON,Onusage,voice,1]  ・  \_l[180]\q[%(_t[1 - TOINT(voice)]) OFF,Onusage,voice,0]\n"
 	--
+	TheDefaultValue('AutoShellChange',(1,0))
 	"\q[◇自动换装,OnAutoShellChange]		\_l[120]\q[%(_t[TOINT(AutoShellChange[0])]) ON,Onusage,AutoShellChange[0\],1]  ・  \_l[180]\q[%(_t[1 - TOINT(AutoShellChange[0])]) OFF,Onusage,AutoShellChange[0\],0]\n"
 	--
 	TheDefaultValue('eventinfo',1)
@@ -709,8 +722,7 @@ Select.Option{
 	"\q[◇互动对话,OnAutoComm]		\_l[120]\q[%(_t[TOINT(communicate[0])]) ON,Onusage,communicate[0\],1]    \_l[180]\q[%(_t[1-TOINT(communicate[0])]) OFF,Onusage,communicate[0\],0]\n"
 	--
 	'\n[half]'
-	if !ISVAR('voice.rate')
-		voice.rate=3
+	TheDefaultValue('voice.rate',3)
 	--
 	'\n\q[◇返回上一层,OnOpenMenu,4]\n/
 	\q[◇终了,OptionEnd]'
@@ -762,7 +774,6 @@ OnVoiceName{
 	if !_n
 		_txt+='没有安装语音库吗？\n[150]\![*]\q[刷新,OnVoiceName]\n'
 	_txt+='\n\n语速调节：'
-	_x=0
 	for _i = -9; _i <11; _i ++{
 		_txt += "\_l[%((_i-1+10)%5*50+60)]"
 		if TOINT(voice.rate) == TOINT(_i){
@@ -773,14 +784,17 @@ OnVoiceName{
 		}
 		if _i%5==0{
 			_txt+='\n'
-			_x+=50
 		}
 	}
 	_txt+='\n\n\n[half]\q[◇返回上一层,Option]      \q[◇终了,OptionEnd]'
 	_txt
 }
 OnAutoShellChange{
-	_t='全天保持,午前保持，午后默认,4小时内保持，4小时后默认,每次启动时更换,每天首次启动时保持，下次启动时默认,每4小时更换一次（开启中）,每2小时更换一次（开启中）,每小时更换一次（开启中）,立即更换,所有衣服随机更换(节气换装关闭）'
+	_t=(/
+		'每天初见更换',/
+		'每次问好更换',/
+		'每4小时更换'/
+		)
 	_txt = '\0\b[2]\_q选择自动换装作用时间范围\n[150]'
 	_n=ARRAYSIZE(_t)
 	for _i = 0; _i < _n; _i ++ {
@@ -795,7 +809,13 @@ OnAutoShellChange{
 	_txt
 }
 OnAutoComm{
-	_t='话痨,健谈,一般,寡言,沉默'
+	_t=(/
+		'话痨',/
+		'健谈',/
+		'一般',/
+		'寡言',/
+		'沉默'/
+		)
 	_txt = '\0\b[2]\_q选择橘花与其他人格对话的频率\n[150]'
 	_n=ARRAYSIZE(_t)
 	for _i = 0; _i < _n; _i ++ {
@@ -808,10 +828,6 @@ OnAutoComm{
 	}
 	_txt+='\n[half]\q[◇返回上一层,Option]      \q[◇终了,OptionEnd]\_q'
 	_txt
-}
-Onset{
-	LETTONAME(reference0,reference1)
-	'完成了'
 }
 Onusage{
 	if reference0=='voicename'{
@@ -827,17 +843,15 @@ Onusage{
 		OnVoiceName
 	}
 	elseif reference0=='AutoShellChange[1]'{
-		if TOINT(reference1)==8{
-			AutoShellChangeflag[5]=1
-			OnAutoChangeShell
-		}
+		AutoShellChange[1]=reference1
+		OnAutoShellChange
 	}
 	elseif reference0=='communicate[1]'{
-		LETTONAME(reference0,reference1)
+		EVAL(reference0+'='+reference1)//有xxx[x]的形式，不能用LETTONAME
 		OnAutoComm
 	}
 	else{
-		LETTONAME(reference0,reference1)
+		EVAL(reference0+'='+reference1)//有xxx[x]的形式，不能用LETTONAME
 		Select.Option
 	}
 }
@@ -1016,8 +1030,7 @@ Select.shortcutkey{
 	--
 	'/
 	F12	\_l[23]截屏功能\n/
-	W	\_l[23]天气预报（小窗口）\n/
-	A	\_l[23]星座运势（小窗口）\n/
+	W	\_l[23]天气预报\n/
 	M	\_l[23]打开菜单\n/
 	'
 }
@@ -1031,16 +1044,49 @@ OnOpenMasterMenu{
 	'\![open,file,ghost\master]'
 }
 //---- ごみ箱を空に ---------------------------------------------------------------------------------------------------
-Select.TrashClean{
-	OnTrashClean
+Init.RecycleBinStatus{
+	RecycleBinStatus.Succees = 0
+	RecycleBinStatus.FileNum = 0
+	RecycleBinStatus.TotalSize = 0
+}
+UpdateRecycleBinStatus{
+	RecycleBinStatus.FileNum = reference0
+	RecycleBinStatus.TotalSize = reference1
+}
+OnRecycleBinStatusUpdate.Talk{
+	_NumDiff = reference2
+	_SizeDiff = reference3
+	if _NumDiff > 9 || _SizeDiff > 1024*1024*1024*2
+		"\0\s[0]嗯\w8，有%(_NumDiff)个文件\w9，共%(UNITSIZE(_SizeDiff))被添加到了回收站。"
+	elseif _NumDiff > 0{
+		if RecycleBinStatus.FileNum > 720
+			"\0\s[8]嗯.\w8\w8.\w8.\n/
+			回收站里现在已经有%(RecycleBinStatus.FileNum)个文件了哦？"
+		elseif RecycleBinStatus.TotalSize > 1024*1024*1024*2
+			"\0\s[8]嗯.\w8\w8.\w8.\n/
+			回收站里现在已经有%(UNITSIZE(RecycleBinStatus.TotalSize))的文件了哦？"
+	}
+	elseif _NumDiff < 0 && RecycleBinStatus.TotalSize
+		'\0\s[26]需要我帮忙吗？'
+}
+OnRecycleBinStatusUpdate{
+	if RecycleBinStatus.Succees{
+		_t=OnRecycleBinStatusUpdate.Talk
+		if _t
+			_t+'\n/
+				\q[◇清空回收站,OnTrashClean]\n/
+				\q[◇无用,Cancel]\n/
+				'
+	}
+	RecycleBinStatus.Succees = reference4
+	UpdateRecycleBinStatus
 }
 OnTrashClean{
 	DiscordCustomSet.CustomDetail('打扫卫生')
 	--
-	_gomicheck = CALLSAORI('gomi', '-n')
-	if _gomicheck == 0{
-		if 萌度>200||腹黑度>200||萌度>腹黑度{
-			'\0\s[0]接受任务！！\w9\s[-1]\b[-1]\w9\w9\w9\w9\w9\w9\s[0]\c嗯，啊勒，无法确定敌人？\w9\n好像敌人已经被歼灭了哦~'
+	if RecycleBinStatus.FileNum == 0{
+		if nurturance.Moeness>200||nurturance.Darkness>200||nurturance.Moeness>nurturance.Darkness{
+			'\0\s[0]接受任务！！\w9\s[-1]\b[-1]\w9\w9\w9\w9\w9\w9\s[0]\c\w8\s[20]嗯，啊勒，无法确定敌人？\w9\n好像敌人已经被歼灭了哦~'
 			'\0\s[0]嗯。\n那么，橘花去消灭敌人！！\w9\s[-1]\b[-1]\w9\w9\w9\w9\w9\w9\s[0]\c目标、无法确认。\w9\w9\s[3]\n有点可惜呢。\w9\1\s[10]………'
 		}
 		else{
@@ -1048,33 +1094,35 @@ OnTrashClean{
 			'\0\s[0]好的。\n那么、请稍微等一下。\w9\s[-1]\b[-1]\w9\w9\w9\w9\w9\w9\s[0]\c目标、无法确认。\w9\w9\s[3]\n有点可惜呢。\w9\1\s[10]………'
 		}
 	}
-	elseif _gomicheck > 0{
-		trashnum=_gomicheck
+	elseif RecycleBinStatus.Succees{
 		'\0\s[0]任务接受。\w9\s[-1]\b[-1]\w9\w9\w9'
 		'\0\s[0]好的。\n那么、请稍微等一下。\w9\s[-1]\b[-1]\w9\w9\w9'
 		--
 		if !silent
 			'\![sound,play,SOUND_PATH\shot.wav]'
 		--
-		'\![raise,OnTrashClean_s]'
+		'\![execute,emptyrecyclebin]'
 	}
 	else{
 		'\1\s[10]不…把自己像垃圾一样的丢掉吧。\w9\0\s[8]………'
 	}
 }
-OnTrashClean_s{
-	_gomisute = CALLSAORI('gomi', '-ef')
-	if _gomisute {
-		kikkamood+=LOG(腹黑度*trashnum,2.718281)*kikkamood
-		kikkamood=MAX(MIN(kikkamoodmax,kikkamood),1)
-		if 萌度>200||腹黑度>200||萌度>腹黑度
+OnRecycleBinEmpty{
+	UpdateRecycleBinStatus
+	if reference4 {
+		_trashnum = -reference2
+		_t=MIN(kikkamoodmax,LOG(nurturance.Darkness*_trashnum,2.718281)*kikkamood)
+		if _t<=0
+			_t=kikkamoodmax
+		kikkamood=MIN(kikkamoodmax,_t+kikkamood)
+		if nurturance.Moeness>200||nurturance.Darkness>200||nurturance.Moeness>nurturance.Darkness
 			'\w9\w9\0\s[22]嗯，久等了，所有的敌人已清理完毕'
 		else{
 			'\w9\w9\0\s[22]好了、让您久等了'
 			'\w9\w9\0\s[34]…呼。\w9\w9\s[26]\n让您久等了'
 		}
 		--
-		if 萌度>200||腹黑度>200||萌度>腹黑度
+		if nurturance.Moeness>200||nurturance.Darkness>200||nurturance.Moeness>nurturance.Darkness
 			'，讨厌的垃圾都没有了哦~~'
 		else
 			'。'
@@ -1083,8 +1131,6 @@ OnTrashClean_s{
 		'\w9\w9\0\s[3]抱歉、失败了。'
 		'\w9\w9\0\s[3]意料外的状况发生。\w9\n抱歉。'
 	}
-	--
-	ERASEVAR('trashnum')
 }
 //更换壁纸
 //----------------------------------------------------------------
@@ -1101,13 +1147,13 @@ DialogWallPaper{
 		when '.png', '.jpg', '.jpeg', '.bmp' {
 			Wallpaperfile = _argv[0]
 			"\1\s[11]\0\b[2]\s[2]图像文件\n\_q「%(_filename)%(_fileext)」\n\n[half]\_q要把这个设定为壁纸吗？\n\n[half]/
-			\![*]\q[居中,OnSetWallpaper,0]\n/
-			\![*]\q[平铺,OnSetWallpaper,1]\n/
-			\![*]\q[拉伸,OnSetWallpaper,2]\n\n[half]/
+			\![*]\q[居中,OnSetWallpaper,center]\n/
+			\![*]\q[平铺,OnSetWallpaper,tile]\n/
+			\![*]\q[拉伸,OnSetWallpaper,stretch]\n\n[half]/
 			\q[◇取消,Cancel]"
 		}
 		others {
-			if 萌度>200||萌度>腹黑度
+			if nurturance.Moeness>200||nurturance.Moeness>nurturance.Darkness
 				'格式好像不支持哟，确定没有错吗？要不，再看看？……'
 			else
 				'抱歉，不支持这样的文件格式……'
@@ -1115,11 +1161,9 @@ DialogWallPaper{
 	}
 }
 OnSetWallpaper{
-	void CHARSETLIBEX('SAORI_PATH\proxy.dll', 127)
-	void CALLSAORI('proxy', 'SAORI_PATH\set_wall_paper.exe', "%(ASC(34))%(REPLACE(Wallpaperfile,'/','\'))%(ASC(34))', '%(reference0)")
 	'\0\s[0]似乎应该这样……'
 	--
-	//"\![set,wallpaper,%(Wallpaperfile)]"
+	"\![set,wallpaper,%(Wallpaperfile),reference0]"
 	ERASEVAR('Wallpaperfile')
 }
 ClearWallpaperVar{
@@ -1149,6 +1193,7 @@ Select.SmokingPlace{
 	mode = '1'
 	if specialmode == 'smoking'{
 		{
+			towaflag = 1
 			'\0\s[30]那里、是在另一边喔…\w9\w9\w9\s[-1]\b[-1]\c\w9\w9\w9\w9\1\s[111]嗯？'
 			--
 			if smoker=='0'
@@ -1395,7 +1440,7 @@ Select.Omuraisu{
 	"\0\s[0]是吗？\w9\s[26]只要是%(username)做的我都喜欢吃喔...\w9\w9\n\1\s[10]如果哪天%(username)作炖猫肉怎么办？\w9你也会吃吗？\w9\w9\n\0\s[30]...\w9...\w9...\w9\n可以换菜色吗？\w9\w9\1\s[11]不要当真啊！"
 }
 Select.Korokke{
-	"\0\s[3]橘花不喜欢那种油腻腻的食物耶...\n\w9\w9\1\s[10]其实是怕变胖后%(username)会讨厌你吧。\n\w9\w9\0\s[9]...\w9...\w9...\w9\n%(username)会吗...？\w9\w9\1\s[13]请关闭我心灵相通的功能...\w9我受够了..."
+	"\0\s[3]橘花不喜欢那种油腻腻的食物耶...\n\w9\w9\1\s[10]其实是怕变胖后%(username)会讨厌你吧。\n\w9\w9\0\s[9]...\w9...\w9...\w9\n%(username)会吗...？"
 }
 Select.Pasuta{
 	"\0\s[5]真的吗！\w9那我来帮%(username)准备番茄酱。\s[-1]\n\w9\w9\1\s[10]难得她露出这么高兴的表情，\w9\s[12]看来她真的很喜欢料理。\n\w9\w9\0\s[5]来～\w9刚刚在屠宰场完成的特制番茄酱。\w9\n你们要全部吃下去唷～！\w9\w9\1\s[13]我突然没食欲了..."
