@@ -291,19 +291,13 @@ TokenizeExpression{
 			continue
 		}
 		else{
-			_token_table=RE_SPLIT(_str,'[\+\-\*\/\%\&\|\^\~\!\=\<\>\?\:\,\(\)\[\]\{\}\; \t]');
-			_j=0
-			while _j<ARRAYSIZE(_token_table){
-				_token+=_token_table[_j]
-				_j++
-				if _token_table[_j]
-					break
-				else
-					_j++
+			_token_table=RE_SPLIT(_str,'[\+\-\*\/\%\&\|\^\~\!\=\<\>\?\:\,\(\)\[\]\{\}\; \t]')
+			_token=_token_table[0]
+			if _token{
+				_tokens,=_token
+				_str=SUBSTR(_str,STRLEN(_token),STRLEN(_str))
+				continue
 			}
-			_tokens,=_token
-			_str=SUBSTR(_str,STRLEN(_token),STRLEN(_str))
-			continue
 		}
 	}
 	_tokens
