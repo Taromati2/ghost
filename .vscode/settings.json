@@ -1,3 +1,15 @@
 {
-    "yayalint.yaya_cfg": ".\\master\\shiori\\aya.txt"
+	"yayalint.yaya_cfg": ".\\master\\shiori\\aya.txt",
+	"terminal.integrated.defaultProfile.windows": "Ghost Terminal",
+	"terminal.integrated.profiles.windows": {
+		"Ghost Terminal": {
+			"path": "${workspaceFolder}\\master\\saori\\ghost_terminal.exe",
+			"args": [
+				"-g",
+				"Taromati2",
+				"-r"
+			],
+			"icon": "repl"
+		}
+	}
 }

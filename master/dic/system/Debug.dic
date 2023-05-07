@@ -441,8 +441,8 @@ On_ShioriEcho.CommandUpdate{
 	SHIORI_FW.Make_X_SSTP_PassThru('CommandForDisplay',ColorizeExpression(reference.raw[0]))
 }
 On_ShioriEcho.TabPress{
-	_before=SUBSTR(reference.raw[0],0,reference1)
-	_after=SUBSTR(reference.raw[0],reference1,STRLEN(reference.raw[0]))
+	_before=SUBSTR(reference.raw[0],0,reference3)
+	_after=SUBSTR(reference.raw[0],reference3,STRLEN(reference.raw[0]))
 	_tabnum=reference2
 	_lastname=RE_REPLACE(_before,'^[\s\S]*[\[\]\(\)\+\-\*\/\=\'+"'"+'\" ]','')
 	_after=RE_REPLACE(_after,'^[a-zA-Z0-9._]+','')
@@ -459,6 +459,7 @@ On_ShioriEcho.TabPress{
 		_name_after_tab=_possible_names[_tabnum%ARRAYSIZE(_possible_names)]
 		_before=RE_REPLACE(_before,_lastname+'$',_name_after_tab)
 		SHIORI_FW.Make_X_SSTP_PassThru('Command',_before+_after)
+		SHIORI_FW.Make_X_SSTP_PassThru('InsertIndex',STRLEN(_before))
 	}
 }
 On_ShioriEcho.GetResult {

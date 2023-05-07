@@ -86,6 +86,7 @@ CountQuests{
 	_file = 'DATA_PATH\other\happyquest.txt'
 	questnum = 0
 	_buff = ''
+	FCHARSET(1)
 	if FOPEN(_file,'r') {
 		_buff = FREAD(_file)
 		while _buff != -1 && SUBSTR(_buff, 0, 1) != '#' {
@@ -100,13 +101,16 @@ CountQuests{
 				_buff = FREAD(_file)
 			}
 		}
+		FCLOSE(_file)
 	}
-	FCLOSE(_file)
+	FCHARSET.default
+	questnum
 }
 LoadQuest{
 	_file = 'DATA_PATH\other\happyquest.txt'
 	_quest = ''
 	_buff = ''
+	FCHARSET(1)
 	if FOPEN(_file,'r') {
 		_buff = FREAD(_file)
 		while _buff != -1 && SUBSTR(_buff, 0, 1) != '#' {
@@ -122,7 +126,8 @@ LoadQuest{
 		}
 		_buff = FREAD(_file)
 		_quest = _buff + FREAD(_file)
+		FCLOSE(_file)
 	}
-	FCLOSE(_file)
+	FCHARSET.default
 	_quest
 }

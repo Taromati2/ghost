@@ -1,21 +1,36 @@
 //by steve02081504
 GetConfingFromGhostDescript{//GetConfingFromGhostDescript('Taromati2','icon')
 	_descript="BASE_PATH\..\\..\\..\\%(_argv[0])\\ghost\\master\\descript.txt"
-	void FOPEN(_descript,'rb')
-	while (_t=FREAD(_descript))!=-1{
-		if CUTSPACE(_t)[0]==_argv[1]{
-			FCLOSE(_descript)
-			_t=CUTSPACE(_t)
-			_t[0]=IARRAY
-			_t
-			return
-		}
-		elseif CUTSPACE(_t)[0]=='charset'{
-			FCHARSET.string(CUTSPACE(_t[1]))
+	FCHARSET(0)
+	_result=''
+	if FOPEN(_descript,'rb'){
+		_line=FREAD(_descript)
+		_flag= _line != -1
+		//若以BOM开头
+		if !_flag
+			do_nothing
+		elseif SUBSTR(_line, 0, 3) == BOM_UTF8{
+			_line = SUBSTR(_line, 3, STRLEN(_line))
+			FCHARSET(1)
 			void FREOPEN(_descript,'rb')
 		}
+		while _flag{
+			if CUTSPACE(_line[0])==_argv[1]{
+				_result=CUTSPACE(_line[1])
+				break
+			}
+			elseif CUTSPACE(_line[0])=='charset'{
+				FCHARSET.string(CUTSPACE(_line[1]))
+				void FREOPEN(_descript,'rb')
+			}
+			_line=FREAD(_descript)
+			if _line==-1
+				break
+		}
+		FCLOSE(_descript)
 	}
-	FCLOSE(_descript)
+	FCHARSET.default
+	_result
 }
 GetIconNameFromGhostDir{//GetIconNameFromGhostDir('Taromati2')
 	_t="BASE_PATH\..\\..\\..\\%(_argv[0])\\ghost\\master\\"
