@@ -366,6 +366,15 @@ OnSakuraScript.Forment{
 	OnSakuraScript(EVAL('"'+reference.raw[0]+'"'),'no_convert')
 }
 
+ShioriEcho.CustomLoginInfo{
+	"\n%(ansi_red)%(Taromati2.asciiArt)/
+	%(ansi_yellow)Taromati2 %(ansi_green)internal ver %(ansi_cyan)%(VERSION)\n/
+	%(ansi_yellow)ghost terminal %(ansi_green)ver %(ansi_cyan)%(_argv[0])\n/
+	%(ansi_reset)"
+}
+On_ShioriEcho.Begin {
+	SHIORI_FW.Make_X_SSTP_PassThru('CustomLoginInfo',ShioriEcho.CustomLoginInfo(reference.raw[0]))
+}
 On_ShioriEcho.GetName:void {
 	SHIORI_FW.Make_X_SSTP_PassThru('GhostName',ghostname)
 	SHIORI_FW.Make_X_SSTP_PassThru('UserName',REPLACE(username,'\\','\'))
