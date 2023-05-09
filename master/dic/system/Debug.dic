@@ -375,7 +375,8 @@ ShioriEcho.CustomLoginInfo{
 		" %(ansi_green)git commit %(ansi_cyan)%(RUNCMDEX('git rev-parse --short HEAD'))"
 	--
 	"\n/
-	%(ansi_yellow)ghost terminal %(ansi_green)ver %(ansi_cyan)%(_argv[0])\n/
+	%(ansi_yellow)ghost terminal %(ansi_green)ver %(ansi_cyan)%(_argv[0]) /
+	%(ansi_yellow)%(Baseware) %(ansi_green)ver %(ansi_cyan)%(Baseware.Version)\n/
 	%(ansi_reset)"
 }
 On_ShioriEcho.Begin {
