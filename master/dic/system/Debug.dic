@@ -412,11 +412,12 @@ On_ShioriEcho {
 				}
 				elseif RE_GREP(reference0,'^\s*openfunc\s+'){
 					_funcname=RE_REPLACE(reference0,'^\s*openfunc\s+','')
-					if Is_Defened_Event(_funcname)||Is_Defened_Event(_funcname+'Ex'){
-						_EXfunc=!Is_Defened_Event(_funcname)
+					if Is_Defened_Event_Or_Func(_funcname)||Is_Defened_Event(_funcname+'Ex'){
+						_EXfunc=!Is_Defened_Event_Or_Func(_funcname)
 						if _EXfunc
 							_funcname=_funcname+'Ex'
-						_funcname=Get_Full_Defened_Event_Name(_funcname)
+						if !ISFUNC(_funcname)
+							_funcname=Get_Full_Defened_Event_Name(_funcname)
 						_info=GETFUNCINFO(_funcname)
 						_path=SPLITPATH(_info[0])
 						if _path
@@ -803,7 +804,7 @@ Get_AYA_Function_Info{
 				if _funcname==FREAD(_data_file){
 					_result=FREAD(_data_file)
 					while RE_GREP(_result,'/$'){
-						_result=SUBSTR(0,STRLEN(_result)-1)
+						_result=SUBSTR(_result,0,STRLEN(_result)-1)
 						_result+=FREAD(_data_file)
 					}
 					break
