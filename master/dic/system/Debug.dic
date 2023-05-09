@@ -368,7 +368,7 @@ OnSakuraScript.Forment{
 
 ShioriEcho.CustomLoginInfo{
 	"\n%(ansi_red)%(Taromati2.asciiArt)/
-	%(ansi_yellow)Taromati2 %(ansi_green)internal ver %(ansi_cyan)%(VERSION)\n/
+	%(ansi_yellow)Taromati2 %(ansi_green)internal ver %(ansi_cyan)%(VERSION) %(ansi_green)build date %(ansi_cyan)LAST_BUILD_TIME.YEAR.LAST_BUILD_TIME.MOUNTH\n/
 	%(ansi_yellow)ghost terminal %(ansi_green)ver %(ansi_cyan)%(_argv[0])\n/
 	%(ansi_reset)"
 }
