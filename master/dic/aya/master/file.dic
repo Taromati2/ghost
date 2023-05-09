@@ -196,6 +196,9 @@ GHOST.INgit{
 	}
 	0
 }
+GHOST.IsGitPath{
+	FILEEXIST(GETSETTING('coreinfo.path')+'../.git/config')
+}
 GHOST.INtempDir{
 	'\AppData\Local\Temp\' _in_ GETSETTING('coreinfo.path')
 }
