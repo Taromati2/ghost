@@ -168,6 +168,8 @@ ClearAyaTempVar {
 	ERASEVAR('SHIORI_FW.BalloonNameOld')
 	ERASEVAR('SHIORI_FW.LastBootInEmergencyMode')
 	ERASEVAR('SHIORI_FW.InVarFileMiss')
+	ERASEVAR('SHIORI_FW.BasewareNotifysInstalledSakuraName')
+	ERASEVAR('SHIORI_FW.BasewareNotifysInstalledKeroName')
 
 	if SHIORI_FW.tempvarname
 		ERASEVAR(SHIORI_FW.tempvarname)
@@ -1105,7 +1107,22 @@ On_ghostpathlist{
 //関数名：On_installedghostname
 //機能　：インストール済ゴースト名通知イベント
 //------------------------------------------------------------------------------
+On_installedsakuraname {
+	SHIORI_FW.BasewareNotifysInstalledSakuraName=1
+	//Referenceから取得
+	installedsakuralist = reference.raw
+}
+On_installedkeroname {
+	SHIORI_FW.BasewareNotifysInstalledKeroName=1
+	//Referenceから取得
+	installedkerolist = reference.raw
+}
 On_installedghostname {
+	if SHIORI_FW.BasewareNotifysInstalledSakuraName && SHIORI_FW.BasewareNotifysInstalledKeroName{
+		//Referenceから取得
+		installedghostlist = reference.raw
+		return
+	}
 	installedghostlist	 = IARRAY
 	installedsakuralist	 = IARRAY
 	installedkerolist	 = IARRAY
@@ -1113,11 +1130,7 @@ On_installedghostname {
 	//materia、もしくはイベントからの取得が指示されていなければファイル走査で取得する処理を実行
 	if basewarename == 'embryo' || !SHIORI_FW.IGLIST_ACCEL {
 		SHIORI_FW.StructInstalledGhostList
-		return
 	}
-
-	//Referenceから取得
-	installedghostlist = reference.raw
 }
 
 //------------------------------------------------------------------------------
