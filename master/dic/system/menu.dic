@@ -53,7 +53,7 @@ OnSubMenu{
 }
 RandomMenuMessage{
 	hitokoto
-	if weather.lastcity
+	if weather.lastcity && Weather.Talks
 		SHIORI_FW.RemoveAllTags(Weather.Talks)
 }
 SubMenu{
