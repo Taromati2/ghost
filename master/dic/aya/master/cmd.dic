@@ -2,6 +2,21 @@
 RUNCMD{
 	CALLSAORI('cmdrunner',_argv)
 }
+RUNCMD.GetOutput{
+	CALLSAORI('cmdrunner',_argv)
+	valueex
+}
+RUNCMD.GetOutput.RemoveLastLineBreak{
+	CALLSAORI('cmdrunner',_argv)
+	if SUBSTR(valueex,STRLEN(valueex)-1,1)==CHR(10){
+		valueex=SUBSTR(valueex,0,STRLEN(valueex)-1)
+	}
+	valueex
+}
+RUNCMDEX{
+	RUNCMD.GetOutput.RemoveLastLineBreak(_argv)
+}
+
 CPU_name{
 	CALLSAORI('cpuid','cpu.name')
 }
