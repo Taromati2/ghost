@@ -1104,17 +1104,15 @@ On_ghostpathlist{
 		ghostpathlist = reference.raw
 }
 //------------------------------------------------------------------------------
-//関数名：On_installedghostname
+//関数名：On_installedghostname/sakuraname/keroname
 //機能　：インストール済ゴースト名通知イベント
 //------------------------------------------------------------------------------
 On_installedsakuraname {
 	SHIORI_FW.BasewareNotifysInstalledSakuraName=1
-	//Referenceから取得
 	installedsakuralist = reference.raw
 }
 On_installedkeroname {
 	SHIORI_FW.BasewareNotifysInstalledKeroName=1
-	//Referenceから取得
 	installedkerolist = reference.raw
 }
 On_installedghostname {
