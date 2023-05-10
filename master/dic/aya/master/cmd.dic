@@ -2,16 +2,23 @@
 RUNCMD{
 	CALLSAORI('cmdrunner',_argv)
 }
+CMD.OutPut{
+	valueex[0]
+}
+CMD.OutPut.RemoveLastLineBreak{
+	_str=CMD.OutPut
+	if SUBSTR(_str,STRLEN(_str)-1,1)==CHR(10){
+		_str=SUBSTR(_str,0,STRLEN(_str)-1)
+	}
+	_str
+}
 RUNCMD.GetOutput{
-	CALLSAORI('cmdrunner',_argv)
-	valueex
+	void RUNCMD(_argv)
+	CMD.OutPut
 }
 RUNCMD.GetOutput.RemoveLastLineBreak{
-	CALLSAORI('cmdrunner',_argv)
-	if SUBSTR(valueex,STRLEN(valueex)-1,1)==CHR(10){
-		valueex=SUBSTR(valueex,0,STRLEN(valueex)-1)
-	}
-	valueex
+	void RUNCMD(_argv)
+	CMD.OutPut.RemoveLastLineBreak
 }
 RUNCMDEX{
 	RUNCMD.GetOutput.RemoveLastLineBreak(_argv)

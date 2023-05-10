@@ -186,7 +186,7 @@ ColorizeExpression{
 		if ISFUNC(_token)
 			_ret+=ansi_green+_token+ansi_reset
 		elseif ISVAR(_token)
-			_ret+=ansi_magenta+_token+ansi_reset
+			_ret+=ansi_blue+_token+ansi_reset
 		elseif ISINTSTR(_token)||ISREALSTR(_token)
 			_ret+=ansi_yellow+_token+ansi_reset
 		elseif _token=='('{
@@ -372,11 +372,17 @@ ShioriEcho.CustomLoginInfo{
 	%(ansi_green)build date %(ansi_cyan)LAST_BUILD_TIME.YEAR.LAST_BUILD_TIME.MOUNTH"
 	--
 	if GHOST.IsGitPath{
-		_uuid=RUNCMDEX('git rev-parse --short HEAD')
+		_uuid=git.GetCommitID
 		if _uuid!=0
 			" %(ansi_green)git commit %(ansi_cyan)%(_uuid)"
 		else
 			" %(ansi_red)git commit unknown"
+		--
+		_files=RUNCMDEX('git status --porcelain')
+		SETDELIM(_files,CHR(10))
+		_file_num=ARRAYSIZE(_files)
+		if _file_num>0
+			"%(ansi_red)(modified %(_file_num) file%(('','s')[_file_num>1]))"
 	}
 	--
 	"\n/
@@ -445,6 +451,9 @@ On_ShioriEcho {
 						ShioriEcho.Special='不是用户函数'
 				}
 			}
+			elseif RE_GREP(reference0,'^\s*//'){
+				ShioriEcho.Status='Continue'//注释
+			}
 			else{
 				OnCalculateVar
 				--
@@ -454,7 +463,10 @@ On_ShioriEcho {
 	}
 }
 On_ShioriEcho.CommandUpdate{
-	SHIORI_FW.Make_X_SSTP_PassThru('CommandForDisplay',ColorizeExpression(reference.raw[0]))
+	if RE_GREP(reference.raw[0],'^\s*//')
+		SHIORI_FW.Make_X_SSTP_PassThru('CommandForDisplay',ansi_green+reference.raw[0]+ansi_reset)
+	else
+		SHIORI_FW.Make_X_SSTP_PassThru('CommandForDisplay',ColorizeExpression(reference.raw[0]))
 }
 On_ShioriEcho.TabPress{
 	_before=SUBSTR(reference.raw[0],0,reference3)
@@ -507,7 +519,8 @@ OnCalculateVar.ToSakuraScript{
 
 OnCalculateVar{
 	if !SHIORI_FW.DebugMode{
-		ShioriEcho.Special='出于安全考虑，请在调试模式下使用'
+		if INEVENT('On_ShioriEcho')
+			ShioriEcho.Special='出于安全考虑，请在调试模式下使用'
 		if mode == '1'
 			'\1\s[10]出于安全考虑\w8，只有在调试模式下才能使用表达式求值功能。'
 		else
@@ -615,6 +628,10 @@ OnCalculateVar{
 		else
 			'\0\s[0]表达式『\_q'+REPLACE(reference0,'\','\\')+'\_q』的执行结果为：\n'
 		--
+		/*
+		if reference0=='WTF_EXPR?'
+			__BREAK_POINT__
+		*/
 		_Result=EVAL(reference0)
 		'\_q'
 		--

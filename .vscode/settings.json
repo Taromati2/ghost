@@ -7,7 +7,8 @@
 			"args": [
 				"-g",
 				"Taromati2",
-				"-r"
+				"-r",
+				"--disable-text","event,WindowsTerminal"
 			],
 			"icon": "repl"
 		}

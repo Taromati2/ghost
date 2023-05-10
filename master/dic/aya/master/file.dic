@@ -205,6 +205,17 @@ GHOST.INtempDir{
 GHOST.IsSelfPath{
 	REPLACE(_argv[0],'/','\') _in_ GETSETTING('coreinfo.path')
 }
+git.GetCommitID{
+	_v=RUNCMD('git rev-parse --short HEAD')
+	if _v!=0{
+		RUNCMD('git gc')// common fix of the problem
+		_v=RUNCMD('git rev-parse --short HEAD')
+	}
+	if _v!=0
+		0
+	else
+		CMD.OutPut.RemoveLastLineBreak
+}
 //DUMP
 DUMP_to:void{
 	_file=_argv[0]
