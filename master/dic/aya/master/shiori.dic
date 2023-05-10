@@ -1128,9 +1128,10 @@ On_installedghostname {
 	installedkerolist	 = IARRAY
 
 	//materia、もしくはイベントからの取得が指示されていなければファイル走査で取得する処理を実行
-	if basewarename == 'embryo' || !SHIORI_FW.IGLIST_ACCEL {
+	if basewarename == 'embryo' || !SHIORI_FW.IGLIST_ACCEL
 		SHIORI_FW.StructInstalledGhostList
-	}
+	else
+		installedghostlist = reference.raw //fall back
 }
 
 //------------------------------------------------------------------------------
