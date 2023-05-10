@@ -371,8 +371,13 @@ ShioriEcho.CustomLoginInfo{
 	%(ansi_yellow)Taromati2 %(ansi_green)internal ver %(ansi_cyan)%(VERSION) /
 	%(ansi_green)build date %(ansi_cyan)LAST_BUILD_TIME.YEAR.LAST_BUILD_TIME.MOUNTH"
 	--
-	if GHOST.IsGitPath
-		" %(ansi_green)git commit %(ansi_cyan)%(RUNCMDEX('git rev-parse --short HEAD'))"
+	if GHOST.IsGitPath{
+		_uuid=RUNCMDEX('git rev-parse --short HEAD')
+		if _uuid!=0
+			" %(ansi_green)git commit %(ansi_cyan)%(_uuid)"
+		else
+			" %(ansi_red)git commit unknown"
+	}
 	--
 	"\n/
 	%(ansi_yellow)ghost terminal %(ansi_green)ver %(ansi_cyan)%(_argv[0]) /
