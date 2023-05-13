@@ -98,12 +98,15 @@ GETTYPE.to_string{
 	}
 }
 ValueTOstring{
-	if _argc > 1{
+	_type=_argv[_argc-1]
+	_argv[_argc-1]=IARRAY
+	if _argc > 2 || _type==4{
 		_t='('
 		foreach _argv;_i{
-			_t+=ValueTOstring(_i)+','
+			_t+=ValueTOstring(_i,0)+','
 		}
-		RE_REPLACE(_t,'\,$',')')
+		_t+=')'
+		RE_REPLACE(_t,'\,\)$',')')
 	}
 	elseif ISSTR(_argv[0]){
 		if '"' !_in_ _argv[0]
@@ -137,14 +140,17 @@ ClearAnsiColorsVar{
 }
 //用虚拟终端序列色彩化的ValueTOstring
 ValueTOstring.Coloured{
-	if _argc > 1{
+	_type=_argv[_argc-1]
+	_argv[_argc-1]=IARRAY
+	if _argc > 2 || _type==4{
 		ansi_cyan
 		--
 		_t='('
 		foreach _argv;_i{
-			_t+=ValueTOstring.Coloured(_i)+ansi_cyan+','
+			_t+=ValueTOstring.Coloured(_i,0)+ansi_cyan+','
 		}
-		RE_REPLACE(_t,'\,$',ansi_cyan+')')
+		_t+=')'
+		RE_REPLACE(_t,'\,\)$',ansi_cyan+')')
 		--
 		ansi_reset
 	}
@@ -306,7 +312,8 @@ GetVarValue{
 	EVAL(_argv[0])
 }
 GetVarValue.string{
-	ValueTOstring(GetVarValue(_argv[0]))
+	_value=GetVarValue(_argv[0])
+	ValueTOstring(_value,GETTYPEEX('_value'))
 }
 GetVarValue.SakuraScript{
 	REPLACE(GetVarValue.string(_argv[0]),'\','\\')
@@ -498,8 +505,8 @@ On_ShioriEcho.GetResult {
 	}
 	else{
 		if ISVAR('ShioriEcho.Result'){
-			SHIORI_FW.Make_X_SSTP_PassThru('Result',ValueTOstring.Coloured(ShioriEcho.Result))
-			SHIORI_FW.Make_X_SSTP_PassThru('Type',GETTYPE.string((ShioriEcho.Result)))
+			SHIORI_FW.Make_X_SSTP_PassThru('Result',ValueTOstring.Coloured(ShioriEcho.Result,GETTYPEEX('ShioriEcho.Result')))
+			SHIORI_FW.Make_X_SSTP_PassThru('Type',GETTYPEEX.string(('ShioriEcho.Result')))
 		}
 	}
 	if ISVAR('ShioriEcho.Status')
@@ -638,9 +645,9 @@ OnCalculateVar{
 		if _Result == ''
 			'什么都没有'
 		else
-			ValueTOstring.SakuraScript(_Result)
+			ValueTOstring.SakuraScript(_Result,GETTYPEEX('_Result'))
 		--
-		_Type=GETTYPE.string((_Result))
+		_Type=GETTYPEEX.string(('_Result'))
 		'\n/
 		类型：'+_Type
 		--

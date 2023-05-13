@@ -1,4 +1,5 @@
 //by steve02081504
 //
 #globaldefine GETTYPE.string(( GETTYPE.to_string(GETTYPE(
+#globaldefine GETTYPEEX.string(( GETTYPE.to_string(GETTYPEEX(
 //))))

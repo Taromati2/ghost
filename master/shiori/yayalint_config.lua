@@ -230,6 +230,7 @@ local func  = {
     "^UNDEFGLOBALDEFINE$",
     "^UNLOADLIB$",
     "^ZEN2HAN$",
+    "^__BREAK_POINT__$",
   },
 }
 

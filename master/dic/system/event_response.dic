@@ -245,7 +245,7 @@ OnTextDrop{
 		elseif ISVAR(_t)
 			"变量“%(_t)”\n/
 			值：%(GetVarValue.SakuraScript(_t))\n/
-			类型：%(GETTYPE.string((GetVarValue(_t))))\n/
+			类型：%(GETTYPEEX.string((_t)))\n/
 			"
 		elseif ISGLOBALDEFINE(_t)
 			"全局定义“%(_t)”\n/
