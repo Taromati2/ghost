@@ -398,7 +398,8 @@ ShioriEcho.CustomLoginInfo{
 	%(ansi_reset)"
 }
 On_ShioriEcho.Begin {
-	SHIORI_FW.Make_X_SSTP_PassThru('CustomLoginInfo',ShioriEcho.CustomLoginInfo(reference.raw[0]))
+	if reference1=='Common'
+		SHIORI_FW.Make_X_SSTP_PassThru('CustomLoginInfo',ShioriEcho.CustomLoginInfo(reference.raw[0]))
 }
 On_ShioriEcho.GetName:void {
 	SHIORI_FW.Make_X_SSTP_PassThru('GhostName',ghostname)

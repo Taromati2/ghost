@@ -1,0 +1,8 @@
+// 将键绑定放在此文件中以覆盖默认值auto[]
+[
+    {
+        "key": "f5",
+        "command": "workbench.action.tasks.runTask",
+        "args": "reload ghost"
+    }
+]

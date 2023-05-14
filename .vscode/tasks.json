@@ -1,0 +1,64 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "reload ghost",
+            "type": "shell",
+            "icon": {
+                "id": "run",
+                "color": "terminal.ansiGreen"
+            },
+            "command": "reload",
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "${workspaceFolder}\\master\\saori\\ghost_terminal.exe",
+                        "args": [ "-g","Taromati2","-c","--disable-text","WindowsTerminal" ]
+                    }
+                }
+            },
+            "detail": "reload ghost",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "strat ghost",
+            "type": "shell",
+            "icon": {
+                "id": "run-all",
+                "color": "terminal.ansiMagenta"
+            },
+            "command": "//start",//注释掉的命令不会被执行，但仍然可以唤醒ghost
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "${workspaceFolder}\\master\\saori\\ghost_terminal.exe",
+                        "args": [ "-g","Taromati2","-r","--disable-text","WindowsTerminal","-c" ]
+                    }
+                }
+            },
+            "detail": "strat ghost if not running",
+            "problemMatcher": []
+        },
+        {
+            "label": "start tama",
+            "type": "process",
+            "icon": {
+                "id": "debug-alt",
+                "color": "terminal.ansiGreen"
+            },
+            "windows": {
+                "command": "${workspaceFolder}\\master\\shiori\\tama.exe",
+                "args": [ "-g","Taromati2" ],
+                "options": { "shell": { "executable": "cmd.exe" } }
+            },
+            "detail": "start tama",
+            "problemMatcher": []
+        }
+    ]
+}

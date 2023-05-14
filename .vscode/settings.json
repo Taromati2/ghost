@@ -5,12 +5,12 @@
 		"Ghost Terminal": {
 			"path": "${workspaceFolder}\\master\\saori\\ghost_terminal.exe",
 			"args": [
-				"-g",
-				"Taromati2",
-				"-r",
+				"-g","Taromati2","-r",
 				"--disable-text","event,WindowsTerminal"
 			],
-			"icon": "repl"
+			"icon": "repl",
+			"color": "terminal.ansiGreen"
 		}
-	}
+	},
+	"cmake.configureOnOpen": false
 }
