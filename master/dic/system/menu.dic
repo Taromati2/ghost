@@ -586,7 +586,7 @@ Select.System{
 	\n[half]/
 	人格初始化日期：%(firstboottime[0])年%(firstboottime[1])月%(firstboottime[2])日 %(firstboottime[3])时%(firstboottime[4])分\n/
 	人格起动时间：%(ghostuptime/3600)小时%(ghostuptime/60%60)分\n/
-	人格总计起动时间：%(elapsedtime/3600)小时%(elapsedtime/60%60)分\n/
+	人格总计起动时间：%(ghostupmin_total/60)小时%(ghostupmin_total%60)分\n/
 	\n[half]/
 	荧幕尺寸：%(displaywidth) x %(displayheight)\n/
 	荧幕深度：%(displaybpp)Bit\n/
@@ -960,7 +960,7 @@ Select.birthdaykikka{
 	}
 	--
 	if _argv[0]&&_argv[0]!='Y'{
-		"\0\s[40]%(username)是%(firstboottime[0])年%(firstboottime[1])月%(firstboottime[2])日和橘花相遇的哦,\w9\w5\n距离现在已经%(daysfromfirstboot)天了哦,\w9\n橘花陪伴在%(username)身边的时间超过%(elapsedtimetotal/60)小时了呢,\w9\n橘花希望可以一直陪伴着%(username)呢,\w9以后也请多多指教~\x"
+		"\0\s[40]%(username)是%(firstboottime[0])年%(firstboottime[1])月%(firstboottime[2])日和橘花相遇的哦,\w9\w5\n距离现在已经%(daysfromfirstboot)天了哦,\w9\n橘花陪伴在%(username)身边的时间超过%(ghostupmin_total/60)小时了呢,\w9\n橘花希望可以一直陪伴着%(username)呢,\w9以后也请多多指教~\x"
 	}
 }
 //====================告白(开始)====================

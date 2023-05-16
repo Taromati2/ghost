@@ -63,8 +63,6 @@ OnMinuteChange{
 		}
 		UsualUserName.Time=GETSECCOUNT+1314871
 	}
-	elapsedtimetotal += 1//计算人格起动总时间/单位分
-	elapsedtime = elapsedtimetotal * 60
 	KikkaGrow
 	--
 	ClassMonitor

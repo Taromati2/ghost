@@ -78,7 +78,6 @@ OnFirstBoot{//改动于2020 by steve02081504
 		mirror_url=default_mirror_url
 		if !InTimeError
 			firstboottime = "%(year),%(month),%(day),%(hour),%(minute)"
-		elapsedtime = 0
 		Goodevening = ''
 		intimacy = 0
 		stroke = 0
@@ -861,16 +860,16 @@ OnClose0{
 }
 //**** フェーズ *******************************************************************************************************
 GetPhase{
-	if intimacy >= 3600 && elapsedtime >= 691200{//彻底信任
+	if intimacy >= 3600 && ghostupmin_total >= 11520{//彻底信任
 		5
 	}
-	elseif intimacy >= 800 && elapsedtime >= 345600{//可h
+	elseif intimacy >= 800 && ghostupmin_total >= 5760{//可h
 		4
 	}
-	elseif intimacy >= 200 && elapsedtime >= 172800{//好感
+	elseif intimacy >= 200 && ghostupmin_total >= 2880{//好感
 		3
 	}
-	elseif intimacy >= 50 && elapsedtime >= 86400{//些微好感
+	elseif intimacy >= 50 && ghostupmin_total >= 1440{//些微好感
 		2
 	}
 	elseif intimacy >= -10{//普通
