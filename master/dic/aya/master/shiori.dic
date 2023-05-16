@@ -1679,7 +1679,7 @@ Is_Defened_Event_Or_Func{
 	ISFUNC(_argv[0]) || Is_Defened_Event(_argv[0])
 }
 SHIORI_EV.On_Has_Event : void {
-	_event_name=reference0
+	_event_name=reference.raw[0]
 	if SUBSTR(_event_name,0,2) != 'On'
 		_event_name='On_'+_event_name
 	_result=0
