@@ -318,8 +318,6 @@ unload {
 	ERASEVAR('C_CRLF2')
 	ERASEVAR('C_BYTE1')
 	ERASEVAR('BOM_UTF8')
-
-	SAVEVAR
 }
 
 //******************************************************************************

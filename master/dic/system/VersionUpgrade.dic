@@ -213,5 +213,3 @@ VERSION_UPGRADE_10:void{
 	ERASEVAR('模式')
 	ERASEVAR('花式模式')
 }
-VERSION_UPGRADE_11:void{//building
-}
