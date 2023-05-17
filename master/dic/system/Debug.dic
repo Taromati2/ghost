@@ -135,7 +135,7 @@ Init.AnsiColors{
 	ansi_white=CHR(27)+'[37m'
 	ansi_reset=CHR(27)+'[0m'
 }
-ClearAnsiColorsVar{
+Fin.ClearAnsiColors{
 	ERASEALLVARBEGINAS('ansi_')
 }
 //用虚拟终端序列色彩化的ValueTOstring

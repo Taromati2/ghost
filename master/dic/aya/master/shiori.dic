@@ -61,7 +61,7 @@ ERASEALLVARBEGINAS {
 CALLALLFUNCTIONBEGINAS {
 	_L= GETFUNCLIST(_argv[0])
 	foreach _L;_V {
-		EVAL(_V)
+		void EVAL(_V)
 	}
 }
 GETFUNCLISTINRE {
@@ -318,6 +318,8 @@ unload {
 	ERASEVAR('C_CRLF2')
 	ERASEVAR('C_BYTE1')
 	ERASEVAR('BOM_UTF8')
+
+	SAVEVAR
 }
 
 //******************************************************************************
