@@ -301,7 +301,7 @@ unload {
 	var.req.value	 = IARRAY
 	var.req.rawvalue = IARRAY
 
-	ghostupmin_last = ghostupmin_total
+	ghostupmin_last = MAX(ghostupmin_total,elapsedtimetotal)
 
 	CALLALLFUNCTIONBEGINAS('Fin.')
 

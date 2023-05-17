@@ -1,6 +1,6 @@
 //by steve
 
-#define VERSION_NOW 11
+#define VERSION_NOW 10
 
 VERSION_INIT:void{
 	VERSION = VERSION_NOW
@@ -214,6 +214,4 @@ VERSION_UPGRADE_10:void{
 	ERASEVAR('花式模式')
 }
 VERSION_UPGRADE_11:void{//building
-	RENAME_VAR('elapsedtimetotal','ghostupmin_last')
-	ERASEVAR('elapsedtime')
 }
