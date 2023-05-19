@@ -245,8 +245,6 @@ load {
 	basewarename		 = ''
 	basewarenameex		 = ''
 	sender				 = ''
-	ghostboottime		 = systemuptime
-	ghostbootmin		 = GETSECCOUNT / 60
 
 	S_CHARSET = GETSETTING('charset.output')
 
@@ -268,6 +266,8 @@ load {
 		if !username
 			SHIORI_FW.InVarFileMiss=1
 	}
+	ghostboottime		 = systemuptime
+	ghostbootmin		 = GETSECCOUNT / 60
 
 	SHIORI_FW.InitChain
 
