@@ -1791,10 +1791,9 @@ ghostuptime {
 	systemuptime - ghostboottime
 }
 ghostupmin {
-	if ISVAR('ghostbootmin')
-		(GETSECCOUNT / 60) - ghostbootmin
-	else
-		0
+	if !ISVAR('ghostbootmin')
+		ghostbootmin = GETSECCOUNT / 60
+	(GETSECCOUNT / 60) - ghostbootmin
 }
 ghostupmin_total {
 	ghostupmin_last + ghostupmin
