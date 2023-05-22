@@ -363,11 +363,9 @@ OnFittingRoom:all{
 	if NeedsUpdateSurfaceDump
 		UpdateSurfaceDump
 	--
-	shelllistcount = ARRAYSIZE(shelllist)
 	_j=1
 	_q=''
 	_shellID=shellID
-	SETDELIM(shelllist,'*')
 	if reference0 {
 		_j=TOINT(reference0)
 	}
@@ -389,8 +387,8 @@ OnFittingRoom:all{
 		else
 			_haveshellnum++
 	}
-	"\C\![quicksession,true]\c\![set,choicetimeout,0]\0\s[26]\b[2]橘花共有%(shelllistcount)件衣服哦"
-	if shelllistcount!=_haveshellnum
+	"\C\![quicksession,true]\c\![set,choicetimeout,0]\0\s[26]\b[2]橘花共有%(shellcount)件衣服哦"
+	if shellcount!=_haveshellnum
 		"，其中%(_haveshellnum)件已激活"
 	"，%(username)想让橘花穿那件衣服呢？\n[140]"
 	_surface_preview=''
@@ -429,10 +427,10 @@ OnFittingRoom:all{
 	}
 	_shelllist
 	'\n[30]'
-	if shelllistcount>15{
+	if shellcount>15{
 		if _j!=1
 			"\q[<<上一页,OnFittingRoom,%(_j-15)]   "
-		if _j+15<shelllistcount
+		if _j+15<shellcount
 			"\q[下一页>>,OnFittingRoom,%(_j+15)]"
 	}
 	'\n[140]'
@@ -556,18 +554,6 @@ Select.overchangeshell{
 	"\0不用换也行吗?\w6\n果然是%(shellID)好吗～"
 }
 On_installedshellname{
-	shelllist = ''
-	_i = 0
-	while _i >= 0 {
-		_shellname = NAMETOVALUE("reference%(_i)")
-		if _shellname != '' {
-			if _i > 0
-				shelllist += '*'
-			shelllist += _shellname[0]
-			_i++
-		}
-		else
-			_i = -1
-	}
-	shelllistcount = ARRAYSIZE(shelllist)
+	shelllist = reference
+	shellcount = ARRAYSIZE(shelllist)
 }

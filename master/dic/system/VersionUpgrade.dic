@@ -215,4 +215,5 @@ VERSION_UPGRADE_10:void{
 }
 VERSION_UPGRADE_11:void{//building now
 	ghostupmin_last=elapsedtimetotal
+	RENAME_VAR('shelllistcount','shellcount')
 }
