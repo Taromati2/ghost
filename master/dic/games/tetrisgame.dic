@@ -438,7 +438,6 @@ CleartetrisVar:void{//消除变量
 	ERASEVAR('CurrUnit.x')
 	ERASEVAR('CurrUnit.y')
 	ERASEVAR('CurrUnit.r')
-	ERASEVAR('mov_,')
 	ERASEVAR('1r')
 	ERASEVAR('ck')
 	ERASEVAR('x1')

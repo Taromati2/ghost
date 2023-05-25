@@ -753,9 +753,8 @@ OnDeluxeBall{
 	_bs=0
 	_p=0
 	_a=0
-	A=5000000
-	B=1500000
-	b=''
+	_A=5000000
+	_B=1500000
 	if !ball
 		ball=IARRAY
 	_rednum=0
@@ -930,11 +929,11 @@ OnDeluxeBall{
 		_txt+="开奖红球号码是%(_comball[0])；%(_comball[1])；%(_comball[2])；%(_comball[3])；%(_comball[4])；%(_comball[5])；蓝球号码是：%(_comball[6])\n"
 		_txt+="让橘花看看，红球命中%(_rednum)个，蓝球命中%(_bluenum)个\n"
 		if _rednum==6 && _bluenum==1{
-			_reward=A+(_bs-1)*B+SumUp(_rs-6,18000,21000,3200,275,105,35,5)+SumUp(_rs-6,1200,1350,150)*(_bs-1)
+			_reward=_A+(_bs-1)*_B+SumUp(_rs-6,18000,21000,3200,275,105,35,5)+SumUp(_rs-6,1200,1350,150)*(_bs-1)
 			_txt+="\s[2]天啊，%(username)中了一等奖，奖金%(_reward)！！有这运气%(username)怎么不去买彩票呢\n"
 		}
 		elseif _rednum==6{
-			_reward=_bs*B+SumUp(_rs-6,1200,1350,150)*_bs
+			_reward=_bs*_B+SumUp(_rs-6,1200,1350,150)*_bs
 			_txt+="\s[2]啊，%(username)中了二等奖，奖金%(_reward),人品爆发了吗？\n"
 		}
 		elseif _rednum==5 && _bluenum==1{

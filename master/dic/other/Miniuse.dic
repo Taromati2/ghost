@@ -854,8 +854,6 @@ CalculateVar{
 	deg=0
 	dms=0
 	drg=0
-	m_carry=0
-	zero=0
 	hexnum='0123456789ABCDEF'
 	endNumber=1
 	carry=10
@@ -868,8 +866,6 @@ ClearCalculateVar{
 	ERASEVAR('dmsmode')
 	ERASEVAR('deg')
 	ERASEVAR('dms')
-	ERASEVAR('m_carry')
-	ERASEVAR('zero')
 	ERASEVAR('hexnum')
 	ERASEVAR('endNumber')
 	ERASEVAR('carry')
@@ -917,7 +913,6 @@ Calculate{
 		endNumber=1
 		m_exp=0
 		m_res=0
-		m_carry=0
 		deg=0
 		dms=0
 	}
@@ -955,8 +950,6 @@ popm_resrecord{
 ChangCarry{
 	endNumber=1
 	newcarry=_argv[0]
-	//if !m_carry
-		//m_carry=evaluate(m_exp)
 	if m_res==0{
 		m_res=0
 		carry=newcarry
@@ -973,7 +966,6 @@ inputkey{
 		endNumber=0
 		m_exp = _key
 		m_res=0
-		m_carry=0
 	}
 	elseif !m_exp || m_exp == '0'
 		m_exp += _key
