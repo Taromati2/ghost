@@ -1680,10 +1680,13 @@ Is_Defened_Event_Or_Func{
 }
 SHIORI_EV.On_Has_Event : void {
 	_event_name=reference.raw[0]
+	_SecurityLevel=reference.raw[1]
+	if !_SecurityLevel
+		_SecurityLevel=SHIORI_FW.SecurityLevel
 	if SUBSTR(_event_name,0,2) != 'On'
 		_event_name='On_'+_event_name
 	_result=0
-	if TOLOWER(SHIORI_FW.SecurityLevel) == 'external'
+	if TOLOWER(_SecurityLevel) == 'external'
 		_event_name='ExternalEvent.'+_event_name
 	_result=ISFUNC(_event_name)
 	if !_result
