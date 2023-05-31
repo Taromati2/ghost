@@ -1693,6 +1693,9 @@ SHIORI_EV.On_Has_Event : void {
 		_result=ISFUNC('SHIORI_EV.'+_event_name)
 	SHIORI_FW.Make_X_SSTP_PassThru('Result',_result)
 }
+SHIORI_EV.ExternalEvent.On_Has_Event{
+	SHIORI_EV.On_Has_Event
+}
 
 //---- SHIORI 関連情報 ------------------------------------------------------------------
 SHIORI_EV.On_version {
