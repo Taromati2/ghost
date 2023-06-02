@@ -634,7 +634,6 @@ ClearVar{
 	ERASEVAR('temp04')
 	ERASEVAR('temp05')
 	ERASEVAR('radio')
-	ERASEVAR('radioshift')
 	ERASEVAR('newcarry')
 	ERASEVAR('a')
 	ERASEVAR('headpatflag')
