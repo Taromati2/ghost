@@ -93,6 +93,8 @@ TalkSakuraHeadPat.0.0{
 	'\0\s[9]…\w5不要这样……'
 }
 TalkSakuraHeadPat.0{
+	if !RAND(MAX(7,-intimacy-7))
+		intimacy++
 	'\0\s[9]…\w9…\w9…'
 	'\0\s[33]…哎呀…'
 }
