@@ -526,6 +526,9 @@ OnCalculateVar.ToSakuraScript{
 	OnSakuraScript(reference0)
 }
 
+ClearCalculateVar: void{
+	ERASEVAR('result')
+}
 OnCalculateVar{
 	if !SHIORI_FW.DebugMode{
 		if INEVENT('On_ShioriEcho')
@@ -641,32 +644,32 @@ OnCalculateVar{
 		if reference0=='WTF_EXPR?'
 			__BREAK_POINT__
 		*/
-		_Result=EVAL(reference0)
+		result=EVAL(reference0)
 		'\_q'
 		--
-		if _Result == ''
+		if result == ''
 			'什么都没有'
 		else
-			ValueTOstring.SakuraScript(_Result,GETTYPEEX('_Result'))
+			ValueTOstring.SakuraScript(result,GETTYPEEX('result'))
 		--
-		_Type=GETTYPEEX.string(('_Result'))
+		_Type=GETTYPEEX.string(('result'))
 		'\n/
 		类型：'+_Type
 		--
 		'\_q\n/
-		\q[◇复制结果,OnCopy,'+SakuraScriptArgConverter(_Result)+']\n/
+		\q[◇复制结果,OnCopy,'+SakuraScriptArgConverter(result)+']\n/
 		\q[◇复制表达式,OnCopy,'+SakuraScriptArgConverter(reference0)+']\n/
 		'
 		--
-		if IsSakuraScript(_Result)
-			'\q[◇结果作Sakura Script执行,OnSakuraScript,'+SakuraScriptArgConverter(_Result)+']\n'
+		if IsSakuraScript(result)
+			'\q[◇结果作Sakura Script执行,OnSakuraScript,'+SakuraScriptArgConverter(result)+']\n'
 		--
 		'\n/
 		\q[◇求值下一个,OnCalculateVar]\n/
 		\q[◇无用,Cancel]\n/
 		'
 		--
-		ShioriEcho.Result=_Result
+		ShioriEcho.Result=result
 	}
 }
 OnCalculateVar.CharConverter{

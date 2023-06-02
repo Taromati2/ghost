@@ -918,7 +918,11 @@ Calculate{
 	}
 	if _op=='recordclear'
 		m_resrecord=IARRAY
-	result
+	_m_error=Error(m_exp)
+	if _m_error==''{
+		_m_error=evaluate(m_exp)
+	}
+	m_res=_m_error
 	if dms
 		m_res=DMS(evaluate(m_exp))
 	if deg
@@ -1564,14 +1568,6 @@ Error{//以下为表达式出错处理函数
 		_str;return
 	}
 	_str;return
-}
-result{
-	//UpdateData(1)
-	_m_error=Error(m_exp)
-	if _m_error==''{
-		_m_error=evaluate(m_exp)
-	}
-	m_res=_m_error
 }
 OnPaste{
 	CALLSAORI('txtpaste')
