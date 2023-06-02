@@ -251,7 +251,7 @@ OnBoot.base{
 	}
 	--
 	if InTimeError
-		OnTimeError
+		SHIORI_FW.PushNoBreakNotifyResultToTop(OnTimeError)
 	else
 		OnBoot.aboutTime
 	--
