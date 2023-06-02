@@ -646,7 +646,7 @@ Select.Option{
 	'\n■提醒设定■\n'
 	--
 	TheDefaultValue('setting.WeatherReminder',1)
-	"天气提醒		\_l[120]\q[%(_t[1 - TOINT(setting.WeatherReminder)]) ON,Onusage,setting.WeatherReminder,1]  ・  \_l[180]\q[%(_t[TOINT(setting.WeatherReminder)]) OFF,Onusage,setting.WeatherReminder,0]\n"
+	"天气提醒		\_l[120]\q[%(_t[TOINT(setting.WeatherReminder)]) ON,Onusage,setting.WeatherReminder,1]  ・  \_l[180]\q[%(_t[TOINT(setting.WeatherReminder)]) OFF,Onusage,setting.WeatherReminder,0]\n"
 	--
 	TheDefaultValue('rmswitch',1)
 	"节日提醒		\_l[120]\q[%(_t[1 - TOINT(rmswitch)]) ON,Onusage,rmswitch,0]  ・  \_l[180]\q[%(_t[TOINT(rmswitch)]) OFF,Onusage,rmswitch,1]\n"
