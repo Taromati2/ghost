@@ -116,12 +116,13 @@ OnSNTPFailure{
 TimeErrorCheck{
 	if GETSECCOUNT{
 		if year < LAST_BUILD_TIME.YEAR || (GETSECCOUNT - CloseTime) < 0
-			ture
+			1
 		elseif year == LAST_BUILD_TIME.YEAR && month < LAST_BUILD_TIME.MONTH
-			ture
+			1
 		else
-			false
+			0
 	}
+	1
 }
 OnTimeError{
 	'\0\s[20]时间出错了哦？\n/
