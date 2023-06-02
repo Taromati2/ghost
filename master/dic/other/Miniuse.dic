@@ -918,11 +918,12 @@ Calculate{
 	}
 	if _op=='recordclear'
 		m_resrecord=IARRAY
+
 	_m_error=Error(m_exp)
-	if _m_error==''{
+	if _m_error==''
 		_m_error=evaluate(m_exp)
-	}
 	m_res=_m_error
+
 	if dms
 		m_res=DMS(evaluate(m_exp))
 	if deg

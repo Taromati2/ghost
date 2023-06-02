@@ -526,7 +526,7 @@ OnCalculateVar.ToSakuraScript{
 	OnSakuraScript(reference0)
 }
 
-ClearCalculateVar: void{
+ClearCalculateVarVar: void{
 	ERASEVAR('result')
 }
 OnCalculateVar{
