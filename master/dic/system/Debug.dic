@@ -34,7 +34,8 @@ IsSakuraScript{
 		}
 		1
 	}
-	0
+	else
+		0
 }
 OnShioriMemoryError{
 	_stack=GETCALLSTACK

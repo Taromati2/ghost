@@ -122,7 +122,8 @@ TimeErrorCheck{
 		else
 			0
 	}
-	1
+	else
+		1
 }
 OnTimeError{
 	'\0\s[20]时间出错了哦？\n/
