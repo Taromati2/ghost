@@ -1103,7 +1103,7 @@ evaluate{//表达式求值主函数
 	_opnd=IARRAY
 	_opnd=(0.0)
 	_theta=''
-	_i=0.0;_optr_i=0.0;_opnd_i=0.0;_j=0.0;_zpart=0.0;_k=0.0
+	_i=0.0;_optr_i=0.0;_opnd_i=0.0;_j=0.0;_zpart=0.0;
 	_operand=0.0;_weight=0.0;_a=0.0;_b=0.0;_xpart=0.0
 	_index=0
 	_num=1.0
@@ -1176,7 +1176,6 @@ evaluate{//表达式求值主函数
 			elseif _f=='Cnm('{_optr[_optr_i]='m';_optr_i++;_optr[_optr_i]='(';_optr_i++;_i+=4;}
 			else{
 				_optr[_optr_i]=SUBSTR(_expression,_i,1)
-				_optr_=_optr
 				_optr_i++
 				_i++
 			}
@@ -1187,7 +1186,6 @@ evaluate{//表达式求值主函数
 			if _theta>='a'&&_theta<='t'{
 				if _theta=='l'||_theta=='g'||_theta=='r'||_theta=='m'{
 					_opnd_i--
-					_opnd__=_opnd
 					_b=_opnd[_opnd_i]
 					_opnd_i--
 					_a=_opnd[_opnd_i]
@@ -1400,7 +1398,6 @@ DEG{//度分秒转换小数点
 					_weight*=carry
 					_i++
 				}
-				operand=_operand
 			}
 			_opnd[_opnd_i]=_operand
 			_opnd_i++
