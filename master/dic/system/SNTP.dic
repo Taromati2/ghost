@@ -37,7 +37,12 @@ OnSNTPCompare{
 		DiscordCustomSet.CustomDetail('精确、精细、精致')
 		--
 		_nowtime = SPLIT(reference1,',')
-		"没有误差。\n现在时刻：%(_nowtime[0])年%(_nowtime[1])月%(_nowtime[2])日 %(_nowtime[3]):%(_nowtime[4])"
+		"没有误差。\n现在时刻：%(_nowtime[0])年%(_nowtime[1])月%(_nowtime[2])日 %(_nowtime[3]):%(_nowtime[4])\n"
+		--
+		if InTimeError{
+			ERASEVAR('InTimeError')
+			OnTimeErrorFixed
+		}
 	}
 	else{
 		if reference3<60{
