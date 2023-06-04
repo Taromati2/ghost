@@ -2,7 +2,7 @@
 //first time
 OnGetUsernameFirst{
 	_name = reference.raw[0]
-	if OnUserName.IsMazo || OnUserName.IsTooClose {
+	if OnUserName.IsMazo || OnUserName.IsTooClose || OnUserName.IsCharacterName || OnUserName.IsTooLong {
 		"\0\s[2]\w9欸\w9.\w9.\w9.\s[8]那样的称呼、\w8我做不到。\w9\w9\n/
 		如果可以的话、\w8请让我用其他的称呼方式吧。\n/
 		\q[◇跳过,Cancel,with_sakura,%(SakuraScriptArgConverter('\![close,inputbox,OnGetUsernameFirst]'))]/
@@ -42,6 +42,9 @@ OnGetUsernameFirst.Fin{
 OnGetUsernameFirst.End{
 	'\w9\w9\w9\n\n[half]\0\s[6]那么再一次…\w9\s[26]\n\n[half]橘花和斗和、以后请多多指教。\1\s[10]多指教啦。\w9\0\s[30]\n\n[half]…终于开口了。\w9\w9\c'
 }
+GetSteamUserName{
+	CALLSAORI('steam_api','GetMostRecentUserPersonaName')
+}
 
 //common
 OnUserNameChange{
@@ -49,15 +52,35 @@ OnUserNameChange{
 }
 OnUserNameInput{
 	_name = reference.raw[0]
-	/*
 	{
 		_simplified_name = TOLOWER(TOSIMPLIFIED(_name))
 		case _simplified_name{
-			when '橘花','kikka'
-			when '斗和','towa'
+			when '橘花','kikka'{
+				'\0\s[0]橘花吗\w9…\w9…\w9…？\w9\n/
+				\s[8]和我重名可是不行的哦？\w9\w9\n/
+				\1\s[10]会让人分不清是在叫哪个人所以禁止。\w9\w9\w9\n/
+				\0\s[0]请您想一个其他的名字吧。\w9\n\n[half]'
+				--
+				'\q[◇返回上一层,OnOpenMenu,4]\n/
+				\q[◇终了,OptionEnd]'
+				return
+			}
+			when '斗和','towa'{
+				'\0\s[0]斗和吗\w9…\w9…\w9…？\w9\n\s[8]和她重名会让我们在谈话时很困扰\w9，可以想一个其他的名字吗？\w9\n\n[half]'
+				if nurturance.Darkness >= 200
+					'\0\s[20]两个斗和啊\w9，会叫混唉？\n\w9\w9\1\s[12]换一个不行吗？\w9\w9\n/
+					\0\s[32]说的有道理。\w9\w9\w9\n/
+					\1\s[11]\w9是说换一个名字不是换一个人的意思\w9\n/
+					\0\s[2]啊\w9\s[20]、是这个意思吗？\w9\w9\n/
+					\1\s[10]你这家伙明明很清楚啊\w9\n/
+					\0\n[half]'
+				--
+				'\q[◇返回上一层,OnOpenMenu,4]\n/
+				\q[◇终了,OptionEnd]'
+				return
+			}
 		}
 	}
-	*/
 	if _name == username {
 		'\0\s[0]………？\s[26]\n不用改变也可以吗？\n\n[half]/
 		\q[◇返回上一层,OnOpenMenu,4]\n/
@@ -69,6 +92,36 @@ OnUserNameInput{
 		\w9\s[0]\n继续称呼『%(username)』就可以了吗\w9？\n[150]/
 		\q[◇返回上一层,OnOpenMenu,4]\n/
 		\q[◇终了,OptionEnd]"
+	}
+	elseif OnUserName.IsTooLong {
+		'\0\s[0]'
+		--
+		if STRLEN(_name) < 30 //太长不念
+			"『%(_name)』吗。\n\n[half]"
+		--
+		'\s[8]这个名字'
+		--
+		if STRLEN(_name) > 50
+			'有点太……\w9长了吧？'
+		elseif STRLEN(_name) > 30
+			'有点长呢。'
+		else
+			'稍微有点长呢。'
+		--
+		'\n/
+		\w9\s[20]\n可以换一个短一点的名字吗\w9？\n\n[half]/
+		\q[◇返回上一层,OnOpenMenu,4]\n/
+		\q[◇终了,OptionEnd]'
+	}
+	elseif _name==GetSteamUserName && !(IsUsername.Mazo(_name) || IsUsername.TooClose(_name)) {
+		"\0\s[0]『%(_name)』是吗。\n\n[half]/
+		\s[5]以steam用户名来称呼也不错呢。\n"
+		--
+		OnUserName.Set(_name)
+		--
+		'\n/
+		\q[◇返回上一层,OnOpenMenu,4]\n/
+		\q[◇终了,OptionEnd]'
 	}
 	elseif INARRAY(UsualUserName,_name){
 		_index=ARRAY.GetIndex(UsualUserName,_name)
@@ -190,8 +243,11 @@ IsUsername.TooClose{
 	}
 	0
 }
+IsUsername.TooLong{
+	STRLEN(_argv[0])>17
+}
 IsUserName.Special{
-	IsUsername.Empty(_argv[0]) || IsUsername.Mazo(_argv[0]) || IsUsername.TooClose(_argv[0])
+	IsUsername.Empty(_argv[0]) || IsUsername.Mazo(_argv[0]) || IsUsername.TooClose(_argv[0]) || IsUsername.TooLong(_argv[0])
 }
 OnUserName.IsMazo{
 	_name = reference.raw[0]
@@ -200,6 +256,20 @@ OnUserName.IsMazo{
 OnUserName.IsTooClose{
 	_name = reference.raw[0]
 	IsUsername.TooClose(_name)
+}
+OnUserName.IsCharacterName{
+	_simplified_name = TOLOWER(TOSIMPLIFIED(reference.raw[0]))
+	case _simplified_name {
+		when '橘花','kikka','towa','斗和'{
+			1
+			return
+		}
+	}
+	0
+}
+OnUserName.IsTooLong{
+	_name = reference.raw[0]
+	IsUsername.TooLong(_name)
 }
 OnUserName.SpecialCheck{
 	_name = reference.raw[0]

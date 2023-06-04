@@ -51,6 +51,12 @@ OnNotifyUserInfo.WhenEmpty.username:void{
 	if !IsUserName.Special(_argv[0]){
 		OnUserName.Set(_argv[0])
 	}
+	else{
+		_steam_name = GetSteamUserName
+		if !IsUserName.Special(_steam_name){
+			OnUserName.Set(_steam_name)
+		}
+	}
 }
 OnNotifyUserInfo.WhenEmpty.birthday:void{
 	if _argv[0]{
