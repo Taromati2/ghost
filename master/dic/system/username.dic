@@ -260,7 +260,7 @@ OnUserName.IsTooClose{
 OnUserName.IsCharacterName{
 	_simplified_name = TOLOWER(TOSIMPLIFIED(reference.raw[0]))
 	case _simplified_name {
-		when '橘花','kikka','towa','斗和'{
+		when '橘花','kikka','斗和','towa'{
 			1
 			return
 		}
@@ -307,7 +307,7 @@ OnUserName.SpecialCheck.base{
 		when '经纪人','Pさん','プロデューサーさん'
 			'\s[8]…偶像？\1\s[12]？\0很抱歉、我不是很清楚这些'
 		when '爷爷','爷','大爷'
-			'\s[8]感觉把你称呼地这么老是不是不太好呢…。'
+			'\s[8]感觉把你称呼的这么老是不是不太好呢…。'
 		when 'honey','だぁりん','darling'
 			'\s[1]爱人…\w9\1在街上的话，\w9叫的出来吗。'
 		when '博士','教授','はかせ','きょうじゅ'
@@ -319,8 +319,10 @@ OnUserName.SpecialCheck.base{
 			\0\s[8]欸？\w9\w9\n/
 			\1\s[11]你有母性吗？\w9\w9\w9\n/
 			\0就算这样说\w9.\w9.\w9.'
-		//when '菊花'
-			//''
+		when '菊花'
+			'\1\s[11]我说，\w9\w9\0\s[30]怎么了？\w9\w9\n/
+			\1\s[13]真的有人的自称谐音肛门吗？\0\s[20]\w9.\w9.\w9.\1\4\0\s[32]\n/
+			想死是吗？\1\s[-1]\w9\w9'
 		when '用户名','username'
 			'\1\s[12]上一次听到这样的名字还是在上一次\w9\0\s[8]？'
 		when '索娜·马萨卡','马萨卡','nani','娜妮','都系得·哇卡拉奶'
