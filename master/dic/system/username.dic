@@ -52,7 +52,7 @@ OnUserNameChange{
 }
 OnUserNameInput{
 	_name = reference.raw[0]
-	{
+	if OnUserName.IsCharacterName{
 		_simplified_name = TOLOWER(TOSIMPLIFIED(_name))
 		case _simplified_name{
 			when '橘花','kikka'{
@@ -60,10 +60,6 @@ OnUserNameInput{
 				\s[8]和我重名可是不行的哦？\w9\w9\n/
 				\1\s[10]会让人分不清是在叫哪个人所以禁止。\w9\w9\w9\n/
 				\0\s[0]请您想一个其他的名字吧。\w9\n[150]'
-				--
-				'\q[◇返回上一层,OnOpenMenu,4]\n/
-				\q[◇终了,OptionEnd]'
-				return
 			}
 			when '斗和','towa'{
 				'\0\s[0]斗和吗\w9…\w9…\w9…？\w9\n\s[8]和她重名会让我们在谈话时很困扰\w9，可以想一个其他的名字吗？\w9\n[150]'
@@ -74,12 +70,14 @@ OnUserNameInput{
 					\0\s[2]啊\w9\s[20]、是这个意思吗？\w9\w9\n/
 					\1\s[10]你这家伙明明很清楚啊\w9\n/
 					\0\n[half]'
-				--
-				'\q[◇返回上一层,OnOpenMenu,4]\n/
-				\q[◇终了,OptionEnd]'
-				return
 			}
+			others
+				BUGNow('未对应的角色名称'+_name)
 		}
+		--
+		'\q[◇返回上一层,OnOpenMenu,4]\n/
+		\q[◇终了,OptionEnd]'
+		return
 	}
 	if _name == username {
 		'\0\s[0]………？\s[26]\n不用改变也可以吗？\n[150]/
