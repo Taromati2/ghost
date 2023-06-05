@@ -517,7 +517,7 @@ Select.ShellExplorer{
 Select.Introduction{
 	'\0\s[0]想知道我们的事情吗？\n\n/
 	\q[◇橘花,Kikka]\n/
-	\q[◇斗和,Towa]\n\n[half]/
+	\q[◇斗和,Towa]\n[150]/
 	\q[◇返回上一层,OnOpenMenu,1]\n/
 	\q[◇取消,TaromatiCancel]'
 }
@@ -525,37 +525,37 @@ Select.Kikka{
 	'\0\s[100]我吗？\w9\s[2]\n\n/
 	\q[◇名字,Kikka_name]\n/
 	\q[◇年龄,Kikka_age]\n/
-	\q[◇兴趣,Kikka_interest]\n\n[half]/
+	\q[◇兴趣,Kikka_interest]\n[150]/
 	\q[◇返回上一层,Introduction]'
 }
 Select.Kikka_name{
-	'\0\s[8]那个…\w9\s[26]我叫做『橘花』\w9。\w9\w5\s[0]\n\n[half]『橘树』的『花』、\n念做『Kikka』。\n\n[150]\q[◇返回上一层,Kikka]'
+	'\0\s[8]那个…\w9\s[26]我叫做『橘花』\w9。\w9\w5\s[0]\n[150]『橘树』的『花』、\n念做『Kikka』。\n\n[150]\q[◇返回上一层,Kikka]'
 }
 Select.Kikka_age{
-	'\0\s[0]我的年龄吗？\w9\n嗯…\w9\s[3]对不起、我也不太清楚。\w9\s[26]\n\n[half]啊、不过大概、\n就跟外表看起来的年龄一样吧。\w9\w9\s[8]\n虽然可能成长的比较慢…\n\n[150]\q[◇返回上一层,Kikka]'
+	'\0\s[0]我的年龄吗？\w9\n嗯…\w9\s[3]对不起、我也不太清楚。\w9\s[26]\n[150]啊、不过大概、\n就跟外表看起来的年龄一样吧。\w9\w9\s[8]\n虽然可能成长的比较慢…\n\n[150]\q[◇返回上一层,Kikka]'
 }
 Select.Kikka_interest{
-	'\0\s[20]兴趣、是吗？\w9\n\n[half]像是读书…散步…\w9\n啊、\s[8]散步只有限定晚上呢…\w9\s[5]\n\n[half]还有、\w5我也喜欢清扫。\w5\s[21]\n把碍事的东西一扫而空\n感觉很舒服呢。\w9\1\s[13]…听出不同意义的\w9该不会只有我吧。\0\n\n[150]\q[◇返回上一层,Kikka]'
-	'\0\s[20]兴趣、是吗？\w9\n\n[half]嗯…\w9\w9\1\s[11]不是花语吗？\s[10]\n虽然非常不适合。\w9\0\s[6]\n\n[half]…说的也是呢。\w9\s[0]\n\n[half]我觉得、花是美丽与虚幻的代名词。\w9\s[6]\n为那虚幻的美丽所附加的言语。\w9\w9\s[8]\n虽然不能表达的很清楚、\s[26]\n这样想的话就觉得有点感兴趣了。\w9\1\s[10]\n\n[half]唔。\0\n\n[150]\q[◇返回上一层,Kikka]'
+	'\0\s[20]兴趣、是吗？\w9\n[150]像是读书…散步…\w9\n啊、\s[8]散步只有限定晚上呢…\w9\s[5]\n[150]还有、\w5我也喜欢清扫。\w5\s[21]\n把碍事的东西一扫而空\n感觉很舒服呢。\w9\1\s[13]…听出不同意义的\w9该不会只有我吧。\0\n\n[150]\q[◇返回上一层,Kikka]'
+	'\0\s[20]兴趣、是吗？\w9\n[150]嗯…\w9\w9\1\s[11]不是花语吗？\s[10]\n虽然非常不适合。\w9\0\s[6]\n[150]…说的也是呢。\w9\s[0]\n[150]我觉得、花是美丽与虚幻的代名词。\w9\s[6]\n为那虚幻的美丽所附加的言语。\w9\w9\s[8]\n虽然不能表达的很清楚、\s[26]\n这样想的话就觉得有点感兴趣了。\w9\1\s[10]\n[150]唔。\0\n\n[150]\q[◇返回上一层,Kikka]'
 }
 Select.Towa{
 	'\0\s[30]\1\s[12]嗯。\0\n\n/
 	\q[◇名字,Towa_name]\n/
 	\q[◇年龄,Towa_age]\n/
-	\q[◇兴趣,Towa_interest]\n\n[half]/
+	\q[◇兴趣,Towa_interest]\n[150]/
 	\q[◇返回上一层,Introduction]'
 }
 Select.Towa_name{
-	'\1\s[10]『斗和』。\w9\n发音作『Towa』…\n名字只是同音的汉字拿来凑合。\w9\0\s[30]前任饲主取的吗？\w9\1\s[10]\n\n[half]不、我没有被饲养。\0\n\n[150]\q[◇返回上一层,Towa]'
+	'\1\s[10]『斗和』。\w9\n发音作『Towa』…\n名字只是同音的汉字拿来凑合。\w9\0\s[30]前任饲主取的吗？\w9\1\s[10]\n[150]不、我没有被饲养。\0\n\n[150]\q[◇返回上一层,Towa]'
 }
 Select.Towa_age{
 	'\1\s[10]因为最近没在数、也搞不清楚了。\w9\s[13]\n就算去数、也没什么意义吧…\0\s[30]？\n\n[150]\q[◇返回上一层,Towa]'
 }
 Select.Towa_interest{
-	'\1\s[10]逃避现实吧。\w9\0\s[8]…那不是很糟糕吗？\w9\1\s[10]\n\n[half]因为发生过很多事啊。\w9\0\n\n[half]唉…\n\n[150]\q[◇返回上一层,Towa]'
+	'\1\s[10]逃避现实吧。\w9\0\s[8]…那不是很糟糕吗？\w9\1\s[10]\n[150]因为发生过很多事啊。\w9\0\n[150]唉…\n\n[150]\q[◇返回上一层,Towa]'
 }
 Select.TaromatiCancel{
-	'\0\s[0]好的。\w9\w9\1\s[10]总之、不管我们说什么、\n最后、\w5\s[12]还是要看你怎么想…\s[10]所以说啊。\w9\n\n[half]任谁都有秘密。\n想知道别人的一切是不可能的。\w9\0\s[8]\n\n[half]虽然这么说、我也没有特别去保密喔。'
+	'\0\s[0]好的。\w9\w9\1\s[10]总之、不管我们说什么、\n最后、\w5\s[12]还是要看你怎么想…\s[10]所以说啊。\w9\n[150]任谁都有秘密。\n想知道别人的一切是不可能的。\w9\0\s[8]\n[150]虽然这么说、我也没有特别去保密喔。'
 }
 //---------- 系统环境 ----------------------------------------------------
 Select.System{
@@ -603,7 +603,7 @@ Select.System{
 	--
 	InternetIPShowing
 	--
-	'\n\n[half]\q[◇返回上一层,OnOpenMenu,4]    \q[◇终了,Cancel]\_q'
+	'\n[150]\q[◇返回上一层,OnOpenMenu,4]    \q[◇终了,Cancel]\_q'
 }
 DayofWeek_w{
 	('日','一','二','三','四','五','六')[weekday]
@@ -786,7 +786,7 @@ OnVoiceName{
 			_txt+='\n'
 		}
 	}
-	_txt+='\n\n\n[half]\q[◇返回上一层,Option]      \q[◇终了,OptionEnd]'
+	_txt+='\n\n[150]\q[◇返回上一层,Option]      \q[◇终了,OptionEnd]'
 	_txt
 }
 OnAutoShellChange{
@@ -966,18 +966,18 @@ Select.birthdaykikka{
 //====================告白(开始)====================
 Select.LoveGo{
 	"\0\s[1]%(username)...\w9\w9\n/
-	橘花想知道你对我的感觉是怎样!?\w9\n\n[half]/
+	橘花想知道你对我的感觉是怎样!?\w9\n[150]/
 	\q[◇喜欢,loveup]\n/
 	\q[◇讨厌,lovedn]"
 }
 Select.loveup{
-	'\0\s[9]那...\w9\w9\怎样的喜欢!?...\w9\n\n[half]/
+	'\0\s[9]那...\w9\w9\怎样的喜欢!?...\w9\n[150]/
 	\q[◇我...这个...嗯....,loveup1]\n/
 	\q[◇喜欢...你的可爱...,loveup2]\n/
 	\q[◇已经...不单单是喜欢了...,loveup3]'
 }
 Select.lovedn{
-	'\0\s[35]呜......\w9\w9\为什么!?...\w9\n\n[half]/
+	'\0\s[35]呜......\w9\w9\为什么!?...\w9\n[150]/
 	\q[◇不知道...,lovedn1]\n/
 	\q[◇你老爱拿武器吓我!!,lovedn2]\n/
 	\q[◇因为...你不能从电脑里跑出来陪我!,lovedn3]'
@@ -1146,10 +1146,10 @@ DialogWallPaper{
 	case _fileext {
 		when '.png', '.jpg', '.jpeg', '.bmp' {
 			Wallpaperfile = _argv[0]
-			"\1\s[11]\0\b[2]\s[2]图像文件\n\_q「%(_filename)%(_fileext)」\n\n[half]\_q要把这个设定为壁纸吗？\n\n[half]/
+			"\1\s[11]\0\b[2]\s[2]图像文件\n\_q「%(_filename)%(_fileext)」\n[150]\_q要把这个设定为壁纸吗？\n[150]/
 			\![*]\q[居中,OnSetWallpaper,center]\n/
 			\![*]\q[平铺,OnSetWallpaper,tile]\n/
-			\![*]\q[拉伸,OnSetWallpaper,stretch]\n\n[half]/
+			\![*]\q[拉伸,OnSetWallpaper,stretch]\n[150]/
 			\q[◇取消,Cancel]"
 		}
 		others {
@@ -1199,7 +1199,7 @@ Select.SmokingPlace{
 			if smoker=='0'
 				'\w9\w9\n你不是不吸烟吗？'
 			--
-			'\w9\w9\s[110]\n\n[half]虽然是无所谓、可别自己跑到吸烟室来、\n却抱怨'
+			'\w9\w9\s[110]\n[150]虽然是无所谓、可别自己跑到吸烟室来、\n却抱怨'
 			--
 			'到处都是『烟雾』喔？'
 			'满屋都是『烟臭味』喔？'
@@ -1227,7 +1227,7 @@ OnDHs{
 OnDH{
 	OnAncList(DH)
 	--
-	'\n\n[half]\q[◇下一类型,OnDH]\n\q[◇不看了,OnOpenMenu,1]\![set,choicetimeout,0]'
+	'\n[150]\q[◇下一类型,OnDH]\n\q[◇不看了,OnOpenMenu,1]\![set,choicetimeout,0]'
 }
 OnAncList{
 	//"\_a[OnUrl,%(_argv[0])"
@@ -1260,7 +1260,7 @@ DH : nonoverlap{
 }
 //---------------------咖啡厅-----------------------------------
 Select.get_some_tea{
-	"\0\s[20]那么…\w9\w9%(username)想要喝什么呢\w9\w9\n\n[half]/
+	"\0\s[20]那么…\w9\w9%(username)想要喝什么呢\w9\w9\n[150]/
 	\q[%(Tea)茶,TIRE3]\n/
 	\q[%(Coffee),TIRE2]\n/
 	\q[%(Juice),TIRE1]\n/
@@ -1278,13 +1278,13 @@ Select.TIRE3{
 	"%(Job)\s[250]%(Jab)"
 }
 Select.TIRE4{
-	"%(Job)\0\s[150]\n\n[half]久等了。\w9\w9\c\w9\w9\1\s[11]怎么有种刺鼻的味道\w9\0\s[150]橘花新研发的果汁！！\w9\w9%(Ohpos)！！\w9\w9\n\n[half]请喝吧！\w9\w9\1\s[13]\n\n[half]愿神保佑你\w9…\w9…"
+	"%(Job)\0\s[150]\n[150]久等了。\w9\w9\c\w9\w9\1\s[11]怎么有种刺鼻的味道\w9\0\s[150]橘花新研发的果汁！！\w9\w9%(Ohpos)！！\w9\w9\n[150]请喝吧！\w9\w9\1\s[13]\n[150]愿神保佑你\w9…\w9…"
 }
 Job{
-	'\0\w9\w9\s[26]\n请稍微等一下。\w9\w9\w9\s[-1]\n\n[half]\_v[SOUND_PATH\tea.mp3]…\w9\w9…\w9\w9…\w9\w9…\w9\w9…\w9\w9…\w9\w9'
+	'\0\w9\w9\s[26]\n请稍微等一下。\w9\w9\w9\s[-1]\n[150]\_v[SOUND_PATH\tea.mp3]…\w9\w9…\w9\w9…\w9\w9…\w9\w9…\w9\w9…\w9\w9'
 }
 Jab{
-	'\n\n[half]久等了。\w9\w9\n\n[half]稍微休息一下、\w9\n效率可能会比较好喔。'
+	'\n[150]久等了。\w9\w9\n[150]稍微休息一下、\w9\n效率可能会比较好喔。'
 }
 Tea{
 	'普洱'

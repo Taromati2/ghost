@@ -2,13 +2,13 @@
 Select.count{
 	i=0
 	--
-	"\0\![open,inputbox,Oncount,-1]%(username)要橘花帮忙倒数几秒呢？\n\n[half]\q[◇取消倒数,countend]"
+	"\0\![open,inputbox,Oncount,-1]%(username)要橘花帮忙倒数几秒呢？\n[150]\q[◇取消倒数,countend]"
 }
 Oncount{
 	if reference0
 		num=reference0
 	if num>0{
-		_txt="\C\![quicksession,1]\c\0\s[5]收到！倒数%(num-i)秒钟…\n\n[half]\q[◇取消倒数,countend]"
+		_txt="\C\![quicksession,1]\c\0\s[5]收到！倒数%(num-i)秒钟…\n[150]\q[◇取消倒数,countend]"
 		if i<=num{
 			i++
 			_txt+'\_w[1000]\![raise,Oncount]'
@@ -261,7 +261,7 @@ Onnextbirthday{
 }
 Onfriendbirthday{
 	//_txt='\b[2]\![quicksession,1]\![set,choicetimeout,0]'
-	"橘花能记住%(username)20位好友的生日哦\n\n[half]/
+	"橘花能记住%(username)20位好友的生日哦\n[150]/
 	\q[◇新建好友,OnFriendBirthDay.Creat]\n/
 	\q[◇查看好友,OnFriendBirthDay.Inform]\n/
 	\n\n\n\n\n\q[◇返回上一层,birthday]     \q[◇结束,Cancel]"
@@ -516,11 +516,11 @@ Select.dislikegift{
 //-----------------------------------------数据备份---------------------------------------------------
 OnGhostBackup{
 	_txt='\c\b[2]\![quicksession,1]\![set,choicetimeout,0]'
-	_txt+='■数据备份■\n\n[half]/
+	_txt+='■数据备份■\n[150]/
 	要备份什么数据?\n/
 	\q[◇辞书备份,OnBackup,dic]\n/
 	\q[◇数据库备份,OnBackup,deb]\n/
-	\q[◇记忆备份,OnBackup,mem]\n\n[half]/
+	\q[◇记忆备份,OnBackup,mem]\n[150]/
 	\q[◇导入备份,OnBackupLeadMenu]\n/
 	\n\n\n\n\n\q[◇返回,OnSecondWatchBack]  \q[◇终了,OnGhostBakeOver]'
 	_txt
@@ -542,13 +542,13 @@ OnBackup.DicFileViewer{
 }
 OnBackup{
 	_w='\b[2]\![quicksession,1]\![set,choicetimeout,0]'
-	_w+='■数据备份■\n\n[half]'
+	_w+='■数据备份■\n[150]'
 	_txt=''
 	if !ISDIR('SHIORI_BACKUP_PATH')
 		void MKDIR('SHIORI_BACKUP_PATH')
 	if reference0=='mem'{
 		if reference1==NULL
-			_txt+='要对_SAVE_file及profile文件夹进行备份操作吗？\n\n[half]/
+			_txt+='要对_SAVE_file及profile文件夹进行备份操作吗？\n[150]/
 			\q[◇是,OnBackup,mem,yes]\n/
 			\q[◇否,OnBackup,mem,no]\n'
 		elseif reference1=='yes'{
@@ -595,7 +595,7 @@ OnBackup{
 			return
 		}else{
 			_txt='\b[2]\![quicksession,1]\![set,choicetimeout,0]'
-			_txt+='\q[◇全部备份,OnBackup,dic,alldic]\n\n[half]'
+			_txt+='\q[◇全部备份,OnBackup,dic,alldic]\n[150]'
 			foreach _DIC_DIRS_; _dir{
 				_txt+=OnBackup.DicFileViewer(_dir)
 			}
@@ -603,7 +603,7 @@ OnBackup{
 	}
 	elseif reference0=='deb'{
 		if reference1==NULL
-			_txt+='要对数据库文件debeso.db进行备份操作吗？\n\n[half]/
+			_txt+='要对数据库文件debeso.db进行备份操作吗？\n[150]/
 			\q[◇是,OnBackup,deb,yes]\n/
 			\q[◇否,OnBackup,deb,no]\n'
 		elseif reference1=='yes'{
@@ -625,16 +625,16 @@ OnBackup{
 }
 OnBackupLeadMenu{
 	_txt='\c\b[2]\![quicksession,1]\![set,choicetimeout,0]'
-	_txt+='■备份导入■\n\n[half]/
+	_txt+='■备份导入■\n[150]/
 	该状态下记忆备份导入暂不可用\n/
-	\q[◇导入辞书备份,OnBackupLead,dic]\n\n[half]/
-	\q[◇导入数据库备份,OnBackupLead,deb]\n\n[half]/
+	\q[◇导入辞书备份,OnBackupLead,dic]\n[150]/
+	\q[◇导入数据库备份,OnBackupLead,deb]\n[150]/
 	\n\n\n\n\n\q[◇返回,OnGhostBackup]  \q[◇终了,OnGhostBakeOver]'
 	_txt
 }
 OnBackupLead{
 	_w='\b[2]\![quicksession,1]\![set,choicetimeout,0]'
-	_w+='■备份导入■\n\n[half]'
+	_w+='■备份导入■\n[150]'
 	_txt=''
 	if reference0=='dic'{
 		_temp=MKDIR('dic')
@@ -659,7 +659,7 @@ OnBackupLead{
 						_txt+="%(_i) \_l[200,-]\q[◇导入该辞书,OnBackupLead,dic,%(reference1),single,%(_i)]\n"
 				}
 				if reference2=='fold'{
-					_txt="\q[◇全部导入,OnBackupLead,dic,%(reference1),alldic,%(reference3)]\n\n[half]"
+					_txt="\q[◇全部导入,OnBackupLead,dic,%(reference1),alldic,%(reference3)]\n[150]"
 					_dicdir=FENUM("SHIORI_BACKUP_PATH\%(reference1)\%(reference3)")
 					foreach _dicdir;_i{
 						_txt+="%(_i) \_l[200,-]\q[◇导入该辞书,OnBackupLead,dic,%(reference1),%(reference3),%(_i)]\n"
@@ -776,13 +776,13 @@ CalculatorShow{
 	\_l[0,-]\q[A(n\,m),OnCalculate,key,Anm(]	\_l[40,-]\q[C(n\,m),OnCalculate,key,Cnm(]	\_l[80,-]\q[∑(a\,b),OnCalculate,key,∑ab(]	\_l[120,-]\q[ % ,OnCalculate,key,%]			\_l[160,-]\q[log(a\,N),OnCalculate,key,log(]				\_l[210,-]\q[e,OnCalculate,key,e]			\_l[250,-]\q[ π ,OnCalculate,key,π] \n\n[25]/
 	"
 	_txt+="/
-	\_l[0,-]%(CalculateKey(7,8))		\_l[40,-]%(CalculateKey(8,10))			\_l[80,-]%(CalculateKey(9,10))			\_l[120,-]%(CalculateKey(_num[0],16))	\_l[160,-]%(CalculateKey(_num[1],16))	\_l[200,-]\q[ / ,OnCalculate,oper,/]	\_l[240,-]\q[ 退格 ,OnCalculate,back]\n\n[half]/
-	\_l[0,-]%(CalculateKey(4,8))		\_l[40,-]%(CalculateKey(5,8))			\_l[80,-]%(CalculateKey(6,8))			\_l[120,-]%(CalculateKey(_num[2],16))	\_l[160,-]%(CalculateKey(_num[3],16))	\_l[200,-]\q[ * ,OnCalculate,oper,*]	\_l[240,-]\q[ CE ,OnCalculate,ce] \n\n[half]/
-	\_l[0,-]\q[ 1 ,OnCalculate,key,1]	\_l[40,-]%(CalculateKey(2,8))			\_l[80,-]%(CalculateKey(3,8))			\_l[120,-]%(CalculateKey(_num[4],16))	\_l[160,-]%(CalculateKey(_num[5],16))	\_l[200,-]\q[ - ,OnCalculate,oper,-]	\_l[240,-]\q[ ! ,OnCalculate,oper,!]  \n\n[half]/
-	\_l[0,-]\q[ 0 ,OnCalculate,key,0]	\_l[40,-]\q[ . ,OnCalculate,key,\.]		\_l[80,-]\q[ \, ,OnCalculate,key,\,]	\_l[120,-]\q[ ( ,OnCalculate,key,(]		\_l[160,-]\q[ ) ,OnCalculate,key,)]		\_l[200,-]\q[ + ,OnCalculate,oper,+]	\_l[240,-]\q[ = ,OnCalculate,=]\n\n[half]/
+	\_l[0,-]%(CalculateKey(7,8))		\_l[40,-]%(CalculateKey(8,10))			\_l[80,-]%(CalculateKey(9,10))			\_l[120,-]%(CalculateKey(_num[0],16))	\_l[160,-]%(CalculateKey(_num[1],16))	\_l[200,-]\q[ / ,OnCalculate,oper,/]	\_l[240,-]\q[ 退格 ,OnCalculate,back]\n[150]/
+	\_l[0,-]%(CalculateKey(4,8))		\_l[40,-]%(CalculateKey(5,8))			\_l[80,-]%(CalculateKey(6,8))			\_l[120,-]%(CalculateKey(_num[2],16))	\_l[160,-]%(CalculateKey(_num[3],16))	\_l[200,-]\q[ * ,OnCalculate,oper,*]	\_l[240,-]\q[ CE ,OnCalculate,ce] \n[150]/
+	\_l[0,-]\q[ 1 ,OnCalculate,key,1]	\_l[40,-]%(CalculateKey(2,8))			\_l[80,-]%(CalculateKey(3,8))			\_l[120,-]%(CalculateKey(_num[4],16))	\_l[160,-]%(CalculateKey(_num[5],16))	\_l[200,-]\q[ - ,OnCalculate,oper,-]	\_l[240,-]\q[ ! ,OnCalculate,oper,!]  \n[150]/
+	\_l[0,-]\q[ 0 ,OnCalculate,key,0]	\_l[40,-]\q[ . ,OnCalculate,key,\.]		\_l[80,-]\q[ \, ,OnCalculate,key,\,]	\_l[120,-]\q[ ( ,OnCalculate,key,(]		\_l[160,-]\q[ ) ,OnCalculate,key,)]		\_l[200,-]\q[ + ,OnCalculate,oper,+]	\_l[240,-]\q[ = ,OnCalculate,=]\n[150]/
 	"
 	popm_resrecord
-	_txt+='计算结果记录：		\_l[200,-]\q[◇清空记录,OnCalculate,recordclear]\n\n[half]'
+	_txt+='计算结果记录：		\_l[200,-]\q[◇清空记录,OnCalculate,recordclear]\n[150]'
 	foreach m_resrecord; _i{
 		_j=TextEndTo(_i,'=',0)
 		_txt+="\_l[0,-]%(_i)	\_l[240,-]\__q[OnCopyDat,%(_j)]复制结果\__q\n"
@@ -2477,7 +2477,7 @@ OnReadBook{
 		_txt+="\f[height,%(fontheight)]"
 	_txt+=_w
 	_txt+='\f[height,default]'
-	_txt+='\n\n[half]'
+	_txt+='\n[150]'
 	_txt+=OnReadBookPageTxt
 	_t=SakuraToTxt(_txt)
 	autoread=TOINT(autoread)

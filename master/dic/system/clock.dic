@@ -115,9 +115,9 @@ OnMinuteChange{
 					"\1\s[10]我们连续工作了%(_worktime)小时啊。\w9\s[12]\n把薪水交出来。\w9\w9\0\s[30]不是什么都没做吗。"
 					--
 					''
-					'\w9\w9\1\s[10]\n\n[half]装可爱就是猫的工作啊。\w9\w9\0\s[6]\n\n[half]既然如此、快点开始工作吧。\w9\w9\1\n\n[half]…\w9…\w9…'
+					'\w9\w9\1\s[10]\n[150]装可爱就是猫的工作啊。\w9\w9\0\s[6]\n[150]既然如此、快点开始工作吧。\w9\w9\1\n[150]…\w9…\w9…'
 				}
-				'\1\s[11]啊゛啊゛啊゛呀─────！！\w9\0\s[30]怎么了？\w9\w9\1\s[12]\n\n[half]那个断掉了─────！！\w9\w9\1\s[-1]\b[-1]\w9\w9\0\s[30]\n\n[half]…\w9…\w9…\w9\w9\w9\w9\1\s[10]\c呼～～～。\w9\w9\n呃、\w9见笑了。\w9\w9\0\s[8]\n\n[half]…\w9…\w9…'
+				'\1\s[11]啊゛啊゛啊゛呀─────！！\w9\0\s[30]怎么了？\w9\w9\1\s[12]\n[150]那个断掉了─────！！\w9\w9\1\s[-1]\b[-1]\w9\w9\0\s[30]\n[150]…\w9…\w9…\w9\w9\w9\w9\1\s[10]\c呼～～～。\w9\w9\n呃、\w9见笑了。\w9\w9\0\s[8]\n[150]…\w9…\w9…'
 				'\![raise,OnSmokingPlace]'
 			}
 			elseif (memoryload>=80&&TOINT(memorybusyrm[1])==0||memoryload>=TOINT(memorybusyrm[1])&&TOINT(memorybusyrm[1])!=0)&&TOINT(memorybusyrm[0])==0{
@@ -265,7 +265,7 @@ AlarmMenu{
 		alarmmin = 0
 		alarmfile = 'UN_SAORI_path\SOUND_PATH\Ring.mp3'
 	}
-	'\f[bold,true]\0闹钟功能\f[bold,default]\n\n[half]/
+	'\f[bold,true]\0闹钟功能\f[bold,default]\n[150]/
 	\![quicksession,1]\![set,choicetimeout,0]'
 	--
 	"\n[50]闹钟时间：\f[color,34,100,200]%(alarmhour)点%(alarmmin)分\f[color,default]\_l[128]\q[◇设定闹钟,OnAlarmSetTime]\n[150]"
@@ -687,7 +687,7 @@ OnSetShutdownMenu:all{
 		shutdowntime=(0,0)
 		shutdowndata=(0,0,0,0,0)
 	}
-	"\![quicksession,1]\![set,choicetimeout,0]\f[bold,true]\0自动关机\f[bold,default]\n\n[half]/
+	"\![quicksession,1]\![set,choicetimeout,0]\f[bold,true]\0自动关机\f[bold,default]\n[150]/
 	自动关机时间：\f[color,34,100,200]%(shutdowntime[0])点%(shutdowntime[1])分\f[color,default]\_l[180]\q[◇设定自动关机时间,OnSetShutdown]\n/
 	计划关机时间：\f[color,34,100,200]%(shutdowndata[0])年%(shutdowndata[1])月%(shutdowndata[2])日%(shutdowndata[3])点%(shutdowndata[4])分\f[color,default]\n/
 	\q[◇设定计划关机时间,OnShutdownPlan]\n/

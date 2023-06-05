@@ -427,7 +427,7 @@ OnInstallComplete{
 		"与『%(reference2)』"
 	}
 	--
-	'\n\n[half]'
+	'\n[150]'
 	--
 	if mode == '0'{
 		'支给完成'
@@ -627,7 +627,7 @@ OnVanishSelected{
 		uninstall=1
 		MAGICSAVE
 		if FirstBootCount == 0
-			"\1\s[10]\0\s[3]是这样吗…\w9\w9\s[1]\n啊、那个…\w9\w9\s[26]我不会忘记%(username)的。\w9\w9\s[1]\n\n[half]所以…\w9如果%(username)可以的话、也请…\w9\s[2]\n啊、\w9\w9\s[1]对不起、\w9\w9没什么。\w9\w9\1\s[10]…\w9…\w9…\w9\w9\0\s[40]\n\n[half]那么、请保重。\w9\w9\1\s[10]\n\n[half]那。\w9\n有机会的话、再见吧。"
+			"\1\s[10]\0\s[3]是这样吗…\w9\w9\s[1]\n啊、那个…\w9\w9\s[26]我不会忘记%(username)的。\w9\w9\s[1]\n[150]所以…\w9如果%(username)可以的话、也请…\w9\s[2]\n啊、\w9\w9\s[1]对不起、\w9\w9没什么。\w9\w9\1\s[10]…\w9…\w9…\w9\w9\0\s[40]\n[150]那么、请保重。\w9\w9\1\s[10]\n[150]那。\w9\n有机会的话、再见吧。"
 		elseif FirstBootCount == 1
 			'\1\s[10]\0\s[3]好的。\w9\w9\n\s[8]尽管是第二次分别，却还是有些不舍呢\n\s[40]那么、请保重。\w9\w9\1保重啊'
 		elseif FirstBootCount == 2
@@ -672,14 +672,14 @@ Select.ALLMAIL{
 }
 //---- 信件确认开始 ---------------------------------------------------------------------
 OnBIFFBegin{
-	"\0\s[0]那么、查询邮件。\n\n[half]\_q伺服器：%(reference2)\_q"
+	"\0\s[0]那么、查询邮件。\n[150]\_q伺服器：%(reference2)\_q"
 }
 OnBIFFComplete{
 	if !reference0 {
 		'\0\s[20]嗯…\w9\w9\s[0]\n什么都没有的样子。\n需要打开默认邮箱吗？\n\q[◇打开,OPENMAILER]\n\q[◇算了,Cancel]'
 	}
 	else{
-		"\0\s[0]来了%(reference0)通邮件喔。\n\n[half]\_q邮件的总容量：%(reference1) Bytes\_q\n需要打开默认邮箱吗？\n\q[◇打开,OPENMAILER]\n\q[◇算了,Cancel]"
+		"\0\s[0]来了%(reference0)通邮件喔。\n[150]\_q邮件的总容量：%(reference1) Bytes\_q\n需要打开默认邮箱吗？\n\q[◇打开,OPENMAILER]\n\q[◇算了,Cancel]"
 	}
 }
 OnBIFFFailure{
@@ -1003,12 +1003,12 @@ OnUpdate.OnMD5CompareBegin{
 //---- ネットワーク更新 MD5値一致 -------------------------------------------------------
 OnUpdate.OnMD5CompareComplete{
 	if !InSilentUpdate
-		"\0\s[72]\_qMD5:%(reference1)\n\_q\n\n[half]一致。"
+		"\0\s[72]\_qMD5:%(reference1)\n\_q\n[150]一致。"
 }
 //---- ネットワーク更新 MD5値不一致 -----------------------------------------------------
 OnUpdate.OnMD5CompareFailure{
 	if !InSilentUpdate
-		"\0\s[0]\_q正确MD5:%(reference1)\n本地MD5:%(reference2)\_q\s[20]\n\n[half]嗯？"
+		"\0\s[0]\_q正确MD5:%(reference1)\n本地MD5:%(reference2)\_q\s[20]\n[150]嗯？"
 }
 //**** ヘッドラインセンス ***************************************************************
 //---- ヘッドラインセンス开始 -----------------------------------------------------------
@@ -1236,7 +1236,7 @@ OnURLQuery{
 		return
 	}
 	elseif reference3=='unknown' || !reference3{
-		"\0\s[6]未知URL，请使用下载器下载\n\n[half]\_qURL:%(reference0)\_q\n"
+		"\0\s[6]未知URL，请使用下载器下载\n[150]\_qURL:%(reference0)\_q\n"
 	}
 	else{
 		"\0\s[0]自URL:%(reference0)\n/

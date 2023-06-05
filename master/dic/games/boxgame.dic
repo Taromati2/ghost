@@ -149,7 +149,7 @@ DrawBox:all{
 BoxMenu{
 	"\_l[0,0]第%(boxnum)关"
 	--
-	'\_l[0,252]\n\q[◇选关,OnBoxNewGame]\n\q[◇上一关,OnBoxLastGame]\n\q[◇重玩本关,OnBoxTheNewGame]\n\q[◇下一关,OnBoxNextGame]\n\n[half]\q[◇返回游戏列表,OnBoxGameList]\n\q[◇终了,OnBoxGameOver]'
+	'\_l[0,252]\n\q[◇选关,OnBoxNewGame]\n\q[◇上一关,OnBoxLastGame]\n\q[◇重玩本关,OnBoxTheNewGame]\n\q[◇下一关,OnBoxNextGame]\n[150]\q[◇返回游戏列表,OnBoxGameList]\n\q[◇终了,OnBoxGameOver]'
 }
 BoxStatus{
 	_txt = ''

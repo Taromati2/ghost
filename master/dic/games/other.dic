@@ -1397,7 +1397,7 @@ OnKikkaOneByOne{
 	KikkaOneByOneInfo
 }
 OnBattleOption{
-	"\0\![set,choicetimeout,0]%(username)请选择攻击方式\n\n[half]/
+	"\0\![set,choicetimeout,0]%(username)请选择攻击方式\n[150]/
 	\q[◇物理攻击,OnKikka物理攻击]\n"
 	--
 	_SILENT=SILENT[1]

@@ -54,10 +54,10 @@ OnFileDrop{
 			}
 			when '.png', '.jpg', '.jpeg', '.bmp'{
 				Wallpaperfile = reference0
-				"\1\s[11]\0\b[2]\s[2]图像文件\n\_q「%(_filename)」\n\n[half]\_q要把这个设定为壁纸吗？\n\n[half]/
+				"\1\s[11]\0\b[2]\s[2]图像文件\n\_q「%(_filename)」\n[150]\_q要把这个设定为壁纸吗？\n[150]/
 				\![*]\q[居中,OnSetWallpaper,0]\n/
 				\![*]\q[并列,OnSetWallpaper,1]\n/
-				\![*]\q[放大,OnSetWallpaper,2]\n\n[half]/
+				\![*]\q[放大,OnSetWallpaper,2]\n[150]/
 				\q[◇直接吃掉,OnFileEatDrop,%(SakuraScriptArgConverter(reference0))]\n/
 				\q[◇取消,Cancel]"
 			}

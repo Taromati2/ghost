@@ -40,7 +40,7 @@ OnGetUsernameFirst.Fin{
 	OnGetUsernameFirst.End
 }
 OnGetUsernameFirst.End{
-	'\w9\w9\w9\n\n[half]\0\s[6]那么再一次…\w9\s[26]\n\n[half]橘花和斗和、以后请多多指教。\1\s[10]多指教啦。\w9\0\s[30]\n\n[half]…终于开口了。\w9\w9\c'
+	'\w9\w9\w9\n[150]\0\s[6]那么再一次…\w9\s[26]\n[150]橘花和斗和、以后请多多指教。\1\s[10]多指教啦。\w9\0\s[30]\n[150]…终于开口了。\w9\w9\c'
 }
 GetSteamUserName{
 	CALLSAORI('steam_api','GetMostRecentUserPersonaName')
@@ -59,14 +59,14 @@ OnUserNameInput{
 				'\0\s[0]橘花吗\w9…\w9…\w9…？\w9\n/
 				\s[8]和我重名可是不行的哦？\w9\w9\n/
 				\1\s[10]会让人分不清是在叫哪个人所以禁止。\w9\w9\w9\n/
-				\0\s[0]请您想一个其他的名字吧。\w9\n\n[half]'
+				\0\s[0]请您想一个其他的名字吧。\w9\n[150]'
 				--
 				'\q[◇返回上一层,OnOpenMenu,4]\n/
 				\q[◇终了,OptionEnd]'
 				return
 			}
 			when '斗和','towa'{
-				'\0\s[0]斗和吗\w9…\w9…\w9…？\w9\n\s[8]和她重名会让我们在谈话时很困扰\w9，可以想一个其他的名字吗？\w9\n\n[half]'
+				'\0\s[0]斗和吗\w9…\w9…\w9…？\w9\n\s[8]和她重名会让我们在谈话时很困扰\w9，可以想一个其他的名字吗？\w9\n[150]'
 				if nurturance.Darkness >= 200
 					'\0\s[20]两个斗和啊\w9，会叫混唉？\n\w9\w9\1\s[12]换一个不行吗？\w9\w9\n/
 					\0\s[32]说的有道理。\w9\w9\w9\n/
@@ -82,12 +82,12 @@ OnUserNameInput{
 		}
 	}
 	if _name == username {
-		'\0\s[0]………？\s[26]\n不用改变也可以吗？\n\n[half]/
+		'\0\s[0]………？\s[26]\n不用改变也可以吗？\n[150]/
 		\q[◇返回上一层,OnOpenMenu,4]\n/
 		\q[◇终了,OptionEnd]'
 	}
 	elseif !_name {
-		"\0\s[6]好的。\w9\s[0]\n那么、往后就用\w9\s[26]\n『无名氏』\w9来称呼喔。\w9\w9\n\n[half]/
+		"\0\s[6]好的。\w9\s[0]\n那么、往后就用\w9\s[26]\n『无名氏』\w9来称呼喔。\w9\w9\n[150]/
 		\s[5]…\w9开玩笑的。\n/
 		\w9\s[0]\n继续称呼『%(username)』就可以了吗\w9？\n[150]/
 		\q[◇返回上一层,OnOpenMenu,4]\n/
@@ -97,7 +97,7 @@ OnUserNameInput{
 		'\0\s[0]'
 		--
 		if STRLEN(_name) < 30 //太长不念
-			"『%(_name)』吗。\n\n[half]"
+			"『%(_name)』吗。\n[150]"
 		--
 		'\s[8]这个名字'
 		--
@@ -109,12 +109,12 @@ OnUserNameInput{
 			'稍微有点长呢。'
 		--
 		'\n/
-		\w9\s[20]\n可以换一个短一点的名字吗\w9？\n\n[half]/
+		\w9\s[20]\n可以换一个短一点的名字吗\w9？\n[150]/
 		\q[◇返回上一层,OnOpenMenu,4]\n/
 		\q[◇终了,OptionEnd]'
 	}
 	elseif _name==GetSteamUserName && !(IsUsername.Mazo(_name) || IsUsername.TooClose(_name)) {
-		"\0\s[0]『%(_name)』是吗。\n\n[half]/
+		"\0\s[0]『%(_name)』是吗。\n[150]/
 		\s[5]以steam用户名来称呼也不错呢。\n"
 		--
 		OnUserName.Set(_name)
@@ -187,7 +187,7 @@ OnUserNameInput{
 	else{
 		"\0\s[26]『%(REPLACE(_name,'\','\\'))君』\w4这样可以吗？\n\n/
 		\q[◇可以,OnUserNameConfirmed,%(SakuraScriptArgConverter(_name+'君'))]\n/
-		\q[%(SakuraScriptArgConverter('◇『'+_name+'』就行了')),OnUserNameConfirmed,%(SakuraScriptArgConverter(_name))]\n\n[half]/
+		\q[%(SakuraScriptArgConverter('◇『'+_name+'』就行了')),OnUserNameConfirmed,%(SakuraScriptArgConverter(_name))]\n[150]/
 		\q[◇还是算了,OnUserNameCancel]"
 	}
 }
@@ -201,7 +201,7 @@ OnUserNameCancel{
 OnUserNameConfirmed{
 	_name = reference.raw[0]
 	OnUserName.Set(_name)
-	"\0\s[6]好的。\w9\s[0]\n\n[half]那么、往后就用\w9\s[26]\n『%(username)』\w9来称呼喔。\n[150]"
+	"\0\s[6]好的。\w9\s[0]\n[150]那么、往后就用\w9\s[26]\n『%(username)』\w9来称呼喔。\n[150]"
 	--
 	'\q[◇返回上一层,OnOpenMenu,4]\n/
 	\q[◇终了,OptionEnd]'
@@ -274,7 +274,7 @@ OnUserName.IsTooLong{
 OnUserName.SpecialCheck{
 	_name = reference.raw[0]
 	if (_t = OnUserName.SpecialCheck.base)!='' {
-		"\0\s[6]好的。\w9\s[0]\n\n[half]那么、往后就用\w9\s[26]\n『%(_name)』\w9来称呼喔。\n[150]\w9\w9"
+		"\0\s[6]好的。\w9\s[0]\n[150]那么、往后就用\w9\s[26]\n『%(_name)』\w9来称呼喔。\n[150]\w9\w9"
 		--
 		_t
 		--

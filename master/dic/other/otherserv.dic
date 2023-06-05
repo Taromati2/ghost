@@ -129,13 +129,13 @@ Select.用餐时间{
 	}
 }
 Onbreakfast{
-	"\0\![set,choicetimeout,120000]\s[9]现在是早餐时间，\w9\w9\这是今天早餐的菜单，%(username)看看满意吗？\w9\w9\n\n[half]/
+	"\0\![set,choicetimeout,120000]\s[9]现在是早餐时间，\w9\w9\这是今天早餐的菜单，%(username)看看满意吗？\w9\w9\n[150]/
 	%(breakfastmenu)\n/
 	\q[◇嗯，就这样吧,meal]\n/
 	\q[◇有其它的吗？,otherbreakfast]"
 }
 Select.otherbreakfast{
-	"\0\![set,choicetimeout,120000]\s[1]%(username)不满意呢，那下面的呢？\w9\w9\n\n[half]/
+	"\0\![set,choicetimeout,120000]\s[1]%(username)不满意呢，那下面的呢？\w9\w9\n[150]/
 	%(breakfastmenu)\n/
 	\q[◇嗯，就这样吧,meal]\n/
 	\q[◇有其它的吗？,otherbreakfast]"
@@ -147,7 +147,7 @@ breakfastmenu{
 	%(meal8)\n"
 }
 Onlunch{
-	"\0\![set,choicetimeout,120000]\s[9]现在是午餐时间，\w9\w9\这是今天午餐的菜单，%(username)看看满意吗？\w9\w9\n\n[half]/
+	"\0\![set,choicetimeout,120000]\s[9]现在是午餐时间，\w9\w9\这是今天午餐的菜单，%(username)看看满意吗？\w9\w9\n[150]/
 	%(lunchmenu)\n/
 	\q[◇嗯，就这样吧,meal]\n/
 	\q[◇有其它的吗？,otherlunch]"
@@ -158,13 +158,13 @@ lunchmenu{
 	%(meal5)\n"
 }
 Select.otherlunch{
-	"\0\![set,choicetimeout,120000]\s[1]%(username)不满意呢，那下面的呢？\w9\w9\n\n[half]/
+	"\0\![set,choicetimeout,120000]\s[1]%(username)不满意呢，那下面的呢？\w9\w9\n[150]/
 	%(lunchmenu)\n/
 	\q[◇嗯，就这样吧,meal]\n/
 	\q[◇有其它的吗？,otherlunch]"
 }
 Onsupper{
-	"\0\![set,choicetimeout,120000]\s[9]现在是晚餐时间，\w9\w9\这是今天晚餐的菜单，%(username)看看满意吗？\w9\w9\n\n[half]/
+	"\0\![set,choicetimeout,120000]\s[9]现在是晚餐时间，\w9\w9\这是今天晚餐的菜单，%(username)看看满意吗？\w9\w9\n[150]/
 	%(suppermenu)\n/
 	\q[◇嗯，就这样吧,meal]\n/
 	\q[◇有其它的吗？,othersupper]"
@@ -181,13 +181,13 @@ suppermenu{
 	%(meal4)\n"
 }
 Select.othersupper{
-	"\0\![set,choicetimeout,120000]\s[1]%(username)不满意呢，那下面的呢？\w9\w9\n\n[half]/
+	"\0\![set,choicetimeout,120000]\s[1]%(username)不满意呢，那下面的呢？\w9\w9\n[150]/
 	%(suppermenu)\n/
 	\q[◇嗯，就这样吧,meal]\n/
 	\q[◇有其它的吗？,othersupper]"
 }
 Onlatesupper{
-	"\0\![set,choicetimeout,120000]\s[9]现在是宵夜时间，\w9\w9\这是今天宵夜的菜单，%(username)看看满意吗？\w9\w9\n\n[half]/
+	"\0\![set,choicetimeout,120000]\s[9]现在是宵夜时间，\w9\w9\这是今天宵夜的菜单，%(username)看看满意吗？\w9\w9\n[150]/
 	%(latesuppermenu)\n/
 	\q[◇嗯，就这样吧,meal]\n/
 	\q[◇有其它的吗？,otherlatesupper]"
@@ -199,19 +199,19 @@ latesuppermenu{
 	%(meal8)\n"
 }
 Select.otherlatesupper{
-	"\0\![set,choicetimeout,120000]\s[1]%(username)不满意呢，那下面的呢？\w9\w9\n\n[half]/
+	"\0\![set,choicetimeout,120000]\s[1]%(username)不满意呢，那下面的呢？\w9\w9\n[150]/
 	%(latesuppermenu)\n/
 	\q[◇嗯，就这样吧,meal]\n/
 	\q[◇有其它的吗？,otherlatesupper]"
 }
 Oncake{
-	"\0\![set,choicetimeout,120000]\s[40]用餐时间已经过了，%(username)要按时用餐啊。如果饿的话，%(username)要不要来些点心呢？\w9\w9\n\n[half]/
+	"\0\![set,choicetimeout,120000]\s[40]用餐时间已经过了，%(username)要按时用餐啊。如果饿的话，%(username)要不要来些点心呢？\w9\w9\n[150]/
 	%(cakemenu)\n/
 	\q[◇嗯，就这样吧,meal]\n/
 	\q[◇有其它的吗？,othercake]"
 }
 Select.othercake{
-	"\0\![set,choicetimeout,120000]\s[1]%(username)不满意呢，那下面的呢？\w9\w9\n\n[half]/
+	"\0\![set,choicetimeout,120000]\s[1]%(username)不满意呢，那下面的呢？\w9\w9\n[150]/
 	%(cakemenu)\n/
 	\q[◇嗯，就这样吧,meal]\n/
 	\q[◇有其它的吗？,othercake]"
@@ -479,18 +479,18 @@ Select.hug{
 //*********************生病**********************************
 Select.notsogood{
 	if howbady0 == ''{
-		"\0\s[02]这是第一次听%(username)说身体不舒服呢!\w9\n是哪里不舒服呢?\n\n[half]/
+		"\0\s[02]这是第一次听%(username)说身体不舒服呢!\w9\n是哪里不舒服呢?\n[150]/
 		\q[◇头疼,notsogood1]\n/
 		\q[◇感冒,notsogood2]\n/
-		\q[◇肚子疼,notsogood3]\n\n[half]/
+		\q[◇肚子疼,notsogood3]\n[150]/
 		\q[◇查看生病次数,notsogood4]\n/
 		\q[◇没事,MenuCancel]\![set,choicetimeout,0]"
 	}
 	else{
-		"\0\s[03]%(username)已经不是第一次不舒服了呢...\w9\n这次是哪里呢?\n\n[half]/
+		"\0\s[03]%(username)已经不是第一次不舒服了呢...\w9\n这次是哪里呢?\n[150]/
 		\q[◇头疼,notsogood1]\n/
 		\q[◇感冒,notsogood2]\n/
-		\q[◇肚子疼,notsogood3]\n\n[half]/
+		\q[◇肚子疼,notsogood3]\n[150]/
 		\q[◇查看生病次数,notsogood4]\n/
 		\q[◇没事,MenuCancel]\![set,choicetimeout,0]"
 	}

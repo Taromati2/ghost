@@ -293,7 +293,7 @@ OnOneByOne{
 	OneByOneinfo
 }
 On战斗选项{
-	"\0\![set,choicetimeout,0]%(selfname)请选择攻击方式\n\n[half]/
+	"\0\![set,choicetimeout,0]%(selfname)请选择攻击方式\n[150]/
 	\q[◇物理攻击,On物理攻击]\n"
 	--
 	if SILENT[1]==1
