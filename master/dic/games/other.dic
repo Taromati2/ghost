@@ -664,11 +664,11 @@ GuessNumberCal{
 GuessNumber{
 	GuessNumberShow
 	--
-	'请输入你猜测的四位数：\n\n[150]\q[◇返回上一层,OnOpenMenu,2]\n\q[◇终了,OnGuessNumberEnd]\![open,inputbox,OnGuessNumberInput,0]\x'
+	'请输入你猜测的四位数：\n[250]\q[◇返回上一层,OnOpenMenu,2]\n\q[◇终了,OnGuessNumberEnd]\![open,inputbox,OnGuessNumberInput,0]\x'
 }
 OnGuessNumberInput{
 	_tmp = 0
-	_menu = '\_q\n\n[150]\q[◇继续玩,OnGuessNumber]\n[150]\q[◇返回上一层,OnOpenMenu,2]\n\q[◇终了,OnGuessNumberEnd]\_q'
+	_menu = '\_q\n[250]\q[◇继续玩,OnGuessNumber]\n[150]\q[◇返回上一层,OnOpenMenu,2]\n\q[◇终了,OnGuessNumberEnd]\_q'
 	if (_tmp = GuessNumberCheck(reference0)) == 0{
 		'输入的数据无效…\w9…\w9\c'
 		--
@@ -715,7 +715,7 @@ OnDoubleColorBall{
 	_txt+="\0\b[2]\s[2]\![set,choicetimeout,0]\_q什么，%(username)有玩双色球，那么让我们测试一下双色球的中奖情况吧，双色球玩法%(username)知道吧，双色球由红球和蓝球两部份组成，从33个红球号码(01~33)中选择6个，再从16个蓝球号码(01~16)中选择1个。开奖时，在红色球中随机摇出六个红号，在蓝色球中随机摇出一个蓝号。这游戏分为测试与正式投注，测试投注时不会产生金钱增减。正试投注一次花费2金钱。要选择哪种？\n/
 	\q[◇测试投注,OnBallMode,0]\n/
 	\q[◇正试投注,OnBallMode,1]\n/
-	\n\n\n\q[◇返回上一层,OnOpenMenu,1]     \q[◇结束,OnEndDoubleColorBall]"
+	\n[300]\q[◇返回上一层,OnOpenMenu,1]     \q[◇结束,OnEndDoubleColorBall]"
 	_txt
 }
 OnBallMode{
@@ -726,7 +726,7 @@ OnBallMode{
 	_txt+='要自选还是机选？\n/
 	\q[◇自选,SelfSelect]\n/
 	\q[◇机选,ComSelect]\n/
-	\n\n\n\q[◇返回上一层,OnDoubleColorBall]     \q[◇结束,OnEndDoubleColorBall]'
+	\n[300]\q[◇返回上一层,OnDoubleColorBall]     \q[◇结束,OnEndDoubleColorBall]'
 	_txt
 }
 Select.SelfSelect{
@@ -1490,7 +1490,7 @@ OnKikka使用战技{
 	\__q[OnKikkausespatk,4,15]天使之光：对方防御减10，有效三回合，消耗SP15\__q\n/
 	\__q[OnKikkausespatk,5,10]天使之怒：攻击时给予对方的伤害翻倍，效果只在使用之后第一次攻击后消失，消耗SP15\__q\n/
 	\__q[OnKikkausespatk,6,10]沉默：对方无法使用技能攻击，有效三回合，消耗SP10\__q\n/
-	\n\n\n\q[◇返回,OnBattleOption]\n/
+	\n[300]\q[◇返回,OnBattleOption]\n/
 	'
 }
 OnKikkausespatk{

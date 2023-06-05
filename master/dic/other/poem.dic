@@ -202,7 +202,7 @@ OnPoemMenu{
 	LoadPoemTitle
 	_txt = '\0\s[26]想要怎样阅读诗歌呢？\n\n'
 	_txt += '\_q\q[◇诗歌列表,OnPoemList]\n[150]诗歌查询：\n\q[◇按作者,OnSearchPoem,0]      \q[◇按标题,OnSearchPoem,1]      \q[◇按内容,OnSearchPoem,2]'
-	_txt += '\n\n\n\q[◇返回上一层,OnOpenMenu,1]\n\q[◇终了,OnPoemEnd]'
+	_txt += '\n[300]\q[◇返回上一层,OnOpenMenu,1]\n\q[◇终了,OnPoemEnd]'
 	_txt
 }
 OnPoemList{
@@ -276,7 +276,7 @@ OnPoemTitle{
 		_txt += '作者：' + _poemtitle[2,':'] + '\n[150]\w9'
 	}
 	_txt += _poem + '\_q\n\n' + _poemtips
-	_txt += "\n\n\n\q[◇返回上一层,%(reference1)]\n\q[◇终了,OnPoemEnd]"
+	_txt += "\n[300]\q[◇返回上一层,%(reference1)]\n\q[◇终了,OnPoemEnd]"
 	_txt
 }
 OnSearchPoem{

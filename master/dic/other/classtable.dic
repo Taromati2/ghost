@@ -28,7 +28,7 @@ ClassTable{
 	_times = 0
 	_txt =''
 	_title = ''
-	_classtxt = '\n\n\n\n\n[150]'
+	_classtxt = '\n[550]'
 	_tempclassdata = '<无>'
 	_tempclassdetail = '<无>'
 	_button1 = '添加'

@@ -502,7 +502,7 @@ OnBuyLinkSeed{//种子购买
 	_txt+="生命数:%(LinkWndLife)  种子数:%(LinkWndSeed)\n"
 	_txt+='\0\s[40]种子可以金钱来购买，价格是10粒/1000金钱，种子数量超过3能自动转换为生命，要购买多少种子呢？\n'
 	_txt+='\q[◇10,OnBuyLinkSeed,buy,1000,10]  \q[◇20,OnBuyLinkSeed,buy,2000,20]  \q[◇40,OnBuyLinkSeed,buy,4000,40]  \q[◇50,OnBuyLinkSeed,buy,5000,50]  \q[◇60,OnBuyLinkSeed,buy,6000,60]  \q[◇80,OnBuyLinkSeed,buy,8000,80]  \q[◇100,OnBuyLinkSeed,buy,10000,100]\n'
-	_txt+='\n\n\n\n\q[◇返回,OnDrawLinkWnd]'
+	_txt+='\n[400]\q[◇返回,OnDrawLinkWnd]'
 	_txt
 }
 OnLinkWndOption{//设定

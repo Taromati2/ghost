@@ -209,7 +209,7 @@ KikkaTalkToUser{
 				--
 				if !InAIGhostReply{
 					if !chatroom
-						'\0\_q\n\n\n\n\n'
+						'\0\_q\n[500]'
 					--
 					"这是橘花试着回答的,如果不恰当,\n请%(username)告诉橘花怎么回答哦~"
 					--

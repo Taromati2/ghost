@@ -617,8 +617,8 @@ ColorBar{
 Ongiftbox{
 	"■礼物盒子■\n[150]/
 	\q[◇%(username)的礼物盒子,Onusergift]\n/
-	\q[◇橘花的礼物盒子,Onkikkagift]\n/
-	\n\n\n\n\n\q[◇返回,OnOpenMenu,0]\n/
+	\q[◇橘花的礼物盒子,Onkikkagift]\n[600]/
+	\q[◇返回,OnOpenMenu,0]\n/
 	"
 }
 Onusergift{
@@ -639,7 +639,7 @@ Onusergift{
 	foreach Useriteminfo;_i{
 		_txt += _i + '\n'
 	}
-	_txt += '\n\n\n\q[◇返回,OnOpenMenu,0]'
+	_txt += '\n[300]\q[◇返回,OnOpenMenu,0]'
 	_txt
 }
 Onkikkagift{

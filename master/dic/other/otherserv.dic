@@ -429,7 +429,7 @@ Select.closetouch{
 	\q[◇拉拉手,leadhand]\n/
 	\q[◇亲亲,kiss]\n/
 	\q[◇抱抱,hug]\n/
-	\n\n\n\q[◇返回上一层,OnOpenMenu,1]'
+	\n[300]\q[◇返回上一层,OnOpenMenu,1]'
 }
 Select.headtouch{
 	headtouchnum += 1

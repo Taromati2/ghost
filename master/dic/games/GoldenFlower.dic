@@ -65,7 +65,7 @@ OnCardHelp{
 	豹子、金花、对子、单张的比较，按照顺序比点的规则比较大小。\n/
 	顺金、顺子按照顺序比点。 AKQ>A23>KQJ>QJ10 。\n/
 	特殊牌型在普通时比较大小按单张牌型来算。当豹子存在时，特殊牌型 > 豹子\n'
-	_txt+='\n\n\n\n\q[◇返回,OnGoldenFlowerInit]'
+	_txt+='\n[400]\q[◇返回,OnGoldenFlowerInit]'
 	_txt
 }
 OnGoldenFlowerInit{
@@ -520,7 +520,7 @@ OnCardCharge{
 	\q[◇10000,OnCardCharge,charge,10000] \q[◇20000,OnCardCharge,charge,20000] \q[◇40000,OnCardCharge,charge,40000]\n/
 	\q[◇50000,OnCardCharge,charge,50000] \q[◇60000,OnCardCharge,charge,60000] \q[◇80000,OnCardCharge,charge,80000]\n/
 	\q[◇100000,OnCardCharge,charge,100000]\n'
-	_txt+='\n\n\n\q[◇返回,OnGoldenFlowerInit]'
+	_txt+='\n[300]\q[◇返回,OnGoldenFlowerInit]'
 	_txt
 }
 OnCoinChange{
@@ -537,7 +537,7 @@ OnCoinChange{
 	_txt+=ShowMoney + "    金币：%(usercoin)\n"
 	_txt+='把金币兑换成金钱，请输入兑换金额：\n/
 	\q[◇10000,OnCoinChange,change,10000] \q[◇20000,OnCoinChange,change,20000]  \q[◇40000,OnCoinChange,change,40000]  \q[◇50000,OnCoinChange,change,50000]  \q[◇60000,OnCoinChange,change,60000]  \q[◇80000,OnCoinChange,change,80000]  \q[◇100000,OnCoinChange,change,100000]\n'
-	_txt+='\n\n\n\n\q[◇返回,OnGoldenFlowerInit]'
+	_txt+='\n[400]\q[◇返回,OnGoldenFlowerInit]'
 	_txt
 }
 OnCardGameOver{

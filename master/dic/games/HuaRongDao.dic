@@ -52,7 +52,7 @@ OnHuaRongDaoOption{
 		HuaRongDao.BackGroundConfing = reference1
 	"\C\![quicksession,true]\c\![set,choicetimeout,0]\b[2]\n/
 	游戏界面：当前为%(',水墨风格,木子风格'[HuaRongDao.BackGroundConfing])\n\q[◇水墨风格,OnHuaRongDaoOption,UI,1]    \q[◇木子风格,OnHuaRongDaoOption,UI,2]\n/
-	\n\n\n\n\q[◇返回,OnDrawHuaRongRole]  \q[◇终了,OnHuaRongDaoGameOver]"
+	\n[400]\q[◇返回,OnDrawHuaRongRole]  \q[◇终了,OnHuaRongDaoGameOver]"
 }
 OnHuaRongDaoHelp{
 	'\C\![quicksession,true]\c\![set,choicetimeout,0]\b[2]/
@@ -66,7 +66,7 @@ OnHuaRongDaoHelp{
 	5.H键打开帮助\n/
 	6.L键上一关卡\n/
 	7.N键下一关卡\n/
-	\n\n\n\n\q[◇返回,OnDrawHuaRongRole]  \q[◇终了,OnHuaRongDaoGameOver]'
+	\n[400]\q[◇返回,OnDrawHuaRongRole]  \q[◇终了,OnHuaRongDaoGameOver]'
 }
 OnHRDLastGame{
 	if playLevel==1

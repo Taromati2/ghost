@@ -2191,7 +2191,7 @@ Onacjeachday{
 	_txt = '\C\_q\c\b[2]\![quicksession,true]\![set,choicetimeout,0]\![set,autoscroll,false] '
 	_txt+='\q[◇今天的句子,Ondaysentence]\n'
 	_txt+=Onautojeachday
-	_txt+='\n\n\n'
+	_txt+='\n[300]'
 	FCHARSET(1)
 	if FOPEN(_file, 'r') {
 		_buff = FREAD(_file)
@@ -2218,7 +2218,7 @@ Onacjeachday{
 	elseif _i>1{
 		_txt +=  "\_l[-,250]\n\n\![*]\q[上一句,Onlastsentence,%(_i)]\_l[120,-]\![*]\q[第%(_i)句,Oninputsentence,%(_i)]\_l[240,-]\![*]\q[下一句,Onnextsentence,%(_i)]"
 	}
-	_txt += '\n\n\n\q[◇返回上一层,japanesestudy]\n\q[◇终了,OnOpenMenu,1]'
+	_txt += '\n[300]\q[◇返回上一层,japanesestudy]\n\q[◇终了,OnOpenMenu,1]'
 	_txt
 }
 Oninputsentence{

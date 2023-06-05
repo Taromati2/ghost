@@ -292,7 +292,7 @@ OnBoot.aboutTime{
 	Lunartime
 	if lunardata[5] == '五' && lunardata[6] == '初五'{
 		if giftmode!=1{
-			"\1\s[10]\0\s[28]那个…\w9\w9\n我为%(username)买了点东西。\n\n\n\q[◇打开看看,Ongift,2]"
+			"\1\s[10]\0\s[28]那个…\w9\w9\n我为%(username)买了点东西。\n[300]\q[◇打开看看,Ongift,2]"
 		}
 		else{
 			"\1\s[10]\0\s[40]啊、\w9%(username)。\w9\w9那个…\w9\w9\n我包了一些粽子、\w9\w9\n如果可以的话请尝尝看。\x\s[20]不知%(username)喜欢甜的咸的还是喜欢辣的，\w9\w9\s[5]所以橘花就做成又甜又咸又辣的口味。\w9\w9\1\s[10]怪味？"
@@ -317,7 +317,7 @@ OnBoot.aboutTime{
 	}
 	elseif month == 1 && day == 1{
 		if giftmode!=1{
-			"\1\s[10]\0\s[28]今天是新年的第一天，橘花为%(username)包了礼物。\n\n\n\q[◇打开看看,Ongift,0]"
+			"\1\s[10]\0\s[28]今天是新年的第一天，橘花为%(username)包了礼物。\n[300]\q[◇打开看看,Ongift,0]"
 		}
 		else{
 			'\1\s[10]\0\s[2]新年快乐！うれしい！\w8\w8\1\s[10]恭喜。\w8\w8\0\s[5]\n[150]今年也请多多指教。'
@@ -328,7 +328,7 @@ OnBoot.aboutTime{
 	}
 	elseif month == 2 && day == 14{
 		if giftmode!=1{
-			"\1\s[10]\0\s[28]那个…\w9\w9\n我为%(username)买了点东西。\n\n\n\q[◇打开看看,Ongift,1]"
+			"\1\s[10]\0\s[28]那个…\w9\w9\n我为%(username)买了点东西。\n[300]\q[◇打开看看,Ongift,1]"
 		}
 		else{
 			"\1\s[10]\0\s[40]啊、\w9%(username)。\w9\w9\n[150]\s[28]那个…\w9\w9\n我烤了一点饼干、\w9\w9\n如果可以的话请尝尝看。"
@@ -424,7 +424,7 @@ OnBoot.aboutTime{
 	}
 	elseif month == 11 && day == 11{
 		if giftmode!=1{
-			"\1\s[10]\0\s[28]那个…\w9\w9\n我为%(username)买了点东西。\n\n\n\q[◇打开看看,Ongift,6]"
+			"\1\s[10]\0\s[28]那个…\w9\w9\n我为%(username)买了点东西。\n[300]\q[◇打开看看,Ongift,6]"
 		}
 		else{
 			"\1\s[10]\0\s[40]啊、\w9%(username)。\w9\w9\n[150]\s[28]那个…\w9\w9\n我烤了一点饼干、\w9\w9\n如果可以的话请尝尝看。"
@@ -434,7 +434,7 @@ OnBoot.aboutTime{
 	}
 	elseif year-firstboottime[0]>0&&month == firstboottime[1] && day == firstboottime[2]{//周年日
 		if giftmode!=1{
-			"\1\s[10]\0\s[28]那个…\w9\w9\n我为%(username)买了点东西。\n\n\n\q[◇打开看看,Ongift,7]"
+			"\1\s[10]\0\s[28]那个…\w9\w9\n我为%(username)买了点东西。\n[300]\q[◇打开看看,Ongift,7]"
 		}
 		else{
 			"\1\s[10]\0\s[40]啊、\w9%(username)。\w9\w9\n[150]\s[28]那个…\w9\w9\n我烤了一点饼干、\w9\w9\n如果可以的话请尝尝看。"

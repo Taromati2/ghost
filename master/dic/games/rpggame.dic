@@ -676,12 +676,12 @@ Onusemagic{
 			"给谁使用\n/
 			\q[◇橘花,Onkikka0,%(reference0),%(reference1),%(reference2),%(reference3),%(reference4),%(reference5),%(reference6)]\n/
 			\q[◇斗和,Ontowa0,%(reference0),%(reference1),%(reference2),%(reference3),%(reference4),%(reference5),%(reference6)]\n/
-			\n\n\n\n\q[◇返回,Onbackusemagic0]"
+			\n[400]\q[◇返回,Onbackusemagic0]"
 		else
 			"给谁使用\n/
 			\q[◇橘花,Onkikka1,%(reference0),%(reference1),%(reference2),%(reference3),%(reference4),%(reference5),%(reference6)]\n/
 			\q[◇斗和,Ontowa1,%(reference0),%(reference1),%(reference2),%(reference3),%(reference4),%(reference5),%(reference6)]\n/
-			\n\n\n\n\q[◇返回,Onbackusemagic1]"
+			\n[400]\q[◇返回,Onbackusemagic1]"
 	}
 	elseif (reference2=='回复'||reference2=='辅助') && reference3=='复体'{
 		if !target
@@ -2137,11 +2137,11 @@ Onsellnum{
 		\q[◇不用了,Onsellnum,%(物品种类),%(物品代码),%(物品名称),%(物品价格),no]"
 	}
 	elseif reference4=='yes'
-		'请输入卖出数量\n\![open,inputbox,Onsell]\n\n\n\q[◇取消,cancelshop]'
+		'请输入卖出数量\n\![open,inputbox,Onsell]\n[300]\q[◇取消,cancelshop]'
 	elseif reference4=='no'
 		OpenRpgGameMenu(4)
 	else
-		'请输入卖出数量\n\![open,inputbox,Onsell]\n\n\n\q[◇取消,cancelshop]'
+		'请输入卖出数量\n\![open,inputbox,Onsell]\n[300]\q[◇取消,cancelshop]'
 }
 Select.cancelshop{
 	OpenRpgGameMenu(4)
@@ -3081,7 +3081,7 @@ Select.spattack0{
 			_txt += "\_l[0,-]%(_i[1])     \_l[90,-]%(_i[2])   \_l[130,-]%(_i[3])   \_l[170,-]%(_i[5])  \_l[210,-]%(_i[6]) \_l[260,-]\q[◇使用,Onusesp0,%(_i[1]),%(_i[2]),%(_i[3]),%(_i[4]),%(_i[5]),%(_i[6]),%(_i[7])]\n"
 		}
 	}
-	_txt+='\n\n\n\n\n\q[◇返回,Onbattleselect0]'
+	_txt+='\n[500]\q[◇返回,Onbattleselect0]'
 	_txt
 	--
 	battleinfo
@@ -3094,7 +3094,7 @@ Select.spattack1{
 			_txt += "\_l[0,-]%(_i[1])     \_l[90,-]%(_i[2])   \_l[130,-]%(_i[3])   \_l[170,-]%(_i[5])  \_l[210,-]%(_i[6]) \_l[260,-]\q[◇使用,Onusesp1,%(_i[1]),%(_i[2]),%(_i[3]),%(_i[4]),%(_i[5]),%(_i[6]),%(_i[7])]\n"
 		}
 	}
-	_txt+='\n\n\n\n\n\q[◇返回,Onbattleselect1]'
+	_txt+='\n[500]\q[◇返回,Onbattleselect1]'
 	_txt
 	--
 	battleinfo
@@ -3357,7 +3357,7 @@ Select.beastsp{
 	\__q[Onusebeastsp,4,20]噬血诅咒：攻击时给予对方的伤害翻倍，有效一回合，消耗CP20\__q\n/
 	\__q[Onusebeastsp,5,100]牺牲：用自身HP的50%换取敌方HP的50%，消耗CP100\__q\n/
 	\__q[Onusebeastsp,6,50]偷取：偷取对方20%的HP。消耗CP50\n/
-	\n\n\n\n\q[◇返回,Onbattleselect1]\n/
+	\n[400]\q[◇返回,Onbattleselect1]\n/
 	"
 }
 Onusebeastsp{
@@ -3509,7 +3509,7 @@ Select.item0{
 			_txt += "\f[color,165,203,214]\_l[0,-]%(_i[2]) \_l[80,-]%(_i[5])\f[color,default]  \f[color,231,171,109]\_l[155,-]%(_i[4])\f[color,default]   \_l[210,-]%(_i[3]) \_l[260,-] \q[◇使用,Onuseitemselect0,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[5])]\n"
 		}
 	}
-	_txt+='\n\n\n\n\q[◇返回,Onbattleselect0]'
+	_txt+='\n[400]\q[◇返回,Onbattleselect0]'
 	_txt
 	--
 	battleinfo
@@ -3528,7 +3528,7 @@ Select.item1{
 			_txt += "\f[color,165,203,214]\_l[0,-]%(_i[2]) \_l[80,-]%(_i[5])\f[color,default]  \f[color,231,171,109]\_l[155-]%(_i[4])\f[color,default]  \_l[210,-]%(_i[3]) \_l[260,-] \q[◇使用,Onuseitemselect1,%(_i[0]),%(_i[1]),%(_i[2]),%(_i[5])]\n"
 		}
 	}
-	_txt+='\n\n\n\n\q[◇返回,Onbattleselect1]'
+	_txt+='\n[400]\q[◇返回,Onbattleselect1]'
 	_txt
 	--
 	battleinfo

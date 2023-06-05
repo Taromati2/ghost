@@ -122,8 +122,7 @@ Select.BirthdayMode{
 }
 OnBirthdayMode{
 	BirthdayMode=reference0
-	'\0\s[5]嗯嗯,设置完毕了哦~\n/
-	\n\n\n\q[◇返回,birthday]'
+	'\0\s[5]嗯嗯,设置完毕了哦~\n[400]\q[◇返回,birthday]'
 }
 Onlunarbirth{
 	_y=_argv[0]
@@ -263,8 +262,8 @@ Onfriendbirthday{
 	//_txt='\b[2]\![quicksession,1]\![set,choicetimeout,0]'
 	"橘花能记住%(username)20位好友的生日哦\n[150]/
 	\q[◇新建好友,OnFriendBirthDay.Creat]\n/
-	\q[◇查看好友,OnFriendBirthDay.Inform]\n/
-	\n\n\n\n\n\q[◇返回上一层,birthday]     \q[◇结束,Cancel]"
+	\q[◇查看好友,OnFriendBirthDay.Inform]\n[600]/
+	\q[◇返回上一层,birthday]     \q[◇结束,Cancel]"
 	if !FriendBirthDay.IDmax
 		FriendBirthDay.IDmax=0
 }
@@ -388,7 +387,7 @@ BirthDay.BootRemind{
 		nextbirthday=NextBirthDay(birthday[0],birthday[1],birthday[2])
 	}
 	if nextbirthday && year == nextbirthday[0] && month == nextbirthday[1] && day == nextbirthday[2] && birthdaygiftmode != 1{
-		"\0\s[28]今天是%(username)%(TOINT(nextbirthday[0]) - birthday[0])岁生日，橘花给%(username)准备了礼物\n\n\n\q[◇打开看看,birthdaygift]"
+		"\0\s[28]今天是%(username)%(TOINT(nextbirthday[0]) - birthday[0])岁生日，橘花给%(username)准备了礼物\n[300]\q[◇打开看看,birthdaygift]"
 		--
 		'\n\x'
 	}
@@ -522,7 +521,7 @@ OnGhostBackup{
 	\q[◇数据库备份,OnBackup,deb]\n/
 	\q[◇记忆备份,OnBackup,mem]\n[150]/
 	\q[◇导入备份,OnBackupLeadMenu]\n/
-	\n\n\n\n\n\q[◇返回,OnSecondWatchBack]  \q[◇终了,OnGhostBakeOver]'
+	\n[500]\q[◇返回,OnSecondWatchBack]  \q[◇终了,OnGhostBakeOver]'
 	_txt
 }
 OnBackup.DicFileViewer{
@@ -629,7 +628,7 @@ OnBackupLeadMenu{
 	该状态下记忆备份导入暂不可用\n/
 	\q[◇导入辞书备份,OnBackupLead,dic]\n[150]/
 	\q[◇导入数据库备份,OnBackupLead,deb]\n[150]/
-	\n\n\n\n\n\q[◇返回,OnGhostBackup]  \q[◇终了,OnGhostBakeOver]'
+	\n[500]\q[◇返回,OnGhostBackup]  \q[◇终了,OnGhostBakeOver]'
 	_txt
 }
 OnBackupLead{
@@ -764,7 +763,7 @@ CalculatorShow{
 		if carry==_carryindex[_i]
 			_carry[_i]='◇'
 	}
-	_txt+="\_l[0,0]\n\n\n\q[%(_carry[0])十六进制,OnCalculate,carry,16] \_l[55,-]\q[%(_carry[1])十进制,OnCalculate,carry,10]  \_l[110,-]\q[%(_carry[2])八进制,OnCalculate,carry,8]  \_l[165,-]\q[%(_carry[3])二进制,OnCalculate,carry,2]    \_l[220,-]\q[◇退出计算器,OnCalculateExit]\n\n[25]"
+	_txt+="\_l[0,0]\n[300]\q[%(_carry[0])十六进制,OnCalculate,carry,16] \_l[55,-]\q[%(_carry[1])十进制,OnCalculate,carry,10]  \_l[110,-]\q[%(_carry[2])八进制,OnCalculate,carry,8]  \_l[165,-]\q[%(_carry[3])二进制,OnCalculate,carry,2]    \_l[220,-]\q[◇退出计算器,OnCalculateExit]\n\n[25]"
 	_num=('A','B','C','D','E','F')
 	_func=("D°M'S")
 	_radio=('','◇')
@@ -3201,7 +3200,7 @@ OnKikkaKnowl.ShowFile{
 			_txt+='◇'+_n+'.'+_i+'\n'
 		_n++
 	}
-	_txt+="\n\n\n\n\q[◇返回,OnKikkaKnowl.SelectFile,%(_file),%(_j)]"
+	_txt+="\n[400]\q[◇返回,OnKikkaKnowl.SelectFile,%(_file),%(_j)]"
 	knowltemp="OnKikkaKnowl.ShowFile('%(_file)',%(_j),'%(_Q)')"
 	_txt
 }

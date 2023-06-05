@@ -136,7 +136,7 @@ OnUserDatabase.Create{
 	case EXT_InputState {
 		when 'NewTable' {
 			EXT_NewTable = reference0
-			_txt += '请输入资料表的栏位名称，\n若有复数的栏位时，请以小写逗号区隔。\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/
+			_txt += '请输入资料表的栏位名称，\n若有复数的栏位时，请以小写逗号区隔。\n[2000]/
 			\![open,inputbox,OnUserDatabase.Create]/
 			\n\q[◇返回上一层,OnUserDatabase,Return]\q[◇结束,OnCloseDatabase]\_q'
 			EXT_InputState = 'NewColumn'
@@ -154,13 +154,13 @@ OnUserDatabase.Create{
 			}
 			else {
 				_txt += '已新增资料表。\n\n/
-				\q[◇继续新增,OnUserDatabase.Create]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/
+				\q[◇继续新增,OnUserDatabase.Create]\n[1800]/
 				\n\q[◇返回上一层,OnUserDatabase,Return]\q[◇结束,OnCloseDatabase]\_q'
 			}
 			EXT_InputState = ''
 		}
 		others {
-			_txt += '请输入新资料表的名称。\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/
+			_txt += '请输入新资料表的名称。\n[2100]/
 			\![open,inputbox,OnUserDatabase.Create]/
 			\n\q[◇返回上一层,OnUserDatabase,Return]\q[◇结束,OnCloseDatabase]\_q'
 			EXT_InputState = 'NewTable'
@@ -173,7 +173,7 @@ OnUserDatabase.Rename{
 	case EXT_InputState {
 		when 'NewName' {
 			EXT_RenameingTable = reference0
-			_txt += '请输入资料表的新名称。\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/
+			_txt += '请输入资料表的新名称。\n[2100]/
 			\![open,inputbox,OnUserDatabase.Rename]/
 			\n\q[◇返回上一层,OnUserDatabase,Return]\q[◇结束,OnCloseDatabase]\_q'
 			EXT_InputState = 'RenameNow'
@@ -182,11 +182,11 @@ OnUserDatabase.Rename{
 			_res = SQLite.Rename(EXT_RenameingTable,reference0)
 			if _res == -1 {
 				_txt += "ERROR发生。\n/
-				原因：%(valueex0)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/
+				原因：%(valueex0)\n[1800]/
 				\n\q[◇返回上一层,OnUserDatabase,Return]\q[◇结束,OnCloseDatabase]\_q"
 			}
 			else {
-				_txt += '已重命名资料表。\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/
+				_txt += '已重命名资料表。\n[2000]/
 				\n\q[◇返回上一层,OnUserDatabase,Return]\q[◇结束,OnCloseDatabase]\_q'
 			}
 			EXT_InputState = ''
@@ -224,7 +224,7 @@ OnUserDatabase.Drop{
 		确定要删除吗？\n\n/
 		\q[◇是的,OnUserDatabase.Drop,%(reference0),checked]\n/
 		\q[◇取消,OnUserDatabase.Drop]\n/
-		\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/
+		\n[1700]/
 		\n\q[◇返回上一层,OnUserDatabase,Return]\q[◇结束,OnCloseDatabase]\_q"
 	}
 	else {
@@ -261,7 +261,7 @@ OnUserDatabase.Column.Drop{
 		确定要删除吗？\n\n/
 		\q[◇是的,OnUserDatabase.Column.Drop,checked]\n/
 		\q[◇取消,OnUserDatabase.Table,%EXT_SelectColumn,Column]\n/
-		\n\n\n\n\n\n\n\n\n\n\n\n\n/
+		\n[1300]/
 		\n\q[◇返回上一层,OnUserDatabase.Table,%EXT_SelectColumn,Column]\q[◇结束,OnCloseDatabase]\_q"
 	}
 	_txt
@@ -393,7 +393,7 @@ OnUserDatabase.Table{
 			}
 		}
 		_txt += "\n　\q[◇确定显示,OnUserDatabase.Table,%(EXT_SelectColumn),List]\n"
-		_txt += "\1已选择栏位：\n%(EXT_SelectColumn)\n\n\n\q[◇全部清除,OnUserDatabase.Table]\0"
+		_txt += "\1已选择栏位：\n%(EXT_SelectColumn)\n[300]\q[◇全部清除,OnUserDatabase.Table]\0"
 		for _i; _i < 9; _i++ {
 			_txt += '\n'
 		}
@@ -424,7 +424,7 @@ OnUserDatabase.Table.Insert{
 			EXT_InputState = 'InputInsert'
 			_txt += "错误发生。请确认是否输入了不支援的字元。\n%(_tmp)\n%(_value)%(valueex0)\n/
 			\q[◇修改资料,OnUserDatabase.Table.Insert]\n/
-			\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+			\n[1700]"
 			_txt += '\n\q[◇返回上一层,OnUserDatabase.Table,,Return]\q[◇结束,OnCloseDatabase]\_q'
 		}
 		else {
@@ -434,7 +434,7 @@ OnUserDatabase.Table.Insert{
 			是否要继续新增？\n\n/
 			\q[◇是,OnUserDatabase.Table.Insert]\n/
 			\q[◇否,OnUserDatabase.Table,,Return]\n/
-			\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+			\n[1400]"
 			_txt += '\n\q[◇返回上一层,OnUserDatabase.Table,,Return]\q[◇结束,OnCloseDatabase]\_q'
 		}
 	}
@@ -552,8 +552,7 @@ OnUserDatabase.Table.Update{
 	else {
 		EXT_InputState = 'SelectUpdateID'
 		EXT_SearchResult = OnUserDatabase.List(EXT_Table,'*')
-		_txt += '请输入想要更改的资料ID。\n\n/
-		\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
+		_txt += '请输入想要更改的资料ID。\n[2100]'
 		_txt += "\1\b[4]%(EXT_SearchResult)\0"
 		_txt += '\![open,inputbox,OnUserDatabase.Table.Update]'
 		_txt += '\n\q[◇返回上一层,OnUserDatabase.Table,,Return]\q[◇结束,OnCloseDatabase]\_q'
@@ -566,7 +565,7 @@ OnUserDatabase.Table.Delete{
 	if reference1 == 'checked' {
 		void SQLite.Delete(EXT_Table,"ID='%(EXT_DeleteID)'")
 		_txt += '已删除资料。\n\n/
-		\q[◇继续删除,OnUserDatabase.Table.Delete]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/
+		\q[◇继续删除,OnUserDatabase.Table.Delete]\n[2000]/
 		\n\q[◇返回上一层,OnUserDatabase.Table,,Return]\q[◇结束,OnCloseDatabase]\_q'
 	}
 	elseif reference0 {
@@ -585,8 +584,7 @@ OnUserDatabase.Table.Delete{
 	}
 	else {
 		EXT_SearchResult = OnUserDatabase.List(EXT_Table,'*')
-		_txt += '请输入想要删除的资料ID。\n\n/
-		\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
+		_txt += '请输入想要删除的资料ID。\n[2100]'
 		_txt += "\1\b[4]%(EXT_SearchResult)\0"
 		_txt += '\![open,inputbox,OnUserDatabase.Table.Delete]'
 		_txt += '\n\q[◇返回上一层,OnUserDatabase.Table,,Return]\q[◇结束,OnCloseDatabase]\_q'

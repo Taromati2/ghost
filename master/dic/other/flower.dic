@@ -60,17 +60,17 @@ OnBirthdayFlower{
 			_txt += FREAD(_file) + '\n[150]' + FREAD(_file) + '\n[150]' + FREAD(_file) + '\n'
 		}
 	}
-	_txt += '\n\n\n\q[◇返回,OnBirthdayFlowerList]\n\q[◇终了,OnFlowerEnd]'
+	_txt += '\n[300]\q[◇返回,OnBirthdayFlowerList]\n\q[◇终了,OnFlowerEnd]'
 	_txt
 	FCLOSE(_file)
 }
 //花语
 //-----------------------------------------------
 FlowersMenu{
-	'\n\n[150]\q[◇返回,OnFlowers]\n\q[◇终了,OnFlowerEnd]'
+	'\n[250]\q[◇返回,OnFlowers]\n\q[◇终了,OnFlowerEnd]'
 }
 OnFlowers{
-	"\0\s[26]\b[2]%(username)觉得哪种花比较好呢？\n\n[150]/
+	"\0\s[26]\b[2]%(username)觉得哪种花比较好呢？\n[250]/
 	\q[◇玫瑰,OnMenuRose]\n/
 	\q[◇百合,OnMenuLily]\n/
 	\q[◇康乃馨,OnMenuCarnation]\n/
@@ -86,10 +86,10 @@ OnFlowers{
 	\q[◇石竹,OnMenuCP]\n/
 	\q[◇其他花,OnMenuOthers]\n"
 	--
-	'\n\n[150]\q[◇返回,OnOpenMenu,1]\n\q[◇终了,OnFlowerEnd]'
+	'\n[250]\q[◇返回,OnOpenMenu,1]\n\q[◇终了,OnFlowerEnd]'
 }
 OnMenuRose{
-	'\0\s[20]\b[2]玫瑰的话,\w9有很多种的样子。\w9\n\n[150]/
+	'\0\s[20]\b[2]玫瑰的话,\w9有很多种的样子。\w9\n[250]/
 	\q[◇玫瑰,OnFlowerRose,0]\n/
 	\q[◇玫瑰（黑）,OnFlowerRose,1]\n/
 	\q[◇玫瑰（红）,OnFlowerRose,2]\n/
@@ -104,7 +104,7 @@ OnMenuRose{
 	FlowersMenu
 }
 OnMenuLily{
-	'\0\s[20]\b[2]百合的话,\w9有很多种的样子。\w9\n\n[150]/
+	'\0\s[20]\b[2]百合的话,\w9有很多种的样子。\w9\n[250]/
 	\q[◇百合,OnFlowerLily,0]\n/
 	\q[◇百合（香水）,OnFlowerLily,1]\n/
 	\q[◇百合（白）,OnFlowerLily,2]\n/
@@ -119,7 +119,7 @@ OnMenuLily{
 	FlowersMenu
 }
 OnMenuCarnation{
-	'\0\s[20]\b[2]康乃馨的话,\w9有很多种的样子。\w9\n\n[150]/
+	'\0\s[20]\b[2]康乃馨的话,\w9有很多种的样子。\w9\n[250]/
 	\q[◇康乃馨,OnFlowerCarnation,0]\n/
 	\q[◇康乃馨（红）,OnFlowerCarnation,1]\n/
 	\q[◇康乃馨（粉红）,OnFlowerCarnation,2]\n/
@@ -128,7 +128,7 @@ OnMenuCarnation{
 	FlowersMenu
 }
 OnMenuTulip{
-	'\0\s[20]\b[2]郁金香的话,\w9有很多种的样子。\w9\n\n[150]/
+	'\0\s[20]\b[2]郁金香的话,\w9有很多种的样子。\w9\n[250]/
 	\q[◇郁金香,OnFlowerTulip,0]\n/
 	\q[◇郁金香（红）,OnFlowerTulip,1]\n/
 	\q[◇郁金香（粉）,OnFlowerTulip,21]\n/
@@ -141,7 +141,7 @@ OnMenuTulip{
 	FlowersMenu
 }
 OnMenuLuce{
-	'\0\s[20]\b[2]鸢尾的话,\w9有很多种的样子。\w9\n\n[150]/
+	'\0\s[20]\b[2]鸢尾的话,\w9有很多种的样子。\w9\n[250]/
 	\q[◇鸢尾（爱丽斯）,OnFlowerLuce,0]\n/
 	\q[◇德国鸢尾,OnFlowerLuce,1]\n/
 	\q[◇小鸢尾,OnFlowerLuce,2]\n'
@@ -149,7 +149,7 @@ OnMenuLuce{
 	FlowersMenu
 }
 OnMenuNarcissus{
-	'\0\s[20]\b[2]水仙的话,\w9有很多种的样子。\w9\n\n[150]/
+	'\0\s[20]\b[2]水仙的话,\w9有很多种的样子。\w9\n[250]/
 	\q[◇中国水仙,OnFlowerNarcissus,0]\n/
 	\q[◇西洋水仙,OnFlowerNarcissus,1]\n/
 	\q[◇黄水仙,OnFlowerNarcissus,2]\n/
@@ -158,7 +158,7 @@ OnMenuNarcissus{
 	FlowersMenu
 }
 OnMenuChrysanthemum{
-	'\0\s[20]\b[2]菊花的话,\w9有很多种的样子。\w9\n\n[150]/
+	'\0\s[20]\b[2]菊花的话,\w9有很多种的样子。\w9\n[250]/
 	\q[◇菊花,OnFlowerChrysanthemum,0]\n/
 	\q[◇翠菊,OnFlowerChrysanthemum,1]\n/
 	\q[◇春菊,OnFlowerChrysanthemum,2]\n/
@@ -178,7 +178,7 @@ OnMenuChrysanthemum{
 	FlowersMenu
 }
 OnMenuHyacinth{
-	'\0\s[20]\b[2]风信子的话,\w9有很多种的样子。\w9\n\n[150]/
+	'\0\s[20]\b[2]风信子的话,\w9有很多种的样子。\w9\n[250]/
 	\q[◇风信子,OnFlowerHyacinth,0]\n/
 	\q[◇紫色风信子,OnFlowerHyacinth,1]\n/
 	\q[◇淡紫色风信子,OnFlowerHyacinth,2]\n/
@@ -193,7 +193,7 @@ OnMenuHyacinth{
 	FlowersMenu
 }
 OnMenuChoisy{
-	'\0\s[20]\b[2]牵牛花的话,\w9有很多种的样子。\w9\n\n[150]/
+	'\0\s[20]\b[2]牵牛花的话,\w9有很多种的样子。\w9\n[250]/
 	\q[◇牵牛花,OnFlowerChoisy,0]\n/
 	\q[◇矮牵牛,OnFlowerChoisy,1]\n/
 	\q[◇爱丽丝,OnFlowerChoisy,2]\n'
@@ -201,7 +201,7 @@ OnMenuChoisy{
 	FlowersMenu
 }
 OnMenuSakura{
-	'\0\s[20]\b[2]樱花的话,\w9有很多种的样子。\w9\n\n[150]/
+	'\0\s[20]\b[2]樱花的话,\w9有很多种的样子。\w9\n[250]/
 	\q[◇樱花,OnFlowerSakura,0]\n/
 	\q[◇山樱,OnFlowerSakura,1]\n/
 	\q[◇西洋樱花,OnFlowerSakura,2]\n/
@@ -213,7 +213,7 @@ OnMenuSakura{
 	FlowersMenu
 }
 OnMenuPoppy{
-	'\0\s[20]\b[2]虞美人的话,\w9有很多种的样子。\w9\n\n[150]/
+	'\0\s[20]\b[2]虞美人的话,\w9有很多种的样子。\w9\n[250]/
 	\q[◇虞美人,OnFlowerPoppy,0]\n/
 	\q[◇红色虞美人,OnFlowerPoppy,1]\n/
 	\q[◇白色虞美人,OnFlowerPoppy,2]\n/
@@ -223,14 +223,14 @@ OnMenuPoppy{
 	FlowersMenu
 }
 OnMenuKikyou{
-	'\0\s[20]\b[2]桔梗的话,\w9有很多种的样子。\w9\n\n[150]/
+	'\0\s[20]\b[2]桔梗的话,\w9有很多种的样子。\w9\n[250]/
 	\q[◇桔梗,OnFlowerKikyou,0]\n/
 	\q[◇丸叶桔梗 ,OnFlowerKikyou,1]\n'
 	--
 	FlowersMenu
 }
 OnMenuCP{
-	'\0\s[20]\b[2]石竹的话,\w9有很多种的样子。\w9\n\n[150]/
+	'\0\s[20]\b[2]石竹的话,\w9有很多种的样子。\w9\n[250]/
 	\q[◇石竹,OnFlowerCP,0]\n/
 	\q[◇丁香石竹,OnFlowerCP,1]\n/
 	\q[◇五彩石竹,OnFlowerCP,2]\n/
