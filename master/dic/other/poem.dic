@@ -183,7 +183,7 @@ OnverPoesywrite{
 	if Poesywriteerror==10 {
 		intimacy--
 		Poesywriteerror=0
-		"\0\s[1]\n[150]\n[150]\w9清空累计放弃次数, \w9%(username)请继续加油~"
+		"\0\s[1]\n[300]\w9清空累计放弃次数, \w9%(username)请继续加油~"
 	}
 }
 OnlatPoesywrite{
@@ -224,7 +224,7 @@ OnPoemList{
 		_line ++
 		_txt += '\q[◇' + _title + ',OnPoemTitle,' + _i + ',OnPoemList]' + SUBSTR(_blank, 0, 8 - _len)
 	}
-	_txt += "\n[150]\n\n共%(poemnum)首诗"
+	_txt += "\n[350]共%(poemnum)首诗"
 	_txt += '\n[150]\q[◇返回上一层,OnPoemMenu]\n\q[◇终了,OnPoemEnd]'
 	_txt
 }
@@ -333,8 +333,8 @@ OnPoemSearchDetail{
 			}
 		}
 	}
-	_txt += "\n[150]\n\n共找到%(_count)首符合条件的诗喔～"
-	_txt += '\n[150]\n\q[◇返回上一层,OnPoemMenu]\n\q[◇终了,OnPoemEnd]'
+	_txt += "\n[350]共找到%(_count)首符合条件的诗喔～"
+	_txt += '\n[250]\q[◇返回上一层,OnPoemMenu]\n\q[◇终了,OnPoemEnd]'
 	_txt
 	FCLOSE(_poemfile)
 }
@@ -362,8 +362,8 @@ OnPoemSearch{
 			_txt += '\q[◇' + _title + ',OnPoemTitle,' + _i + ',OnPoemSearch]' + SUBSTR(_blank, 0, 8 - _len)
 		}
 	}
-	_txt += "\n[150]\n\n共找到%(_count)首符合条件的诗喔～"
-	_txt += '\n[150]\n\q[◇返回上一层,OnPoemMenu]\n\q[◇终了,OnPoemEnd]'
+	_txt += "\n[350]共找到%(_count)首符合条件的诗喔～"
+	_txt += '\n[250]\q[◇返回上一层,OnPoemMenu]\n\q[◇终了,OnPoemEnd]'
 	_txt
 }
 OnPoemAnswer{//OnPoemAnswer('床前明月光')=='疑是地上霜'

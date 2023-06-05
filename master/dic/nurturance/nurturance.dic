@@ -289,7 +289,7 @@ KikkaStatusMain:all{
 	ColorText("\n[20]\_l[160,-]总经验：%(KikkaTotleExp(kikkalvl))","bold,color=%(ColorIdx(6))")
 	ColorText("\n等级：%(kikkalvl)","bold,height=16,name=Arial,color=%(ColorIdx(6))")
 	ColorText('\n[20]\_l[130,-]经验：',"bold,color=%(ColorIdx(3))") + ColorBar(3,175,kikkaexp,kikkaexpmax,,'colortxt=178')
-	ColorText("\n[half]\n\_l[0,-]生命值：%(hp0)/%(hpmax0)\_l[240]\q[◇任务,OnRpgGame,5]","bold,color=%(ColorIdx(6))") + ColorBar(6,130,hp0,hpmax0)
+	ColorText("\n[150]\_l[0,-]生命值：%(hp0)/%(hpmax0)\_l[240]\q[◇任务,OnRpgGame,5]","bold,color=%(ColorIdx(6))") + ColorBar(6,130,hp0,hpmax0)
 	ColorText("\n\_l[0,-]魔法值：%(ep0)/%(epmax0)\_l[240]\q[◇装备,OnRpgGame,1]","bold,color=%(ColorIdx(3))") + ColorBar(3,130,ep0,epmax0)
 	ColorText("\n\_l[0,-]战技值：%(cp0)/%(cpmax0)\_l[240]\q[◇交易,OnRpgGame,4]","bold,color=%(ColorIdx(9))") + ColorBar(9,130,cp0,cpmax0)
 	ColorText("\n\_l[0,-]身手：%(kikkapow)/%(kikkapowmax) \_l[240]\q[◇购物,OnKikkaItemList,0]","bold,color=%(ColorIdx(2))") + ColorBar(2,130,kikkapow,kikkapowmax)
@@ -303,12 +303,12 @@ KikkaStatusMain:all{
 	ColorText("\n\_l[0,-]物理防御：%(def0)	\_l[130,-]防具（体）：%(armor0)","bold,color=%(ColorIdx(3))")
 	ColorText("\n\_l[0,-]魔法攻击：%(ats0)	\_l[130,-]防具（脚）：%(boots0)","bold,color=%(ColorIdx(1))")
 	ColorText("\n\_l[0,-]魔法防御：%(adf0)	","bold,color=%(ColorIdx(1))")
-	ColorText("\n[half]\n\_l[0,-]金能量指数：%(SUBSTR(100*nurturance.Darkness/_Energy,0,5))%  \_l[134]腹黑度：%(nurturance.Darkness)  \_l[220]力量：%(nurturance.subvar.Strength)","bold,color=%(ColorIdx(4))")
+	ColorText("\n[150]\_l[0,-]金能量指数：%(SUBSTR(100*nurturance.Darkness/_Energy,0,5))%  \_l[134]腹黑度：%(nurturance.Darkness)  \_l[220]力量：%(nurturance.subvar.Strength)","bold,color=%(ColorIdx(4))")
 	ColorText("\n\_l[0,-]木能量指数：%(SUBSTR(100*nurturance.Dependency/_Energy,0,5))%  \_l[134]依赖度：%(nurturance.Dependency)  \_l[220]意志：%(nurturance.subvar.Willpower)","bold,color=%(ColorIdx(1))")
 	ColorText("\n\_l[0,-]水能量指数：%(SUBSTR(100*nurturance.Closeness/_Energy,0,5))%  \_l[134]亲密度：%(nurturance.Closeness)  \_l[220]智力：%(nurturance.subvar.Intelligence)","bold,color=%(ColorIdx(3))")
 	ColorText("\n\_l[0,-]火能量指数：%(SUBSTR(100*nurturance.Moeness/_Energy,0,5))%  \_l[134]萌度：%(nurturance.Moeness)\_l[220]敏捷：%(nurturance.subvar.Agile)","bold,color=%(ColorIdx(6))")
 	ColorText("\n\_l[0,-]土能量指数：%(SUBSTR(100*nurturance.Happiness/_Energy,0,5))%  \_l[134]幸福度：%(nurturance.Happiness)  \_l[220]幸运：%(nurturance.subvar.Luck)","bold,color=%(ColorIdx(9))")
-	ColorText("\n[half]\n\_l[0,-]金钱：%(money)       服装装量：%(HaveShellCount)","bold,color=%(ColorIdx(2))")
+	ColorText("\n[150]\_l[0,-]金钱：%(money)       服装装量：%(HaveShellCount)","bold,color=%(ColorIdx(2))")
 	ColorText("\n\_l[0,-]好感度：%(intimacy)      \q[◇对话装量,OnGetTalkCount]：%(talkcount)","bold,color=%(ColorIdx(6))")
 }
 OnGetTalkCount{
