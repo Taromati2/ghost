@@ -76,7 +76,7 @@ OnQuestAnswered{
 			'\0\s[26]别灰心！\w9'
 		}
 		--
-		'\0\n[150]\n[300]\q[◇重来,OnQuestBegin]\n[150]\q[◇返回上一层,OnOpenMenu,2]\n\q[◇终了,OnQuestEnd]\n\![set,choicetimeout,0]'
+		'\0\n[450]\q[◇重来,OnQuestBegin]\n[150]\q[◇返回上一层,OnOpenMenu,2]\n\q[◇终了,OnQuestEnd]\n\![set,choicetimeout,0]'
 	}
 }
 OnQuestEnd{
