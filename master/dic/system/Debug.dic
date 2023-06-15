@@ -139,24 +139,37 @@ Init.AnsiColors{
 Fin.ClearAnsiColors{
 	ERASEALLVARBEGINAS('ansi_')
 }
+RGBcolor.VirtualTerminalCoding{
+	CHR(27)+'[38;2;'+_argv[0]+';'+_argv[1]+';'+_argv[2]+'m'
+}
+SetDefaultTerminalColor{
+	GhostTerminal.SystemFunctionColor=ansi_green
+	GhostTerminal.UserFunctionColor=ansi_green
+	GhostTerminal.VariableColor=ansi_blue
+	GhostTerminal.StringColor=ansi_magenta
+	GhostTerminal.NumberColor=ansi_yellow
+	GhostTerminal.OperatorColor=ansi_cyan
+	GhostTerminal.NullColor=ansi_gray
+	GhostTerminal.ErrorColor=ansi_red
+}
 //用虚拟终端序列色彩化的ValueTOstring
 ValueTOstring.Coloured{
 	_type=_argv[_argc-1]
 	_argv[_argc-1]=IARRAY
 	if _argc > 2 || _type==4{
-		ansi_cyan
+		GhostTerminal.OperatorColor
 		--
 		_t='('
 		foreach _argv;_i{
-			_t+=ValueTOstring.Coloured(_i,0)+ansi_cyan+','
+			_t+=ValueTOstring.Coloured(_i,0)+GhostTerminal.OperatorColor+','
 		}
 		_t+=')'
-		RE_REPLACE(_t,'\,\)$',ansi_cyan+')')
+		RE_REPLACE(_t,'\,\)$',GhostTerminal.OperatorColor+')')
 		--
 		ansi_reset
 	}
 	elseif ISSTR(_argv[0]){
-		ansi_magenta
+		GhostTerminal.StringColor
 		--
 		if '"' !_in_ _argv[0]
 			'"'+_argv[0]+'"'
@@ -175,9 +188,9 @@ ValueTOstring.Coloured{
 		ansi_reset
 	}
 	elseif TOSTR(_argv[0])==''
-		ansi_white+'NULL'+ansi_reset
+		GhostTerminal.NullColor+'NULL'+ansi_reset
 	else
-		ansi_yellow+TOSTR(_argv[0])+ansi_reset
+		GhostTerminal.NumberColor+TOSTR(_argv[0])+ansi_reset
 }
 ValueTOstring.SakuraScript{
 	REPLACE(ValueTOstring(_argv),'\','\\')
@@ -190,12 +203,14 @@ ColorizeExpression{
 	_ret=''
 	while _i<_end{
 		_token=_tokens[_i]
-		if ISFUNC(_token)
-			_ret+=ansi_green+_token+ansi_reset
+		if ISFUNC(_token)==2
+			_ret+=GhostTerminal.SystemFunctionColor+_token+ansi_reset
+		elseif ISFUNC(_token)==1
+			_ret+=GhostTerminal.UserFunctionColor+_token+ansi_reset
 		elseif ISVAR(_token)
-			_ret+=ansi_blue+_token+ansi_reset
+			_ret+=GhostTerminal.VariableColor+_token+ansi_reset
 		elseif ISINTSTR(_token)||ISREALSTR(_token)
-			_ret+=ansi_yellow+_token+ansi_reset
+			_ret+=GhostTerminal.NumberColor+_token+ansi_reset
 		elseif _token=='('{
 			_count=1
 			_check=_i+1
@@ -214,9 +229,9 @@ ColorizeExpression{
 				_check++
 			}
 			if _has_right
-				_ret+=ansi_cyan+_token+ansi_reset
+				_ret+=GhostTerminal.OperatorColor+_token+ansi_reset
 			else
-				_ret+=ansi_red+_token+ansi_reset
+				_ret+=GhostTerminal.ErrorColor+_token+ansi_reset
 		}
 		elseif _token==')'{
 			_count=1
@@ -236,20 +251,20 @@ ColorizeExpression{
 				_check--
 			}
 			if _has_left
-				_ret+=ansi_cyan+_token+ansi_reset
+				_ret+=GhostTerminal.OperatorColor+_token+ansi_reset
 			else
-				_ret+=ansi_red+_token+ansi_reset
+				_ret+=GhostTerminal.ErrorColor+_token+ansi_reset
 		}
 		elseif RE_GREP(_token,'^\".*\"$')
-			_ret+=ansi_magenta+_token+ansi_reset
+			_ret+=GhostTerminal.StringColor+_token+ansi_reset
 		elseif RE_GREP(_token,"^\'.*\'$")
-			_ret+=ansi_magenta+_token+ansi_reset
+			_ret+=GhostTerminal.StringColor+_token+ansi_reset
 		elseif RE_GREP(_token,'[\+\-\*\/\%\&\|\^\~\!\=\<\>\?\:\,\(\)\[\]\{\}\;]')
-			_ret+=ansi_cyan+_token+ansi_reset
+			_ret+=GhostTerminal.OperatorColor+_token+ansi_reset
 		elseif RE_GREP(_token,'^[\w\d_\.]+$')
-			_ret+=ansi_white+_token+ansi_reset
+			_ret+=GhostTerminal.NullColor+_token+ansi_reset
 		else
-			_ret+=ansi_red+_token+ansi_reset
+			_ret+=GhostTerminal.ErrorColor+_token+ansi_reset
 		_i++
 	}
 	_ret
@@ -401,6 +416,8 @@ ShioriEcho.CustomLoginInfo{
 On_ShioriEcho.Begin {
 	if reference1=='Common'
 		SHIORI_FW.Make_X_SSTP_PassThru('CustomLoginInfo',ShioriEcho.CustomLoginInfo(reference.raw[0]))
+	if !GhostTerminal.NullColor
+		SetDefaultTerminalColor
 }
 On_ShioriEcho.GetName:void {
 	SHIORI_FW.Make_X_SSTP_PassThru('GhostName',ghostname)
