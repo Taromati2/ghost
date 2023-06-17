@@ -438,6 +438,9 @@ On_ShioriEcho {
 		when 'exit'{
 			ShioriEcho.Status='End'
 		}
+		when 'cls'{
+			ShioriEcho.Special=CHR(27)+'[f'+CHR(27)+'[2J'
+		}
 		others{
 			if RE_GREP(reference0,'^\s*(help|openfunc)\s+'){
 				if RE_GREP(reference0,'^\s*help\s+'){
@@ -502,7 +505,7 @@ On_ShioriEcho.TabPress{
 	_after=RE_REPLACE(_after,'^[a-zA-Z0-9._]+','')
 	_possible_names=IARRAY
 	if !reference0[1,' ']
-		_possible_names,=ARRAY.BeginAs(_lastname,'reload','errorlog','openfunc','help','exit')
+		_possible_names,=ARRAY.BeginAs(_lastname,'reload','errorlog','openfunc','help','exit','cls')
 	if reference0[0,' '] == 'help'
 		_possible_names=GETSYSTEMFUNCLIST(_lastname)
 	elseif reference0[0,' '] == 'openfunc'
