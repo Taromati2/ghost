@@ -437,7 +437,9 @@ GhostTerminal.GITinfo{
 	SETDELIM(_files,CHR(10))
 	_file_num=ARRAYSIZE(_files)
 	if _file_num>0
-		"%(ansi_red)(modified %(_file_num) file%(('','s')[_file_num>1]))%(ansi_reset)"
+		"%(ansi_red)(modified %(_file_num) file%(('','s')[_file_num>1]))"
+	--
+	ansi_reset
 }
 ShioriEcho.CustomLoginInfo{
 	"\n%(ansi_red)%(Taromati2.asciiArt)/
