@@ -259,7 +259,7 @@ ColorizeExpression{
 			_ret+=GhostTerminal.StringColor+_token+ansi_reset
 		elseif RE_GREP(_token,"^\'.*\'$")
 			_ret+=GhostTerminal.StringColor+_token+ansi_reset
-		elseif RE_GREP(_token,'[\+\-\*\/\%\&\|\^\~\!\=\<\>\?\:\,\(\)\[\]\{\}\;]')
+		elseif IsOperatorToken(_token)
 			_ret+=GhostTerminal.OperatorColor+_token+ansi_reset
 		elseif RE_GREP(_token,'^[\w\d_\.]+$')
 			_ret+=GhostTerminal.NullColor+_token+ansi_reset
@@ -324,17 +324,29 @@ TokenizeExpression{
 	}
 	_tokens
 }
+IsOperatorToken{
+	RE_GREP(_argv[0],'[\+\-\*\/\%\&\|\^\~\!\=\<\>\?\:\,\(\)\[\]\{\}\;]')
+}
+IsNumberToken{
+	ISINTSTR(_argv[0])||ISREALSTR(_argv[0])
+}
+IsStringToken{
+	RE_GREP(_argv[0],'^(\".*\"|\''.*\'')$')
+}
+IsSpaceToken{
+	RE_GREP(_argv[0],'^( |\t)$')
+}
 GetNamesInExpr{
 	_tokens=TokenizeExpression(_argv[0])
 	_names=IARRAY
 	foreach _tokens;_token{
-		if RE_GREP(_token,'^\".*\"$')
+		if IsStringToken(_token)
 			do_nothing
-		elseif RE_GREP(_token,"^\'.*\'$")
+		elseif IsOperatorToken(_token)
 			do_nothing
-		elseif RE_GREP(_token,'[\+\-\*\/\%\&\|\^\~\!\=\<\>\?\:\,\(\)\[\]\{\}\;\(\)]')
+		elseif IsNumberToken(_token)
 			do_nothing
-		elseif ISINTSTR(_token)||ISREALSTR(_token)
+		elseif IsSpaceToken(_token)
 			do_nothing
 		else
 			_names,= _token
