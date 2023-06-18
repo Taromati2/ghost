@@ -426,25 +426,26 @@ OnSakuraScript{
 OnSakuraScript.Forment{
 	OnSakuraScript(EVAL('"'+reference.raw[0]+'"'),'no_convert')
 }
-
+GhostTerminal.GITinfo{
+	_uuid=git.GetCommitID
+	if _uuid!=0
+		"%(ansi_green)git commit %(ansi_cyan)%(_uuid)"
+	else
+		"%(ansi_red)git commit unknown"
+	--
+	_files=RUNCMDEX('git status --porcelain')
+	SETDELIM(_files,CHR(10))
+	_file_num=ARRAYSIZE(_files)
+	if _file_num>0
+		"%(ansi_red)(modified %(_file_num) file%(('','s')[_file_num>1]))%(ansi_reset)"
+}
 ShioriEcho.CustomLoginInfo{
 	"\n%(ansi_red)%(Taromati2.asciiArt)/
 	%(ansi_yellow)Taromati2 %(ansi_green)internal ver %(ansi_cyan)%(VERSION) /
 	%(ansi_green)build date %(ansi_cyan)LAST_BUILD_TIME.YEAR.LAST_BUILD_TIME.MOUNTH"
 	--
-	if GHOST.IsGitPath{
-		_uuid=git.GetCommitID
-		if _uuid!=0
-			" %(ansi_green)git commit %(ansi_cyan)%(_uuid)"
-		else
-			" %(ansi_red)git commit unknown"
-		--
-		_files=RUNCMDEX('git status --porcelain')
-		SETDELIM(_files,CHR(10))
-		_file_num=ARRAYSIZE(_files)
-		if _file_num>0
-			"%(ansi_red)(modified %(_file_num) file%(('','s')[_file_num>1]))"
-	}
+	if GHOST.IsGitPath
+		' '+GhostTerminal.GITinfo
 	--
 	"\n/
 	%(ansi_yellow)ghost terminal %(ansi_green)ver %(ansi_cyan)%(_argv[0]) /
