@@ -324,6 +324,32 @@ TokenizeExpression{
 	}
 	_tokens
 }
+GetNamesInExpr{
+	_tokens=TokenizeExpression(_argv[0])
+	_names=IARRAY
+	foreach _tokens;_token{
+		if RE_GREP(_token,'^\".*\"$')
+			do_nothing
+		elseif RE_GREP(_token,"^\'.*\'$")
+			do_nothing
+		elseif RE_GREP(_token,'[\+\-\*\/\%\&\|\^\~\!\=\<\>\?\:\,\(\)\[\]\{\}\;\(\)]')
+			do_nothing
+		elseif ISINTSTR(_token)||ISREALSTR(_token)
+			do_nothing
+		else
+			_names,= _token
+	}
+	_names
+}
+HasNotDefinedNameInExpr{
+	_names=GetNamesInExpr(_argv[0])
+	foreach _names;_name{
+		if !ISFUNC(_name)&&!ISVAR(_name)&&!ISGLOBALDEFINE(_name){
+			_name
+			break
+		}
+	}
+}
 GetVarValue{
 	EVAL(_argv[0])
 }
@@ -599,13 +625,15 @@ OnCalculateVar{
 						'\0\s[3]这个\w9…\w9…\s[8]\n不是可行的表达式啊\n'
 					return
 				}
-				elseif !ISVAR(_var) && !ISFUNC(_func) && GETTYPE(TOAUTOEX(_var)) == 3{
+				elseif (_t=HasNotDefinedNameInExpr(reference0))!=''{
 					if mode == '1'
 						"\1\s[%(specialmode != 'mealtime')10]没这个名字\n"
 					else
 						'\0\s[3]没有这个变量或函数……\n'
 					--
-					'/
+					_t
+					--
+					'\n/
 					\q[◇仍然执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',force_run]\n/
 					\q[◇改作Sakura Script执行,OnCalculateVar.ToSakuraScript,'+SakuraScriptArgConverter(reference0)+']\n/
 					\q[◇算了,Cancel,with_func,OnCalculateVar.Cancel]\n/
