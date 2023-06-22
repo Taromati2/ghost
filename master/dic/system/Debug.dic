@@ -612,7 +612,6 @@ OnCalculateVar{
 			'\![open,inputbox,OnCalculateVar,0,1000-7]'//玩梗
 		return
 	}
-	_var = RE_REPLACE(reference0,'\s*[\[,\+=\*\-/%][\s\S]*$','')
 	_func = RE_REPLACE(reference0,'\s*[\(\[][\s\S]*$','')
 	if reference1 != 'warning_func_run'{
 		if reference1 != 'no_defineprocess'{
