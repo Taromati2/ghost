@@ -88,9 +88,6 @@ VERSION_UPGRADE_0:void{
 	for _i=0;_i<30;_i++{
 		ERASEVAR('t'+_i)
 	}
-	for _i=0;_i!=250;_i++{
-		ERASEVAR('valueex'+_i)
-	}
 	VERSION_UPGRADE.NeedRec=1
 }
 VERSION_UPGRADE_1:void{

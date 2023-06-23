@@ -91,6 +91,11 @@ CALLSAORI {
 	_argv[0] = 'SAORI_PATH\'+_argv[0]
 	FUNCTIONEX(_argv)
 }
+CALLSAORI.get_row {
+	_argv[0] = 'SAORI_PATH\'+_argv[0]
+	FUNCTIONEX.row(_argv)
+}
+
 ClearAyaTempVar {
 	//保存する必要のない変数を削除
 
@@ -113,7 +118,9 @@ ClearAyaTempVar {
 	ERASEVAR('LIB.STATUSCODE')
 	ERASEVAR('var.lib.key')
 	ERASEVAR('var.lib.value')
+	ERASEVAR('var.lib.value.row')
 	ERASEVAR('var.lib.result')
+	ERASEVAR('var.lib.result.row')
 	ERASEVAR('SAORI.DllList')
 	ERASEVAR('ghostexlist')
 	ERASEVAR('ghostexcount')
@@ -211,7 +218,9 @@ load {
 
 	var.lib.key = IARRAY
 	var.lib.value = IARRAY
+	var.lib.value.row = IARRAY
 	var.lib.result = ''
+	var.lib.result.row = ''
 
 	//初回起動時の初期化
 	if !ISVAR('aitalkinterval') {
@@ -1273,6 +1282,10 @@ FUNCTIONEX {
 		var.lib.result
 	SHIORI_FW.MakeValueexVariable
 }
+FUNCTIONEX.row {
+	void FUNCTIONEX(_argv)
+	var.lib.result.row
+}
 
 //------------------------------------------------------------------------------
 //関数名：SHIORI_FW.SendGETVersion
@@ -1316,7 +1329,9 @@ SHIORI_FW.RequestLib {
 	//レスポンスヘッダの取得
 	var.lib.key		= IARRAY
 	var.lib.value	= IARRAY
+	var.lib.value.row = IARRAY
 	var.lib.result	= ''
+	var.lib.result.row = ''
 
 	_skip = 1
 	foreach _lines; _lin {
@@ -1349,8 +1364,10 @@ SHIORI_FW.RequestLib {
 			_valuecv = TOAUTOEX(_value)
 		}
 
+		var.lib.value.row,=_value
 		var.lib.value ,= _valuecv
 		if _key == 'Result' {
+			var.lib.result.row = _value
 			var.lib.result = _valuecv
 		}
 	}
@@ -1366,9 +1383,15 @@ SHIORI_FW.MakeValueexVariable:void {
 	_sz = ARRAYSIZE(var.lib.key)
 	for _i = 0; _i < _sz; _i++ {
 		if SUBSTR(_keyname = var.lib.key[_i], 0, 5) == 'Value' {
-			_varname = "valueex%(SUBSTR(_keyname, 5, 3))"
+			_valueindex=SUBSTR(_keyname, 5, 3)
+
+			_varname = 'valueex'+_valueindex
 			LETTONAME(_varname, var.lib.value[_i])
-			valueex[TOINT(SUBSTR(_keyname, 5, 3))] = var.lib.value[_i]
+			valueex[TOINT(_valueindex)] = var.lib.value[_i]
+
+			_varname = 'valueex'+_valueindex+'.row'
+			LETTONAME(_varname, var.lib.value.row[_i])
+			valueex.row[TOINT(_valueindex)] = var.lib.value.row[_i]
 		}
 	}
 }
@@ -1385,6 +1408,12 @@ SHIORI_FW.ClearValueexVariable {
 		}
 	}
 	ERASEVAR('valueex')
+	foreach _valueexList; _exname {
+		if RE_MATCH(_exname, 'valueex[0-9]+\.row') {
+			ERASEVAR(_exname)
+		}
+	}
+	ERASEVAR('valueex.row')
 }
 
 //------------------------------------------------------------------------------

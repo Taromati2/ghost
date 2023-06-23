@@ -41,6 +41,8 @@ local var = {
     "^res_reference$",
     "^valueex$",
     "^valueex%d+$",
+    "^valueex%.row$",
+    "^valueex%d+%.row$",
     "^NULL$",
   },
 }
