@@ -45,27 +45,28 @@ OnSNTPCompare{
 		}
 	}
 	else{
-		if reference3<60{
+		_abs=ABS(reference3)
+		if _abs<60{
 			DiscordCustomSet.CustomDetail('有点偏差')
 			--
 			"误差%(reference3)秒。"
 		}
-		elseif reference3<60*60{
+		elseif _abs<60*60{
 			DiscordCustomSet.CustomDetail('有点偏差')
 			--
 			"误差%(reference3/60)分钟。"
 		}
-		elseif reference3<60*60*24{
+		elseif _abs<60*60*24{
 			DiscordCustomSet.CustomDetail('不上班不上课')
 			--
 			"误差%(reference3/(60*60))小时。"
 		}
-		elseif reference3<60*60*24*30{
+		elseif _abs<60*60*24*30{
 			DiscordCustomSet.CustomDetail('从不过节')
 			--
 			"误差%(reference3/(60*60*24))天。"
 		}
-		elseif reference3<60*60*24*365{
+		elseif _abs<60*60*24*365{
 			DiscordCustomSet.CustomDetail('错过一个季节')
 			--
 			"误差%(reference3/(60*60*24*30))个月。"
@@ -89,13 +90,14 @@ OnSNTPCompare{
 	}
 }
 OnSNTPCorrect{
-	if reference3<60*60
+	_abs=ABS(reference3)
+	if _abs<60*60
 		DiscordCustomSet.CustomDetail('做了些小调整')
-	elseif reference3<60*60*24
+	elseif _abs<60*60*24
 		DiscordCustomSet.CustomDetail('洗心革面')
-	elseif reference3<60*60*24*30
+	elseif _abs<60*60*24*30
 		DiscordCustomSet.CustomDetail('打算过节')
-	elseif reference3<60*60*24*365
+	elseif _abs<60*60*24*365
 		DiscordCustomSet.CustomDetail('从冬眠中苏醒')
 	else
 		DiscordCustomSet.CustomDetail('穿越成功')
