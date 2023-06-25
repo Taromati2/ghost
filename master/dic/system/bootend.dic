@@ -126,7 +126,7 @@ OnFirstBoot{//改动于2020 by steve02081504
 			SHIORI_FW.PushNoBreakNotifyResult(UpdateFirst)
 		--
 		if InTimeError
-			SHIORI_FW.PushNoBreakNotifyResult(OnTimeError)
+			SHIORI_FW.PushNoBreakNotifyResult(OnCheckTimeCorrect)
 	}else{
 		OnBoot('FromFirstBoot')
 	}
@@ -257,7 +257,7 @@ OnBoot.base{
 	}
 	--
 	if InTimeError
-		SHIORI_FW.PushNoBreakNotifyResultToTop(OnTimeError)
+		SHIORI_FW.PushNoBreakNotifyResultToTop(OnCheckTimeCorrect)
 	else
 		OnBoot.aboutTime
 	--
