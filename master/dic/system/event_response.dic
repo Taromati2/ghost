@@ -42,8 +42,7 @@ OnNotifySelfInfo{
 	ghostname=reference0
 	selfname=reference1
 	keroname=reference2
-	haveshell = (judgeshell(reference3)!='0|' || Userspitem[0][2]==1)
-	if !haveshell
+	if !HavingShell(reference3)
 		OnSilentChangeShell('预设')
 }
 //缺省信息补全&同步信息更新 by steve02081504
@@ -53,9 +52,8 @@ OnNotifyUserInfo.WhenEmpty.username:void{
 	}
 	else{
 		_steam_name = GetSteamUserName
-		if !IsUserName.Special(_steam_name){
+		if !IsUserName.Special(_steam_name)
 			OnUserName.Set(_steam_name)
-		}
 	}
 }
 OnNotifyUserInfo.WhenEmpty.birthday:void{

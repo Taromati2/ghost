@@ -298,3 +298,6 @@ VERSION_UPGRADE_11:void{
 	ERASEVAR('ssss')
 	ERASEVAR('sssss')
 }
+VERSION_UPGRADE_12:void{//building
+	ERASEVAR('haveshell')
+}
