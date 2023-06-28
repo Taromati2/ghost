@@ -456,11 +456,14 @@ GetShellIDbyName{
 	_a
 }
 HavingShell{
-	if Userspitem[0][2]==1 || isDefaultHavingShell(_argv[0]) {
+	if Userspitem[0][2]==1
 		1
-		return
-	}
-	NameInHaveShellInfo(_argv[0])
+	elseif isDefaultHavingShell(_argv[0])
+		1
+	elseif BuyingShellID == reference3
+		1
+	else
+		NameInHaveShellInfo(_argv[0])
 }
 NameInHaveShellInfo{
 	_a=0
