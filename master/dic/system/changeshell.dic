@@ -379,8 +379,6 @@ OnFittingRoom:all{
 	_haveshellnum=0
 	foreach shelllist; _i{
 		if HavingShell(_i)
-			_haveshellnum=_haveshellnum
-		else
 			_haveshellnum++
 	}
 	"\C\![quicksession,true]\c\![set,choicetimeout,0]\0\s[26]\b[2]橘花共有%(shellcount)件衣服哦"
@@ -406,7 +404,7 @@ OnFittingRoom:all{
 	_shelllist=''
 	foreach shelllist; _i {
 		if _n>=_j && _n<_j+15 {
-			if HavingShell(_i)
+			if !HavingShell(_i)
 				_judge='\f[color,192,192,192]'+_i+'\f[color,default]'
 			else{
 				_judge=_i
@@ -460,7 +458,7 @@ HavingShell{
 		1
 	elseif isDefaultHavingShell(_argv[0])
 		1
-	elseif BuyingShellID == reference3
+	elseif BuyingShellID == _argv[0]
 		1
 	else
 		NameInHaveShellInfo(_argv[0])
