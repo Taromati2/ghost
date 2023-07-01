@@ -315,6 +315,10 @@ OnTextDrop{
 	\q[◇复制至粘贴板,OnCopy,'+_sakura_text+']\n/
 	'
 	--
+	//若在temp中存在网页链接
+	if RE_SEARCH(temp,'(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?')
+		'\q[◇打开网页,OnUrlOpen,'+RE_GETSTR[0]+']\n'
+	--
 	if _text!=TOTRADITIONAL(_text)
 		'\q[◇简->繁转换,OnCopyTS,traditional,'+_sakura_text+']\n'
 	--
