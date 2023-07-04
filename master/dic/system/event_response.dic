@@ -708,7 +708,7 @@ OnInstallFullDataPack{
 	"\![execute,install,url,%(FullDataPackUrl),nar]"
 }
 OnUpdateProcessExec{
-	if QuickStartVersion
+	if QuickStartVersion && !FullDataPackInstalled
 		OnInstallFullDataPack
 	elseif SHIORI_FW.DebugMode
 		'\0\s[0]当前处于开发者模式，真的需要更新吗？\n/
