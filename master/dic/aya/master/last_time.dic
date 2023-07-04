@@ -1,3 +1,3 @@
 //last time用于鉴定当前时间是否错误
 #globaldefine	LAST_BUILD_TIME.YEAR		2023
-#globaldefine	LAST_BUILD_TIME.MOUNTH	06
+#globaldefine	LAST_BUILD_TIME.MOUNTH	07
