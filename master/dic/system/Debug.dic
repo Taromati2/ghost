@@ -645,8 +645,8 @@ OnCalculateVar{
 	}
 	_func = RE_REPLACE(reference0,'\s*[\(\[][\s\S]*$','')
 	if reference1 != 'warning_func_run'{
-		if reference1 != 'no_defineprocess'{
-			if reference1 != 'force_run'{
+		if reference1 != 'force_run'{
+			if reference1 != 'no_defineprocess'{
 				if reference1 != 'no_convert'{
 					if RE_GREP(reference0,'[，（）‘’“”！、？。【】]'){
 						if mode == '1'
@@ -661,40 +661,40 @@ OnCalculateVar{
 						return
 					}
 				}
-				if !ISEVALUABLE(reference0){
-					ShioriEcho.Special='表达式非法'
+				if reference0 != PROCESSGLOBALDEFINE(reference0){
 					if mode == '1'
-						"\1\s[%(specialmode != 'mealtime')10]这不是可行的表达式\w9\w9\n/
-						\s[%(specialmode != 'mealtime')11]细心点啊。"
+						"\1\s[%(specialmode != 'mealtime')10]有全局define\n"
 					else
-						'\0\s[3]这个\w9…\w9…\s[8]\n不是可行的表达式啊\n'
-					return
-				}
-				elseif (_t=HasNotDefinedNameInExpr(reference0))!=''{
-					if mode == '1'
-						"\1\s[%(specialmode != 'mealtime')10]没这个名字\n"
-					else
-						'\0\s[3]没有这个变量或函数……\n'
+						'\0\s[20]处理表达式中的全局define么？\n'
 					--
-					_t
-					--
-					'\n/
-					\q[◇仍然执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',force_run]\n/
-					\q[◇改作Sakura Script执行,OnCalculateVar.ToSakuraScript,'+SakuraScriptArgConverter(reference0)+']\n/
+					'/
+					\q[◇处理执行,OnCalculateVar,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
+					\q[◇直接执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',no_defineprocess]\n/
 					\q[◇算了,Cancel,with_func,OnCalculateVar.Cancel]\n/
 					'
 					return
 				}
 			}
-			if reference0 != PROCESSGLOBALDEFINE(reference0){
+			if !ISEVALUABLE(reference0){
+				ShioriEcho.Special='表达式非法'
 				if mode == '1'
-					"\1\s[%(specialmode != 'mealtime')10]有全局define\n"
+					"\1\s[%(specialmode != 'mealtime')10]这不是可行的表达式\w9\w9\n/
+					\s[%(specialmode != 'mealtime')11]细心点啊。"
 				else
-					'\0\s[20]处理表达式中的全局define么？\n'
+					'\0\s[3]这个\w9…\w9…\s[8]\n不是可行的表达式啊\n'
+				return
+			}
+			elseif (_t=HasNotDefinedNameInExpr(reference0))!=''{
+				if mode == '1'
+					"\1\s[%(specialmode != 'mealtime')10]没这个名字\n"
+				else
+					'\0\s[3]没有这个变量或函数……\n'
 				--
-				'/
-				\q[◇处理执行,OnCalculateVar,'+SakuraScriptArgConverter(PROCESSGLOBALDEFINE(reference0))+',no_defineprocess]\n/
-				\q[◇直接执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',no_defineprocess]\n/
+				_t
+				--
+				'\n/
+				\q[◇仍然执行,OnCalculateVar,'+SakuraScriptArgConverter(reference0)+',force_run]\n/
+				\q[◇改作Sakura Script执行,OnCalculateVar.ToSakuraScript,'+SakuraScriptArgConverter(reference0)+']\n/
 				\q[◇算了,Cancel,with_func,OnCalculateVar.Cancel]\n/
 				'
 				return
