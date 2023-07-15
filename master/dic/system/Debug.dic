@@ -525,12 +525,43 @@ On_ShioriEcho {
 				ShioriEcho.Status='Continue'//注释
 			}
 			else{
-				OnCalculateVar
-				--
-				IgnoreChoiceTimeout
+				_command=GetCommandArgv(reference0)
+				if (GetProgramPath(_command[0]) || FILEEXIST(_command[0])) && !(ISVAR(_command[0]) || ISFUNC(_command[0])){
+					On_ShioriEcho.RunSystemCommand(reference0)
+				}
+				else{
+					OnCalculateVar
+					--
+					IgnoreChoiceTimeout
+				}
 			}
 		}
 	}
+}
+GetCommandArgv.first{
+	_command=_argv[0]
+	if RE_GREP(_command,'^\s*(".*")\s*')
+		CUTSPACE(RE_GETSTR[0])
+	elseif RE_GREP(_command,'^\s*(\S+)\s*')
+		CUTSPACE(RE_GETSTR[0])
+	else
+		''
+}
+GetCommandArgv{
+	_command=_argv[0]
+	_argv=IARRAY
+	while _command{
+		_arg=GetCommandArgv.first(_command)
+		_argv,=_arg
+		_command=CUTSPACE(SUBSTR(_command,STRLEN(_arg),STRLEN(_command)))
+	}
+	_argv
+}
+On_ShioriEcho.RunSystemCommand{
+	_result_code=RUNCMD(_argv[0])
+	ShioriEcho.Special=CMD.OutPut
+	if _result_code
+		ShioriEcho.Special+="%(ansi_red)命令返回值：%(ansi_green)%(_result_code)%(ansi_reset)"
 }
 On_ShioriEcho.CommandUpdate{
 	if RE_GREP(reference.raw[0],'^\s*//')

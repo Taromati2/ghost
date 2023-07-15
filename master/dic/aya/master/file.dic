@@ -182,6 +182,30 @@ MAKELINK{
 	else
 		MAKEFILELINK(_argv)
 }
+//GETENV
+GETENVEX{
+	SPLIT(GETENV(_argv[0]),';')
+}
+//get program path
+GetProgramPath.base{
+	_p=GETENVEX('PATH')
+	foreach _p;_i{
+		if FILEEXIST(_i+'/'+_argv[0]){
+			_i+'/'+_argv[0]
+			return
+		}
+	}
+	''
+}
+GetProgramPath{
+	_p=GETENVEX('PATHEXT')
+	foreach _p;_i{
+		_v=GetProgramPath.base(_argv[0]+_i)
+		if _v!=''
+			return _v
+	}
+	''
+}
 //git
 GHOST.INgit{
 	_dir='.'
