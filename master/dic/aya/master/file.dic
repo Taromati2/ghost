@@ -190,10 +190,8 @@ GETENVEX{
 GetProgramPath.base{
 	_p=GETENVEX('PATH')
 	foreach _p;_i{
-		if FILEEXIST(_i+'/'+_argv[0]){
-			_i+'/'+_argv[0]
-			return
-		}
+		if FILEEXIST(_i+'/'+_argv[0])
+			return _i+'/'+_argv[0]
 	}
 	''
 }
@@ -210,13 +208,10 @@ GetProgramPath{
 GHOST.INgit{
 	_dir='.'
 	while FILEEXIST(_dir){
-		if FILEEXIST(_dir+'/.git/config'){
-			1
-			return
-		}
-		else{
+		if FILEEXIST(_dir+'/.git/config')
+			return 1
+		else
 			_dir+='/..'
-		}
 	}
 	0
 }
