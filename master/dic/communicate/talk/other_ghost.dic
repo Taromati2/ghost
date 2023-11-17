@@ -17,15 +17,16 @@ StartCommunicate{
 			'\0\s[0]どもー。'
 		}
 		_varname_NumOfTry='OtherGhostTalk.'+STRDIGEST(res_reference0)+'.NumOfTry'
+		_gname_for_show = REPLACE(res_reference0,'\','\\')
 		if EVAL(_varname_NumOfTry)<4 {
 			if EVAL(_varname_NumOfTry)==3
 				'\0\s[0]...'
 			else
-				"\0\s[0]你好、%(res_reference0)。"
+				"\0\s[0]你好、%(_gname_for_show)。"
 			EVAL(_varname_NumOfTry+'++')
 		}
 		elseif RAND(MIN(EVAL(_varname_NumOfTry),100))==0{
-			"\0\s[0]你好、%(res_reference0)。"
+			"\0\s[0]你好、%(_gname_for_show)。"
 			EVAL(_varname_NumOfTry+'++')
 		}
 		else{

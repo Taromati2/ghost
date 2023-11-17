@@ -1,6 +1,6 @@
 //by steve
 
-#define VERSION_NOW 11
+#define VERSION_NOW 12
 
 VERSION_INIT:void{
 	VERSION = VERSION_NOW
@@ -298,7 +298,7 @@ VERSION_UPGRADE_11:void{
 	ERASEVAR('ssss')
 	ERASEVAR('sssss')
 }
-VERSION_UPGRADE_12:void{//building
+VERSION_UPGRADE_12:void{
 	ERASEVAR('haveshell')
 	ERASEVAR('HP')
 	ERASEVAR('SP')

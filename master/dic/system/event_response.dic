@@ -421,12 +421,12 @@ OnInstallComplete{
 	elseif 'with' _in_ reference0
 		'复合物'
 	else
-		'未知物件'
+		"未知物件“%(REPLACE(reference0,'\','\\'))”"
 	--
-	"『%(reference1)』"
+	"『%(REPLACE(reference1,'\','\\'))』"
 	--
 	if reference2{
-		"与『%(reference2)』"
+		"与『%(REPLACE(reference2,'\','\\'))』"
 	}
 	--
 	'\n[150]'
@@ -442,20 +442,21 @@ OnInstallComplete{
 	--
 	'\n'
 	--
+	_target = SakuraScriptArgConverter(reference1)
 	if 'ghost' _in_ reference0 {
 		"/
-		\q[◇切换,OnChangeGhost,%(reference1)]\n/
-		\q[◇呼叫,OnCallGhost,%(reference1)]\n/
+		\q[◇切换,OnChangeGhost,%(_target)]\n/
+		\q[◇呼叫,OnCallGhost,%(_target)]\n/
 		\q[◇无用,Cancel]\n"
 	}
 	elseif 'shell' _in_ reference0{
 		"/
-		\q[◇切换,OnSilentChangeShell,%(reference1)]\n/
+		\q[◇切换,OnSilentChangeShell,%(_target)]\n/
 		\q[◇无用,Cancel]\n"
 	}
 	elseif 'balloon' _in_ reference0{
 		"/
-		\q[◇切换,OnChangeBalloon,%(reference1)]\n/
+		\q[◇切换,OnChangeBalloon,%(_target)]\n/
 		\q[◇无用,Cancel]\n"
 	}
 }
@@ -513,12 +514,13 @@ OnInstallFailure{
 OnInstallRefuse{
 	DiscordCustomSet.CustomDetail('认错人了')
 	--
-	"\0\s[20]这是…\w9\w9\n『%(reference0)收』。\w9\s[0]\n请直接交给本人。"
+	"\0\s[20]这是…\w9\w9\n『%(REPLACE(reference0,'\','\\'))收』。\w9\s[0]\n请直接交给本人。"
 	--
+	_target = SakuraScriptArgConverter(reference0)
 	if IsGhostExist(reference0) || IsSakuraExist(reference0)
 		"\n/
-		\q[◇切换,OnChangeGhost,%(reference0)]\n/
-		\q[◇呼叫,OnCallGhost,%(reference0)]\n/
+		\q[◇切换,OnChangeGhost,%(_target)]\n/
+		\q[◇呼叫,OnCallGhost,%(_target)]\n/
 		\q[◇无用,Cancel]\n"
 	else
 		'\1\s[11]不\w9\w9\n目前来说根本查无此人。'
@@ -973,7 +975,7 @@ OnURLDropping{
 	if reference0 == FullDataPackUrl
 		'\0\s[0]下载补全数据包并安装\w9\n'
 	else
-		"\0\s[0]下载%(reference0)并作为安装包安装\w9\n"
+		"\0\s[0]下载%(REPLACE(reference0,'\','\\'))并作为安装包安装\w9\n"
 	--
 	'\s[6]进行中\n'
 }
@@ -1023,22 +1025,22 @@ Select.HEADLINECANCEL{
 OnHeadlinesenseBegin{
 	DiscordCustomSet.CustomDetail('看报')
 	--
-	"\0\s[0]『%(reference0)』 的Headline确认…"
+	"\0\s[0]『%(REPLACE(reference0,'\','\\'))』 的Headline确认…"
 }
 //---- ヘッドライン読み上げ -------------------------------------------------------------
 OnHeadlinesense.OnFind{
 	//---- はじめのセリフ
 	if reference2 == 'First' || reference2 == 'First and Last'{
 		//---- 最初のページ
-		"\0\b2\s[0]『%(reference0)』的Headline。"
+		"\0\b2\s[0]『%(REPLACE(reference0,'\','\\'))』的Headline。"
 	}
 	elseif reference2 == 'Next'{
 		//---- 真ん中あたりのページ
-		"\0\b2\s[0]『%(reference0)』的Headline。"
+		"\0\b2\s[0]『%(REPLACE(reference0,'\','\\'))』的Headline。"
 	}
 	elseif reference2 == 'Last'{
 		//---- 最后のページ
-		"\0\b2\s[0]『%(reference0)』的Headline。"
+		"\0\b2\s[0]『%(REPLACE(reference0,'\','\\'))』的Headline。"
 	}
 	--
 	//---- ヘッドライン本体
@@ -1072,7 +1074,7 @@ OnHeadlinesenseFailure{
 		'解析失败。'
 	}
 	else{
-		"对不起。\1\s[12]原因是“%(reference0)”"
+		"对不起。\1\s[12]原因是“%(REPLACE(reference0,'\','\\'))”"
 	}
 }
 //**** ファイル作成関连 *****************************************************************
@@ -1111,8 +1113,8 @@ OnNarCreated{
 	else
 		'\0\s[0]嗯。\n\w9'
 	--
-	"「%(reference0)」的nar档\n/
-	\_q「%(reference1)」\_q"
+	"「%(REPLACE(reference0,'\','\\'))」的nar档\n/
+	\_q「%(REPLACE(reference1,'\','\\'))」\_q"
 	--
 	'\w9\n完成了。'
 }
@@ -1238,12 +1240,12 @@ OnURLQuery{
 		return
 	}
 	elseif reference3=='unknown' || !reference3{
-		"\0\s[6]未知URL，请使用下载器下载\n[150]\_qURL:%(reference0)\_q\n"
+		"\0\s[6]未知URL，请使用下载器下载\n[150]\_qURL:%(REPLACE(reference0,'\','\\'))\_q\n"
 	}
 	else{
-		"\0\s[0]自URL:%(reference0)\n/
+		"\0\s[0]自URL:%(REPLACE(reference0,'\','\\'))\n/
 		下载并安装%(reference3)？\n/
-		\q[◇确认,script:""\![execute,install,%(reference0)]""]\n/
+		\q[◇确认,script:""\![execute,install,%(SakuraScriptArgConverter(reference0))]""]\n/
 		"
 	}
 	--

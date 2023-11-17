@@ -3263,7 +3263,7 @@ OnIconLoad{
 OnOtherGhostClosed{
 	ghostexlist=REPLACE(ghostexlist,"%(reference0)",'')
 	ghostexlist=REPLACE(ghostexlist,',,','')
-	ghostexlist=RE_REPLACE(ghostexlist,',$','')
+	//ghostexlist=RE_REPLACE(ghostexlist,',$','')
 	ghostexcount=ARRAYSIZE(ghostexlist)
 	--
 	if 'Kyara' _in_ reference0{
