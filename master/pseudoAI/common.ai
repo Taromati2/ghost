@@ -2587,7 +2587,7 @@ AiLoad.ThatMatch("<A><that>劳逸结合</that>真乖啊，%selfname赏你颗糖�
 
 <SESSION>
 <Q>怎么玩</Q>
-<A>输入“打开”+应用名字就行了，比如“打开橘花大乱斗”</A>
+<A>输入“打开”+应用名字就行了，比如“打开推箱子”</A>
 </SESSION>
 
 
@@ -3517,11 +3517,6 @@ AiLoad.ThatMatch("<A><that>劳逸结合</that>真乖啊，%selfname赏你颗糖�
 <Q>我们&相同</Q>
 <Q>我们&一样</Q>
 <A><恍惚>因为我们曲调一致。</A>
-</SESSION>
-
-<SESSION>
-<Q>我们&玩</Q>
-<A>来玩%selfname大乱斗吧，%selfname可不会输哦。</A>
 </SESSION>
 
 <SESSION>

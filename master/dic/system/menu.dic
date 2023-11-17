@@ -94,13 +94,12 @@ SubMenu{
 		}
 		when 2 {
 			'\q[◇猜拳,OnHandGame]			\_l[80,-]扑克游戏：						\_l[168,-]\q[◇外出冒险,OnRpgGame] \n/
-			\q[◇猜数字,OnGuessNumber]		\_l[80,-]\q[◇21点,OnBlackjack0]			\_l[168,-]\q[◇伪春菜人格大乱斗,On战斗开始]\n/
+			\q[◇猜数字,OnGuessNumber]		\_l[80,-]\q[◇21点,OnBlackjack0]			\_l[168,-]\q[◇推箱子,OnBoxGame]\n/
 			\q[◇开心问答,OnQuestBegin]		\_l[80,-]\q[◇扎金花,OnGoldenFlower]		\_l[168,-]\q[◇华容道,OnHuaRongDao]\n/
 			\q[◇井字棋,OnPlayOX]			\_l[80,-]\q[◇UNO,OnUnoUserInit]			\_l[168,-]\q[◇五子棋,OnGobangInIt]\n/
 			\q[◇拼图游戏,OnPuzzleList]												\_l[168,-]\q[◇连连看,OnLinkWnd] \n/
 			\q[◇俄罗斯方块,OnTetris.NewGame]										\_l[168,-]\q[◇数字汉诺塔,OnHanoi]\n/
-			\q[◇贪食蛇,OnRetroSnaker]												\_l[168,-]\q[◇橘花大乱斗,OnKikkaBattle] \n/
-			\q[◇双色球,OnDoubleColorBall]											\_l[168,-]\q[◇推箱子,OnBoxGame]\n[150]'
+			\q[◇贪食蛇,OnRetroSnaker]												\_l[168,-]\q[◇双色球,OnDoubleColorBall]\n'
 		}
 		when 3 {
 			case _submenuex{
