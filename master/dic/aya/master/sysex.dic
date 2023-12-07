@@ -19,7 +19,7 @@ OnChoiceSelectEx{
 		BUGNow("事件“%(reference1)”未定义")
 		return
 	}
-	if(!_result)
+	if !_result
 		BUGNow("选项“%(reference1)”返值为空")
 	else
 		_result

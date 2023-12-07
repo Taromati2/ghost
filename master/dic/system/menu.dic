@@ -178,7 +178,7 @@ OpenMenuTalk{
 		'\0\s[7]什么事。'
 		'\0\s[25]有何贵干。'
 		--
-		if(intimacy < -312)
+		if intimacy < -312
 			'\e'
 	}
 	else {
