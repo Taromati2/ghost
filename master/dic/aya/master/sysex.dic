@@ -8,14 +8,21 @@ OnChoiceSelectEx{
 		if ISSTR(_arglist[_i])
 			_arglist[_i]=ValueTOstring(_arglist[_i],0)
 	}
+	_result=''
 	if ISFUNC("Select.%(reference1)")
-		EVAL("Select.%(reference1)(%_arglist)")
+		_result=EVAL("Select.%(reference1)(%_arglist)")
 	elseif ISFUNC('Select.'+reference1[0,'('])
-		EVAL('Select.'+reference1)
+		_result=EVAL('Select.'+reference1)
 	elseif ISFUNC(reference1[0,'('])
-		do_nothing
-	else
+		return
+	else{
 		BUGNow("事件“%(reference1)”未定义")
+		return
+	}
+	if(!_result)
+		BUGNow("选项“%(reference1)”返值为空")
+	else
+		_result
 }
 OnAITalk{
 	if specialmode == 'rest'//休息事件中随机谈话禁止

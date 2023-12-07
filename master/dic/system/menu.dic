@@ -172,18 +172,14 @@ OpenMenuTalk{
 				"\0\s[27]讨厌，%(username)想被锯上一锯吗？\e"
 		}
 	}
-	elseif !_phase {
+	elseif _phase <= 0 {
 		'\0\s[0]？'
 		'\0\s[6]干嘛'
 		'\0\s[7]什么事。'
 		'\0\s[25]有何贵干。'
-	}
-	elseif _phase < 0 {
-		'\0\s[0]？'
-		'\0\s[6]干嘛'
-		'\0\s[7]什么事。'
 		--
-		'\e'
+		if(intimacy < -312)
+			'\e'
 	}
 	else {
 		'\0\s[26]好的、什么事呢？'
