@@ -140,6 +140,8 @@ OnMouseDoubleClick1{
 Select.ReturnMain{
 	mode = '0'
 	specialmode = ''
+	DiscordCustom.ModeSet
+	--
 	'\1\s[110]嗯。\w9\w9\n那、\w9也该回去了。\w9\w9\w9\w9\1\s[-1]\c\b[-1]\w9\w9\0\s[0]啊、\w9\s[26]欢迎回来。\w9\w9\1\s[10]呼。'
 	'\1\s[110]那、\w9也该回去当小公主的卫兵了。\w9\w9\w9\w9\1\s[-1]\c\b[-1]\w9\w9\0\s[0]啊、\w9\s[26]欢迎回来。\w9\w9\1\s[10]呼。'
 }

@@ -3266,30 +3266,20 @@ OnOtherGhostClosed{
 	//ghostexlist=RE_REPLACE(ghostexlist,',$','')
 	ghostexcount=ARRAYSIZE(ghostexlist)
 	--
-	if 'Kyara' _in_ reference0{
-		'……哼'
-	}
-	else{
-		if mode == '1'{
-			if ghostexcount > 0{
-				'\1\s[11]喵呜~？'
-			}
-			else{
-				mode = '0'
-				'\1\s[18]哈啊……没人在的话就好。\n/
-				真是麻烦。'
-			}
+	if mode == '1'{
+		if ghostexcount > 0{
+			'\1\s[11]喵呜~？'
 		}
 		else{
-			if ghostexcount > 0{
-				mode = '1'
-				'\0\s[11]喵呜~？'
-			}
-			else{
-				mode = '0'
-				'\0\s[0]………………'
-			}
+			'\1\s[13]哈啊……没人在的话就好。\n/
+			真是麻烦。'
 		}
+	}
+	else{
+		if 'Kyara' _in_ reference0
+			'\0\s[0]……哼\s[6]'
+		else
+			'\0\s[0]………………'
 	}
 }
 OnChangeChineseCode{

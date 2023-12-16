@@ -393,19 +393,23 @@ meal8 : nonoverlap{
 	'芒果奶茶'
 }
 Select.meal{
-	DiscordCustomSet.CustomDetail('有人在用不知道什么方式进行料理')
-	--
 	mode = '1'
 	specialmode = 'mealtime'
 	mealendtime = ghostuptime + 60*4
 	'\0\w9\w9\s[26]那么，请稍等一下，或许需要准备很长时间呢\w9\w9\w9\s[-1]'
+	--
+	DiscordCustomSet.CustomDetail('有人在用不知道什么方式进行料理')
+	--
+	DiscordCustom.ModeSet
 }
 Onmealfin{
-	DiscordCustomSet.CustomDetail('开饭')
-	--
 	mode = '0'
 	specialmode = ''
 	ERASEVAR('mealendtime')
+	DiscordCustomSet.CustomDetail('开饭')
+	--
+	DiscordCustom.ModeSet
+	--
 	"\s[51]准备好了，%(username)，这是橘花精心制作的菜式哦，不知是否合口味\w9\w9\n\q[◇做得很好哦，橘花谢谢你,goodjob]\n\q[◇一点也不好吃,notgoodjob]\![set,choicetimeout,0]"
 }
 Select.goodjob{

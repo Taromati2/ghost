@@ -4,6 +4,7 @@
 BaseGhostStart{//改动于2020 by steve02081504
 	VERSION_UPGRADE
 	OnOptionSet
+	OnDiscordPluginCustomEnd
 	--
 	FCHARSET(1)
 	lastTalk = '\0\s[20]咦？分明才刚启动的说…\1\s[10]喵，刚才什么都没说'
@@ -185,12 +186,12 @@ OnBoot{
 	MAGICLOCK
 	BaseGhostStart
 	--
+	SHIORI_FW.PushNoBreakNotifyResult(OnBoot.base(_argv))
+	--
 	if LOADED_FROM_MAGIC
 		OnSilentChangeShell(shellID)
 	else
 		SHIORI_FW.PushNoBreakNotifyResult(OnAutoChangeShell.boot)
-	--
-	SHIORI_FW.PushNoBreakNotifyResult(OnBoot.base(_argv))
 	--
 	if AutoUpdate{
 		if QuickStartVersion && !FullDataPackInstalled
@@ -200,12 +201,39 @@ OnBoot{
 	}
 }
 OnBoot.base{
+	if reference6 == 'halt'
+		DiscordCustomSet.CustomDetail('Halt!')
+	--
 	if mode == '1'{
 		if specialmode == 'mealtime'
 			mealendtime=60
-		"\0\s[-1]\1\s[%(specialmode != 'mealtime')10]呦。"
+		"\0\s[-1]\1\s[%(specialmode != 'mealtime')10]呦。\w9\n"
+		--
+		if reference6 == 'halt' {
+			if reference7 == 'Taromati2' 
+				'电脑没问题吗？'
+			elseif IsGhostExist(reference7)
+				"不去找%(GetSakuraNameFromGhostName(reference7))它们聊聊？"
+			else
+				'那家伙，\s[13]\w9见不到了啊。'
+			--
+			'\x'
+		}
 		return
 	}
+	if reference6 == 'halt' {
+		'\0\s[8]'
+		--
+		if reference7 == 'Taromati2' 
+			'电脑\w8没问题吗？'
+		elseif IsGhostExist(reference[7])
+			"\s[26]需要去找%(GetSakuraNameFromGhostName(reference[7]))聊聊吗？"
+		else
+			'.\w9.\w9.\w9发生了什么事呢？\n'
+		--
+		'\x'
+	}
+	--
 	if elapsetime > 300 && specialmode == 'mealtime'{
 		void Onmealfin
 	}

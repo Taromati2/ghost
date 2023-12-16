@@ -6,7 +6,6 @@ OnGoldenFlower{
 		return
 	}
 	_txt=''
-	mode='-1'
 	mess=''
 	if !GoldenFlowerInited{
 		Card

@@ -45,3 +45,11 @@ IsGhostExist{//IsGhostExist('SSPER')
 IsSakuraExist{
 	INARRAY(installedsakuralist,_argv[0])
 }
+GetSakuraNameFromGhostName{
+	_t=ARRAY.GetIndex(installedghostlist,_argv[0])
+	installedsakuralist[_t]
+}
+GetKeroNameFromGhostName{
+	_t=ARRAY.GetIndex(installedghostlist,_argv[0])
+	installedkerolist[_t]
+}
