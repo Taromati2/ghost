@@ -31,6 +31,10 @@ OnTouch.FunctionCase.OnlyPhase.base{
 //**** 抚で反応 *************************************************************************
 //---- OnMouseMoveイベント --------------------------------------------------------------
 OnMouseMove{
+	if reference3 > 1{
+		"\p[%(reference3)]\s[-1]"
+		return
+	}
 	if mode == '1' && specialmode != 'mealtime'{
 		OnMouseMove1
 	}
