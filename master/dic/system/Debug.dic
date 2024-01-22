@@ -424,7 +424,7 @@ OnSakuraScript{
 	reference.raw[0]
 }
 OnSakuraScript.Forment{
-	OnSakuraScript(EVAL('"'+reference.raw[0]+'"'),'no_convert')
+	OnSakuraScript(EVAL('"'+REPLACE(reference.raw[0],'"','""')+'"'),'no_convert')
 }
 GhostTerminal.GITinfo{
 	_uuid=git.GetCommitID
