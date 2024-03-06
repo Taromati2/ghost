@@ -381,15 +381,27 @@ OnFriendBirthDay.BootRemind{
 		_txt
 	}
 }
+OnMyBirthDayTalk{
+	"\0\s[28]今天是%(username)%(TOINT(nextbirthday[0]) - birthday[0])岁生日，橘花给%(username)准备了礼物"
+	if nextbirthday[1] == 2 && nextbirthday[2] == 29 {
+		if nextbirthday[0] % 4
+			'\1\s[12]虽然实际上今年不是闰年\w9，不过我们可以提前一天为你庆生。\0'
+		else
+			'\1\s[12]今年是闰年\w9，恭喜啊\w8，四年一见的“真”生日。\0'
+	}
+	--
+	'\n[300]\q[◇打开看看,birthdaygift]\n\x'
+}
 BirthDay.BootRemind{
 	birthdayflag=0
 	if year - 1 == nextbirthday[0]{
 		nextbirthday=NextBirthDay(birthday[0],birthday[1],birthday[2])
 	}
-	if nextbirthday && year == nextbirthday[0] && month == nextbirthday[1] && day == nextbirthday[2] && birthdaygiftmode != 1{
-		"\0\s[28]今天是%(username)%(TOINT(nextbirthday[0]) - birthday[0])岁生日，橘花给%(username)准备了礼物\n[300]\q[◇打开看看,birthdaygift]"
-		--
-		'\n\x'
+	if nextbirthday && birthdaygiftmode != 1{
+		if year == nextbirthday[0] && month == nextbirthday[1] && day == nextbirthday[2]
+			OnMyBirthDayTalk
+		elseif nextbirthday[1] == 2 && nextbirthday[2] == 29 && nextbirthday[0] % 4 && year == nextbirthday[0] && month == 2 && day == 28
+			OnMyBirthDayTalk
 	}
 	--
 	OnFriendBirthDay.BootRemind
