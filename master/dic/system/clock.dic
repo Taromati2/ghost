@@ -48,6 +48,10 @@ OnSecondChange{
 			}
 		}
 	}
+	if !InMinimize && !QuickStartVersion{
+		if !RAND(4)
+			SHIORI_FW.MakeAdditionalReturn('ValueNotify','\![set,tasktrayicon,img/ico/kikka_eye_wink/.ico,Taromati2,--duration=100,--runcount=1]')
+	}
 }
 OnHourChange{
 }

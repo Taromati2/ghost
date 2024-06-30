@@ -210,7 +210,7 @@ OnBoot.base{
 		"\0\s[-1]\1\s[%(specialmode != 'mealtime')10]呦。\w9\n"
 		--
 		if reference6 == 'halt' {
-			if reference7 == 'Taromati2' 
+			if reference7 == 'Taromati2'
 				'电脑没问题吗？'
 			elseif IsGhostExist(reference7)
 				"不去找%(GetSakuraNameFromGhostName(reference7))它们聊聊？"
@@ -224,7 +224,7 @@ OnBoot.base{
 	if reference6 == 'halt' {
 		'\0\s[8]'
 		--
-		if reference7 == 'Taromati2' 
+		if reference7 == 'Taromati2'
 			'电脑\w8没问题吗？'
 		elseif IsGhostExist(reference[7])
 			"\s[26]需要去找%(GetSakuraNameFromGhostName(reference[7]))聊聊吗？"
@@ -660,6 +660,7 @@ Select.Goodevening_3{
 	"\1\s[10]\0\s[100]…\w9…\w9…\w9\w9\w9\w9\n那么、\w9\s[26]%(Goodevening)、\w9%(username)。"
 }
 ClearVar{
+	ERASEVAR('InMinimize')
 	ERASEVAR('calendar')
 	ERASEVAR('i')
 	ERASEVAR('temp01')
