@@ -255,7 +255,9 @@ DUMP_references_to:void{
 	FCLOSE(_file)
 }
 InVM{
-	if FILEEXIST('SAORI_PATH/VMDetect.dll')
+	if E.D.E.N. // eos的虚拟机检测结果永远是真的，所以特例来修复eos的误判
+		0
+	elseif FILEEXIST('SAORI_PATH/VMDetect.dll')
 		CALLSAORI('VMDetect')
 	else
 		1
